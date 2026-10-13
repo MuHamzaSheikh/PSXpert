@@ -18,6 +18,8 @@ files = [
     "kse100_fundamentals_annual.csv",
     "kse100_fundamentals_quarterly.csv",
     "kse100_financial_ratios.csv",
+    "kse100_corporate_announcements.csv",
+    "kse100_corporate_payouts_2001_2026.csv",
 ]
 
 for fname in files:
@@ -31,6 +33,14 @@ for fname in files:
         print(f"  Columns ({len(df.columns)}): {list(df.columns)}")
         if "date" in df.columns:
             print(f"  Date Range: {df['date'].min()} -> {df['date'].max()}")
+        elif "posting_date" in df.columns:
+            print(f"  Posting Date Range: {df['posting_date'].min()} -> {df['posting_date'].max()}")
+            if "category" in df.columns:
+                print(f"  Categories: {df['category'].value_counts().to_dict()}")
+        elif "announcement_date" in df.columns:
+            print(f"  Announcement Date Range: {df['announcement_date'].min()} -> {df['announcement_date'].max()}")
+            if "payout_type" in df.columns:
+                print(f"  Payout Types: {df['payout_type'].value_counts().to_dict()}")
         elif "fiscal_year" in df.columns:
             print(f"  Fiscal Year Range: {df['fiscal_year'].min()} -> {df['fiscal_year'].max()}")
             if "fiscal_quarter" in df.columns:
@@ -48,4 +58,9 @@ fund_dir = os.path.join(DATA_DIR, "fundamentals_company")
 if os.path.exists(fund_dir):
     fund_files = [f for f in os.listdir(fund_dir) if f.endswith(".csv")]
     print(f"[DIRECTORY] fundamentals_company/: {len(fund_files)} individual company fundamental CSV files created.")
+
+ann_dir = os.path.join(DATA_DIR, "announcements_company")
+if os.path.exists(ann_dir):
+    ann_files = [f for f in os.listdir(ann_dir) if f.endswith(".csv")]
+    print(f"[DIRECTORY] announcements_company/: {len(ann_files)} individual company announcement CSV files created.")
 print("=" * 60)

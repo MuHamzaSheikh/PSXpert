@@ -1,6 +1,6 @@
 # PSXpert: Pakistan Stock Exchange (PSX) & KSE-100 Dataset (2002–2026)
 
-High-accuracy historical market data, company fundamentals, and financial news engine for the **Pakistan Stock Exchange (PSX)**, sourced directly from **Direct PSX Data Portal (DPS)** and **Sarmaaya Financials** (`sarmaaya.pk`).
+High-accuracy historical market data, company fundamentals, financial news, and corporate announcements engine for the **Pakistan Stock Exchange (PSX)**, sourced directly from **Direct PSX Data Portal (DPS)** and **Sarmaaya Financials** (`sarmaaya.pk`).
 
 ---
 
@@ -30,6 +30,13 @@ High-accuracy historical market data, company fundamentals, and financial news e
 | [`data/kse100_financial_ratios.csv`](file:///c:/Users/HP/psxpert/data/kse100_financial_ratios.csv) | Master Valuation, Solvency & Profitability Ratios | **543** | Annual Multi-Year | ~63 KB |
 | [`data/fundamentals_company/`](file:///c:/Users/HP/psxpert/data/fundamentals_company) | Per-company breakdown CSV files (annual & quarterly) | **198 files** | Annual & Quarterly | ~200 KB |
 
+### Dataset D — Corporate Announcements & Payouts
+| File Name | Description | Rows | Category Breakdown | Size |
+|---|---|---|---|---|
+| [`data/kse100_corporate_announcements.csv`](file:///c:/Users/HP/psxpert/data/kse100_corporate_announcements.csv) | Master Corporate Announcements & Disclosures with official PSX PDFs | **20,884** | 5.4k Earnings, 1.6k Dividends, 1.5k Material, 12.3k Events | ~4.8 MB |
+| [`data/kse100_corporate_payouts_2001_2026.csv`](file:///c:/Users/HP/psxpert/data/kse100_corporate_payouts_2001_2026.csv) | Master Historical Corporate Payouts (Dividends, Splits, Bonus Shares) | **2,336** | 2001 to 2026 (25 Years) | ~193 KB |
+| [`data/announcements_company/`](file:///c:/Users/HP/psxpert/data/announcements_company) | Per-company announcements & payouts CSV files | **193 files** | All Constituent Companies | ~5.2 MB |
+
 ---
 
 ## 📁 Repository Structure
@@ -37,6 +44,9 @@ High-accuracy historical market data, company fundamentals, and financial news e
 ```
 psxpert/
 ├── data/
+│   ├── kse100_corporate_announcements.csv      # Dataset D: Master announcements (20,884 rows)
+│   ├── kse100_corporate_payouts_2001_2026.csv  # Dataset D: Master payouts 2001-2026 (2,336 rows)
+│   ├── announcements_company/                  # Dataset D: Per-company announcement & payout CSVs (193 files)
 │   ├── kse100_fundamentals_annual.csv          # Dataset C: Master annual fundamentals (543 rows)
 │   ├── kse100_fundamentals_quarterly.csv       # Dataset C: Master quarterly fundamentals (399 rows)
 │   ├── kse100_financial_ratios.csv             # Dataset C: Valuation & solvency ratios (543 rows)
@@ -54,11 +64,13 @@ psxpert/
 │   ├── scraper.py                              # Dataset A: Core Sarmaaya PSX API scraper module
 │   ├── news_scraper.py                         # Dataset B: Live financial news scraper & symbol tagger
 │   ├── historical_news_scraper.py              # Dataset B: 2002-2026 archive news scraper
-│   └── fundamentals_scraper.py                 # Dataset C: DPS & Sarmaaya fundamentals scraper
+│   ├── fundamentals_scraper.py                 # Dataset C: DPS & Sarmaaya fundamentals scraper
+│   └── announcements_scraper.py                # Dataset D: Corporate announcements & payouts scraper
 ├── main.py                                     # Orchestrator for Dataset A (Prices & Index)
 ├── scrape_news.py                              # Orchestrator for Dataset B (Live News)
 ├── scrape_historical_news.py                   # Orchestrator for Dataset B (Historical News)
 ├── scrape_fundamentals.py                      # Orchestrator for Dataset C (Company Fundamentals)
+├── scrape_announcements.py                     # Orchestrator for Dataset D (Corporate Announcements)
 ├── verify_data.py                              # Dataset integrity and validation runner
 ├── requirements.txt                            # Python dependencies
 └── README.md
@@ -68,10 +80,36 @@ psxpert/
 
 ## 📈 Data Fields & Schema
 
-### 1. `kse100_fundamentals_annual.csv` (Dataset C — Annual Statements)
+### 1. `kse100_corporate_announcements.csv` (Dataset D — Announcements)
 * `symbol`: PSX ticker symbol (e.g. `OGDC`, `LUCK`, `MEBL`, `SYS`).
-* `company_name`: Official registered corporate name.
+* `company_name`: Official corporate name.
 * `sector`: PSX industry sector classification.
+* `posting_date`: Announcement publication date (`YYYY-MM-DD`).
+* `category`: Classified announcement category:
+  - `Earnings Announcements`: Annual/interim financial results, financial statements, and reports.
+  - `Dividends & Bonus Shares`: Book closure notices, dividend declarations, stock splits, entitlement letters.
+  - `Material Disclosures`: Discoveries, well production, commercial operational updates, plant shutdowns/expansions, mergers/acquisitions.
+  - `Corporate Events`: Board meetings, AGMs/EGMs, appointment/election of directors, resolutions.
+* `announcement_title`: Full text headline/subject of the announcement.
+* `announcement_id`: Unique PSX disclosure tracking identifier (e.g. `WAS-249475`).
+* `document_url`: Direct download URL to official PSX exchange document / PDF.
+* `attachment_url`: Scan or image attachment URL where applicable.
+
+### 2. `kse100_corporate_payouts_2001_2026.csv` (Dataset D — Payouts)
+* `symbol`: PSX ticker symbol.
+* `company_name`: Official corporate name.
+* `sector`: Industry sector.
+* `announcement_date`: Date the corporate action was announced (`YYYY-MM-DD`).
+* `fiscal_year`: Fiscal accounting year.
+* `payout_type`: Action type (`dividend`, `split`, `bonus`).
+* `dividend_per_share_pkr`: Dividend per share in PKR.
+* `payout_percentage`: Percentage on face value (e.g. `60.0%`, `145.0%`).
+* `face_value_pkr`: Nominal face value per share (e.g. `10.0`, `2.0`).
+
+### 3. `kse100_fundamentals_annual.csv` (Dataset C — Annual Statements)
+* `symbol`: PSX ticker symbol.
+* `company_name`: Official corporate name.
+* `sector`: Industry sector classification.
 * `periodicity`: `ANN` (Annual fiscal reporting period).
 * `fiscal_year`: Fiscal year (e.g. `2026`, `2025`, `2024`, `2023`, `2022`, `2021`).
 * `period_end_date`: End date of the fiscal year (`YYYY-MM-DD`).
@@ -98,51 +136,11 @@ psxpert/
 * `dividends_paid`: Total dividends paid to shareholders.
 * `free_cash_flow`: Free Cash Flow (FCF = CFO - Capex).
 
-### 2. `kse100_fundamentals_quarterly.csv` (Dataset C — Quarterly Statements)
-* `symbol`: PSX ticker symbol.
-* `company_name`: Official corporate name.
-* `sector`: PSX sector classification.
-* `periodicity`: `QTR` (Quarterly reporting period).
-* `fiscal_year`: Fiscal year.
-* `fiscal_quarter`: Reporting quarter (`Q1`, `Q2`, `Q3`, `Q4`).
-* `period_end_date`: Quarter-end reporting date.
-* `revenue_sales`: Quarterly revenue / net sales / mark-up.
-* `gross_profit`: Quarterly gross profit.
-* `operating_profit`: Quarterly operating profit.
-* `net_profit_after_tax`: Quarterly net profit after taxation.
-* `eps`: Quarterly Earnings Per Share (PKR).
-* `total_assets`: Total balance sheet assets at quarter end.
-* `total_liabilities`: Total balance sheet liabilities at quarter end.
-* `total_debt`: Total debt obligations at quarter end.
-* `shareholders_equity`: Total equity at quarter end.
-* `operating_cash_flow`: Quarterly Operating Cash Flow.
-* `free_cash_flow`: Quarterly Free Cash Flow.
+### 4. `kse100_fundamentals_quarterly.csv` (Dataset C — Quarterly Statements)
+* `symbol`, `company_name`, `sector`, `periodicity` (`QTR`), `fiscal_year`, `fiscal_quarter` (`Q1` to `Q4`), `period_end_date`, `revenue_sales`, `gross_profit`, `operating_profit`, `net_profit_after_tax`, `eps`, `total_assets`, `total_liabilities`, `total_debt`, `shareholders_equity`, `operating_cash_flow`, `free_cash_flow`.
 
-### 3. `kse100_financial_ratios.csv` (Dataset C — Ratios & Metrics)
-* `symbol`: PSX ticker symbol.
-* `company_name`: Corporate name.
-* `sector`: Industry sector.
-* `fiscal_year`: Fiscal year.
-* `pe_ratio`: Price-to-Earnings Ratio (P/E).
-* `pb_ratio`: Price-to-Book Ratio (P/B).
-* `ps_ratio`: Price-to-Sales Ratio (P/S).
-* `enterprise_value`: Enterprise Value (EV).
-* `ev_to_ebitda`: Enterprise Value to EBITDA multiple.
-* `debt_to_equity_pct`: Debt-to-Equity ratio (%).
-* `debt_to_asset_pct`: Debt-to-Asset ratio (%).
-* `current_ratio`: Current ratio (Liquidity).
-* `quick_ratio`: Quick / Acid-test ratio.
-* `return_on_equity_pct`: Return on Equity (ROE %).
-* `return_on_assets_pct`: Return on Assets (ROA %).
-* `gross_profit_margin_pct`: Gross Profit Margin (%).
-* `net_profit_margin_pct`: Net Profit Margin (%).
-* `operating_margin_pct`: Operating Margin (%).
-* `dividend_yield_pct`: Dividend Yield (%).
-* `dividend_per_share`: Dividends Per Share (DPS in PKR).
-* `book_value_per_share`: Book Value Per Share (BVPS in PKR).
-* `free_cash_flow_per_share`: Free Cash Flow Per Share (PKR).
-* `eps_growth_pct`: Year-over-Year EPS Growth (%).
-* `peg_ratio`: Price/Earnings to Growth Ratio (PEG).
+### 5. `kse100_financial_ratios.csv` (Dataset C — Ratios & Metrics)
+* `symbol`, `company_name`, `sector`, `fiscal_year`, `pe_ratio`, `pb_ratio`, `ps_ratio`, `enterprise_value`, `ev_to_ebitda`, `debt_to_equity_pct`, `debt_to_asset_pct`, `current_ratio`, `quick_ratio`, `return_on_equity_pct` (ROE), `return_on_assets_pct` (ROA), `gross_profit_margin_pct`, `net_profit_margin_pct`, `operating_margin_pct`, `dividend_yield_pct`, `dividend_per_share`, `book_value_per_share`, `free_cash_flow_per_share`, `eps_growth_pct`, `peg_ratio`.
 
 ---
 
@@ -160,10 +158,7 @@ python main.py
 
 ### 3. Run Dataset B (Financial News & Historical Archives)
 ```bash
-# Live & recent news with full text extraction
 python scrape_news.py
-
-# Multi-year historical news archives (2002–2026)
 python scrape_historical_news.py
 ```
 
@@ -172,7 +167,12 @@ python scrape_historical_news.py
 python scrape_fundamentals.py
 ```
 
-### 5. Verify All Datasets Integrity
+### 5. Run Dataset D (Corporate Announcements & Payouts)
+```bash
+python scrape_announcements.py
+```
+
+### 6. Verify All Datasets Integrity
 ```bash
 python verify_data.py
 ```
@@ -183,3 +183,4 @@ python verify_data.py
 - **Prices & Indices**: Daily settlement records from Sarmaaya API and PSX Data Portal covering 2002–2026 (6,127 trading sessions).
 - **News**: Multi-source financial articles from Dawn Business and Business Recorder with automated NLP ticker detection and sector mapping.
 - **Fundamentals**: Harmonized financial statements merging official audited PSX exchange reports (DPS) with balance sheets, cash flow statements, and valuation ratios from Sarmaaya REST API. Both non-financial corporates and commercial banking models are standardized.
+- **Announcements & Payouts**: Verified PSX regulatory disclosures mapped to direct PSX exchange PDF documents, covering 25 years of dividends, bonus distributions, and stock splits alongside 20,800+ categorised corporate disclosures.

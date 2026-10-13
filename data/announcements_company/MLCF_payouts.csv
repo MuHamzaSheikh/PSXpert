@@ -1,0 +1,8 @@
+symbol,company_name,sector,announcement_date,fiscal_year,payout_type,dividend_per_share_pkr,payout_percentage,face_value_pkr
+MLCF,Maple Leaf Cement Factory Limited,CEMENT,2019-01-01,2019,dividend,0.5,5.0,10
+MLCF,Maple Leaf Cement Factory Limited,CEMENT,2018-01-01,2018,dividend,2.5,25.0,10
+MLCF,Maple Leaf Cement Factory Limited,CEMENT,2017-01-01,2017,type,0.0,0.0,0
+MLCF,Maple Leaf Cement Factory Limited,CEMENT,2016-01-01,2016,type,0.0,0.0,0
+MLCF,Maple Leaf Cement Factory Limited,CEMENT,2015-01-01,2015,type,0.0,0.0,0
+MLCF,Maple Leaf Cement Factory Limited,CEMENT,2005-01-01,2005,type,0.0,0.0,0
+MLCF,Maple Leaf Cement Factory Limited,CEMENT,2004-01-01,2004,type,0.0,0.0,0

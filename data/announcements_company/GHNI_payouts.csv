@@ -1,0 +1,8 @@
+symbol,company_name,sector,announcement_date,fiscal_year,payout_type,dividend_per_share_pkr,payout_percentage,face_value_pkr
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,2026-10-05,2026,dividend,12.0,120.0,10
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,2018-01-01,2018,dividend,15.6,156.0,10
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,2018-01-01,2018,bonus,10.0,100.0,10
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,2017-01-01,2017,type,0.0,0.0,0
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,2016-01-01,2016,type,0.0,0.0,0
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,2015-01-01,2015,type,0.0,0.0,0
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,2006-01-01,2006,type,0.0,0.0,0
