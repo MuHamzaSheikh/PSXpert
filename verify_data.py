@@ -13,6 +13,7 @@ files = [
     "psx_companies_directory.csv",
     "psx_market_snapshot_ohlcv.csv",
     "kse100_stocks_historical_2002_2026.csv",
+    "financial_news.csv",
 ]
 
 for fname in files:

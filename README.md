@@ -13,6 +13,7 @@ High-accuracy historical market data and analytics engine for the **Pakistan Sto
 | [`data/psx_companies_directory.csv`](file:///c:/Users/HP/psxpert/data/psx_companies_directory.csv) | Complete profiles with Sector, ISIN, and 52W High/Low | **100** | Active Listing | ~12 KB |
 | [`data/kse100_constituents.csv`](file:///c:/Users/HP/psxpert/data/kse100_constituents.csv) | All 100 active constituent stocks of the KSE-100 | **100** | Snapshot | ~4.6 KB |
 | [`data/psx_market_snapshot_ohlcv.csv`](file:///c:/Users/HP/psxpert/data/psx_market_snapshot_ohlcv.csv) | Full market OHLCV, 52W High/Low for all PSX stocks | **506** | Snapshot | ~95 KB |
+| [`data/financial_news.csv`](file:///c:/Users/HP/psxpert/data/financial_news.csv) | Financial news, symbols tagged, sectors, full body | **120** | Live / Recent | ~418 KB |
 | [`data/stocks_historical/`](file:///c:/Users/HP/psxpert/data/stocks_historical) | Directory of 100 individual stock historical CSV files | **100 files** | Inception to 2026 | ~30 MB |
 
 ---
@@ -22,6 +23,7 @@ High-accuracy historical market data and analytics engine for the **Pakistan Sto
 ```
 psxpert/
 ├── data/
+│   ├── financial_news.csv                      # Dataset B: 120 Financial news articles
 │   ├── kse100_index_history_2002_2026.csv      # KSE-100 Index historical daily closes
 │   ├── kse100_stocks_historical_2002_2026.csv   # Combined master dataset (475,244 rows)
 │   ├── psx_companies_directory.csv             # Sector and company metadata
@@ -36,8 +38,10 @@ psxpert/
 │       └── ... (100 constituent stock files)
 ├── src/
 │   ├── __init__.py
-│   └── scraper.py                              # Core Sarmaaya PSX API scraper module
-├── main.py                                     # Orchestrator to fetch all datasets
+│   ├── scraper.py                              # Core Sarmaaya PSX API scraper module
+│   └── news_scraper.py                         # Financial news scraper & symbol tagger
+├── main.py                                     # Orchestrator for Dataset A
+├── scrape_news.py                              # Orchestrator for Dataset B (News)
 ├── enrich_sectors.py                           # Sector enrichment script
 ├── verify_data.py                              # Dataset integrity and validation runner
 ├── requirements.txt                            # Python dependencies
@@ -75,6 +79,16 @@ psxpert/
 * `changepercentage`: Percentage price change.
 * `date`: Market date.
 
+### 4. `financial_news.csv` (Dataset B)
+* `headline`: Full article title/headline.
+* `summary`: Article executive summary or lead snippet.
+* `published_at`: Standardized publication timestamp (`YYYY-MM-DD HH:MM:SS`).
+* `publisher`: Source outlet (`Dawn Business`, `Business Recorder`).
+* `url`: Canonical article web URL.
+* `symbols_mentioned`: Extracted PSX company symbols (e.g. `KSE100`, `OGDC`, `PPL`, `SYS`, `UBL`, or `MARKET_WIDE`).
+* `relevant_sector_or_market`: Classified industrial sector or economic theme (e.g. `COMMERCIAL BANKS`, `OIL & GAS / ENERGY`, `CEMENT`, `ECONOMY & MACRO`, `PSX / EQUITIES`).
+* `article_text`: Full body text of the article (paragraphs preserved cleanly).
+
 ---
 
 ## 🚀 How to Re-Run or Update Data
@@ -84,12 +98,17 @@ psxpert/
 pip install -r requirements.txt
 ```
 
-### 2. Run the Full Scraper Pipeline
+### 2. Run Dataset A Scraper (PSX & KSE-100 Prices)
 ```bash
 python main.py
 ```
 
-### 3. Verify Dataset Integrity
+### 3. Run Dataset B Scraper (Financial News)
+```bash
+python scrape_news.py
+```
+
+### 4. Verify All Datasets Integrity
 ```bash
 python verify_data.py
 ```
