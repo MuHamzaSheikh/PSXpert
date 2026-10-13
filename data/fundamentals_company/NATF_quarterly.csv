@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+NATF,National Foods Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2026,Q3,2026-03-31,16115384.0,12121.0,12121.0,2663426.0,11.43,12121.0,12121.0,12121.0,,12121.0,12121.0
+NATF,National Foods Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2026,Q2,2025-12-31,11980978.0,12121.0,12121.0,1487986.0,6.38,12121.0,12121.0,12121.0,,12121.0,12121.0
+NATF,National Foods Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2026,Q1,2025-09-30,10038778.0,12121.0,12121.0,1046797.0,4.49,12121.0,12121.0,12121.0,,12121.0,12121.0
+NATF,National Foods Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2025,Q3,2025-03-31,14741346.0,12121.0,12121.0,2172740.0,9.32,12121.0,12121.0,12121.0,,12121.0,12121.0

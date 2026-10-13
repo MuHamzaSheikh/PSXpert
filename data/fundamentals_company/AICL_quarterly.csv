@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+AICL,Adamjee Insurance Company Limited,INSURANCE,QTR,2026,Q2,2026-06-30,,,,1589654.0,4.54,251872.383,196806.203,,55066.18,12121.0,12121.0
+AICL,Adamjee Insurance Company Limited,INSURANCE,QTR,2026,Q1,2026-03-31,,,,1309740.0,3.74,12121.0,12121.0,,12121.0,12121.0,12121.0
+AICL,Adamjee Insurance Company Limited,INSURANCE,QTR,2025,Q3,2025-09-30,,,,1546927.0,4.42,12121.0,12121.0,,12121.0,12121.0,12121.0
+AICL,Adamjee Insurance Company Limited,INSURANCE,QTR,2025,Q2,2025-06-30,,,,1028973.0,2.94,12121.0,12121.0,,12121.0,12121.0,12121.0

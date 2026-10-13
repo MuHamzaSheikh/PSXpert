@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+GAL,Ghandhara Automobiles Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q3,2026-03-31,7282132.0,12121.0,12121.0,977211.0,17.14,12121.0,12121.0,12121.0,,12121.0,12121.0
+GAL,Ghandhara Automobiles Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q2,2025-12-31,5176684.0,12121.0,12121.0,1071978.0,18.81,12121.0,12121.0,12121.0,,12121.0,12121.0
+GAL,Ghandhara Automobiles Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q1,2025-09-30,9245537.0,12121.0,12121.0,823824.0,14.45,12121.0,12121.0,12121.0,,12121.0,12121.0
+GAL,Ghandhara Automobiles Limited,AUTOMOBILE ASSEMBLER,QTR,2025,Q3,2025-03-31,3964557.0,12121.0,12121.0,635727.0,11.15,12121.0,12121.0,12121.0,,12121.0,12121.0

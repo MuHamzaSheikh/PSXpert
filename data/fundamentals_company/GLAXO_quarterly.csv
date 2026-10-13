@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+GLAXO,GlaxoSmithKline Pakistan Limited,PHARMACEUTICALS,QTR,2026,Q2,2026-06-30,14490967.0,5538.857,3447.662,1969939.0,6.19,52580.933,18147.263,353.396,,2587.531,-1609.044
+GLAXO,GlaxoSmithKline Pakistan Limited,PHARMACEUTICALS,QTR,2026,Q1,2026-03-31,17028325.0,12121.0,12121.0,2610704.0,8.2,12121.0,12121.0,12121.0,,12121.0,12121.0
+GLAXO,GlaxoSmithKline Pakistan Limited,PHARMACEUTICALS,QTR,2025,Q3,2025-09-30,14188008.0,12121.0,12121.0,2037285.0,6.4,12121.0,12121.0,12121.0,,12121.0,12121.0
+GLAXO,GlaxoSmithKline Pakistan Limited,PHARMACEUTICALS,QTR,2025,Q2,2025-06-30,14720667.0,12121.0,12121.0,2068811.0,6.5,12121.0,12121.0,12121.0,,12121.0,12121.0

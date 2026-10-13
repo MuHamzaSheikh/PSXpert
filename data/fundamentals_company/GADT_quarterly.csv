@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+GADT,Gadoon Textile Mills Limited,TEXTILE SPINNING,QTR,2026,Q3,2026-03-31,19572872.0,12121.0,12121.0,72709.0,2.59,12121.0,12121.0,12121.0,,12121.0,12121.0
+GADT,Gadoon Textile Mills Limited,TEXTILE SPINNING,QTR,2026,Q2,2025-12-31,17245392.0,12121.0,12121.0,203906.0,7.27,12121.0,12121.0,12121.0,,12121.0,12121.0
+GADT,Gadoon Textile Mills Limited,TEXTILE SPINNING,QTR,2026,Q1,2025-09-30,19727949.0,12121.0,12121.0,561271.0,20.02,12121.0,12121.0,12121.0,,12121.0,12121.0
+GADT,Gadoon Textile Mills Limited,TEXTILE SPINNING,QTR,2025,Q3,2025-03-31,17590110.0,12121.0,12121.0,694337.0,24.77,12121.0,12121.0,12121.0,,12121.0,12121.0

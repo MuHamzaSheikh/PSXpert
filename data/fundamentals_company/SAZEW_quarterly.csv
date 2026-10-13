@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+SAZEW,Sazgar Engineering Works Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q3,2026-03-31,47356413.0,12121.0,12121.0,6438296.0,106.51,12121.0,12121.0,12121.0,,12121.0,12121.0
+SAZEW,Sazgar Engineering Works Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q2,2025-12-31,34021275.0,12121.0,12121.0,4023553.0,66.56,12121.0,12121.0,12121.0,,12121.0,12121.0
+SAZEW,Sazgar Engineering Works Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q1,2025-09-30,33824586.0,12121.0,12121.0,4417012.0,73.07,12121.0,12121.0,12121.0,,12121.0,12121.0
+SAZEW,Sazgar Engineering Works Limited,AUTOMOBILE ASSEMBLER,QTR,2025,Q3,2025-03-31,36738155.0,12121.0,12121.0,6229713.0,103.06,12121.0,12121.0,12121.0,,12121.0,12121.0

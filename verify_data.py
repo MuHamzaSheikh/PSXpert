@@ -14,6 +14,10 @@ files = [
     "psx_market_snapshot_ohlcv.csv",
     "kse100_stocks_historical_2002_2026.csv",
     "financial_news.csv",
+    "financial_news_historical_2002_2026.csv",
+    "kse100_fundamentals_annual.csv",
+    "kse100_fundamentals_quarterly.csv",
+    "kse100_financial_ratios.csv",
 ]
 
 for fname in files:
@@ -27,6 +31,10 @@ for fname in files:
         print(f"  Columns ({len(df.columns)}): {list(df.columns)}")
         if "date" in df.columns:
             print(f"  Date Range: {df['date'].min()} -> {df['date'].max()}")
+        elif "fiscal_year" in df.columns:
+            print(f"  Fiscal Year Range: {df['fiscal_year'].min()} -> {df['fiscal_year'].max()}")
+            if "fiscal_quarter" in df.columns:
+                print(f"  Quarters: {sorted(df['fiscal_quarter'].dropna().unique())}")
         print("  First row:\n ", dict(df.iloc[0]))
     else:
         print(f"\n[MISSING] {fname}")
@@ -35,4 +43,9 @@ stocks_dir = os.path.join(DATA_DIR, "stocks_historical")
 if os.path.exists(stocks_dir):
     stock_files = [f for f in os.listdir(stocks_dir) if f.endswith(".csv")]
     print(f"\n[DIRECTORY] stocks_historical/: {len(stock_files)} individual CSV stock files created.")
+
+fund_dir = os.path.join(DATA_DIR, "fundamentals_company")
+if os.path.exists(fund_dir):
+    fund_files = [f for f in os.listdir(fund_dir) if f.endswith(".csv")]
+    print(f"[DIRECTORY] fundamentals_company/: {len(fund_files)} individual company fundamental CSV files created.")
 print("=" * 60)

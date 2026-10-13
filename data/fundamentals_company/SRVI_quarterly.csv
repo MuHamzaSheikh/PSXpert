@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+SRVI,Service Industries Limited,LEATHER & TANNERIES,QTR,2026,Q2,2026-06-30,1520877.0,10984.798,6570.696,324336.0,0.69,151410.91,94220.062,62762.982,,2445.356,-5077.413
+SRVI,Service Industries Limited,LEATHER & TANNERIES,QTR,2026,Q1,2026-03-31,1309031.0,12121.0,12121.0,532306.0,11.33,12121.0,12121.0,12121.0,,12121.0,12121.0
+SRVI,Service Industries Limited,LEATHER & TANNERIES,QTR,2025,Q3,2025-09-30,1263367.0,12121.0,12121.0,243691.0,5.19,12121.0,12121.0,12121.0,,12121.0,12121.0
+SRVI,Service Industries Limited,LEATHER & TANNERIES,QTR,2025,Q2,2025-06-30,1542786.0,12121.0,12121.0,269627.0,0.57,12121.0,12121.0,12121.0,,12121.0,12121.0

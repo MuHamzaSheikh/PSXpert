@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+ABL,Allied Bank Limited,COMMERCIAL BANKS,QTR,2026,Q2,2026-06-30,87799823.0,,,7452833.0,6.51,3749944.179,3486279.413,897295.012,263664.766,28858.278,20180.153
+ABL,Allied Bank Limited,COMMERCIAL BANKS,QTR,2026,Q1,2026-03-31,83699093.0,,,8260557.0,7.21,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+ABL,Allied Bank Limited,COMMERCIAL BANKS,QTR,2025,Q3,2025-09-30,78163877.0,,,8417482.0,7.35,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+ABL,Allied Bank Limited,COMMERCIAL BANKS,QTR,2025,Q2,2025-06-30,71766254.0,,,9267068.0,8.09,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0

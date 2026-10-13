@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+JVDC,Javedan Corporation Limited,PROPERTY,QTR,2026,Q3,2026-03-31,3116937.0,12121.0,12121.0,1930129.0,5.07,12121.0,12121.0,12121.0,,12121.0,12121.0
+JVDC,Javedan Corporation Limited,PROPERTY,QTR,2026,Q2,2025-12-31,2966702.0,12121.0,12121.0,1557593.0,4.09,12121.0,12121.0,12121.0,,12121.0,12121.0
+JVDC,Javedan Corporation Limited,PROPERTY,QTR,2026,Q1,2025-09-30,1698221.0,12121.0,12121.0,724477.0,1.9,12121.0,12121.0,12121.0,,12121.0,12121.0
+JVDC,Javedan Corporation Limited,PROPERTY,QTR,2025,Q3,2025-03-31,1313587.0,12121.0,12121.0,574840.0,1.51,12121.0,12121.0,12121.0,,12121.0,12121.0

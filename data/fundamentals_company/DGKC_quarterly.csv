@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+DGKC,D.G. Khan Cement Company Limited,CEMENT,QTR,2026,Q3,2026-03-31,19996880.0,12121.0,12121.0,2500968.0,5.71,12121.0,12121.0,12121.0,,12121.0,12121.0
+DGKC,D.G. Khan Cement Company Limited,CEMENT,QTR,2026,Q2,2025-12-31,20781561.0,12121.0,12121.0,3694386.0,8.43,12121.0,12121.0,12121.0,,12121.0,12121.0
+DGKC,D.G. Khan Cement Company Limited,CEMENT,QTR,2026,Q1,2025-09-30,19808162.0,12121.0,12121.0,2159956.0,4.93,12121.0,12121.0,12121.0,,12121.0,12121.0
+DGKC,D.G. Khan Cement Company Limited,CEMENT,QTR,2025,Q3,2025-03-31,18125324.0,12121.0,12121.0,1995716.0,4.56,12121.0,12121.0,12121.0,,12121.0,12121.0

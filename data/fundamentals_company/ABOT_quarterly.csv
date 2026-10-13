@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+ABOT,Abbott Laboratories (Pakistan) Limited,PHARMACEUTICALS,QTR,2026,Q2,2026-06-30,20321829.0,7512.703,3455.385,2199923.0,22.47,48757.995,16661.334,449.467,,1505.281,-3006.151
+ABOT,Abbott Laboratories (Pakistan) Limited,PHARMACEUTICALS,QTR,2026,Q1,2026-03-31,17704722.0,12121.0,12121.0,1940308.0,19.82,12121.0,12121.0,12121.0,,12121.0,12121.0
+ABOT,Abbott Laboratories (Pakistan) Limited,PHARMACEUTICALS,QTR,2025,Q3,2025-09-30,19819134.0,12121.0,12121.0,1822546.0,18.62,12121.0,12121.0,12121.0,,12121.0,12121.0
+ABOT,Abbott Laboratories (Pakistan) Limited,PHARMACEUTICALS,QTR,2025,Q2,2025-06-30,19061338.0,12121.0,12121.0,1943499.0,19.85,12121.0,12121.0,12121.0,,12121.0,12121.0

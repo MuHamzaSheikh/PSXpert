@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+PIOC,Pioneer Cement Limited,CEMENT,QTR,2026,Q3,2026-03-31,10041688.0,12121.0,12121.0,1521944.0,6.7,12121.0,12121.0,12121.0,,12121.0,12121.0
+PIOC,Pioneer Cement Limited,CEMENT,QTR,2026,Q2,2025-12-31,10261568.0,12121.0,12121.0,1599946.0,7.04,12121.0,12121.0,12121.0,,12121.0,12121.0
+PIOC,Pioneer Cement Limited,CEMENT,QTR,2026,Q1,2025-09-30,8416621.0,12121.0,12121.0,1274108.0,5.61,12121.0,12121.0,12121.0,,12121.0,12121.0
+PIOC,Pioneer Cement Limited,CEMENT,QTR,2025,Q3,2025-03-31,7899728.0,12121.0,12121.0,974039.0,4.29,12121.0,12121.0,12121.0,,12121.0,12121.0

@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+MARI,Mari Energies Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2026,Q3,2026-03-31,48178376.0,12121.0,12121.0,21171100.0,17.63,12121.0,12121.0,12121.0,,12121.0,12121.0
+MARI,Mari Energies Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2026,Q2,2025-12-31,44770220.0,12121.0,12121.0,12800242.0,10.66,12121.0,12121.0,12121.0,,12121.0,12121.0
+MARI,Mari Energies Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2026,Q1,2025-09-30,45351233.0,12121.0,12121.0,15640178.0,13.03,12121.0,12121.0,12121.0,,12121.0,12121.0
+MARI,Mari Energies Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2025,Q3,2025-03-31,45643243.0,12121.0,12121.0,15905481.0,13.25,12121.0,12121.0,12121.0,,12121.0,12121.0

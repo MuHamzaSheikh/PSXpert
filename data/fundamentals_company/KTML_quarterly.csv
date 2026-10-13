@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+KTML,Kohinoor Textile Mills Limited,TEXTILE COMPOSITE,QTR,2026,Q3,2026-03-31,14704778.0,12121.0,12121.0,870488.0,0.65,12121.0,12121.0,12121.0,,12121.0,12121.0
+KTML,Kohinoor Textile Mills Limited,TEXTILE COMPOSITE,QTR,2026,Q2,2025-12-31,14839661.0,12121.0,12121.0,728331.0,0.54,12121.0,12121.0,12121.0,,12121.0,12121.0
+KTML,Kohinoor Textile Mills Limited,TEXTILE COMPOSITE,QTR,2026,Q1,2025-09-30,15389233.0,12121.0,12121.0,664805.0,0.49,12121.0,12121.0,12121.0,,12121.0,12121.0
+KTML,Kohinoor Textile Mills Limited,TEXTILE COMPOSITE,QTR,2025,Q3,2025-03-31,14641795.0,12121.0,12121.0,873948.0,0.65,12121.0,12121.0,12121.0,,12121.0,12121.0

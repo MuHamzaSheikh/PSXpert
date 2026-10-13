@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+JDWS,JDW Sugar Mills Limited,SUGAR & ALLIED INDUSTRIES,QTR,2026,Q3,2026-06-30,20012694.0,2770.508,597.946,37359.0,0.65,146200.646,108475.881,87055.743,,18525.88,13442.158
+JDWS,JDW Sugar Mills Limited,SUGAR & ALLIED INDUSTRIES,QTR,2026,Q2,2026-03-31,35253767.0,12121.0,12121.0,3894482.0,67.41,12121.0,12121.0,12121.0,,12121.0,12121.0
+JDWS,JDW Sugar Mills Limited,SUGAR & ALLIED INDUSTRIES,QTR,2026,Q1,2025-12-31,26528290.0,12121.0,12121.0,2840517.0,49.16,12121.0,12121.0,12121.0,,12121.0,12121.0
+JDWS,JDW Sugar Mills Limited,SUGAR & ALLIED INDUSTRIES,QTR,2025,Q3,2025-06-30,21609934.0,12121.0,12121.0,544019.0,9.42,12121.0,12121.0,12121.0,,12121.0,12121.0

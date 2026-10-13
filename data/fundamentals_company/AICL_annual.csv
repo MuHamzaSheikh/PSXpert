@@ -1,0 +1,6 @@
+symbol,company_name,sector,periodicity,fiscal_year,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps_basic,eps_diluted,total_assets,current_assets,cash_and_equivalents,net_ppe,total_liabilities,current_liabilities,total_debt,shareholders_equity,retained_earnings,common_shares_outstanding,operating_cash_flow,capital_expenditures,investing_cash_flow,financing_cash_flow,dividends_paid,free_cash_flow
+AICL,Adamjee Insurance Company Limited,INSURANCE,ANN,2025,2025-12-31,,,,,,,243646.335,,17700.189,6126.613,186622.78,,,57023.555,,,24135.972,904.853,-20682.713,-1380.529,1276.492,22068.505
+AICL,Adamjee Insurance Company Limited,INSURANCE,ANN,2024,2024-12-31,,,,,,,197554.815,,13564.68,5781.381,154982.346,,,42572.469,,,89.073,89.073,89.073,89.073,89.073,89.073
+AICL,Adamjee Insurance Company Limited,INSURANCE,ANN,2023,2023-12-31,,,,,,,25432.937,,25432.937,25432.937,25432.937,,,25432.937,,,89.073,89.073,89.073,89.073,89.073,89.073
+AICL,Adamjee Insurance Company Limited,INSURANCE,ANN,2022,2022-12-31,,,,,,,25432.937,,25432.937,25432.937,25432.937,,,25432.937,,,89.073,89.073,89.073,89.073,89.073,89.073
+AICL,Adamjee Insurance Company Limited,INSURANCE,ANN,2021,2021-12-31,,,,,,,25432.937,,25432.937,25432.937,25432.937,,,25432.937,,,89.073,89.073,89.073,89.073,89.073,89.073

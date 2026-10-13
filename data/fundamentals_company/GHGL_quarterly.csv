@@ -1,0 +1,4 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+GHGL,Ghani Glass Limited,GLASS & CERAMICS,QTR,2026,Q2,2025-12-31,12349490.0,12121.0,12121.0,1694172.0,1.69,12121.0,12121.0,12121.0,,12121.0,12121.0
+GHGL,Ghani Glass Limited,GLASS & CERAMICS,QTR,2026,Q1,2025-09-30,9991984.0,12121.0,12121.0,706339.0,0.71,12121.0,12121.0,12121.0,,12121.0,12121.0
+GHGL,Ghani Glass Limited,GLASS & CERAMICS,QTR,2025,Q3,2025-03-31,11499566.0,12121.0,12121.0,1645161.0,1.65,12121.0,12121.0,12121.0,,12121.0,12121.0

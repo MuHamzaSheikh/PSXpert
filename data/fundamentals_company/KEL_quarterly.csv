@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+KEL,K-Electric Limited,POWER GENERATION & DISTRIBUTION,QTR,2024,Q2,2023-12-31,153124459.0,12121.0,12121.0,5808142.0,0.21,12121.0,12121.0,12121.0,,12121.0,12121.0
+KEL,K-Electric Limited,POWER GENERATION & DISTRIBUTION,QTR,2023,Q3,2023-03-31,102505511.0,12121.0,12121.0,-12357411.0,-0.45,12121.0,12121.0,12121.0,,12121.0,12121.0
+KEL,K-Electric Limited,POWER GENERATION & DISTRIBUTION,QTR,2023,Q2,2022-12-31,111101090.0,12121.0,12121.0,-8801021.0,-0.32,12121.0,12121.0,12121.0,,12121.0,12121.0
+KEL,K-Electric Limited,POWER GENERATION & DISTRIBUTION,QTR,2023,Q1,2022-09-30,154534053.0,12121.0,12121.0,-16335899.0,-0.59,12121.0,12121.0,12121.0,,12121.0,12121.0

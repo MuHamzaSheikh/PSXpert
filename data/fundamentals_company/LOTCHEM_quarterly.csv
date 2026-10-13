@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+LOTCHEM,Lotte Chemical Pakistan Limited,CHEMICAL,QTR,2026,Q2,2026-06-30,23847373.0,2449.91,2050.304,2837552.0,1.87,44477.711,24204.712,4715.838,,3588.226,2751.592
+LOTCHEM,Lotte Chemical Pakistan Limited,CHEMICAL,QTR,2026,Q1,2026-03-31,20859834.0,12121.0,12121.0,1474370.0,0.97,12121.0,12121.0,12121.0,,12121.0,12121.0
+LOTCHEM,Lotte Chemical Pakistan Limited,CHEMICAL,QTR,2025,Q3,2025-09-30,20365180.0,12121.0,12121.0,94089.0,0.06,12121.0,12121.0,12121.0,,12121.0,12121.0
+LOTCHEM,Lotte Chemical Pakistan Limited,CHEMICAL,QTR,2025,Q2,2025-06-30,18670744.0,12121.0,12121.0,79878.0,0.05,12121.0,12121.0,12121.0,,12121.0,12121.0

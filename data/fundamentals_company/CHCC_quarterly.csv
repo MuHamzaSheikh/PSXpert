@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+CHCC,Cherat Cement Company Limited,CEMENT,QTR,2026,Q3,2026-03-31,7884370.0,12121.0,12121.0,1407260.0,7.24,12121.0,12121.0,12121.0,,12121.0,12121.0
+CHCC,Cherat Cement Company Limited,CEMENT,QTR,2026,Q2,2025-12-31,9420382.0,12121.0,12121.0,2014869.0,10.37,12121.0,12121.0,12121.0,,12121.0,12121.0
+CHCC,Cherat Cement Company Limited,CEMENT,QTR,2026,Q1,2025-09-30,10285283.0,12121.0,12121.0,2095496.0,10.79,12121.0,12121.0,12121.0,,12121.0,12121.0
+CHCC,Cherat Cement Company Limited,CEMENT,QTR,2025,Q3,2025-03-31,7769323.0,12121.0,12121.0,1684943.0,8.67,12121.0,12121.0,12121.0,,12121.0,12121.0

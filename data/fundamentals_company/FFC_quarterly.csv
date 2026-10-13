@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+FFC,Fauji Fertilizer Company Limited,FERTILIZER,QTR,2026,Q2,2026-06-30,104319791.0,41041.02,29680.45,24368981.0,16.94,659012.223,381573.304,107707.146,,21689.876,1517.297
+FFC,Fauji Fertilizer Company Limited,FERTILIZER,QTR,2026,Q1,2026-03-31,95293909.0,12121.0,12121.0,17476826.0,12.14,12121.0,12121.0,12121.0,,12121.0,12121.0
+FFC,Fauji Fertilizer Company Limited,FERTILIZER,QTR,2025,Q3,2025-09-30,127251321.0,12121.0,12121.0,19184539.0,13.48,12121.0,12121.0,12121.0,,12121.0,12121.0
+FFC,Fauji Fertilizer Company Limited,FERTILIZER,QTR,2025,Q2,2025-06-30,91811688.0,12121.0,12121.0,25173980.0,17.69,12121.0,12121.0,12121.0,,12121.0,12121.0

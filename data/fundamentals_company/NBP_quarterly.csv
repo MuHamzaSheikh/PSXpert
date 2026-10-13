@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+NBP,National Bank of Pakistan,COMMERCIAL BANKS,QTR,2026,Q2,2026-06-30,183431390.0,,,15682849.0,7.37,7905865.046,7433640.226,3289164.547,472224.82,-76097.097,-151933.716
+NBP,National Bank of Pakistan,COMMERCIAL BANKS,QTR,2026,Q1,2026-03-31,178278641.0,,,16724960.0,7.86,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+NBP,National Bank of Pakistan,COMMERCIAL BANKS,QTR,2025,Q3,2025-09-30,190390073.0,,,23162338.0,10.89,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+NBP,National Bank of Pakistan,COMMERCIAL BANKS,QTR,2025,Q2,2025-06-30,197786241.0,,,22022652.0,10.35,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0

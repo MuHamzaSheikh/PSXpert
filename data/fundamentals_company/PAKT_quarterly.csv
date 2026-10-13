@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+PAKT,Pakistan Tobacco Company Limited,TOBACCO,QTR,2026,Q2,2026-06-30,44972459.0,18740.41,14184.666,9183944.0,35.95,102269.47,52632.422,4295.746,,15498.333,2825.248
+PAKT,Pakistan Tobacco Company Limited,TOBACCO,QTR,2026,Q1,2026-03-31,38096848.0,12121.0,12121.0,9343354.0,36.57,12121.0,12121.0,12121.0,,12121.0,12121.0
+PAKT,Pakistan Tobacco Company Limited,TOBACCO,QTR,2025,Q3,2025-09-30,33155117.0,12121.0,12121.0,10258615.0,40.15,12121.0,12121.0,12121.0,,12121.0,12121.0
+PAKT,Pakistan Tobacco Company Limited,TOBACCO,QTR,2025,Q2,2025-06-30,38742914.0,12121.0,12121.0,7993395.0,31.29,12121.0,12121.0,12121.0,,12121.0,12121.0

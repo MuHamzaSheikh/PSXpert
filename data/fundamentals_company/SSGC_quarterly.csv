@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+SSGC,Sui Southern Gas Company Limited,OIL & GAS MARKETING COMPANIES,QTR,2026,Q3,2026-03-31,91285166.0,-2673.058,-4443.75,-114912.0,-0.13,1179830.74,1161522.447,149480.464,,8844.442,1103.533
+SSGC,Sui Southern Gas Company Limited,OIL & GAS MARKETING COMPANIES,QTR,2026,Q2,2025-12-31,94138720.0,12121.0,12121.0,-52366.0,-0.06,12121.0,12121.0,12121.0,,12121.0,12121.0
+SSGC,Sui Southern Gas Company Limited,OIL & GAS MARKETING COMPANIES,QTR,2026,Q1,2025-09-30,87375153.0,12121.0,12121.0,270979.0,0.31,12121.0,12121.0,12121.0,,12121.0,12121.0
+SSGC,Sui Southern Gas Company Limited,OIL & GAS MARKETING COMPANIES,QTR,2025,Q3,2025-03-31,123604791.0,12121.0,12121.0,254606.0,0.29,12121.0,12121.0,12121.0,,12121.0,12121.0

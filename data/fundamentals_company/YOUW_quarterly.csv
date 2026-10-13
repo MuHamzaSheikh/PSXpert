@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+YOUW,Yousaf Weaving Mills Limited,TEXTILE WEAVING,QTR,2026,Q3,,119600.0,,,-4484.0,-0.03,,,,,,
+YOUW,Yousaf Weaving Mills Limited,TEXTILE WEAVING,QTR,2026,Q2,,180101.0,,,-12562.0,-0.09,,,,,,
+YOUW,Yousaf Weaving Mills Limited,TEXTILE WEAVING,QTR,2026,Q1,,170295.0,,,-9305.0,-0.07,,,,,,
+YOUW,Yousaf Weaving Mills Limited,TEXTILE WEAVING,QTR,2025,Q3,,153031.0,,,-6184.0,-0.05,,,,,,

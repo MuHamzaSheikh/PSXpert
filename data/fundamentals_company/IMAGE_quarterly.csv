@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+IMAGE,Image Pakistan Limited,APPAREL,QTR,2026,Q3,2026-03-31,893226.0,12121.0,12121.0,205503.0,0.89,12121.0,12121.0,12121.0,,12121.0,12121.0
+IMAGE,Image Pakistan Limited,APPAREL,QTR,2026,Q2,2025-12-31,786120.0,12121.0,12121.0,161777.0,0.7,12121.0,12121.0,12121.0,,12121.0,12121.0
+IMAGE,Image Pakistan Limited,APPAREL,QTR,2026,Q1,2025-09-30,778559.0,12121.0,12121.0,141425.0,0.61,12121.0,12121.0,12121.0,,12121.0,12121.0
+IMAGE,Image Pakistan Limited,APPAREL,QTR,2025,Q3,2025-03-31,1004357.0,12121.0,12121.0,163540.0,0.71,12121.0,12121.0,12121.0,,12121.0,12121.0

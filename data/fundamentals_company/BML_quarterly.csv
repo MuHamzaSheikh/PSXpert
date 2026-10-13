@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+BML,Bank Makramah Limited,COMMERCIAL BANKS,QTR,2026,Q2,2026-06-30,1248576.0,,,-3949473.0,-3.89,239936.605,217363.166,29998.589,22573.439,5052.087,4958.596
+BML,Bank Makramah Limited,COMMERCIAL BANKS,QTR,2026,Q1,2026-03-31,2839057.0,,,-714132.0,-0.71,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+BML,Bank Makramah Limited,COMMERCIAL BANKS,QTR,2025,Q3,2025-09-30,4333799.0,,,153494.0,0.02,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+BML,Bank Makramah Limited,COMMERCIAL BANKS,QTR,2025,Q2,2025-06-30,4394674.0,,,1566448.0,0.24,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0

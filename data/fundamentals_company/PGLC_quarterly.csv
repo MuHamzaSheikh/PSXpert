@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+PGLC,Pak-Gulf Leasing Company Limited,LEASING COMPANIES,QTR,2026,Q3,,35651.0,,,21778.0,0.44,,,,,,
+PGLC,Pak-Gulf Leasing Company Limited,LEASING COMPANIES,QTR,2026,Q2,,36304.0,,,19965.0,0.4,,,,,,
+PGLC,Pak-Gulf Leasing Company Limited,LEASING COMPANIES,QTR,2026,Q1,,34689.0,,,12408.0,0.25,,,,,,
+PGLC,Pak-Gulf Leasing Company Limited,LEASING COMPANIES,QTR,2025,Q3,,33355.0,,,14616.0,0.3,,,,,,

@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+ENGROH,Engro Holdings Limited,INV. BANKS / INV. COS. / SECURITIES COS.,QTR,2026,Q2,2026-06-30,6292124.0,35816.821,27706.66,6075528.0,5.06,1074347.52,754057.496,461808.545,,-19017.589,-33549.863
+ENGROH,Engro Holdings Limited,INV. BANKS / INV. COS. / SECURITIES COS.,QTR,2026,Q1,2026-03-31,4217.0,12121.0,12121.0,-110405.0,-0.09,12121.0,12121.0,12121.0,,12121.0,12121.0
+ENGROH,Engro Holdings Limited,INV. BANKS / INV. COS. / SECURITIES COS.,QTR,2025,Q3,2025-09-30,405554.0,12121.0,12121.0,302832.0,0.25,12121.0,12121.0,12121.0,,12121.0,12121.0
+ENGROH,Engro Holdings Limited,INV. BANKS / INV. COS. / SECURITIES COS.,QTR,2025,Q2,2025-06-30,62.0,12121.0,12121.0,-40337.0,-0.03,12121.0,12121.0,12121.0,,12121.0,12121.0

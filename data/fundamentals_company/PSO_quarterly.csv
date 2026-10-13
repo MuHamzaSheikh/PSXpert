@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+PSO,Pakistan State Oil Company Limited,OIL & GAS MARKETING COMPANIES,QTR,2026,Q3,2026-03-31,742456506.0,12121.0,12121.0,25994557.0,55.37,12121.0,12121.0,12121.0,,12121.0,12121.0
+PSO,Pakistan State Oil Company Limited,OIL & GAS MARKETING COMPANIES,QTR,2026,Q2,2025-12-31,761413240.0,12121.0,12121.0,2733708.0,5.82,12121.0,12121.0,12121.0,,12121.0,12121.0
+PSO,Pakistan State Oil Company Limited,OIL & GAS MARKETING COMPANIES,QTR,2026,Q1,2025-09-30,737185978.0,12121.0,12121.0,9389924.0,20.0,12121.0,12121.0,12121.0,,12121.0,12121.0
+PSO,Pakistan State Oil Company Limited,OIL & GAS MARKETING COMPANIES,QTR,2025,Q3,2025-03-31,711250955.0,12121.0,12121.0,4090075.0,8.71,12121.0,12121.0,12121.0,,12121.0,12121.0

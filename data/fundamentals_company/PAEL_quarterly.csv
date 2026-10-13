@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+PAEL,Pak Elektron Limited,CABLE & ELECTRICAL GOODS,QTR,2026,Q2,2026-06-30,22098735.0,5506.528,3313.088,1749493.0,1.89,85714.512,33629.471,16753.406,,4269.865,3084.463
+PAEL,Pak Elektron Limited,CABLE & ELECTRICAL GOODS,QTR,2026,Q1,2026-03-31,20222605.0,12121.0,12121.0,870236.0,0.94,12121.0,12121.0,12121.0,,12121.0,12121.0
+PAEL,Pak Elektron Limited,CABLE & ELECTRICAL GOODS,QTR,2025,Q3,2025-09-30,11272245.0,12121.0,12121.0,681366.0,0.74,12121.0,12121.0,12121.0,,12121.0,12121.0
+PAEL,Pak Elektron Limited,CABLE & ELECTRICAL GOODS,QTR,2025,Q2,2025-06-30,21050370.0,12121.0,12121.0,1712802.0,1.85,12121.0,12121.0,12121.0,,12121.0,12121.0

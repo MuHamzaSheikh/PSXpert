@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+AHCL,Arif Habib Corporation Limited,FERTILIZER,QTR,2026,Q3,2026-03-31,12121.0,12121.0,12121.0,-8374064.0,-1.99,12121.0,12121.0,12121.0,,12121.0,12121.0
+AHCL,Arif Habib Corporation Limited,FERTILIZER,QTR,2026,Q2,2025-12-31,12121.0,12121.0,12121.0,9894717.0,2.35,12121.0,12121.0,12121.0,,12121.0,12121.0
+AHCL,Arif Habib Corporation Limited,FERTILIZER,QTR,2026,Q1,2025-09-30,12121.0,12121.0,12121.0,15604330.0,3.7,12121.0,12121.0,12121.0,,12121.0,12121.0
+AHCL,Arif Habib Corporation Limited,FERTILIZER,QTR,2025,Q3,2025-03-31,12121.0,12121.0,12121.0,3094004.0,0.73,12121.0,12121.0,12121.0,,12121.0,12121.0

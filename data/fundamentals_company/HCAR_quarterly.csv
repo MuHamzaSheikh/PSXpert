@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+HCAR,Honda Atlas Cars (Pakistan) Limited,AUTOMOBILE ASSEMBLER,QTR,2027,Q1,,37201684.0,,,2485650.0,17.41,,,,,,
+HCAR,Honda Atlas Cars (Pakistan) Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q3,,33103165.0,,,655468.0,4.59,,,,,,
+HCAR,Honda Atlas Cars (Pakistan) Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q2,,25418299.0,,,742175.0,5.2,,,,,,
+HCAR,Honda Atlas Cars (Pakistan) Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q1,2026-06-30,26461970.0,2866.499,1763.844,828439.0,5.8,54296.796,27366.05,2165.15,,1684.87,1603.128

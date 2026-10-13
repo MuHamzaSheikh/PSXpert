@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+ATRL,Attock Refinery Limited,REFINERY,QTR,2026,Q3,2026-03-31,87726400.0,12121.0,12121.0,11344927.0,106.41,12121.0,12121.0,12121.0,,12121.0,12121.0
+ATRL,Attock Refinery Limited,REFINERY,QTR,2026,Q2,2025-12-31,77752978.0,12121.0,12121.0,3568130.0,33.46,12121.0,12121.0,12121.0,,12121.0,12121.0
+ATRL,Attock Refinery Limited,REFINERY,QTR,2026,Q1,2025-09-30,59310672.0,12121.0,12121.0,1451878.0,13.62,12121.0,12121.0,12121.0,,12121.0,12121.0
+ATRL,Attock Refinery Limited,REFINERY,QTR,2025,Q3,2025-03-31,74555863.0,12121.0,12121.0,1702652.0,15.97,12121.0,12121.0,12121.0,,12121.0,12121.0

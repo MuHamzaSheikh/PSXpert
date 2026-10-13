@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+SEARL,The Searle Company Limited,PHARMACEUTICALS,QTR,2026,Q3,2026-03-31,8603072.0,4922.629,1325.32,524354.0,0.89,51144.595,15933.36,7504.474,,-457.406,-533.148
+SEARL,The Searle Company Limited,PHARMACEUTICALS,QTR,2026,Q2,2025-12-31,9015072.0,12121.0,12121.0,931286.0,1.58,12121.0,12121.0,12121.0,,12121.0,12121.0
+SEARL,The Searle Company Limited,PHARMACEUTICALS,QTR,2026,Q1,2025-09-30,8567319.0,12121.0,12121.0,853520.0,1.67,12121.0,12121.0,12121.0,,12121.0,12121.0
+SEARL,The Searle Company Limited,PHARMACEUTICALS,QTR,2025,Q3,2025-03-31,5957034.0,12121.0,12121.0,307543.0,0.52,12121.0,12121.0,12121.0,,12121.0,12121.0

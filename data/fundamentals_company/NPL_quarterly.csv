@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+NPL,Nishat Power Limited,POWER GENERATION & DISTRIBUTION,QTR,2026,Q3,2026-03-31,2332533.0,12121.0,12121.0,690978.0,1.95,12121.0,12121.0,12121.0,,12121.0,12121.0
+NPL,Nishat Power Limited,POWER GENERATION & DISTRIBUTION,QTR,2026,Q2,2025-12-31,1142046.0,12121.0,12121.0,383977.0,1.08,12121.0,12121.0,12121.0,,12121.0,12121.0
+NPL,Nishat Power Limited,POWER GENERATION & DISTRIBUTION,QTR,2026,Q1,2025-09-30,1672083.0,12121.0,12121.0,584300.0,1.65,12121.0,12121.0,12121.0,,12121.0,12121.0
+NPL,Nishat Power Limited,POWER GENERATION & DISTRIBUTION,QTR,2025,Q3,2025-03-31,1696042.0,12121.0,12121.0,649544.0,1.83,12121.0,12121.0,12121.0,,12121.0,12121.0

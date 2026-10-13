@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+NESTLE,Nestle Pakistan Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2026,Q2,2026-06-30,53002591.0,20656.354,9620.653,4367053.0,96.3,96002.023,76364.768,5391.726,,-1981.985,-13899.684
+NESTLE,Nestle Pakistan Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2026,Q1,2026-03-31,54020196.0,12121.0,12121.0,5611585.0,123.74,12121.0,12121.0,12121.0,,12121.0,12121.0
+NESTLE,Nestle Pakistan Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2025,Q3,2025-09-30,49526393.0,12121.0,12121.0,3670217.0,80.93,12121.0,12121.0,12121.0,,12121.0,12121.0
+NESTLE,Nestle Pakistan Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2025,Q2,2025-06-30,50914491.0,12121.0,12121.0,5426103.0,119.65,12121.0,12121.0,12121.0,,12121.0,12121.0

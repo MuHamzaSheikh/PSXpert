@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+MEBL,Meezan Bank Limited,COMMERCIAL BANKS,QTR,2026,Q2,2026-06-30,116955530.0,,,25475187.0,14.15,5152641.399,4856241.841,793444.932,296399.558,111383.774,90743.435
+MEBL,Meezan Bank Limited,COMMERCIAL BANKS,QTR,2026,Q1,2026-03-31,105830947.0,,,23404677.0,13.0,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+MEBL,Meezan Bank Limited,COMMERCIAL BANKS,QTR,2025,Q3,2025-09-30,102587804.0,,,21061990.0,11.7,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+MEBL,Meezan Bank Limited,COMMERCIAL BANKS,QTR,2025,Q2,2025-06-30,101909368.0,,,24116206.0,13.44,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0

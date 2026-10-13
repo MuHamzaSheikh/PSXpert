@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+POL,Pakistan Oilfields Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2026,Q3,2026-03-31,15258804.0,12121.0,12121.0,7796889.0,27.46,12121.0,12121.0,12121.0,,12121.0,12121.0
+POL,Pakistan Oilfields Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2026,Q2,2025-12-31,14572760.0,12121.0,12121.0,6290320.0,22.16,12121.0,12121.0,12121.0,,12121.0,12121.0
+POL,Pakistan Oilfields Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2026,Q1,2025-09-30,13112687.0,12121.0,12121.0,5428935.0,19.13,12121.0,12121.0,12121.0,,12121.0,12121.0
+POL,Pakistan Oilfields Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2025,Q3,2025-03-31,14551278.0,12121.0,12121.0,6611771.0,23.29,12121.0,12121.0,12121.0,,12121.0,12121.0

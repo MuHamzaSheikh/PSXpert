@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+HALEON,Haleon Pakistan Limited,PHARMACEUTICALS,QTR,2026,Q2,2026-06-30,10072084.0,5002.785,2744.56,1676199.0,14.32,31017.154,14774.971,249.898,,-26.625,-589.899
+HALEON,Haleon Pakistan Limited,PHARMACEUTICALS,QTR,2026,Q1,2026-03-31,9593810.0,12121.0,12121.0,1524759.0,13.03,12121.0,12121.0,12121.0,,12121.0,12121.0
+HALEON,Haleon Pakistan Limited,PHARMACEUTICALS,QTR,2025,Q3,2025-09-30,10562883.0,12121.0,12121.0,1615006.0,13.8,12121.0,12121.0,12121.0,,12121.0,12121.0
+HALEON,Haleon Pakistan Limited,PHARMACEUTICALS,QTR,2025,Q2,2025-06-30,11598087.0,12121.0,12121.0,1623159.0,13.87,12121.0,12121.0,12121.0,,12121.0,12121.0

@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+BAHL,Bank AL Habib Limited,COMMERCIAL BANKS,QTR,2026,Q2,2026-06-30,84932139.0,,,8002254.0,7.2,3685686.156,3499827.889,453023.876,185858.267,118871.298,112125.162
+BAHL,Bank AL Habib Limited,COMMERCIAL BANKS,QTR,2026,Q1,2026-03-31,82528369.0,,,7088194.0,6.38,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+BAHL,Bank AL Habib Limited,COMMERCIAL BANKS,QTR,2025,Q3,2025-09-30,82427674.0,,,5084366.0,5.46,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+BAHL,Bank AL Habib Limited,COMMERCIAL BANKS,QTR,2025,Q2,2025-06-30,85089257.0,,,9111063.0,8.2,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0

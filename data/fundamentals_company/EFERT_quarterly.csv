@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+EFERT,Engro Fertilizers Limited,FERTILIZER,QTR,2026,Q2,2026-06-30,25895772.0,11825.351,8540.807,3110901.0,2.33,221172.313,177042.927,103247.125,,-32760.978,-43935.341
+EFERT,Engro Fertilizers Limited,FERTILIZER,QTR,2026,Q1,2026-03-31,26338683.0,12121.0,12121.0,2891066.0,2.17,12121.0,12121.0,12121.0,,12121.0,12121.0
+EFERT,Engro Fertilizers Limited,FERTILIZER,QTR,2025,Q3,2025-09-30,50000267.0,12121.0,12121.0,5429725.0,4.07,12121.0,12121.0,12121.0,,12121.0,12121.0
+EFERT,Engro Fertilizers Limited,FERTILIZER,QTR,2025,Q2,2025-06-30,37824415.0,12121.0,12121.0,5243800.0,3.93,12121.0,12121.0,12121.0,,12121.0,12121.0

@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+ATLH,Atlas Honda Limited,AUTOMOBILE ASSEMBLER,QTR,2027,Q1,,81537222.0,,,6016340.0,48.48,,,,,,
+ATLH,Atlas Honda Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q3,,73235941.0,,,5636120.0,45.42,,,,,,
+ATLH,Atlas Honda Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q2,,63056321.0,,,4810466.0,38.77,,,,,,
+ATLH,Atlas Honda Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q1,2026-06-30,62281291.0,9371.811,7411.53,4807266.0,38.74,105605.846,60024.325,470.049,,-6448.552,-7655.778

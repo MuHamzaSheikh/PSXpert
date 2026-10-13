@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+SSOM,S.S.Oil Mills Limited,VANASPATI & ALLIED INDUSTRIES,QTR,2026,Q3,,3588998.0,,,79046.0,13.97,,,,,,
+SSOM,S.S.Oil Mills Limited,VANASPATI & ALLIED INDUSTRIES,QTR,2026,Q2,,3152651.0,,,239590.0,42.34,,,,,,
+SSOM,S.S.Oil Mills Limited,VANASPATI & ALLIED INDUSTRIES,QTR,2026,Q1,,3018280.0,,,143141.0,25.3,,,,,,
+SSOM,S.S.Oil Mills Limited,VANASPATI & ALLIED INDUSTRIES,QTR,2025,Q3,,2445632.0,,,128766.0,22.76,,,,,,

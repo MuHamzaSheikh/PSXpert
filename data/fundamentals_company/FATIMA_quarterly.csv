@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+FATIMA,Fatima Fertilizer Company Limited,FERTILIZER,QTR,2026,Q2,2026-06-30,47837990.0,31962.882,23486.124,9035797.0,4.3,352819.123,167766.173,61849.08,,14800.655,2256.957
+FATIMA,Fatima Fertilizer Company Limited,FERTILIZER,QTR,2026,Q1,2026-03-31,27929240.0,12121.0,12121.0,4189330.0,1.99,12121.0,12121.0,12121.0,,12121.0,12121.0
+FATIMA,Fatima Fertilizer Company Limited,FERTILIZER,QTR,2025,Q3,2025-09-30,48407596.0,12121.0,12121.0,10936580.0,5.21,12121.0,12121.0,12121.0,,12121.0,12121.0
+FATIMA,Fatima Fertilizer Company Limited,FERTILIZER,QTR,2025,Q2,2025-06-30,48925187.0,12121.0,12121.0,9180593.0,4.37,12121.0,12121.0,12121.0,,12121.0,12121.0

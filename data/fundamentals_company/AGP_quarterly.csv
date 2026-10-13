@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+AGP,AGP Limited,PHARMACEUTICALS,QTR,2026,Q2,2026-06-30,3746990.0,2767.534,1020.266,318913.0,1.14,32538.548,15790.489,12264.655,,7.817,-1944.647
+AGP,AGP Limited,PHARMACEUTICALS,QTR,2026,Q1,2026-03-31,5386574.0,12121.0,12121.0,556924.0,1.99,12121.0,12121.0,12121.0,,12121.0,12121.0
+AGP,AGP Limited,PHARMACEUTICALS,QTR,2025,Q3,2025-09-30,5586805.0,12121.0,12121.0,671271.0,2.4,12121.0,12121.0,12121.0,,12121.0,12121.0
+AGP,AGP Limited,PHARMACEUTICALS,QTR,2025,Q2,2025-06-30,4270364.0,12121.0,12121.0,626928.0,2.24,12121.0,12121.0,12121.0,,12121.0,12121.0

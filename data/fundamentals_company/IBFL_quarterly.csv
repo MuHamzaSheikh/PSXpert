@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+IBFL,Ibrahim Fibres Limited,SYNTHETIC & RAYON,QTR,2026,Q2,2026-06-30,24933436.0,2866.039,1637.048,-583013.0,-1.88,90705.498,33674.026,16959.965,,-54.301,-193.358
+IBFL,Ibrahim Fibres Limited,SYNTHETIC & RAYON,QTR,2026,Q1,2026-03-31,28886708.0,12121.0,12121.0,-320189.0,-1.03,12121.0,12121.0,12121.0,,12121.0,12121.0
+IBFL,Ibrahim Fibres Limited,SYNTHETIC & RAYON,QTR,2025,Q3,2025-09-30,24908082.0,12121.0,12121.0,151843.0,0.49,12121.0,12121.0,12121.0,,12121.0,12121.0
+IBFL,Ibrahim Fibres Limited,SYNTHETIC & RAYON,QTR,2025,Q2,2025-06-30,25606989.0,12121.0,12121.0,364047.0,1.17,12121.0,12121.0,12121.0,,12121.0,12121.0

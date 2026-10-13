@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q3,2026-03-31,18836128.0,12121.0,12121.0,2520530.0,59.16,12121.0,12121.0,12121.0,,12121.0,12121.0
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q2,2025-12-31,12069718.0,12121.0,12121.0,1169137.0,27.44,12121.0,12121.0,12121.0,,12121.0,12121.0
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,QTR,2026,Q1,2025-09-30,11924375.0,12121.0,12121.0,1575837.0,36.98,12121.0,12121.0,12121.0,,12121.0,12121.0
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,QTR,2025,Q3,2025-03-31,10309506.0,12121.0,12121.0,1635492.0,38.38,12121.0,12121.0,12121.0,,12121.0,12121.0

@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+AKBL,Askari Bank Limited,COMMERCIAL BANKS,QTR,2026,Q2,2026-06-30,83281687.0,,,6768116.0,4.67,3248528.893,3096210.106,1165448.086,152318.787,32342.97,27360.742
+AKBL,Askari Bank Limited,COMMERCIAL BANKS,QTR,2026,Q1,2026-03-31,74647206.0,,,6566158.0,4.53,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+AKBL,Askari Bank Limited,COMMERCIAL BANKS,QTR,2025,Q3,2025-09-30,76529292.0,,,7438723.0,5.13,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+AKBL,Askari Bank Limited,COMMERCIAL BANKS,QTR,2025,Q2,2025-06-30,72711566.0,,,3502820.0,2.42,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0

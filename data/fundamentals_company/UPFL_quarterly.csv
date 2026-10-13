@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+UPFL,Unilever Pakistan Foods Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2026,Q2,2026-06-30,12064524.0,5348.778,3311.306,2228805.0,349.894,21948.41,14571.282,526.405,,2310.1,-426.616
+UPFL,Unilever Pakistan Foods Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2026,Q1,2026-03-31,13191817.0,12121.0,12121.0,2108488.0,331.005,12121.0,12121.0,12121.0,,12121.0,12121.0
+UPFL,Unilever Pakistan Foods Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2025,Q3,2025-09-30,10493821.0,12121.0,12121.0,1484679.0,233.076,12121.0,12121.0,12121.0,,12121.0,12121.0
+UPFL,Unilever Pakistan Foods Limited,FOOD & PERSONAL CARE PRODUCTS,QTR,2025,Q2,2025-06-30,9117324.0,12121.0,12121.0,1415750.0,222.255,12121.0,12121.0,12121.0,,12121.0,

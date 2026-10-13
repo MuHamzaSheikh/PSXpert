@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+HGFA,HBL Growth Fund,CLOSE - END MUTUAL FUND,QTR,2016,Q3,,95995.0,,,18061.0,0.06,,,,,,
+HGFA,HBL Growth Fund,CLOSE - END MUTUAL FUND,QTR,2016,Q2,,238657.0,,,162694.0,0.57,,,,,,
+HGFA,HBL Growth Fund,CLOSE - END MUTUAL FUND,QTR,2016,Q1,,67979.0,,,-10471.0,-0.04,,,,,,
+HGFA,HBL Growth Fund,CLOSE - END MUTUAL FUND,QTR,2015,Q3,,-994399.0,,,-1082514.0,-3.82,,,,,,

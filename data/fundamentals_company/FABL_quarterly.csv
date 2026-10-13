@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+FABL,Faysal Bank Limited,COMMERCIAL BANKS,QTR,2026,Q2,2026-06-30,42900210.0,,,4854929.0,3.2,1854675.087,1736962.381,95093.465,117712.706,11782.815,4565.154
+FABL,Faysal Bank Limited,COMMERCIAL BANKS,QTR,2026,Q1,2026-03-31,38130166.0,,,5156380.0,3.4,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+FABL,Faysal Bank Limited,COMMERCIAL BANKS,QTR,2025,Q3,2025-09-30,40911217.0,,,4997736.0,3.29,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+FABL,Faysal Bank Limited,COMMERCIAL BANKS,QTR,2025,Q2,2025-06-30,41878783.0,,,4858895.0,3.2,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0

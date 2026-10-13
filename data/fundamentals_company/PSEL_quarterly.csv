@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+PSEL,Pakistan Services Limited,MISCELLANEOUS,QTR,2025,Q3,2025-03-31,4211462.0,1881.331,920.098,492500.0,15.14,63080.061,17784.356,9485.351,,1609.58,1153.583
+PSEL,Pakistan Services Limited,MISCELLANEOUS,QTR,2025,Q2,2024-12-31,4627271.0,12121.0,12121.0,459022.0,14.11,12121.0,12121.0,12121.0,,12121.0,12121.0
+PSEL,Pakistan Services Limited,MISCELLANEOUS,QTR,2025,Q1,2024-09-30,4106023.0,12121.0,12121.0,40379.0,1.24,12121.0,12121.0,12121.0,,12121.0,12121.0
+PSEL,Pakistan Services Limited,MISCELLANEOUS,QTR,2024,Q3,2024-03-31,3651643.0,12121.0,12121.0,114836.0,3.53,12121.0,12121.0,12121.0,,12121.0,12121.0

@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+HINOON,Highnoon Laboratories Limited,PHARMACEUTICALS,QTR,2026,Q2,2026-06-30,5892886.0,3686.517,1166.577,721771.0,13.62,18411.004,5524.022,909.184,,1909.792,-1029.559
+HINOON,Highnoon Laboratories Limited,PHARMACEUTICALS,QTR,2026,Q1,2026-03-31,6813970.0,12121.0,12121.0,955684.0,18.04,12121.0,12121.0,12121.0,,12121.0,12121.0
+HINOON,Highnoon Laboratories Limited,PHARMACEUTICALS,QTR,2025,Q3,2025-09-30,6575586.0,12121.0,12121.0,1001079.0,18.89,12121.0,12121.0,12121.0,,12121.0,12121.0
+HINOON,Highnoon Laboratories Limited,PHARMACEUTICALS,QTR,2025,Q2,2025-06-30,5491013.0,12121.0,12121.0,711670.0,13.43,12121.0,12121.0,12121.0,,12121.0,12121.0

@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+ISL,International Steels Limited,ENGINEERING,QTR,2026,Q3,2026-03-31,23330935.0,12121.0,12121.0,793118.0,1.82,12121.0,12121.0,12121.0,,12121.0,12121.0
+ISL,International Steels Limited,ENGINEERING,QTR,2026,Q2,2025-12-31,23025892.0,12121.0,12121.0,994590.0,2.29,12121.0,12121.0,12121.0,,12121.0,12121.0
+ISL,International Steels Limited,ENGINEERING,QTR,2026,Q1,2025-09-30,20919340.0,12121.0,12121.0,620342.0,1.43,12121.0,12121.0,12121.0,,12121.0,12121.0
+ISL,International Steels Limited,ENGINEERING,QTR,2025,Q3,2025-03-31,13872008.0,12121.0,12121.0,417212.0,0.96,12121.0,12121.0,12121.0,,12121.0,12121.0

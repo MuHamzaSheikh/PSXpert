@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+AIRLINK,Air Link Communication Limited,TECHNOLOGY & COMMUNICATION,QTR,2026,Q3,2026-03-31,16573383.0,12121.0,12121.0,12121.0,1.21,12121.0,12121.0,12121.0,,12121.0,12121.0
+AIRLINK,Air Link Communication Limited,TECHNOLOGY & COMMUNICATION,QTR,2026,Q2,2025-12-31,17400093.0,12121.0,12121.0,12121.0,3.27,12121.0,12121.0,12121.0,,12121.0,12121.0
+AIRLINK,Air Link Communication Limited,TECHNOLOGY & COMMUNICATION,QTR,2026,Q1,2025-09-30,13423113.0,12121.0,12121.0,12121.0,1.54,12121.0,12121.0,12121.0,,12121.0,12121.0
+AIRLINK,Air Link Communication Limited,TECHNOLOGY & COMMUNICATION,QTR,2025,Q3,2025-03-31,15586546.0,12121.0,12121.0,12121.0,1.02,12121.0,12121.0,12121.0,,12121.0,12121.0

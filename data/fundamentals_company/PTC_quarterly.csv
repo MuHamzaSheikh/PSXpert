@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+PTC,Pakistan Telecommunication Company Ltd,TECHNOLOGY & COMMUNICATION,QTR,2026,Q2,2026-06-30,32236200.0,37115.742,15921.078,2727779.0,0.53,997044.857,907428.522,397224.439,,-7307.509,-26925.713
+PTC,Pakistan Telecommunication Company Ltd,TECHNOLOGY & COMMUNICATION,QTR,2026,Q1,2026-03-31,31515434.0,12121.0,12121.0,902854.0,0.18,12121.0,12121.0,12121.0,,12121.0,12121.0
+PTC,Pakistan Telecommunication Company Ltd,TECHNOLOGY & COMMUNICATION,QTR,2025,Q3,2025-09-30,30684341.0,12121.0,12121.0,2047574.0,0.4,12121.0,12121.0,12121.0,,12121.0,12121.0
+PTC,Pakistan Telecommunication Company Ltd,TECHNOLOGY & COMMUNICATION,QTR,2025,Q2,2025-06-30,29310884.0,12121.0,12121.0,-4440981.0,-0.87,12121.0,12121.0,12121.0,,12121.0,12121.0

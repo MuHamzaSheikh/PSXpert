@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+FCCL,Fauji Cement Company Limited,CEMENT,QTR,2026,Q3,2026-03-31,22430091.0,7895.293,6751.368,3459172.0,1.41,163561.226,70293.076,28075.162,,1780.496,1746.54
+FCCL,Fauji Cement Company Limited,CEMENT,QTR,2026,Q2,2025-12-31,23935672.0,12121.0,12121.0,4030092.0,1.64,12121.0,12121.0,12121.0,,12121.0,12121.0
+FCCL,Fauji Cement Company Limited,CEMENT,QTR,2026,Q1,2025-09-30,23417812.0,12121.0,12121.0,3286437.0,1.34,12121.0,12121.0,12121.0,,12121.0,12121.0
+FCCL,Fauji Cement Company Limited,CEMENT,QTR,2025,Q3,2025-03-31,19309821.0,12121.0,12121.0,2139887.0,0.87,12121.0,12121.0,12121.0,,12121.0,12121.0

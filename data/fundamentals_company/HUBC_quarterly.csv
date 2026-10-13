@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+HUBC,The Hub Power Company Limited,POWER GENERATION & DISTRIBUTION,QTR,2026,Q3,2026-03-31,12121.0,12121.0,12121.0,9273319.0,7.15,12121.0,12121.0,12121.0,,12121.0,12121.0
+HUBC,The Hub Power Company Limited,POWER GENERATION & DISTRIBUTION,QTR,2026,Q2,2025-12-31,12121.0,12121.0,12121.0,6750246.0,5.2,12121.0,12121.0,12121.0,,12121.0,12121.0
+HUBC,The Hub Power Company Limited,POWER GENERATION & DISTRIBUTION,QTR,2026,Q1,2025-09-30,12121.0,12121.0,12121.0,7894019.0,6.09,12121.0,12121.0,12121.0,,12121.0,12121.0
+HUBC,The Hub Power Company Limited,POWER GENERATION & DISTRIBUTION,QTR,2025,Q3,2025-03-31,12121.0,12121.0,12121.0,4962390.0,3.83,12121.0,12121.0,12121.0,,12121.0,12121.0

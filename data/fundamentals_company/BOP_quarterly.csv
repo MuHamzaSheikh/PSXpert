@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+BOP,The Bank of Punjab,COMMERCIAL BANKS,QTR,2026,Q2,2026-06-30,63536133.0,,,4755546.0,1.45,2508278.992,2404217.599,159565.821,104061.393,12121.0,12121.0
+BOP,The Bank of Punjab,COMMERCIAL BANKS,QTR,2026,Q1,2026-03-31,66864690.0,,,4773849.0,1.46,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+BOP,The Bank of Punjab,COMMERCIAL BANKS,QTR,2025,Q3,2025-09-30,67104538.0,,,5145137.0,1.57,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+BOP,The Bank of Punjab,COMMERCIAL BANKS,QTR,2025,Q2,2025-06-30,66122264.0,,,5006975.0,1.53,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0

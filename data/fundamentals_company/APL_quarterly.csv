@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+APL,Attock Petroleum Limited,OIL & GAS MARKETING COMPANIES,QTR,2026,Q3,2026-03-31,129009019.0,12121.0,12121.0,8344248.0,67.07,12121.0,12121.0,12121.0,,12121.0,12121.0
+APL,Attock Petroleum Limited,OIL & GAS MARKETING COMPANIES,QTR,2026,Q2,2025-12-31,122861023.0,12121.0,12121.0,2609055.0,20.97,12121.0,12121.0,12121.0,,12121.0,12121.0
+APL,Attock Petroleum Limited,OIL & GAS MARKETING COMPANIES,QTR,2026,Q1,2025-09-30,117783636.0,12121.0,12121.0,3811127.0,30.63,12121.0,12121.0,12121.0,,12121.0,12121.0
+APL,Attock Petroleum Limited,OIL & GAS MARKETING COMPANIES,QTR,2025,Q3,2025-03-31,114918479.0,12121.0,12121.0,2575240.0,20.7,12121.0,12121.0,12121.0,,12121.0,12121.0

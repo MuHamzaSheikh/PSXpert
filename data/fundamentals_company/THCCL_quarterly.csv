@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+THCCL,Thatta Cement Company Limited,CEMENT,QTR,2026,Q3,2026-03-31,1533289.0,1073.064,1033.184,620380.0,1.46,19870.369,9663.518,6251.517,,-75.31,-372.223
+THCCL,Thatta Cement Company Limited,CEMENT,QTR,2026,Q2,2025-12-31,2152808.0,12121.0,12121.0,595517.0,1.41,12121.0,12121.0,12121.0,,12121.0,12121.0
+THCCL,Thatta Cement Company Limited,CEMENT,QTR,2026,Q1,2025-09-30,1466144.0,12121.0,12121.0,682447.0,1.61,12121.0,12121.0,12121.0,,12121.0,12121.0
+THCCL,Thatta Cement Company Limited,CEMENT,QTR,2025,Q3,2025-03-31,1771524.0,12121.0,12121.0,559987.0,6.61,12121.0,12121.0,12121.0,,12121.0,12121.0

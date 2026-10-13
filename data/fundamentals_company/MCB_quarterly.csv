@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+MCB,MCB Bank Limited,COMMERCIAL BANKS,QTR,2026,Q2,2026-06-30,74210154.0,,,13674336.0,11.54,3829906.103,3494736.41,622830.574,335169.693,-127234.698,-141130.781
+MCB,MCB Bank Limited,COMMERCIAL BANKS,QTR,2026,Q1,2026-03-31,72350273.0,,,12800695.0,10.8,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+MCB,MCB Bank Limited,COMMERCIAL BANKS,QTR,2025,Q3,2025-09-30,76610728.0,,,13791825.0,11.64,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0
+MCB,MCB Bank Limited,COMMERCIAL BANKS,QTR,2025,Q2,2025-06-30,74305021.0,,,13493833.0,11.39,12121.0,12121.0,12121.0,12121.0,12121.0,12121.0

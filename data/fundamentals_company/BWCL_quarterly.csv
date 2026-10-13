@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+BWCL,Bestway Cement Limited,CEMENT,QTR,2026,Q3,2026-03-31,27022946.0,12121.0,12121.0,6817361.0,11.43,12121.0,12121.0,12121.0,,12121.0,12121.0
+BWCL,Bestway Cement Limited,CEMENT,QTR,2026,Q2,2025-12-31,29481981.0,12121.0,12121.0,5599062.0,9.39,12121.0,12121.0,12121.0,,12121.0,12121.0
+BWCL,Bestway Cement Limited,CEMENT,QTR,2026,Q1,2025-09-30,25885667.0,12121.0,12121.0,5495790.0,9.22,12121.0,12121.0,12121.0,,12121.0,12121.0
+BWCL,Bestway Cement Limited,CEMENT,QTR,2025,Q3,2025-03-31,26395075.0,12121.0,12121.0,6073753.0,10.19,12121.0,12121.0,12121.0,,12121.0,12121.0

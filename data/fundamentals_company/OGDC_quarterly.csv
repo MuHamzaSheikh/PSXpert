@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+OGDC,Oil & Gas Development Company Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2026,Q3,2026-03-31,107297009.0,12121.0,12121.0,42243957.0,9.82,12121.0,12121.0,12121.0,,12121.0,12121.0
+OGDC,Oil & Gas Development Company Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2026,Q2,2025-12-31,96637926.0,12121.0,12121.0,34714402.0,8.07,12121.0,12121.0,12121.0,,12121.0,12121.0
+OGDC,Oil & Gas Development Company Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2026,Q1,2025-09-30,96191968.0,12121.0,12121.0,38304846.0,8.91,12121.0,12121.0,12121.0,,12121.0,12121.0
+OGDC,Oil & Gas Development Company Limited,OIL & GAS EXPLORATION COMPANIES,QTR,2025,Q3,2025-03-31,104483920.0,12121.0,12121.0,47149242.0,10.96,12121.0,12121.0,12121.0,,12121.0,12121.0

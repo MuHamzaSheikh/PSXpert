@@ -1,0 +1,5 @@
+symbol,company_name,sector,periodicity,fiscal_year,fiscal_quarter,period_end_date,revenue_sales,gross_profit,operating_profit,net_profit_after_tax,eps,total_assets,total_liabilities,total_debt,shareholders_equity,operating_cash_flow,free_cash_flow
+PKGS,Packages Limited,"PAPER, BOARD & PACKAGING",QTR,2026,Q2,2026-06-30,55204.665,13491.199,5764.25,1147659.0,12.84,286912.158,196702.522,139572.938,,-4174.566,-9365.976
+PKGS,Packages Limited,"PAPER, BOARD & PACKAGING",QTR,2026,Q1,2026-03-31,12121.0,12121.0,12121.0,208424.0,2.33,12121.0,12121.0,12121.0,,12121.0,12121.0
+PKGS,Packages Limited,"PAPER, BOARD & PACKAGING",QTR,2025,Q3,2025-09-30,12121.0,12121.0,12121.0,962729.0,10.77,12121.0,12121.0,12121.0,,12121.0,12121.0
+PKGS,Packages Limited,"PAPER, BOARD & PACKAGING",QTR,2025,Q2,2025-06-30,12121.0,12121.0,12121.0,716059.0,8.01,12121.0,12121.0,12121.0,,12121.0,12121.0
