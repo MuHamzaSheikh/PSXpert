@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PSXpert Terminal — Pakistan Stock Exchange (PSX) Candlestick & Pattern Analysis</title>
+  <meta name="description" content="Professional live PSX candlestick trading terminal, mathematical pattern recognition engine, and FinBERT AI sentiment analysis platform.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- TradingView Lightweight Charts Library -->
+  <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    
+    <!-- 1. LIVE RUNNING TICKER TAPE -->
+    <div class="ticker-tape-container" id="ticker-tape-container">
+      <div class="ticker-tape" id="ticker-tape">
+        <div class="tape-item"><span class="tape-symbol">CONNECTING TO PSX REAL DATA...</span></div>
+      </div>
+    </div>
+
+    <!-- 2. NAVBAR -->
+    <nav class="navbar" id="navbar">
+      <div class="nav-brand">
+        <div class="brand-badge">📈</div>
+        <div class="brand-text">
+          <h1>PSXpert Terminal</h1>
+          <span>Pakistan Stock Exchange Real-Data Suite</span>
+        </div>
+      </div>
+
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" class="search-input" placeholder="Search 800+ PSX stocks (e.g. OGDC, LUCK, MEBL)..." autocomplete="off">
+        <div class="search-results-dropdown" id="search-results"></div>
+      </div>
+
+      <div class="nav-actions">
+        <div class="status-pill">
+          <span class="pulse-dot"></span>
+          <span>POSTGRESQL 18: ONLINE</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 3. MAIN WORKSPACE -->
+    <main class="main-container" id="main-content">
+      
+      <!-- HERO STATS BAR -->
+      <section class="stats-grid" id="stats-section">
+        <!-- Card 1: KSE-100 -->
+        <div class="stat-card" id="kse-summary-card">
+          <div class="stat-header">
+            <span class="stat-title">KSE-100 Benchmark Index</span>
+            <span class="stat-delta" id="kse-change">0.00 (0.00%)</span>
+          </div>
+          <div class="stat-value" id="kse-price">164,776.44</div>
+          <div style="display:flex; justify-content:space-between; font-size:11px; font-family:var(--font-mono); color:var(--text-muted); margin-top:6px;">
+            <span id="kse-high-low">H: 165,194.00 | L: 164,706.85</span>
+            <span id="kse-52w-range">52W: 78,500 - 170,000</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Market Breadth -->
+        <div class="stat-card" id="breadth-card">
+          <div class="stat-header">
+            <span class="stat-title">Market Breadth</span>
+            <span style="font-size:11px; color:var(--text-muted);">Session Closes</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:baseline;">
+            <span style="color:#00f59b; font-weight:700; font-family:var(--font-mono);">Adv: <span id="breadth-adv">184</span></span>
+            <span style="color:#64748b; font-weight:600; font-family:var(--font-mono);">Unch: <span id="breadth-unch">86</span></span>
+            <span style="color:#ff3366; font-weight:700; font-family:var(--font-mono);">Dec: <span id="breadth-dec">215</span></span>
+          </div>
+          <div class="progress-bar-container" id="breadth-bar">
+            <div class="progress-segment" style="width:40%; background:#00f59b;"></div>
+            <div class="progress-segment" style="width:20%; background:#64748b;"></div>
+            <div class="progress-segment" style="width:40%; background:#ff3366;"></div>
+          </div>
+        </div>
+
+        <!-- Card 3: FinBERT Sentiment -->
+        <div class="stat-card" id="sentiment-card">
+          <div class="stat-header">
+            <span class="stat-title">FinBERT News Sentiment</span>
+            <span style="font-size:11px; color:#38bdf8; font-weight:600;">Phase 3 AI</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:baseline;">
+            <span style="color:#00f59b; font-weight:700; font-family:var(--font-mono);">Pos: <span id="sent-pos">53</span></span>
+            <span style="color:#38bdf8; font-weight:600; font-family:var(--font-mono);">Neu: <span id="sent-neu">49</span></span>
+            <span style="color:#ff3366; font-weight:700; font-family:var(--font-mono);">Neg: <span id="sent-neg">82</span></span>
+          </div>
+          <div class="progress-bar-container" id="sent-bar">
+            <div class="progress-segment" style="width:29%; background:#00f59b;"></div>
+            <div class="progress-segment" style="width:27%; background:#38bdf8;"></div>
+            <div class="progress-segment" style="width:44%; background:#ff3366;"></div>
+          </div>
+        </div>
+
+        <!-- Card 4: Detected Patterns -->
+        <div class="stat-card" id="patterns-stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Active Candlestick Formations</span>
+            <span style="font-size:11px; color:#f59e0b; font-weight:600;">20+ Patterns</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:baseline;">
+            <div class="stat-value" id="total-patterns-count" style="color:#38bdf8;">--</div>
+            <div style="text-align:right; font-family:var(--font-mono); font-size:12px;">
+              <span style="color:#00f59b;">▲ <span id="bullish-patterns-count">--</span> Bullish</span><br>
+              <span style="color:#ff3366;">▼ <span id="bearish-patterns-count">--</span> Bearish</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- THREE-COLUMN WORKSPACE (Watchlist, Chart, Pattern & News Drawer) -->
+      <div class="workspace-grid" id="workspace">
+        
+        <!-- COLUMN 1: WATCHLIST & SECTORS -->
+        <aside class="sidebar-panel" id="watchlist-panel">
+          <div class="panel-title-bar">
+            <h2 class="panel-title">PSX Watchlist</h2>
+            <select class="filter-select" id="sector-filter">
+              <option value="ALL">All PSX Sectors</option>
+            </select>
+          </div>
+
+          <div class="watchlist-tabs">
+            <button class="tab-btn active" data-tab="kse100">KSE-100</button>
+            <button class="tab-btn" data-tab="gainers">Gainers</button>
+            <button class="tab-btn" data-tab="losers">Losers</button>
+            <button class="tab-btn" data-tab="volume">Volume</button>
+          </div>
+
+          <div class="watchlist-scroll" id="stock-list">
+            <!-- Dynamically populated -->
+          </div>
+        </aside>
+
+        <!-- COLUMN 2: MAIN CHARTING STATION -->
+        <section class="chart-station" id="chart-section">
+          <!-- Active Stock Header -->
+          <div class="chart-header-bar">
+            <div class="active-stock-meta">
+              <div class="active-symbol-badge" id="active-symbol-badge">KSE100</div>
+              <div>
+                <h2 class="active-company-name" id="active-company-name">KSE-100 Index</h2>
+                <div class="active-sector-tag" id="active-sector-tag">Overall Market Index</div>
+              </div>
+            </div>
+            <div class="active-price-block">
+              <div class="active-main-price" id="active-main-price">PKR 164,776.44</div>
+              <div style="font-size:12px; font-weight:600;" id="active-price-delta">-0.21% in period</div>
+            </div>
+          </div>
+
+          <!-- Controls Toolbar -->
+          <div class="chart-controls">
+            <!-- Timeframe Selector -->
+            <div class="timeframe-group">
+              <button class="tf-btn" data-days="30" id="tf-1m">1M</button>
+              <button class="tf-btn" data-days="90" id="tf-3m">3M</button>
+              <button class="tf-btn active" data-days="180" id="tf-6m">6M</button>
+              <button class="tf-btn" data-days="365" id="tf-1y">1Y</button>
+              <button class="tf-btn" data-days="1800" id="tf-all">ALL</button>
+            </div>
+
+            <!-- Technical Indicator Toggles -->
+            <div class="indicators-group">
+              <span class="toggle-chip active-ema20" id="toggle-ema20">EMA 20</span>
+              <span class="toggle-chip active-ema50" id="toggle-ema50">EMA 50</span>
+              <span class="toggle-chip" id="toggle-ema200">EMA 200</span>
+              <span class="toggle-chip active-patterns" id="toggle-volume">Volume</span>
+              <span class="toggle-chip active-patterns" id="toggle-patterns">Candle Patterns</span>
+            </div>
+          </div>
+
+          <!-- Chart Container -->
+          <div class="chart-view-area">
+            <div class="chart-hud-overlay" id="chart-hud">
+              <div class="hud-item"><span>Date:</span> <b id="hud-date">--</b></div>
+              <div class="hud-item"><span>O:</span> <b id="hud-open">--</b></div>
+              <div class="hud-item"><span>H:</span> <b id="hud-high">--</b></div>
+              <div class="hud-item"><span>L:</span> <b id="hud-low">--</b></div>
+              <div class="hud-item"><span>C:</span> <b id="hud-close">--</b></div>
+              <div class="hud-item"><span>Vol:</span> <b id="hud-vol">--</b></div>
+            </div>
+            <div id="tradingview-chart-container"></div>
+          </div>
+        </section>
+
+        <!-- COLUMN 3: PATTERNS & NEWS DRAWER -->
+        <aside class="drawer-panel" id="drawer-panel">
+          
+          <!-- Patterns Drawer -->
+          <div class="drawer-card" id="patterns-card">
+            <div class="panel-title-bar">
+              <h2 class="panel-title">Detected Formations</h2>
+              <span style="font-size:11px; color:#00f59b; font-weight:600; font-family:var(--font-mono);">Live Scanner</span>
+            </div>
+            <div class="patterns-list-container" id="patterns-container">
+              <!-- Dynamically populated pattern cards -->
+            </div>
+          </div>
+
+          <!-- News & Sentiment Drawer -->
+          <div class="drawer-card" id="news-card">
+            <div class="panel-title-bar">
+              <h2 class="panel-title">FinBERT Market Catalysts</h2>
+              <span style="font-size:11px; color:#38bdf8; font-weight:600; font-family:var(--font-mono);">NLP Feeds</span>
+            </div>
+            <div class="news-list-container" id="news-container">
+              <!-- Dynamically populated news cards -->
+            </div>
+          </div>
+
+        </aside>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

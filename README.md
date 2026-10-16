@@ -296,6 +296,30 @@ python run_sentiment_pipeline.py
 
 ---
 
+## 💻 Phase 4 — Interactive Web Trading Terminal & Pattern Suite
+
+PSXpert features a TradingView / Bloomberg Terminal-grade web application powered by **FastAPI** and **PostgreSQL 18**, offering real-time candlestick charting, mathematical pattern recognition, and FinBERT sentiment intelligence.
+
+### 1. Terminal Features
+- **TradingView Lightweight Charts Integration**: Smooth 60fps rendering of daily OHLCV candlesticks with custom emerald green (`#00f59b`) and crimson red (`#ff3366`) candles.
+- **Mathematical Candlestick Pattern Recognition**: 20+ classical patterns detected in real-time (*Morning Star*, *Evening Star*, *Hammer*, *Inverted Hammer*, *Bullish/Bearish Engulfing*, *Piercing Line*, *Three White Soldiers*, *Three Black Crows*, *Doji*).
+- **Interactive Visual Pattern Markers**: Clickable markers plotted directly onto candlestick bars showing pattern classification, trading signals, and technical rationale.
+- **Technical Indicators**: One-click toggles for EMA 20 (Cyan), EMA 50 (Gold), EMA 200 (Purple), and Volume Subplots.
+- **PSX Watchlist & Sector Filters**: Live directory of 800+ listed equities with sector filtering, top gainers, top losers, and highest-volume tickers.
+- **FinBERT Market Catalyst News Feed**: Phase 3 sentiment-tagged headlines with confidence ratings linked to active stocks.
+- **Live Ticker Tape**: Marquee header streaming real-time prices for KSE-100 and constituent equities.
+
+### 2. Launching the Web Terminal
+```bash
+# Start the FastAPI server daemon
+python -m uvicorn app:app --host 127.0.0.1 --port 8000
+
+# Open in browser
+# http://127.0.0.1:8000/
+```
+
+---
+
 ## 🔍 Provenance & Methodology
 - **Prices & Indices**: Daily settlement records from Sarmaaya API and PSX Data Portal covering 2002–2026 (6,127 trading sessions).
 - **News**: Multi-source financial articles from Dawn Business and Business Recorder with automated NLP ticker detection and sector mapping.
