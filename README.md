@@ -227,8 +227,78 @@ python verify_db.py
 
 ---
 
+## 🧠 Phase 3 — News Sentiment Analysis & FinBERT Benchmark
+
+Phase 3 transforms unstructured Pakistani financial news into clean, quantitative sentiment signals, distinguishing overall article tone from target-specific impact on individual PSX equities.
+
+### 1. Sentiment Processing Pipeline Architecture
+The end-to-end pipeline (`src/sentiment/pipeline.py`) operates in five deterministic stages:
+1. **Text Preprocessing & Deduplication (`cleaner.py`)**:
+   - Strips publisher bylines, HTML boilerplate, boilerplate disclaimers, and wire stamps.
+   - SHA-256 fingerprinting for near-duplicate and exact-duplicate deduplication.
+   - ISO-639-1 language detection (`langdetect`) ensuring non-English articles are flagged.
+2. **Entity & Sector Mapping (`entity_matcher.py`)**:
+   - Maps company names and ticker aliases across 800+ PSX stocks (`OGDC`, `LUCK`, `MEBL`, `SYS`, `HUBC`, `HBL`, etc.).
+   - Resolves 11 PSX industry sectors (`Commercial Banks`, `Cement`, `Oil & Gas Exploration`, `Power Generation`, `Technology`, etc.).
+   - Extracts target-specific sentence contexts for aspect-based sentiment analysis.
+3. **Sentiment Model Scoring**:
+   - **Baseline Model (`lexicon_baseline.py`)**: Enhanced VADER + Loughran-McDonald financial dictionary augmented with 50+ Pakistani market idioms (`circular debt`, `bourse rally`, `policy rate cut`, `IMF tranche`, `gas tariff hike`, `selling pressure`).
+   - **Transformer Model (`finbert_analyzer.py`)**: Pretrained `ProsusAI/finbert` model evaluating probabilities across `POSITIVE`, `NEGATIVE`, and `NEUTRAL`, outputting continuous scores in `[-1.0, +1.0]`.
+4. **Target-Specific vs. Article-Level Sentiment**:
+   - When an article discusses multiple companies (e.g., *Lucky Cement expands exports while DG Khan Cement faces plant closure*), FinBERT calculates individual target sentiment per company symbol rather than applying a single uniform label.
+5. **Database Persistence**:
+   - Upserts sentiment scores, class probabilities, and target-specific metadata into `news_sentiment`.
+   - Links entities with confidence weights into `news_entities`, preserving publication timestamps for backtesting.
+
+### 2. Benchmark Evaluation (50 Gold-Standard Pakistani News Samples)
+A representative benchmark was curated and manually labelled across major PSX sectors. FinBERT demonstrated significant superiority over the lexicon baseline (+22.0% accuracy improvement):
+
+| Metric | Lexicon Baseline | FinBERT Transformer | Delta |
+|---|---|---|---|
+| **Overall Accuracy** | 64.00% | **86.00%** | **+22.0%** |
+| **Macro F1-Score** | 0.6405 | **0.8550** | **+0.2145** |
+| **Weighted F1-Score** | 0.6421 | **0.8594** | **+0.2173** |
+| **Positive Class F1** | 0.6341 | **0.9444** | **+0.3103** |
+| **Negative Class F1** | 0.6667 | **0.8205** | **+0.1538** |
+| **Neutral Class F1** | 0.6207 | **0.8000** | **+0.1793** |
+
+#### Confusion Matrices (Rows: Ground Truth, Columns: Predicted)
+
+**Lexicon Baseline Confusion Matrix**:
+```
+True \ Pred    |   POSITIVE |   NEGATIVE |    NEUTRAL
+POSITIVE       |         13 |          2 |          3
+NEGATIVE       |          5 |         10 |          3
+NEUTRAL        |          5 |          0 |          9
+```
+
+**FinBERT Transformer Confusion Matrix**:
+```
+True \ Pred    |   POSITIVE |   NEGATIVE |    NEUTRAL
+POSITIVE       |         17 |          1 |          0
+NEGATIVE       |          1 |         16 |          1
+NEUTRAL        |          0 |          4 |         10
+```
+
+### 3. Pakistani Domain Nuances & Error Analysis
+- **Contextual Semantics**: FinBERT successfully disambiguates negative regulatory events (e.g. *"NEPRA slashes return on equity for IPPs"*) where lexicon tools falsely triggered positive scores due to words like *"return"* and *"equity"*.
+- **SBP Policy Rate Dynamics**: In Pakistani equity markets, State Bank rate cuts reliably trigger strong rallies (positive for equities due to reduced financial leverage costs), whereas international models can mistakenly view rate cuts as signals of banking margin contraction.
+- **Regulatory Disclosures**: FinBERT cleanly categorizes administrative board meetings, AGM notices, and book closures as `NEUTRAL`, avoiding false trading signals.
+
+### 4. Running Phase 3 Commands
+```bash
+# 1. Run the full benchmark evaluation suite
+python evaluate_sentiment.py
+
+# 2. Run the end-to-end production sentiment pipeline on PostgreSQL database
+python run_sentiment_pipeline.py
+```
+
+---
+
 ## 🔍 Provenance & Methodology
 - **Prices & Indices**: Daily settlement records from Sarmaaya API and PSX Data Portal covering 2002–2026 (6,127 trading sessions).
 - **News**: Multi-source financial articles from Dawn Business and Business Recorder with automated NLP ticker detection and sector mapping.
 - **Fundamentals**: Harmonized financial statements merging official audited PSX exchange reports (DPS) with balance sheets, cash flow statements, and valuation ratios from Sarmaaya REST API. Both non-financial corporates and commercial banking models are standardized.
 - **Announcements & Payouts**: Verified PSX regulatory disclosures mapped to direct PSX exchange PDF documents, covering 25 years of dividends, bonus distributions, and stock splits alongside 20,800+ categorised corporate disclosures.
+
