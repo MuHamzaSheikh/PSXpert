@@ -12,3 +12,6 @@ venv/
 *.db-journal
 data/psxpert.db
 data/raw/
+reset_*.ps1
+reset_*.bat
+scratch/

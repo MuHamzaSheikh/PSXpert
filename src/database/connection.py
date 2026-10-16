@@ -60,6 +60,8 @@ def get_engine() -> Engine:
     db_url = get_database_url()
     try:
         if db_url.startswith("postgresql"):
+            if db_url.startswith("postgresql://"):
+                db_url = db_url.replace("postgresql://", "postgresql+psycopg2://", 1)
             logger.info(f"Connecting to PostgreSQL at {db_url.split('@')[-1]}...")
             engine = create_engine(
                 db_url,
