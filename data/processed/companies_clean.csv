@@ -1,0 +1,101 @@
+symbol,company_name,sector,sector_category,isin,is_shariah,is_kse100,is_active
+ABL,Allied Bank Limited,COMMERCIAL BANKS,Banks,PK0083501012,False,True,True
+ABOT,Abbott Laboratories (Pakistan) Limited,PHARMACEUTICALS,Corporates,PK0025701019,True,True,True
+AGP,AGP Limited,PHARMACEUTICALS,Corporates,PK0113801010,True,True,True
+AHCL,Arif Habib Corporation Limited,FERTILIZER,Corporates,PK0077701016,False,True,True
+AICL,Adamjee Insurance Company Limited,INSURANCE,Insurance,PK0004901010,False,True,True
+AIRLINK,Air Link Communication Limited,TECHNOLOGY & COMMUNICATION,Corporates,PK0122801019,True,True,True
+AKBL,Askari Bank Limited,COMMERCIAL BANKS,Banks,PK0051301015,False,True,True
+APL,Attock Petroleum Limited,OIL & GAS MARKETING COMPANIES,Corporates,PK0082901015,False,True,True
+ATLH,Atlas Honda Limited,AUTOMOBILE ASSEMBLER,Corporates,PK0009201010,False,True,True
+ATRL,Attock Refinery Limited,REFINERY,Corporates,PK0024501014,True,True,True
+BAFL,Bank Alfalah Limited,COMMERCIAL BANKS,Banks,PK0078701015,False,True,True
+BAHL,Bank AL Habib Limited,COMMERCIAL BANKS,Banks,PK0051601018,False,True,True
+BML,Bank Makramah Limited,COMMERCIAL BANKS,Banks,BML-PK,False,True,True
+BNWM,Bannu Woollen Mills Limited,WOOLLEN,Corporates,PK0051701016,True,True,True
+BOP,The Bank of Punjab,COMMERCIAL BANKS,Banks,PK0045001010,False,True,True
+BWCL,Bestway Cement Limited,CEMENT,Corporates,PK0077601018,False,True,True
+CHCC,Cherat Cement Company Limited,CEMENT,Corporates,PK0029801013,True,True,True
+CNERGY,Cnergyico PK  Limited,REFINERY,Corporates,CNERGY-PK,True,True,True
+COLG,Colgate-Palmolive (Pakistan) Limited,FOOD & PERSONAL CARE PRODUCTS,Corporates,PK0028001011,True,True,True
+CPHL,Citi Pharma Ltd.,PHARMACEUTICALS,Corporates,CPHL-PK,True,True,True
+DCR,Dolmen City REIT,REAL ESTATE INVESTMENT TRUST,Corporates,PK0099001023,True,True,True
+DGKC,D.G. Khan Cement Company Limited,CEMENT,Corporates,PK0052401012,True,True,True
+EFERT,Engro Fertilizers Limited,FERTILIZER,Corporates,PK0099701010,True,True,True
+ENGROH,Engro Holdings Limited,INV. BANKS / INV. COS. / SECURITIES COS.,Corporates,ENGROH-PK,True,True,True
+FABL,Faysal Bank Limited,COMMERCIAL BANKS,Banks,PK0070501017,True,True,True
+FATIMA,Fatima Fertilizer Company Limited,FERTILIZER,Corporates,PK0091601010,True,True,True
+FCCL,Fauji Cement Company Limited,CEMENT,Corporates,PK0074501013,True,True,True
+FFC,Fauji Fertilizer Company Limited,FERTILIZER,Corporates,PK0053401011,True,True,True
+FFL,Fauji Foods Limited,FOOD & PERSONAL CARE PRODUCTS,Corporates,PK0015801019,True,True,True
+FHAM,First Habib Modaraba,MODARABAS,Corporates,PK0029901011,True,True,True
+GADT,Gadoon Textile Mills Limited,TEXTILE SPINNING,Corporates,PK0064101014,True,True,True
+GAL,Ghandhara Automobiles Limited,AUTOMOBILE ASSEMBLER,Corporates,GAL-PK,True,True,True
+GHGL,Ghani Glass Limited,GLASS & CERAMICS,Corporates,PK0064301010,True,True,True
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,Corporates,PK0007101014,True,True,True
+GLAXO,GlaxoSmithKline Pakistan Limited,PHARMACEUTICALS,Corporates,PK0001301016,True,True,True
+HALEON,Haleon Pakistan Limited,PHARMACEUTICALS,Corporates,HALEON-PK,True,True,True
+HBL,Habib Bank Limited,COMMERCIAL BANKS,Banks,PK0085101019,False,True,True
+HCAR,Honda Atlas Cars (Pakistan) Limited,AUTOMOBILE ASSEMBLER,Corporates,PK0064901017,True,True,True
+HGFA,HBL Growth Fund,CLOSE - END MUTUAL FUND,Corporates,HGFA-PK,False,True,True
+HINOON,Highnoon Laboratories Limited,PHARMACEUTICALS,Corporates,PK0070701013,True,True,True
+HMB,Habib Metropolitan Bank Limited,COMMERCIAL BANKS,Banks,PK0055401019,False,True,True
+HUBC,The Hub Power Company Limited,POWER GENERATION & DISTRIBUTION,Corporates,PK0065001015,True,True,True
+IBFL,Ibrahim Fibres Limited,SYNTHETIC & RAYON,Corporates,PK0070801011,True,True,True
+ILP,Interloop Limited,TEXTILE COMPOSITE,Corporates,PK0114501015,True,True,True
+IMAGE,Image Pakistan Limited,APPAREL,Corporates,PK0058201010,True,True,True
+INDU,Indus Motor Company Limited,AUTOMOBILE ASSEMBLER,Corporates,PK0054501017,False,True,True
+INIL,International Industries Limited,ENGINEERING,Corporates,PK0028501010,True,True,True
+ISL,International Steels Limited,ENGINEERING,Corporates,PK0102001010,True,True,True
+JDWS,JDW Sugar Mills Limited,SUGAR & ALLIED INDUSTRIES,Corporates,PK0054701013,True,True,True
+JVDC,Javedan Corporation Limited,PROPERTY,Corporates,PK0006101015,True,True,True
+KAPCO,Kot Addu Power Company Limited,POWER GENERATION & DISTRIBUTION,Corporates,PK0083101011,False,True,True
+KEL,K-Electric Limited,POWER GENERATION & DISTRIBUTION,Corporates,PK0000501012,True,True,True
+KOHC,Kohat Cement Company Limited,CEMENT,Corporates,PK0075001013,True,True,True
+KTML,Kohinoor Textile Mills Limited,TEXTILE COMPOSITE,Corporates,PK0018101011,True,True,True
+LCI,Lucky Core Industries Limited,CHEMICAL,Corporates,LCI-PK,True,True,True
+LOTCHEM,Lotte Chemical Pakistan Limited,CHEMICAL,Corporates,PK0077901012,True,True,True
+LUCK,Lucky Cement Limited,CEMENT,Corporates,PK0071501016,True,True,True
+MARI,Mari Energies Limited,OIL & GAS EXPLORATION COMPANIES,Corporates,PK0066301018,True,True,True
+MCB,MCB Bank Limited,COMMERCIAL BANKS,Banks,PK0055601014,False,True,True
+MEBL,Meezan Bank Limited,COMMERCIAL BANKS,Banks,PK0077401013,True,True,True
+MLCF,Maple Leaf Cement Factory Limited,CEMENT,Corporates,PK0066201010,True,True,True
+MTL,Millat Tractors Limited,AUTOMOBILE ASSEMBLER,Corporates,PK0009801017,True,True,True
+MUREB,Murree Brewery Company Limited,FOOD & PERSONAL CARE PRODUCTS,Corporates,PK0000601010,False,True,True
+NATF,National Foods Limited,FOOD & PERSONAL CARE PRODUCTS,Corporates,NATF-PK,False,True,True
+NBP,National Bank of Pakistan,COMMERCIAL BANKS,Banks,NBP-PK,False,True,True
+NCPL,Nishat Chunian Power Limited,POWER GENERATION & DISTRIBUTION,Corporates,PK0098301010,False,True,True
+NESTLE,Nestle Pakistan Limited,FOOD & PERSONAL CARE PRODUCTS,Corporates,PK0025101012,True,True,True
+NML,Nishat Mills Limited,TEXTILE COMPOSITE,Corporates,PK0005501017,True,True,True
+NPL,Nishat Power Limited,POWER GENERATION & DISTRIBUTION,Corporates,PK0094301014,False,True,True
+OGDC,Oil & Gas Development Company Limited,OIL & GAS EXPLORATION COMPANIES,Corporates,PK0080201012,True,True,True
+PAEL,Pak Elektron Limited,CABLE & ELECTRICAL GOODS,Corporates,PK0034601010,True,True,True
+PAKT,Pakistan Tobacco Company Limited,TOBACCO,Corporates,PK0002701016,False,True,True
+PGLC,Pak-Gulf Leasing Company Limited,LEASING COMPANIES,Corporates,PGLC-PK,False,True,True
+PIBTL,Pakistan International Bulk Terminal,TRANSPORT,Corporates,PK0105101015,True,True,True
+PIOC,Pioneer Cement Limited,CEMENT,Corporates,PK0056201012,True,True,True
+PKGS,Packages Limited,"PAPER, BOARD & PACKAGING",Corporates,PK0010001011,True,True,True
+POL,Pakistan Oilfields Limited,OIL & GAS EXPLORATION COMPANIES,Corporates,PK0023901017,False,True,True
+POWER,Power Cement Limited,CEMENT,Corporates,PK0033901015,True,True,True
+PPL,Pakistan Petroleum Limited,OIL & GAS EXPLORATION COMPANIES,Corporates,PK0081801018,True,True,True
+PSEL,Pakistan Services Limited,MISCELLANEOUS,Corporates,PK0008501014,True,True,True
+PSO,Pakistan State Oil Company Limited,OIL & GAS MARKETING COMPANIES,Corporates,PK0022501016,True,True,True
+PSX,Pakistan Stock Exchange Limited,INV. BANKS / INV. COS. / SECURITIES COS.,Corporates,PK0104801011,False,True,True
+PTC,Pakistan Telecommunication Company Ltd,TECHNOLOGY & COMMUNICATION,Corporates,PK0067901022,False,True,True
+SAZEW,Sazgar Engineering Works Limited,AUTOMOBILE ASSEMBLER,Corporates,PK0075801016,True,True,True
+SCBPL,Standard Chartered Bank (Pak) Ltd,COMMERCIAL BANKS,Banks,PK0087901010,False,True,True
+SEARL,The Searle Company Limited,PHARMACEUTICALS,Corporates,PK0061701014,True,True,True
+SHFA,Shifa International Hospitals Limited,MISCELLANEOUS,Corporates,PK0072901017,True,True,True
+SNGP,Sui Northern Gas Pipelines Limited,OIL & GAS MARKETING COMPANIES,Corporates,PK0008901016,True,True,True
+SRVI,Service Industries Limited,LEATHER & TANNERIES,Corporates,PK0016401017,True,True,True
+SSGC,Sui Southern Gas Company Limited,OIL & GAS MARKETING COMPANIES,Corporates,PK0002801014,True,True,True
+SSOM,S.S.Oil Mills Limited,VANASPATI & ALLIED INDUSTRIES,Corporates,SSOM-PK,True,True,True
+SYS,Systems Limited,TECHNOLOGY & COMMUNICATION,Corporates,PK0109001013,True,True,True
+TGL,Tariq Glass Industries Limited,GLASS & CERAMICS,Corporates,PK0028801014,True,True,True
+THALL,Thal Limited,AUTOMOBILE PARTS & ACCESSORIES,Corporates,PK0011301014,False,True,True
+THCCL,Thatta Cement Company Limited,CEMENT,Corporates,PK0080801019,True,True,True
+TPLRF1,TPL REIT Fund I,REAL ESTATE INVESTMENT TRUST,Corporates,TPLRF1-PK,True,True,True
+TRG,TRG Pakistan Limited,TECHNOLOGY & COMMUNICATION,Corporates,PK0079201015,False,True,True
+UBL,United Bank Limited,COMMERCIAL BANKS,Banks,PK0081901016,False,True,True
+UPFL,Unilever Pakistan Foods Limited,FOOD & PERSONAL CARE PRODUCTS,Corporates,PK0076901013,True,True,True
+YOUW,Yousaf Weaving Mills Limited,TEXTILE WEAVING,Corporates,YOUW-PK,False,True,True

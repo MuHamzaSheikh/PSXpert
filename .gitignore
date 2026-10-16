@@ -6,3 +6,9 @@ __pycache__/
 .venv/
 env/
 venv/
+*.exe
+*.db
+*.sqlite
+*.db-journal
+data/psxpert.db
+data/raw/

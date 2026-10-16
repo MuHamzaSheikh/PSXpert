@@ -179,6 +179,54 @@ python verify_data.py
 
 ---
 
+## 🏛️ Phase 2: Database & Data Engineering Layer
+
+The raw PSXpert datasets are cleaned, typed, and structured into a relational data layer designed for AI backtesting, predictive modeling, and quantitative analysis.
+
+### Dual Engine Architecture
+* **PostgreSQL (Production)**: Connects automatically via `.env` (`DATABASE_URL` or standard PG credentials).
+* **SQLite (Zero-Configuration Fallback)**: Automatically active if PostgreSQL is offline or unconfigured, storing local data in `data/psxpert.db`.
+
+### Database Schema & Tables
+| Table | Primary / Unique Key | Description | Records |
+|---|---|---|---|
+| `data_sources` | `id` (PK), `source_name` (Unique) | Data provenance tracking, retrieval timestamps, API endpoints | 4 |
+| `companies` | `symbol` (PK) | PSX symbols, corporate names, sectors, ISINs, Shariah/KSE-100 flags | 100 |
+| `stock_prices` | `(symbol, trading_date)` (Unique) | Daily OHLCV, market cap (2002–2026). Strictly 0 duplicates | 475,244 |
+| `market_indices` | `(index_symbol, trading_date)` (Unique) | Historical index points, volume, and percentage changes | 6,127 |
+| `news_articles` | `(publisher, url)` (Unique) | Headlines, publishers, ISO-8601 timestamps, full article text | 184 |
+| `news_entities` | `(article_id, entity_type, entity_value)` (Unique) | Article-to-company and article-to-sector tag mappings | 708 |
+| `news_sentiment` | `(article_id, model_name)` (Unique) | Sentiment labels (POSITIVE/NEGATIVE/NEUTRAL) & polarity scores | 184 |
+| `company_financials` | `(symbol, fiscal_year, fiscal_period, metric_name)` (Unique) | Financial line items with **both accounting period & official publication filing dates** | 14,489 |
+| `corporate_announcements`| `(symbol, announcement_id)` (Unique) | Official regulatory disclosures & direct exchange PDF links | 20,884 |
+| `corporate_payouts` | `(symbol, announcement_date, payout_type)` (Unique) | Dividends, splits, bonus shares with payout rates | 1,727 |
+
+### Core Data Engineering Rules
+1. **Unique Key Enforcement**: Daily stock prices use composite key `(symbol, trading_date)` with zero duplicates.
+2. **Timezone Preservation**: Timestamps are normalized to ISO-8601 preserving Pakistan Standard Time (`+05:00`).
+3. **Zero Lookahead Bias in Backtesting**:
+   - `company_financials` explicitly stores `publication_date` alongside `period_end_date`.
+   - AI backtesting models must query:
+     ```sql
+     WHERE publication_date <= :prediction_timestamp
+     ```
+   - Verified across 13,371+ financial records where `publication_date >= period_end_date`.
+4. **Strict Data Separation**:
+   - `data/raw/`: Untouched, immutable scrapings.
+   - `data/processed/`: Standardized, deduplicated, and typed CSVs.
+5. **Idempotent Ingestion**: Safe to retry at any time (`ON CONFLICT DO UPDATE` in PostgreSQL; `INSERT OR REPLACE` in SQLite).
+
+### Running Phase 2 Commands
+```bash
+# 1. Clean raw data and bulk-ingest into database
+python ingest_all.py
+
+# 2. Run verification suite (counts, unique constraints, and joins)
+python verify_db.py
+```
+
+---
+
 ## 🔍 Provenance & Methodology
 - **Prices & Indices**: Daily settlement records from Sarmaaya API and PSX Data Portal covering 2002–2026 (6,127 trading sessions).
 - **News**: Multi-source financial articles from Dawn Business and Business Recorder with automated NLP ticker detection and sector mapping.
