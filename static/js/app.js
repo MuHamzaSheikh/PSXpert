@@ -109,7 +109,8 @@ const elements = {
   diagList: document.getElementById('diag-list'),
 
   // Full Screener and News Catalyst elements
-  chartWorkspace: document.querySelector('.chart-workspace-panel'),
+  chartStation: document.getElementById('chart-section') || document.querySelector('.chart-station'),
+  chartViewArea: document.getElementById('chart-view-area'),
   btnChartScreener: document.getElementById('btn-chart-screener'),
   btnExitScreener: document.getElementById('btn-exit-screener'),
   btnRefreshNews: document.getElementById('btn-refresh-news'),
@@ -853,14 +854,25 @@ async function loadNewsSentiment(cat = null) {
   }
 }
 
-// 4b. FULL SCREENER TOGGLE
-function toggleFullScreener() {
-  state.isFullScreener = !state.isFullScreener;
-  document.body.classList.toggle('full-screener-active', state.isFullScreener);
-  if (elements.chartWorkspace) {
-    elements.chartWorkspace.classList.toggle('full-screener-active', state.isFullScreener);
-  }
+// 4b. FULL SCREENER TOGGLE & RESIZING
+function resizeChartNow() {
+  const resize = () => {
+    if (state.chart && elements.chartContainer) {
+      const width = elements.chartContainer.clientWidth;
+      const height = elements.chartContainer.clientHeight;
+      if (width > 0 && height > 0) {
+        state.chart.applyOptions({ width, height });
+        state.chart.timeScale().fitContent();
+      }
+    }
+  };
+  resize();
+  setTimeout(resize, 40);
+  setTimeout(resize, 120);
+  setTimeout(resize, 300);
+}
 
+function updateScreenerUI() {
   if (state.isFullScreener) {
     if (elements.btnChartScreener) {
       elements.btnChartScreener.innerHTML = `
@@ -882,32 +894,60 @@ function toggleFullScreener() {
       elements.btnExitScreener.style.display = 'none';
     }
   }
+}
 
-  setTimeout(() => {
-    if (state.chart && elements.chartContainer) {
-      state.chart.applyOptions({
-        width: elements.chartContainer.clientWidth,
-        height: elements.chartContainer.clientHeight
+function toggleFullScreener(forceState = null) {
+  const targetStation = elements.chartStation || document.getElementById('chart-section') || document.querySelector('.chart-station');
+  if (forceState !== null) {
+    state.isFullScreener = forceState;
+  } else {
+    state.isFullScreener = !state.isFullScreener;
+  }
+
+  document.body.classList.toggle('full-screener-active', state.isFullScreener);
+  if (targetStation) {
+    targetStation.classList.toggle('full-screener-active', state.isFullScreener);
+  }
+
+  // HTML5 Fullscreen API Integration
+  if (state.isFullScreener) {
+    if (targetStation && targetStation.requestFullscreen && !document.fullscreenElement) {
+      targetStation.requestFullscreen().catch(err => {
+        console.warn('Native Fullscreen API not permitted, relying on CSS full-screener overlay:', err);
       });
-      state.chart.timeScale().fitContent();
     }
-  }, 60);
+  } else {
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(err => console.warn(err));
+    }
+  }
+
+  updateScreenerUI();
+  resizeChartNow();
 }
 
 // 5. EVENT LISTENERS & CONTROLS
 function bindEventListeners() {
   // Full Screener Button
   if (elements.btnChartScreener) {
-    elements.btnChartScreener.addEventListener('click', toggleFullScreener);
+    elements.btnChartScreener.addEventListener('click', () => toggleFullScreener());
   }
   if (elements.btnExitScreener) {
-    elements.btnExitScreener.addEventListener('click', toggleFullScreener);
+    elements.btnExitScreener.addEventListener('click', () => toggleFullScreener(false));
   }
 
   // Escape Key to Exit Full Screener
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && state.isFullScreener) {
-      toggleFullScreener();
+      toggleFullScreener(false);
+    }
+  });
+
+  // Native Fullscreen Change Handler (e.g. user presses ESC or browser exits fullscreen)
+  document.addEventListener('fullscreenchange', () => {
+    const isNativeFullscreen = !!document.fullscreenElement;
+    if (!isNativeFullscreen && state.isFullScreener) {
+      toggleFullScreener(false);
     }
   });
 

@@ -639,35 +639,81 @@ body {
   box-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
 }
 
-/* FULL SCREENER DESK OVERLAY MODE */
+/* FULL SCREENER DESK OVERLAY & HTML5 FULLSCREEN MODE */
 body.full-screener-active {
   overflow: hidden !important;
 }
-.chart-workspace-panel.full-screener-active {
+.chart-station.full-screener-active,
+#chart-section.full-screener-active,
+#chart-section:fullscreen {
   position: fixed !important;
   inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
   max-width: 100vw !important;
-  z-index: 99999 !important;
+  max-height: 100vh !important;
+  z-index: 999999 !important;
   background: #06090f !important;
-  padding: 16px 24px !important;
+  padding: 12px 20px !important;
   margin: 0 !important;
   border-radius: 0 !important;
+  border: none !important;
   display: flex !important;
   flex-direction: column !important;
-  overflow-y: auto !important;
+  overflow: hidden !important;
   box-sizing: border-box !important;
 }
-.chart-workspace-panel.full-screener-active .chart-view-area {
-  height: calc(100vh - 150px) !important;
-  min-height: 500px !important;
-  border-color: rgba(56, 189, 248, 0.35) !important;
+
+.chart-station.full-screener-active .chart-header-bar,
+#chart-section:fullscreen .chart-header-bar {
+  flex-shrink: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
-.chart-workspace-panel.full-screener-active .screener-btn {
-  background: rgba(255, 51, 102, 0.15) !important;
-  border-color: rgba(255, 51, 102, 0.4) !important;
+
+.chart-station.full-screener-active .chart-controls,
+#chart-section:fullscreen .chart-controls {
+  flex-shrink: 0;
+  padding: 8px 0;
+}
+
+.chart-station.full-screener-active .chart-view-area,
+#chart-section.full-screener-active .chart-view-area,
+#chart-section:fullscreen .chart-view-area {
+  flex-shrink: 0 !important;
+  height: calc(100vh - 145px) !important;
+  min-height: 400px !important;
+  width: 100% !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.9) !important;
+  overflow: hidden !important;
+}
+
+.chart-station.full-screener-active #tradingview-chart-container,
+#chart-section.full-screener-active #tradingview-chart-container,
+#chart-section:fullscreen #tradingview-chart-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* In full chart screener mode, give 100% of screen to chart canvas */
+.chart-station.full-screener-active .quant-analysis-deck,
+#chart-section:fullscreen .quant-analysis-deck {
+  display: none !important;
+}
+
+.chart-station.full-screener-active .screener-btn,
+#chart-section:fullscreen .screener-btn {
+  background: rgba(255, 51, 102, 0.25) !important;
+  border-color: rgba(255, 51, 102, 0.6) !important;
   color: #ff3366 !important;
+}
+
+.chart-station.full-screener-active .exit-screener-btn,
+#chart-section:fullscreen .exit-screener-btn {
+  display: flex !important;
 }
 
 /* CHART CONTAINER CANVAS */
