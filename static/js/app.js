@@ -64,7 +64,47 @@ const elements = {
   sectorFilter: document.getElementById('sector-filter'),
   patternsContainer: document.getElementById('patterns-container'),
   newsContainer: document.getElementById('news-container'),
-  chartContainer: document.getElementById('tradingview-chart-container')
+  chartContainer: document.getElementById('tradingview-chart-container'),
+  
+  // Phase 4 Technical Indicators DOM references
+  rsiVal: document.getElementById('rsi-val'),
+  rsiBadge: document.getElementById('rsi-badge'),
+  rsiBar: document.getElementById('rsi-bar'),
+  macdDiffVal: document.getElementById('macd-diff-val'),
+  macdLineVal: document.getElementById('macd-line-val'),
+  macdSigVal: document.getElementById('macd-sig-val'),
+  macdBadge: document.getElementById('macd-badge'),
+  bbPctbVal: document.getElementById('bb-pctb-val'),
+  bbUpVal: document.getElementById('bb-up-val'),
+  bbLowVal: document.getElementById('bb-low-val'),
+  bbWidthVal: document.getElementById('bb-width-val'),
+  bbBadge: document.getElementById('bb-badge'),
+  adxVal: document.getElementById('adx-val'),
+  dmiPlusVal: document.getElementById('dmi-plus-val'),
+  dmiMinusVal: document.getElementById('dmi-minus-val'),
+  adxBadge: document.getElementById('adx-badge'),
+  adxTrendStatus: document.getElementById('adx-trend-status'),
+  atrVal: document.getElementById('atr-val'),
+  atrPkrVal: document.getElementById('atr-pkr-val'),
+  atrPctVal: document.getElementById('atr-pct-val'),
+  stochVal: document.getElementById('stoch-val'),
+  stochKVal: document.getElementById('stoch-k-val'),
+  stochDVal: document.getElementById('stoch-d-val'),
+  stochSlowVal: document.getElementById('stoch-slow-val'),
+  stochBadge: document.getElementById('stoch-badge'),
+  obvVal: document.getElementById('obv-val'),
+  obvEmaVal: document.getElementById('obv-ema-val'),
+  obvBadge: document.getElementById('obv-badge'),
+  obvFlowStatus: document.getElementById('obv-flow-status'),
+  sma20Val: document.getElementById('sma20-val'),
+  ema20Val: document.getElementById('ema20-val'),
+  sma50Val: document.getElementById('sma50-val'),
+  ema50Val: document.getElementById('ema50-val'),
+  sma200Val: document.getElementById('sma200-val'),
+  ema200Val: document.getElementById('ema200-val'),
+  maBadge: document.getElementById('ma-badge'),
+  maAlignmentStatus: document.getElementById('ma-alignment-status'),
+  diagList: document.getElementById('diag-list')
 };
 
 // Initialize Application
@@ -435,6 +475,9 @@ async function selectSymbol(symbol) {
     // Render Pattern Cards
     renderPatternsList(data.patterns);
 
+    // Phase 4: Fetch Quantitative Indicators & System Diagnostics
+    await loadQuantitativeIndicators(symbol);
+
   } catch (err) {
     console.error('Error fetching OHLCV for', symbol, err);
   }
@@ -509,6 +552,208 @@ function renderPatternsList(patterns) {
 
     container.appendChild(card);
   });
+}
+
+// 3b. QUANTITATIVE INDICATORS & SYSTEM DIAGNOSTICS (Phase 4)
+async function loadQuantitativeIndicators(symbol) {
+  try {
+    const res = await fetch(`/api/indicators/${symbol}?days=${state.activeDays}`);
+    if (!res.ok) throw new Error('Failed to fetch quantitative indicators');
+    const data = await res.json();
+    const diag = data.latest_diagnostics || {};
+
+    // 1. RSI (14)
+    if (diag.rsi_14 !== null && diag.rsi_14 !== undefined) {
+      elements.rsiVal.textContent = diag.rsi_14.toFixed(2);
+      elements.rsiBar.style.width = `${Math.min(100, Math.max(0, diag.rsi_14))}%`;
+      if (diag.rsi_14 >= 70) {
+        elements.rsiBadge.className = 'qc-badge bearish';
+        elements.rsiBadge.textContent = 'OVERBOUGHT';
+      } else if (diag.rsi_14 <= 30) {
+        elements.rsiBadge.className = 'qc-badge bullish';
+        elements.rsiBadge.textContent = 'OVERSOLD';
+      } else {
+        elements.rsiBadge.className = 'qc-badge neutral';
+        elements.rsiBadge.textContent = 'NEUTRAL';
+      }
+    } else {
+      elements.rsiVal.textContent = '--';
+      elements.rsiBadge.className = 'qc-badge neutral';
+      elements.rsiBadge.textContent = 'N/A';
+    }
+
+    // 2. MACD (12, 26, 9)
+    if (diag.macd_diff !== null && diag.macd_diff !== undefined) {
+      const diff = diag.macd_diff;
+      const isPositive = diff >= 0;
+      elements.macdDiffVal.textContent = `${isPositive ? '+' : ''}${diff.toFixed(2)}`;
+      elements.macdDiffVal.style.color = isPositive ? 'var(--bullish)' : 'var(--bearish)';
+      elements.macdLineVal.textContent = diag.macd_line !== null ? diag.macd_line.toFixed(2) : '--';
+      elements.macdSigVal.textContent = diag.macd_signal !== null ? diag.macd_signal.toFixed(2) : '--';
+      elements.macdBadge.className = `qc-badge ${isPositive ? 'bullish' : 'bearish'}`;
+      elements.macdBadge.textContent = isPositive ? 'MOMENTUM +' : 'MOMENTUM -';
+    } else {
+      elements.macdDiffVal.textContent = '--';
+      elements.macdDiffVal.style.color = '#fff';
+      elements.macdLineVal.textContent = '--';
+      elements.macdSigVal.textContent = '--';
+      elements.macdBadge.className = 'qc-badge neutral';
+      elements.macdBadge.textContent = 'N/A';
+    }
+
+    // 3. Bollinger Bands (20, 2)
+    if (diag.bb_percent_b !== null && diag.bb_percent_b !== undefined) {
+      const pctB = diag.bb_percent_b;
+      elements.bbPctbVal.textContent = `%B: ${pctB.toFixed(2)}`;
+      elements.bbUpVal.textContent = diag.bb_upper !== null ? formatPKR(diag.bb_upper) : '--';
+      elements.bbLowVal.textContent = diag.bb_lower !== null ? formatPKR(diag.bb_lower) : '--';
+      elements.bbWidthVal.textContent = diag.bb_bandwidth !== null && diag.bb_bandwidth !== undefined ? `${diag.bb_bandwidth.toFixed(2)}%` : '--';
+      if (pctB > 1.0) {
+        elements.bbBadge.className = 'qc-badge bearish';
+        elements.bbBadge.textContent = 'ABOVE UPPER';
+      } else if (pctB < 0.0) {
+        elements.bbBadge.className = 'qc-badge bullish';
+        elements.bbBadge.textContent = 'BELOW LOWER';
+      } else {
+        elements.bbBadge.className = 'qc-badge neutral';
+        elements.bbBadge.textContent = 'IN BAND';
+      }
+    } else {
+      elements.bbPctbVal.textContent = '--';
+      elements.bbUpVal.textContent = '--';
+      elements.bbLowVal.textContent = '--';
+      elements.bbWidthVal.textContent = '--';
+      elements.bbBadge.className = 'qc-badge neutral';
+      elements.bbBadge.textContent = 'N/A';
+    }
+
+    // 4. ADX / DMI (14)
+    if (diag.adx_14 !== null && diag.adx_14 !== undefined) {
+      elements.adxVal.textContent = `ADX: ${diag.adx_14.toFixed(1)}`;
+      elements.dmiPlusVal.textContent = diag.dmi_plus_14 !== null ? `+DI: ${diag.dmi_plus_14.toFixed(1)}` : '--';
+      elements.dmiMinusVal.textContent = diag.dmi_minus_14 !== null ? `-DI: ${diag.dmi_minus_14.toFixed(1)}` : '--';
+      const isTrending = diag.adx_14 >= 25;
+      const isBullDominance = (diag.dmi_plus_14 || 0) > (diag.dmi_minus_14 || 0);
+      elements.adxBadge.className = `qc-badge ${isTrending ? 'bullish' : 'neutral'}`;
+      elements.adxBadge.textContent = isTrending ? 'TRENDING' : 'RANGING';
+      elements.adxTrendStatus.textContent = isBullDominance ? '+DI Bull Dominance' : '-DI Bear Dominance';
+    } else {
+      elements.adxVal.textContent = '--';
+      elements.dmiPlusVal.textContent = '--';
+      elements.dmiMinusVal.textContent = '--';
+      elements.adxBadge.className = 'qc-badge neutral';
+      elements.adxBadge.textContent = 'N/A';
+      elements.adxTrendStatus.textContent = 'Trend Strength & Dir';
+    }
+
+    // 5. ATR (14)
+    if (diag.atr_14 !== null && diag.atr_14 !== undefined) {
+      elements.atrVal.textContent = `${diag.atr_14.toFixed(2)} PKR`;
+      elements.atrPkrVal.textContent = `${diag.atr_14.toFixed(2)} PKR`;
+      elements.atrPctVal.textContent = diag.atr_pct !== null ? `${diag.atr_pct.toFixed(2)}%` : '--%';
+    } else {
+      elements.atrVal.textContent = '--';
+      elements.atrPkrVal.textContent = '--';
+      elements.atrPctVal.textContent = '--%';
+    }
+
+    // 6. Stochastic (14, 3, 3)
+    if (diag.stoch_k !== null && diag.stoch_k !== undefined) {
+      elements.stochVal.textContent = `%K: ${diag.stoch_k.toFixed(1)}%`;
+      elements.stochKVal.textContent = `${diag.stoch_k.toFixed(1)}%`;
+      elements.stochDVal.textContent = diag.stoch_d !== null ? `${diag.stoch_d.toFixed(1)}%` : '--';
+      elements.stochSlowVal.textContent = diag.stoch_slow_d !== null ? `${diag.stoch_slow_d.toFixed(1)}%` : '--';
+      if (diag.stoch_k >= 80) {
+        elements.stochBadge.className = 'qc-badge bearish';
+        elements.stochBadge.textContent = 'OVERBOUGHT';
+      } else if (diag.stoch_k <= 20) {
+        elements.stochBadge.className = 'qc-badge bullish';
+        elements.stochBadge.textContent = 'OVERSOLD';
+      } else {
+        elements.stochBadge.className = 'qc-badge neutral';
+        elements.stochBadge.textContent = 'MID-RANGE';
+      }
+    } else {
+      elements.stochVal.textContent = '--';
+      elements.stochKVal.textContent = '--';
+      elements.stochDVal.textContent = '--';
+      elements.stochSlowVal.textContent = '--';
+      elements.stochBadge.className = 'qc-badge neutral';
+      elements.stochBadge.textContent = 'N/A';
+    }
+
+    // 7. OBV Volume Flow
+    if (diag.obv !== null && diag.obv !== undefined) {
+      elements.obvVal.textContent = formatLargeNumber(diag.obv);
+      elements.obvEmaVal.textContent = diag.obv_ema_20 !== null && diag.obv_ema_20 !== undefined ? formatLargeNumber(diag.obv_ema_20) : '--';
+      const isAccum = (diag.obv_ema_20 !== null && diag.obv_ema_20 !== undefined) ? diag.obv >= diag.obv_ema_20 : true;
+      elements.obvBadge.className = `qc-badge ${isAccum ? 'bullish' : 'bearish'}`;
+      elements.obvBadge.textContent = isAccum ? 'ACCUMULATION' : 'DISTRIBUTION';
+      elements.obvFlowStatus.textContent = isAccum ? 'Buying Volume Surge' : 'Selling Volume Pressure';
+    } else {
+      elements.obvVal.textContent = '--';
+      elements.obvEmaVal.textContent = '--';
+      elements.obvBadge.className = 'qc-badge neutral';
+      elements.obvBadge.textContent = 'N/A';
+      elements.obvFlowStatus.textContent = 'Cumulative Price-Vol';
+    }
+
+    // 8. SMA / EMA Moving Averages Alignment
+    elements.sma20Val.textContent = diag.sma_20 !== null ? formatPKR(diag.sma_20) : '--';
+    elements.ema20Val.textContent = diag.ema_20 !== null ? formatPKR(diag.ema_20) : '--';
+    elements.sma50Val.textContent = diag.sma_50 !== null ? formatPKR(diag.sma_50) : '--';
+    elements.ema50Val.textContent = diag.ema_50 !== null ? formatPKR(diag.ema_50) : '--';
+    elements.sma200Val.textContent = diag.sma_200 !== null ? formatPKR(diag.sma_200) : '--';
+    elements.ema200Val.textContent = diag.ema_200 !== null ? formatPKR(diag.ema_200) : '--';
+
+    const close = diag.close;
+    if (close && diag.sma_50 && diag.sma_200) {
+      if (close > diag.sma_50 && diag.sma_50 > diag.sma_200) {
+        elements.maBadge.className = 'qc-badge bullish';
+        elements.maBadge.textContent = 'BULLISH';
+        elements.maAlignmentStatus.textContent = 'Price > SMA50 > SMA200';
+      } else if (close < diag.sma_50 && diag.sma_50 < diag.sma_200) {
+        elements.maBadge.className = 'qc-badge bearish';
+        elements.maBadge.textContent = 'BEARISH';
+        elements.maAlignmentStatus.textContent = 'Price < SMA50 < SMA200';
+      } else {
+        elements.maBadge.className = 'qc-badge neutral';
+        elements.maBadge.textContent = 'CONSOLIDATING';
+        elements.maAlignmentStatus.textContent = 'Mixed Alignment';
+      }
+    } else {
+      elements.maBadge.className = 'qc-badge neutral';
+      elements.maBadge.textContent = 'NEUTRAL';
+      elements.maAlignmentStatus.textContent = 'Historical Tracking';
+    }
+
+    // Diagnostic Explanations
+    elements.diagList.innerHTML = '';
+    const points = diag.diagnostics || [];
+    if (!points.length) {
+      elements.diagList.innerHTML = `<li class="diag-item"><span class="diag-bullet">▸</span><span>Insufficient historical lookback for full multi-indicator synthesis.</span></li>`;
+    } else {
+      points.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'diag-item';
+        li.innerHTML = `<span class="diag-bullet">▸</span><span>${item}</span>`;
+        elements.diagList.appendChild(li);
+      });
+    }
+
+  } catch (err) {
+    console.error('Error fetching quantitative indicators:', err);
+  }
+}
+
+function formatLargeNumber(val) {
+  if (val === null || val === undefined) return '--';
+  const abs = Math.abs(val);
+  const sign = val < 0 ? '-' : '';
+  if (abs >= 1e9) return `${sign}${(abs / 1e9).toFixed(2)}B`;
+  if (abs >= 1e6) return `${sign}${(abs / 1e6).toFixed(2)}M`;
+  if (abs >= 1e3) return `${sign}${(abs / 1e3).toFixed(2)}K`;
+  return `${sign}${abs.toFixed(0)}`;
 }
 
 // 4. NEWS & SENTIMENT LOADING

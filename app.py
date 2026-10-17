@@ -13,6 +13,7 @@ from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import text
 import pandas as pd
+import numpy as np
 
 from src.database.connection import get_session
 from src.analysis.candlestick_patterns import CandlestickPatternDetector
@@ -316,6 +317,82 @@ def get_patterns(
     """Returns structured list of detected candlestick patterns for a symbol."""
     ohlcv_data = get_ohlcv(symbol, days=days)
     return ohlcv_data.get("patterns", [])
+
+
+@app.get("/api/indicators/{symbol}")
+def get_indicators(
+    symbol: str,
+    days: int = Query(default=180, ge=10, le=1000)
+) -> Dict[str, Any]:
+    """
+    Returns precomputed or on-demand calculated technical indicators
+    (SMA, EMA, RSI, MACD, Bollinger Bands, ATR, ADX, OBV, Stochastic)
+    along with diagnostic analytical interpretations explaining the conditions.
+    """
+    sym = symbol.strip().upper()
+    session = get_session()
+    try:
+        # Check if precomputed in technical_indicators table
+        rows = session.execute(text("""
+            SELECT trading_date, open, high, low, close, volume,
+                   sma_20, sma_50, sma_200, ema_12, ema_26, ema_20, ema_50, ema_200,
+                   rsi_14, macd_line, macd_signal, macd_diff,
+                   bb_middle, bb_upper, bb_lower, bb_bandwidth, bb_percent_b,
+                   dmi_plus_14, dmi_minus_14, adx_14, atr_14, atr_pct,
+                   obv, stoch_k, stoch_d
+            FROM technical_indicators
+            WHERE symbol = :symbol
+            ORDER BY trading_date DESC
+            LIMIT :limit;
+        """), {"symbol": sym, "limit": days}).fetchall()
+
+        if rows:
+            cols = [
+                "trading_date", "open", "high", "low", "close", "volume",
+                "sma_20", "sma_50", "sma_200", "ema_12", "ema_26", "ema_20", "ema_50", "ema_200",
+                "rsi_14", "macd_line", "macd_signal", "macd_diff",
+                "bb_middle", "bb_upper", "bb_lower", "bb_bandwidth", "bb_percent_b",
+                "dmi_plus_14", "dmi_minus_14", "adx_14", "atr_14", "atr_pct",
+                "obv", "stoch_k", "stoch_d"
+            ]
+            df = pd.DataFrame(rows, columns=cols).sort_values(by="trading_date").reset_index(drop=True)
+        else:
+            # Calculate on-demand using TechnicalIndicatorCalculator
+            raw_ohlcv = get_ohlcv(sym, days=days)
+            raw_df = pd.DataFrame(raw_ohlcv["candles"])
+            raw_df["symbol"] = sym
+            raw_df = raw_df.rename(columns={"time": "trading_date"})
+            from src.analysis.technical_indicators import TechnicalIndicatorCalculator
+            calc = TechnicalIndicatorCalculator()
+            df = calc.compute_all_indicators(raw_df)
+
+        from src.analysis.technical_indicators import TechnicalIndicatorCalculator
+        calc = TechnicalIndicatorCalculator()
+        interpretation = calc.generate_analytical_interpretation(df.iloc[-1])
+
+        records = []
+        for _, r in df.iterrows():
+            record = {}
+            for col in df.columns:
+                val = r[col]
+                if pd.isna(val):
+                    record[col] = None
+                elif isinstance(val, (int, np.integer)):
+                    record[col] = int(val)
+                elif isinstance(val, (float, np.floating)):
+                    record[col] = float(val)
+                else:
+                    record[col] = str(val)
+            records.append(record)
+
+        return {
+            "symbol": sym,
+            "total_bars": len(records),
+            "indicators": records,
+            "latest_diagnostics": interpretation
+        }
+    finally:
+        session.close()
 
 
 @app.get("/api/sentiment/latest")

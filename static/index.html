@@ -187,6 +187,167 @@
             </div>
             <div id="tradingview-chart-container"></div>
           </div>
+
+          <!-- Quantitative Technical Indicators & Diagnostic Analysis Section (Phase 4) -->
+          <div class="quant-section" id="quant-section">
+            <div class="quant-header">
+              <div class="quant-title-wrap">
+                <span class="quant-icon">⚡</span>
+                <div>
+                  <h3 class="quant-title">Quantitative Indicators & System Diagnostic</h3>
+                  <p class="quant-subtitle">Phase 4 Algorithmic Technical Engine (Zero Lookahead Bias)</p>
+                </div>
+              </div>
+              <div class="quant-disclaimer-badge">
+                <span class="warning-dot"></span>
+                <span>Analytical Diagnostics Only • Not Guaranteed Buy/Sell Signals</span>
+              </div>
+            </div>
+
+            <!-- Indicators Grid (8 Core Foundation Indicators) -->
+            <div class="quant-cards-grid">
+              <!-- 1. RSI -->
+              <div class="quant-card" id="card-rsi">
+                <div class="qc-top">
+                  <span class="qc-label">RSI (14)</span>
+                  <span class="qc-badge" id="rsi-badge">--</span>
+                </div>
+                <div class="qc-value" id="rsi-val">--</div>
+                <div class="qc-progress-bg">
+                  <div class="qc-progress-bar" id="rsi-bar" style="width: 50%;"></div>
+                </div>
+                <div class="qc-footer">
+                  <span>30 Oversold</span>
+                  <span>70 Overbought</span>
+                </div>
+              </div>
+
+              <!-- 2. MACD -->
+              <div class="quant-card" id="card-macd">
+                <div class="qc-top">
+                  <span class="qc-label">MACD (12, 26, 9)</span>
+                  <span class="qc-badge" id="macd-badge">--</span>
+                </div>
+                <div class="qc-value" id="macd-diff-val">--</div>
+                <div class="qc-substats">
+                  <div>Line: <b id="macd-line-val">--</b></div>
+                  <div>Signal: <b id="macd-sig-val">--</b></div>
+                </div>
+                <div class="qc-footer">
+                  <span>Histogram Divergence</span>
+                </div>
+              </div>
+
+              <!-- 3. Bollinger Bands -->
+              <div class="quant-card" id="card-bb">
+                <div class="qc-top">
+                  <span class="qc-label">Bollinger (20, 2)</span>
+                  <span class="qc-badge" id="bb-badge">--</span>
+                </div>
+                <div class="qc-value" id="bb-pctb-val">--</div>
+                <div class="qc-substats">
+                  <div>Upper: <b id="bb-up-val">--</b></div>
+                  <div>Lower: <b id="bb-low-val">--</b></div>
+                </div>
+                <div class="qc-footer">
+                  <span>Bandwidth: <b id="bb-width-val">--</b></span>
+                </div>
+              </div>
+
+              <!-- 4. ADX / DMI -->
+              <div class="quant-card" id="card-adx">
+                <div class="qc-top">
+                  <span class="qc-label">ADX / DMI (14)</span>
+                  <span class="qc-badge" id="adx-badge">--</span>
+                </div>
+                <div class="qc-value" id="adx-val">--</div>
+                <div class="qc-substats">
+                  <div>+DI: <b id="dmi-plus-val" style="color:var(--bullish);">--</b></div>
+                  <div>-DI: <b id="dmi-minus-val" style="color:var(--bearish);">--</b></div>
+                </div>
+                <div class="qc-footer">
+                  <span id="adx-trend-status">Trend Strength & Dir</span>
+                </div>
+              </div>
+
+              <!-- 5. ATR Volatility -->
+              <div class="quant-card" id="card-atr">
+                <div class="qc-top">
+                  <span class="qc-label">ATR (14)</span>
+                  <span class="qc-badge neutral" id="atr-badge">Volatility</span>
+                </div>
+                <div class="qc-value" id="atr-val">--</div>
+                <div class="qc-substats">
+                  <div>Range: <b id="atr-pkr-val">--</b></div>
+                  <div>ATR%: <b id="atr-pct-val">--</b></div>
+                </div>
+                <div class="qc-footer">
+                  <span>Expected Daily Bar Drift</span>
+                </div>
+              </div>
+
+              <!-- 6. Stochastic -->
+              <div class="quant-card" id="card-stoch">
+                <div class="qc-top">
+                  <span class="qc-label">Stochastic (14, 3, 3)</span>
+                  <span class="qc-badge" id="stoch-badge">--</span>
+                </div>
+                <div class="qc-value" id="stoch-val">--</div>
+                <div class="qc-substats">
+                  <div>%K: <b id="stoch-k-val">--</b></div>
+                  <div>%D: <b id="stoch-d-val">--</b></div>
+                </div>
+                <div class="qc-footer">
+                  <span>Slow %D: <b id="stoch-slow-val">--</b></span>
+                </div>
+              </div>
+
+              <!-- 7. OBV Flow -->
+              <div class="quant-card" id="card-obv">
+                <div class="qc-top">
+                  <span class="qc-label">OBV Volume Flow</span>
+                  <span class="qc-badge" id="obv-badge">--</span>
+                </div>
+                <div class="qc-value" id="obv-val">--</div>
+                <div class="qc-substats">
+                  <div style="grid-column: 1 / -1;">OBV EMA20: <b id="obv-ema-val">--</b></div>
+                </div>
+                <div class="qc-footer">
+                  <span id="obv-flow-status">Cumulative Price-Vol</span>
+                </div>
+              </div>
+
+              <!-- 8. Moving Averages Alignment -->
+              <div class="quant-card" id="card-ma">
+                <div class="qc-top">
+                  <span class="qc-label">SMA / EMA Alignment</span>
+                  <span class="qc-badge" id="ma-badge">--</span>
+                </div>
+                <div class="qc-substats" style="grid-template-columns: 1fr 1fr; margin-top: 4px;">
+                  <div>SMA20: <b id="sma20-val">--</b></div>
+                  <div>EMA20: <b id="ema20-val">--</b></div>
+                  <div>SMA50: <b id="sma50-val">--</b></div>
+                  <div>EMA50: <b id="ema50-val">--</b></div>
+                  <div>SMA200: <b id="sma200-val">--</b></div>
+                  <div>EMA200: <b id="ema200-val">--</b></div>
+                </div>
+                <div class="qc-footer">
+                  <span id="ma-alignment-status">Trend Regime</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Plain-English Diagnostic Explanations -->
+            <div class="diagnostics-box">
+              <div class="diag-header">
+                <span class="diag-title">System Diagnostic Explanations</span>
+                <span class="diag-tag">Multi-Indicator Synthesis</span>
+              </div>
+              <ul class="diag-list" id="diag-list">
+                <!-- Dynamically populated diagnostic points -->
+              </ul>
+            </div>
+          </div>
         </section>
 
         <!-- COLUMN 3: PATTERNS & NEWS DRAWER -->
