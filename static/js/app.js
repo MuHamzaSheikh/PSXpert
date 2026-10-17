@@ -14,6 +14,8 @@ const state = {
   marketSummary: null,
   activeOHLCV: null,
   activePatterns: [],
+  isFullScreener: false,
+  newsCategory: 'ALL',
   indicators: {
     ema20: true,
     ema50: true,
@@ -104,7 +106,14 @@ const elements = {
   ema200Val: document.getElementById('ema200-val'),
   maBadge: document.getElementById('ma-badge'),
   maAlignmentStatus: document.getElementById('ma-alignment-status'),
-  diagList: document.getElementById('diag-list')
+  diagList: document.getElementById('diag-list'),
+
+  // Full Screener and News Catalyst elements
+  chartWorkspace: document.querySelector('.chart-workspace-panel'),
+  btnChartScreener: document.getElementById('btn-chart-screener'),
+  btnExitScreener: document.getElementById('btn-exit-screener'),
+  btnRefreshNews: document.getElementById('btn-refresh-news'),
+  newsFilterTabs: document.getElementById('news-filter-tabs')
 };
 
 // Initialize Application
@@ -756,13 +765,25 @@ function formatLargeNumber(val) {
   return `${sign}${abs.toFixed(0)}`;
 }
 
-// 4. NEWS & SENTIMENT LOADING
-async function loadNewsSentiment() {
+// 4. NEWS & SENTIMENT LOADING (FinBERT Market Catalysts & Geopolitical Intelligence)
+async function loadNewsSentiment(cat = null) {
+  if (cat !== null) {
+    state.newsCategory = cat;
+  }
   try {
-    const res = await fetch('/api/sentiment/latest?limit=15');
+    let url = `/api/sentiment/latest?limit=30`;
+    if (state.newsCategory && state.newsCategory !== 'ALL') {
+      url += `&category=${state.newsCategory}`;
+    }
+    const res = await fetch(url);
     const news = await res.json();
     const container = elements.newsContainer;
     container.innerHTML = '';
+
+    if (!news || !news.length) {
+      container.innerHTML = `<div style="color:#64748b; font-size:12px; text-align:center; padding:20px;">No articles found for ${state.newsCategory}. Click 'Live Refresh' to fetch feeds.</div>`;
+      return;
+    }
 
     news.forEach(item => {
       const card = document.createElement('div');
@@ -772,25 +793,160 @@ async function loadNewsSentiment() {
       if (item.sentiment_label === 'POSITIVE') labelClass = 'pill-bullish';
       if (item.sentiment_label === 'NEGATIVE') labelClass = 'pill-bearish';
 
-      const symbols = item.symbols_mentioned.map(s => `<span class="ticker-badge" style="font-size:10px; padding:1px 5px;">${s}</span>`).join(' ');
+      let catClass = 'cat-corp';
+      let catIcon = '🏢';
+      if (item.category === 'GEOPOLITICAL') { catClass = 'cat-geo'; catIcon = '🌍'; }
+      else if (item.category === 'MACRO_IMF') { catClass = 'cat-macro'; catIcon = '🏛️'; }
+      else if (item.category === 'ENERGY_OIL') { catClass = 'cat-energy'; catIcon = '⚡'; }
+      else if (item.category === 'TECH_AI') { catClass = 'cat-tech'; catIcon = '💻'; }
+      else if (item.category === 'BANKING') { catClass = 'cat-bank'; catIcon = '🏦'; }
+      else if (item.category === 'CEMENT') { catClass = 'cat-cement'; catIcon = '🏗️'; }
+
+      // Targeted Industries Badges
+      const industries = item.targeted_industries || [];
+      const indHtml = industries.map(ind => `<span class="industry-tag">${ind}</span>`).join(' ');
+
+      // Impacted Stocks Chips (Clickable!)
+      const stocks = item.impacted_stocks || [];
+      const stocksHtml = stocks.map(stk => `
+        <span class="news-stock-chip" onclick="selectSymbol('${stk}')" title="Click to view ${stk} chart and technical diagnostics">${stk}</span>
+      `).join(' ');
 
       card.innerHTML = `
+        <div class="news-item-top">
+          <span class="news-cat-pill ${catClass}">${catIcon} ${item.category_badge || item.category}</span>
+          <span class="pill-badge ${labelClass}">FinBERT: ${item.sentiment_label} (${(item.confidence * 100).toFixed(0)}%)</span>
+        </div>
+
         <a href="${item.url}" target="_blank" class="news-headline">${item.headline}</a>
-        <div style="margin:4px 0;">${symbols}</div>
+
+        ${indHtml ? `
+          <div class="news-industries-row">
+            <span style="color:#64748b; font-size:10px; font-weight:700;">Targeted Industries:</span>
+            ${indHtml}
+          </div>
+        ` : ''}
+
+        ${stocksHtml ? `
+          <div class="news-stocks-row">
+            <span style="color:#64748b; font-size:10px; font-weight:700;">Impacted Stocks:</span>
+            ${stocksHtml}
+          </div>
+        ` : ''}
+
+        ${item.impact_analysis ? `
+          <div class="news-transmission-box">
+            <div class="news-transmission-title">💡 Transmission Impact:</div>
+            <div>${item.impact_analysis}</div>
+          </div>
+        ` : ''}
+
         <div class="news-meta">
           <span>${item.publisher} • ${item.published_at ? item.published_at.split('T')[0] : ''}</span>
-          <span class="pill-badge ${labelClass}">FinBERT: ${item.sentiment_label} (${(item.confidence * 100).toFixed(0)}%)</span>
+          <span style="color:#38bdf8; font-size:10px; font-family:var(--font-mono);">Polarity: ${item.sentiment_score > 0 ? '+' : ''}${item.sentiment_score.toFixed(2)}</span>
         </div>
       `;
       container.appendChild(card);
     });
   } catch (err) {
-    console.error('Error loading news sentiment:', err);
+    console.error('Error loading news catalysts:', err);
   }
+}
+
+// 4b. FULL SCREENER TOGGLE
+function toggleFullScreener() {
+  state.isFullScreener = !state.isFullScreener;
+  document.body.classList.toggle('full-screener-active', state.isFullScreener);
+  if (elements.chartWorkspace) {
+    elements.chartWorkspace.classList.toggle('full-screener-active', state.isFullScreener);
+  }
+
+  if (state.isFullScreener) {
+    if (elements.btnChartScreener) {
+      elements.btnChartScreener.innerHTML = `
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <span>Exit Screener</span>
+      `;
+    }
+    if (elements.btnExitScreener) {
+      elements.btnExitScreener.style.display = 'flex';
+    }
+  } else {
+    if (elements.btnChartScreener) {
+      elements.btnChartScreener.innerHTML = `
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        <span>Full Screener</span>
+      `;
+    }
+    if (elements.btnExitScreener) {
+      elements.btnExitScreener.style.display = 'none';
+    }
+  }
+
+  setTimeout(() => {
+    if (state.chart && elements.chartContainer) {
+      state.chart.applyOptions({
+        width: elements.chartContainer.clientWidth,
+        height: elements.chartContainer.clientHeight
+      });
+      state.chart.timeScale().fitContent();
+    }
+  }, 60);
 }
 
 // 5. EVENT LISTENERS & CONTROLS
 function bindEventListeners() {
+  // Full Screener Button
+  if (elements.btnChartScreener) {
+    elements.btnChartScreener.addEventListener('click', toggleFullScreener);
+  }
+  if (elements.btnExitScreener) {
+    elements.btnExitScreener.addEventListener('click', toggleFullScreener);
+  }
+
+  // Escape Key to Exit Full Screener
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && state.isFullScreener) {
+      toggleFullScreener();
+    }
+  });
+
+  // Window Resize
+  window.addEventListener('resize', () => {
+    if (state.chart && elements.chartContainer) {
+      state.chart.applyOptions({
+        width: elements.chartContainer.clientWidth,
+        height: elements.chartContainer.clientHeight
+      });
+    }
+  });
+
+  // News Filter Tabs
+  document.querySelectorAll('.nft-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nft-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      loadNewsSentiment(btn.dataset.cat);
+    });
+  });
+
+  // News Live Refresh Button
+  if (elements.btnRefreshNews) {
+    elements.btnRefreshNews.addEventListener('click', async () => {
+      elements.btnRefreshNews.classList.add('loading');
+      try {
+        const res = await fetch('/api/news/refresh', { method: 'POST' });
+        const data = await res.json();
+        console.log('Live news feed refresh:', data);
+      } catch (err) {
+        console.error('Error refreshing feeds:', err);
+      } finally {
+        await loadNewsSentiment();
+        elements.btnRefreshNews.classList.remove('loading');
+      }
+    });
+  }
+
   // Timeframe Buttons
   document.querySelectorAll('.tf-btn').forEach(btn => {
     btn.addEventListener('click', () => {

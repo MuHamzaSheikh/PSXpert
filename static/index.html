@@ -173,10 +173,18 @@
               <span class="toggle-chip active-patterns" id="toggle-volume">Volume</span>
               <span class="toggle-chip active-patterns" id="toggle-patterns">Candle Patterns</span>
             </div>
+
+            <!-- Full Screener Toggle Button -->
+            <div class="screener-action-group">
+              <button class="screener-btn" id="btn-chart-screener" title="Toggle Full Screener Trading Desk">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                <span>Full Screener</span>
+              </button>
+            </div>
           </div>
 
           <!-- Chart Container -->
-          <div class="chart-view-area">
+          <div class="chart-view-area" id="chart-view-area">
             <div class="chart-hud-overlay" id="chart-hud">
               <div class="hud-item"><span>Date:</span> <b id="hud-date">--</b></div>
               <div class="hud-item"><span>O:</span> <b id="hud-open">--</b></div>
@@ -185,6 +193,13 @@
               <div class="hud-item"><span>C:</span> <b id="hud-close">--</b></div>
               <div class="hud-item"><span>Vol:</span> <b id="hud-vol">--</b></div>
             </div>
+
+            <!-- Exit Full Screener Floating Button -->
+            <button class="exit-screener-btn" id="btn-exit-screener" style="display:none;" title="Exit Full Screener (ESC)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              <span>Exit Screener (ESC)</span>
+            </button>
+
             <div id="tradingview-chart-container"></div>
           </div>
 
@@ -367,9 +382,25 @@
           <!-- News & Sentiment Drawer -->
           <div class="drawer-card" id="news-card">
             <div class="panel-title-bar">
-              <h2 class="panel-title">FinBERT Market Catalysts</h2>
-              <span style="font-size:11px; color:#38bdf8; font-weight:600; font-family:var(--font-mono);">NLP Feeds</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <h2 class="panel-title">FinBERT Market Catalysts</h2>
+                <span class="live-pulse-dot" title="Live Financial & Geopolitical Intelligence"></span>
+              </div>
+              <button class="news-refresh-btn" id="btn-refresh-news" title="Refresh Live Financial & Geopolitical Feeds">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                <span>Live Refresh</span>
+              </button>
             </div>
+
+            <!-- Geopolitical & Financial Category Filter Tabs -->
+            <div class="news-filter-tabs" id="news-filter-tabs">
+              <button class="nft-btn active" data-cat="ALL">ALL</button>
+              <button class="nft-btn" data-cat="GEOPOLITICAL">🌍 GEOPOLITICS</button>
+              <button class="nft-btn" data-cat="MACRO_IMF">🏛️ MACRO/IMF</button>
+              <button class="nft-btn" data-cat="ENERGY_OIL">⚡ ENERGY</button>
+              <button class="nft-btn" data-cat="TECH_AI">💻 TECH</button>
+            </div>
+
             <div class="news-list-container" id="news-container">
               <!-- Dynamically populated news cards -->
             </div>

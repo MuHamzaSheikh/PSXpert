@@ -17,6 +17,8 @@ import numpy as np
 
 from src.database.connection import get_session
 from src.analysis.candlestick_patterns import CandlestickPatternDetector
+from src.sentiment.impact_analyzer import NewsImpactAnalyzer
+from src.sentiment.live_feed_ingest import fetch_and_ingest_live_news
 
 app = FastAPI(title="PSXpert Terminal API", version="1.0.0")
 
@@ -30,6 +32,7 @@ app.add_middleware(
 )
 
 pattern_detector = CandlestickPatternDetector()
+impact_analyzer = NewsImpactAnalyzer()
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 
@@ -396,23 +399,27 @@ def get_indicators(
 
 
 @app.get("/api/sentiment/latest")
-def get_latest_sentiment(limit: int = 20) -> List[Dict[str, Any]]:
-    """Returns recent financial news articles with FinBERT sentiment scores."""
+def get_latest_sentiment(
+    category: Optional[str] = Query(None, description="Optional category filter: GEOPOLITICAL, MACRO_IMF, ENERGY_OIL, TECH_AI, BANKING, CEMENT, CORPORATE"),
+    symbol: Optional[str] = Query(None, description="Optional symbol filter: e.g. OGDC, KSE100"),
+    limit: int = Query(35, description="Number of news articles to retrieve")
+) -> List[Dict[str, Any]]:
+    """Returns recent financial & geopolitical news articles with targeted industries, affected stocks, and FinBERT sentiment."""
     session = get_session()
     try:
         query = text("""
-            SELECT a.id, a.headline, a.publisher, a.url, a.published_at,
+            SELECT a.id, a.headline, a.summary, a.publisher, a.url, a.published_at,
                    s.sentiment_label, s.sentiment_score, s.confidence, s.evaluation_metadata
             FROM news_articles a
             JOIN news_sentiment s ON a.id = s.article_id
             WHERE s.model_name = 'finbert'
             ORDER BY a.published_at DESC
-            LIMIT :limit;
+            LIMIT 120;
         """)
-        rows = session.execute(query, {"limit": limit}).fetchall()
+        rows = session.execute(query).fetchall()
         news_list = []
         for r in rows:
-            meta = r[8]
+            meta = r[9]
             if isinstance(meta, str):
                 try:
                     meta = json.loads(meta)
@@ -421,21 +428,66 @@ def get_latest_sentiment(limit: int = 20) -> List[Dict[str, Any]]:
             elif not isinstance(meta, dict):
                 meta = {}
 
+            symbols = meta.get("symbols_mentioned", [])
+            headline = r[1]
+            summary = r[2] or ""
+            label = r[6]
+
+            # Analyze geopolitical & sector transmission
+            impact = impact_analyzer.analyze(
+                headline=headline,
+                summary=summary,
+                sentiment_label=label,
+                mentioned_symbols=symbols
+            )
+
+            # Filter by category if requested
+            if category and category.upper() != "ALL":
+                if impact["category"] != category.upper():
+                    continue
+
+            # Filter by symbol if requested
+            if symbol and symbol.upper() != "ALL":
+                sym_upper = symbol.upper()
+                if sym_upper not in impact["impacted_stocks"] and sym_upper not in symbols:
+                    continue
+
             news_list.append({
                 "article_id": r[0],
-                "headline": r[1],
-                "publisher": r[2],
-                "url": r[3],
-                "published_at": str(r[4]),
-                "sentiment_label": r[5],
-                "sentiment_score": float(r[6]) if r[6] is not None else 0.0,
-                "confidence": float(r[7]) if r[7] is not None else 0.0,
-                "symbols_mentioned": meta.get("symbols_mentioned", []),
+                "headline": headline,
+                "summary": summary,
+                "publisher": r[3],
+                "url": r[4],
+                "published_at": str(r[5]),
+                "sentiment_label": label,
+                "sentiment_score": float(r[7]) if r[7] is not None else 0.0,
+                "confidence": float(r[8]) if r[8] is not None else 0.0,
+                "symbols_mentioned": symbols,
+                "category": impact["category"],
+                "category_badge": impact["category_badge"],
+                "targeted_industries": impact["targeted_industries"],
+                "impacted_stocks": impact["impacted_stocks"],
+                "impact_analysis": impact["impact_analysis"],
                 "target_sentiments": meta.get("target_specific_sentiments", {})
             })
+
+            if len(news_list) >= limit:
+                break
+
         return news_list
     finally:
         session.close()
+
+
+@app.get("/api/news/refresh")
+@app.post("/api/news/refresh")
+def refresh_live_news_stream() -> Dict[str, Any]:
+    """Triggers real-time ingestion of live RSS financial & geopolitical news feeds."""
+    try:
+        res = fetch_and_ingest_live_news(max_per_feed=10)
+        return res
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 
 # Mount static directory for frontend files
