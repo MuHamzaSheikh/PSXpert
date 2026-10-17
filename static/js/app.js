@@ -21,8 +21,11 @@ const state = {
     ema50: true,
     ema200: false,
     volume: true,
-    patterns: true
+    patterns: true,
+    hmmRegimes: true
   },
+  activeHMM: null,
+  activeGA: null,
   chart: null,
   candleSeries: null,
   volumeSeries: null,
@@ -114,7 +117,40 @@ const elements = {
   btnChartScreener: document.getElementById('btn-chart-screener'),
   btnExitScreener: document.getElementById('btn-exit-screener'),
   btnRefreshNews: document.getElementById('btn-refresh-news'),
-  newsFilterTabs: document.getElementById('news-filter-tabs')
+  newsFilterTabs: document.getElementById('news-filter-tabs'),
+
+  // Phase 5 HMM & GA DOM elements
+  btnRunGA: document.getElementById('btn-run-ga'),
+  gaStatusBadge: document.getElementById('ga-status-badge'),
+  hmmCurrentRegimePill: document.getElementById('hmm-current-regime-pill'),
+  regimeStatusDot: document.getElementById('regime-status-dot'),
+  hmmCurrentRegimeLabel: document.getElementById('hmm-current-regime-label'),
+  hmmCurrentConfidence: document.getElementById('hmm-current-confidence'),
+  probBullVal: document.getElementById('prob-bull-val'),
+  probBullBar: document.getElementById('prob-bull-bar'),
+  probBearVal: document.getElementById('prob-bear-val'),
+  probBearBar: document.getElementById('prob-bear-bar'),
+  probSideVal: document.getElementById('prob-side-val'),
+  probSideBar: document.getElementById('prob-side-bar'),
+  hmmMatrixBody: document.getElementById('hmm-matrix-body'),
+  hmmCharList: document.getElementById('hmm-char-list'),
+  gaParamRsi: document.getElementById('ga-param-rsi'),
+  gaParamOsob: document.getElementById('ga-param-osob'),
+  gaParamEma: document.getElementById('ga-param-ema'),
+  gaParamMacd: document.getElementById('ga-param-macd'),
+  gaParamBb: document.getElementById('ga-param-bb'),
+  gaParamSltp: document.getElementById('ga-param-sltp'),
+  gaParamRegime: document.getElementById('ga-param-regime'),
+  isSharpeVal: document.getElementById('is-sharpe-val'),
+  isReturnSub: document.getElementById('is-return-sub'),
+  oosSharpeVal: document.getElementById('oos-sharpe-val'),
+  oosReturnSub: document.getElementById('oos-return-sub'),
+  oosLiftVal: document.getElementById('oos-lift-val'),
+  oosLiftSub: document.getElementById('oos-lift-sub'),
+  wfeVal: document.getElementById('wfe-val'),
+  wfeRiskSub: document.getElementById('wfe-risk-sub'),
+  wfvFoldsContainer: document.getElementById('wfv-folds-container'),
+  toggleHmmRegimes: document.getElementById('toggle-hmm-regimes')
 };
 
 // Initialize Application
@@ -126,6 +162,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadStocks();
   await loadNewsSentiment();
   await selectSymbol('KSE100');
+  // Pre-populate Phase 5 GA optimization in the background
+  runGAOptimization('KSE100');
 });
 
 // 1. CHART INITIALIZATION (TradingView Lightweight Charts)
@@ -473,12 +511,8 @@ async function selectSymbol(symbol) {
     state.ema50Series.setData(ema50Data);
     state.ema200Series.setData(ema200Data);
 
-    // Set Candlestick Pattern Markers
-    if (state.indicators.patterns) {
-      applyPatternMarkers(data.patterns);
-    } else {
-      state.candleSeries.setMarkers([]);
-    }
+    // Set Candlestick Pattern & HMM Regime Markers
+    updateChartMarkers();
 
     state.chart.timeScale().fitContent();
 
@@ -488,33 +522,62 @@ async function selectSymbol(symbol) {
     // Phase 4: Fetch Quantitative Indicators & System Diagnostics
     await loadQuantitativeIndicators(symbol);
 
+    // Phase 5: Fetch Hidden Markov Model (HMM) Regimes
+    await loadHMMRegimes(symbol);
+
   } catch (err) {
     console.error('Error fetching OHLCV for', symbol, err);
   }
 }
 
-function applyPatternMarkers(patterns) {
-  if (!patterns || !patterns.length) {
-    state.candleSeries.setMarkers([]);
-    return;
+function updateChartMarkers() {
+  if (!state.candleSeries) return;
+  const markers = [];
+
+  // 1. Candlestick Formations
+  if (state.indicators.patterns && state.activePatterns && state.activePatterns.length) {
+    state.activePatterns.forEach(p => {
+      const isBull = p.type === 'BULLISH';
+      const isBear = p.type === 'BEARISH';
+      markers.push({
+        time: p.date,
+        position: isBull ? 'belowBar' : (isBear ? 'aboveBar' : 'aboveBar'),
+        color: isBull ? '#00f59b' : (isBear ? '#ff3366' : '#94a3b8'),
+        shape: isBull ? 'arrowUp' : (isBear ? 'arrowDown' : 'circle'),
+        text: p.pattern,
+        size: 1.1
+      });
+    });
   }
 
-  const markers = patterns.map(p => {
-    const isBull = p.type === 'BULLISH';
-    const isBear = p.type === 'BEARISH';
-    return {
-      time: p.date,
-      position: isBull ? 'belowBar' : (isBear ? 'aboveBar' : 'aboveBar'),
-      color: isBull ? '#00f59b' : (isBear ? '#ff3366' : '#94a3b8'),
-      shape: isBull ? 'arrowUp' : (isBear ? 'arrowDown' : 'circle'),
-      text: p.pattern,
-      size: 1.2
-    };
-  });
+  // 2. Hidden Markov Model (HMM) Latent Regime Shifts
+  if (state.indicators.hmmRegimes && state.activeHMM && state.activeHMM.history_sample) {
+    const history = state.activeHMM.history_sample;
+    for (let i = 1; i < history.length; i++) {
+      const curr = history[i];
+      const prev = history[i - 1];
+      if (curr.regime !== prev.regime) {
+        const isBull = curr.regime === 'BULLISH';
+        const isBear = curr.regime === 'BEARISH';
+        markers.push({
+          time: curr.date,
+          position: isBull ? 'belowBar' : (isBear ? 'aboveBar' : 'aboveBar'),
+          color: isBull ? '#a855f7' : (isBear ? '#f43f5e' : '#38bdf8'),
+          shape: isBull ? 'arrowUp' : (isBear ? 'arrowDown' : 'square'),
+          text: `Regime: ${curr.regime}`,
+          size: 1.3
+        });
+      }
+    }
+  }
 
   // Sort markers chronologically
   markers.sort((a, b) => new Date(a.time) - new Date(b.time));
   state.candleSeries.setMarkers(markers);
+}
+
+function applyPatternMarkers(patterns) {
+  updateChartMarkers();
 }
 
 function renderPatternsList(patterns) {
@@ -765,6 +828,219 @@ function formatLargeNumber(val) {
   if (abs >= 1e3) return `${sign}${(abs / 1e3).toFixed(2)}K`;
   return `${sign}${abs.toFixed(0)}`;
 }
+
+// -------------------------------------------------------------
+// PHASE 5: HIDDEN MARKOV MODEL (HMM) & GENETIC ALGORITHM (GA)
+// -------------------------------------------------------------
+
+async function loadHMMRegimes(symbol) {
+  try {
+    const res = await fetch(`/api/quantitative/hmm?symbol=${symbol}&days=750&states=3`);
+    if (!res.ok) {
+      console.warn(`HMM regime analysis not available for ${symbol}`);
+      return;
+    }
+    const data = await res.json();
+    state.activeHMM = data;
+
+    // 1. Update Current Regime Pill
+    const reg = data.current_regime || 'UNKNOWN';
+    const conf = (data.current_confidence * 100).toFixed(1);
+    
+    if (elements.hmmCurrentRegimeLabel) elements.hmmCurrentRegimeLabel.textContent = reg;
+    if (elements.hmmCurrentConfidence) elements.hmmCurrentConfidence.textContent = `(${conf}%)`;
+
+    if (elements.hmmCurrentRegimePill) {
+      elements.hmmCurrentRegimePill.className = 'current-regime-pill';
+      if (reg === 'BULLISH') elements.hmmCurrentRegimePill.classList.add('regime-bullish');
+      else if (reg === 'BEARISH') elements.hmmCurrentRegimePill.classList.add('regime-bearish');
+      else elements.hmmCurrentRegimePill.classList.add('regime-sideways');
+    }
+
+    // 2. Update Posterior State Probabilities
+    const probs = data.current_probabilities || {};
+    const bullPct = ((probs.BULLISH || 0) * 100).toFixed(1);
+    const bearPct = ((probs.BEARISH || 0) * 100).toFixed(1);
+    const sidePct = ((probs.SIDEWAYS || 0) * 100).toFixed(1);
+
+    if (elements.probBullVal) elements.probBullVal.textContent = `${bullPct}%`;
+    if (elements.probBullBar) elements.probBullBar.style.width = `${bullPct}%`;
+
+    if (elements.probBearVal) elements.probBearVal.textContent = `${bearPct}%`;
+    if (elements.probBearBar) elements.probBearBar.style.width = `${bearPct}%`;
+
+    if (elements.probSideVal) elements.probSideVal.textContent = `${sidePct}%`;
+    if (elements.probSideBar) elements.probSideBar.style.width = `${sidePct}%`;
+
+    // 3. Populate Transition Matrix P(S_t | S_{t-1})
+    if (elements.hmmMatrixBody && data.transition_matrix) {
+      const tm = data.transition_matrix;
+      const states = ['BULLISH', 'BEARISH', 'SIDEWAYS'];
+      const labels = { BULLISH: 'Bull', BEARISH: 'Bear', SIDEWAYS: 'Side' };
+      
+      let rowsHtml = '';
+      states.forEach(fromState => {
+        const fromRow = tm[fromState] || {};
+        rowsHtml += `<tr>`;
+        rowsHtml += `<td style="font-weight:700; color:#cbd5e1;">${labels[fromState]}</td>`;
+        states.forEach(toState => {
+          const p = (fromRow[toState] || 0) * 100;
+          const isDiag = fromState === toState;
+          rowsHtml += `<td style="${isDiag ? 'color:#c084fc; font-weight:700; background:rgba(168,85,247,0.08);' : ''}">${p.toFixed(1)}%</td>`;
+        });
+        rowsHtml += `</tr>`;
+      });
+      elements.hmmMatrixBody.innerHTML = rowsHtml;
+    }
+
+    // 4. Populate Regime Econometric Properties
+    if (elements.hmmCharList && data.state_characteristics) {
+      const stats = data.state_characteristics;
+      let charsHtml = '';
+      const order = ['BULLISH', 'BEARISH', 'SIDEWAYS'];
+      order.forEach(st => {
+        const item = stats[st];
+        if (!item) return;
+        const col = st === 'BULLISH' ? '#00f59b' : (st === 'BEARISH' ? '#ff3366' : '#38bdf8');
+        const retSign = item.annualized_return_pct > 0 ? '+' : '';
+        charsHtml += `
+          <div class="hmm-char-item" style="border-left: 3px solid ${col};">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:700; color:${col};">${st}</span>
+              <span style="font-size:11px; color:#94a3b8;">Persistence: <b>${(item.transition_persistence * 100).toFixed(0)}%</b></span>
+            </div>
+            <div style="display:flex; gap:12px; margin-top:3px; font-size:11px; color:#cbd5e1;">
+              <span>Ann. Return: <b style="color:${item.annualized_return_pct >= 0 ? '#00f59b' : '#ff3366'};">${retSign}${item.annualized_return_pct}%</b></span>
+              <span>Ann. Vol: <b>${item.annualized_volatility_pct}%</b></span>
+              <span>Duration: <b>${item.expected_duration_days} d</b></span>
+            </div>
+          </div>
+        `;
+      });
+      elements.hmmCharList.innerHTML = charsHtml;
+    }
+
+    // 5. Update Candlestick Chart Overlay Markers
+    updateChartMarkers();
+
+  } catch (err) {
+    console.error('Error in loadHMMRegimes:', err);
+  }
+}
+
+async function runGAOptimization(symbol) {
+  if (!elements.btnRunGA) return;
+  const originalHtml = elements.btnRunGA.innerHTML;
+  elements.btnRunGA.disabled = true;
+  elements.btnRunGA.classList.add('loading');
+  elements.btnRunGA.innerHTML = `
+    <span class="spinner" style="display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation:spin 0.8s linear infinite;"></span>
+    <span>Evolving Genomes (15 Gens)...</span>
+  `;
+
+  if (elements.gaStatusBadge) {
+    elements.gaStatusBadge.className = 'ga-status-tag running';
+    elements.gaStatusBadge.textContent = 'Status: Optimizing & Walk-Forward Folds...';
+  }
+
+  try {
+    const res = await fetch(`/api/quantitative/ga/optimize?symbol=${symbol}&days=750&population=25&generations=15`);
+    if (!res.ok) throw new Error('GA optimization failed');
+    const data = await res.json();
+    state.activeGA = data;
+
+    // 1. Update Evolved Parameters in Comparison Table
+    const opt = data.ga_optimization?.optimized_parameters;
+    if (opt) {
+      if (elements.gaParamRsi) elements.gaParamRsi.textContent = opt.rsi_period;
+      if (elements.gaParamOsob) elements.gaParamOsob.textContent = `${opt.rsi_oversold} / ${opt.rsi_overbought}`;
+      if (elements.gaParamEma) elements.gaParamEma.textContent = `${opt.ema_fast} / ${opt.ema_slow}`;
+      if (elements.gaParamMacd) elements.gaParamMacd.textContent = opt.macd_signal;
+      if (elements.gaParamBb) elements.gaParamBb.textContent = `${Number(opt.bb_std).toFixed(1)} σ`;
+      if (elements.gaParamSltp) {
+        const sl = (Number(opt.stop_loss_pct) * 100).toFixed(1);
+        const tp = (Number(opt.take_profit_pct) * 100).toFixed(1);
+        elements.gaParamSltp.textContent = `${sl}% / ${tp}%`;
+      }
+      if (elements.gaParamRegime) elements.gaParamRegime.textContent = opt.use_regime_filter ? 'Active (Bear Exit Guard)' : 'Bypassed';
+    }
+
+    // 2. Update Performance Comparison & Out-of-Sample Lift Cards
+    const perf = data.performance_comparison;
+    const isOpt = perf?.in_sample_train?.optimized;
+    const oosOpt = perf?.out_of_sample_unseen?.optimized;
+    const oosBase = perf?.out_of_sample_unseen?.baseline;
+    const lift = perf?.out_of_sample_lift;
+    const wfv = data.walk_forward_validation;
+
+    if (isOpt && elements.isSharpeVal) {
+      elements.isSharpeVal.textContent = isOpt.sharpe_ratio.toFixed(2);
+      elements.isReturnSub.textContent = `Return: +${isOpt.total_return_pct.toFixed(1)}% (MaxDD: ${isOpt.max_drawdown_pct.toFixed(1)}%)`;
+    }
+
+    if (oosOpt && elements.oosSharpeVal) {
+      elements.oosSharpeVal.textContent = oosOpt.sharpe_ratio.toFixed(2);
+      elements.oosReturnSub.textContent = `Return: +${oosOpt.total_return_pct.toFixed(1)}% (MaxDD: ${oosOpt.max_drawdown_pct.toFixed(1)}%)`;
+    }
+
+    if (lift && elements.oosLiftVal) {
+      const liftSign = lift.sharpe_lift >= 0 ? '+' : '';
+      elements.oosLiftVal.textContent = `${liftSign}${lift.sharpe_lift.toFixed(2)}`;
+      elements.oosLiftVal.style.color = lift.sharpe_lift >= 0 ? '#00f59b' : '#ff3366';
+      elements.oosLiftSub.textContent = `Base Sharpe: ${oosBase ? oosBase.sharpe_ratio.toFixed(2) : '--'}`;
+    }
+
+    if (wfv && elements.wfeVal) {
+      elements.wfeVal.textContent = wfv.walk_forward_efficiency_ratio.toFixed(2);
+      elements.wfeRiskSub.textContent = `Risk: ${wfv.overfitting_risk_assessment}`;
+      elements.wfeVal.style.color = wfv.walk_forward_efficiency_ratio >= 0.45 ? '#00f59b' : '#f59e0b';
+    }
+
+    // 3. Populate Chronological Walk-Forward Folds Breakdown
+    if (elements.wfvFoldsContainer && wfv?.folds) {
+      let foldsHtml = '<div style="font-size:11px; font-weight:700; color:#94a3b8; margin-bottom:8px;">Chronological Walk-Forward Folds (Anti-Overfitting Validation):</div>';
+      wfv.folds.forEach(f => {
+        const beatBase = f.outperforms_baseline;
+        foldsHtml += `
+          <div class="wfv-fold-item">
+            <div class="wfv-fold-header">
+              <span class="wfv-fold-title">Fold ${f.fold}: Test Window (${f.test_period})</span>
+              <span class="wfv-fold-tag ${beatBase ? 'beat' : 'trail'}">${beatBase ? '✓ Outperformed' : '≈ Par'}</span>
+            </div>
+            <div class="wfv-fold-metrics">
+              <div>IS Sharpe: <b>${f.in_sample_sharpe.toFixed(2)}</b></div>
+              <div>OOS Sharpe: <b style="color:${f.out_of_sample_sharpe >= 0 ? '#00f59b' : '#ff3366'};">${f.out_of_sample_sharpe.toFixed(2)}</b></div>
+              <div>OOS Return: <b>+${f.out_of_sample_return_pct.toFixed(1)}%</b></div>
+              <div>Base Return: <b>+${f.baseline_oos_return_pct.toFixed(1)}%</b></div>
+            </div>
+          </div>
+        `;
+      });
+      elements.wfvFoldsContainer.innerHTML = foldsHtml;
+    }
+
+    if (elements.gaStatusBadge) {
+      elements.gaStatusBadge.className = 'ga-status-tag ready';
+      elements.gaStatusBadge.textContent = 'Status: Converged (WFE Validated)';
+    }
+
+  } catch (err) {
+    console.error('Error running GA optimization:', err);
+    if (elements.gaStatusBadge) {
+      elements.gaStatusBadge.className = 'ga-status-tag';
+      elements.gaStatusBadge.textContent = 'Status: Optimization Error';
+    }
+  } finally {
+    elements.btnRunGA.disabled = false;
+    elements.btnRunGA.classList.remove('loading');
+    elements.btnRunGA.innerHTML = originalHtml;
+  }
+}
+
+// Global window exposure for robust accessibility
+window.runGAOptimization = runGAOptimization;
+window.loadHMMRegimes = loadHMMRegimes;
+window.selectSymbol = selectSymbol;
 
 // 4. NEWS & SENTIMENT LOADING (FinBERT Market Catalysts & Geopolitical Intelligence)
 async function loadNewsSentiment(cat = null) {
@@ -1079,12 +1355,25 @@ function bindEventListeners() {
   document.getElementById('toggle-patterns').addEventListener('click', function() {
     state.indicators.patterns = !state.indicators.patterns;
     this.classList.toggle('active-patterns', state.indicators.patterns);
-    if (state.indicators.patterns && state.activeOHLCV) {
-      applyPatternMarkers(state.activeOHLCV.patterns);
-    } else {
-      state.candleSeries.setMarkers([]);
-    }
+    updateChartMarkers();
   });
+
+  // HMM Regimes Overlay Toggle
+  const toggleHmm = document.getElementById('toggle-hmm-regimes');
+  if (toggleHmm) {
+    toggleHmm.addEventListener('click', function() {
+      state.indicators.hmmRegimes = !state.indicators.hmmRegimes;
+      this.classList.toggle('active-patterns', state.indicators.hmmRegimes);
+      updateChartMarkers();
+    });
+  }
+
+  // Phase 5: Run GA Optimization Button
+  if (elements.btnRunGA) {
+    elements.btnRunGA.addEventListener('click', () => {
+      runGAOptimization(state.activeSymbol);
+    });
+  }
 
   // Search Input Filter
   elements.searchInput.addEventListener('input', (e) => {

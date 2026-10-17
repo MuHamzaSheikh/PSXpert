@@ -19,6 +19,9 @@ from src.database.connection import get_session
 from src.analysis.candlestick_patterns import CandlestickPatternDetector
 from src.sentiment.impact_analyzer import NewsImpactAnalyzer
 from src.sentiment.live_feed_ingest import fetch_and_ingest_live_news
+from src.analysis.regime_hmm import MarketRegimeHMM
+from src.analysis.walk_forward import WalkForwardEngine
+from src.analysis.genetic_algorithm import BASELINE_PARAMS
 
 app = FastAPI(title="PSXpert Terminal API", version="1.0.0")
 
@@ -488,6 +491,89 @@ def refresh_live_news_stream() -> Dict[str, Any]:
         return res
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
+
+# -------------------------------------------------------------
+# PHASE 5: QUANTITATIVE REGIMES (HMM) & GENETIC ALGORITHM (GA)
+# -------------------------------------------------------------
+def fetch_ohlcv_dataframe(symbol: str, days: int = 1000) -> pd.DataFrame:
+    session = get_session()
+    try:
+        sym = symbol.upper()
+        if sym in ["KSE100", "KSE-100"]:
+            q = text("""
+                SELECT trading_date, open, high, low, close, volume
+                FROM market_indices
+                WHERE index_symbol = 'KSE100'
+                ORDER BY trading_date DESC
+                LIMIT :limit;
+            """)
+        else:
+            q = text("""
+                SELECT trading_date, open, high, low, close, volume
+                FROM stock_prices
+                WHERE symbol = :sym
+                ORDER BY trading_date DESC
+                LIMIT :limit;
+            """)
+        rows = session.execute(q, {"sym": sym, "limit": days}).fetchall()
+        if not rows:
+            return pd.DataFrame()
+        df = pd.DataFrame(rows, columns=["trading_date", "open", "high", "low", "close", "volume"])
+        return df.iloc[::-1].reset_index(drop=True)
+    finally:
+        session.close()
+
+
+@app.get("/api/quantitative/hmm")
+def get_hmm_regimes(
+    symbol: str = Query("KSE100", description="Symbol (e.g. KSE100, OGDC, MEBL)"),
+    days: int = Query(750, description="Historical trading days to analyze"),
+    states: int = Query(3, description="Number of hidden regime states")
+) -> Dict[str, Any]:
+    """
+    Hidden Markov Model (HMM) Latent Market Regime Analysis.
+    Estimates probabilities of Bullish, Bearish, and Sideways regimes with zero lookahead bias.
+    """
+    df = fetch_ohlcv_dataframe(symbol, days=days)
+    if df.empty or len(df) < 40:
+        raise HTTPException(status_code=404, detail=f"Insufficient historical data for {symbol}")
+
+    hmm = MarketRegimeHMM(n_states=states, random_state=42)
+    split_idx = int(len(df) * 0.75)
+    train_df = df.iloc[:split_idx]
+    hmm.fit(train_df)
+    results = hmm.predict_regimes(df)
+    results["symbol"] = symbol.upper()
+    return results
+
+
+@app.get("/api/quantitative/ga/optimize")
+def run_ga_optimization(
+    symbol: str = Query("KSE100", description="Symbol (e.g. KSE100, OGDC, MEBL)"),
+    days: int = Query(750, description="Historical trading days to analyze"),
+    population: int = Query(25, description="Genetic Algorithm population size"),
+    generations: int = Query(15, description="Number of generations to evolve")
+) -> Dict[str, Any]:
+    """
+    Genetic Algorithm Parameter Optimization with Anti-Overfitting Walk-Forward Validation.
+    Evaluates chronologically across In-Sample Train (60%), Validation (20%), and Out-of-Sample Test (20%).
+    """
+    df = fetch_ohlcv_dataframe(symbol, days=days)
+    if df.empty or len(df) < 80:
+        raise HTTPException(status_code=404, detail=f"Insufficient historical data for {symbol}")
+
+    engine = WalkForwardEngine(
+        train_ratio=0.60,
+        val_ratio=0.20,
+        test_ratio=0.20,
+        hmm_states=3,
+        ga_population=population,
+        ga_generations=generations,
+        random_state=42
+    )
+    results = engine.run_pipeline(df, symbol=symbol.upper())
+    return results
 
 
 # Mount static directory for frontend files

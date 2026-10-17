@@ -172,6 +172,7 @@
               <span class="toggle-chip" id="toggle-ema200">EMA 200</span>
               <span class="toggle-chip active-patterns" id="toggle-volume">Volume</span>
               <span class="toggle-chip active-patterns" id="toggle-patterns">Candle Patterns</span>
+              <span class="toggle-chip active-patterns" id="toggle-hmm-regimes" style="border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">🧬 HMM Regimes</span>
             </div>
 
             <!-- Full Screener Toggle Button -->
@@ -361,6 +362,162 @@
               <ul class="diag-list" id="diag-list">
                 <!-- Dynamically populated diagnostic points -->
               </ul>
+            </div>
+          </div>
+
+          <!-- Phase 5: Quantitative Research Contribution — HMM Regimes & Genetic Algorithm (GA) -->
+          <div class="quant-section" id="phase5-quant-section">
+            <div class="quant-header">
+              <div class="quant-title-wrap">
+                <span class="quant-icon" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(56, 189, 248, 0.2) 100%); border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">🧬</span>
+                <div>
+                  <h3 class="quant-title">Latent Market Regimes (HMM) & Genetic Algorithm (GA)</h3>
+                  <p class="quant-subtitle">Phase 5 Core Quantitative Research • Walk-Forward Anti-Overfitting Validation</p>
+                </div>
+              </div>
+              <div class="quant-actions-wrap">
+                <button class="ga-run-btn" id="btn-run-ga" onclick="runGAOptimization(state.activeSymbol)" title="Run Genetic Algorithm Parameter Optimization & Walk-Forward Validation">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                  <span>Run GA Optimization</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Dual Pillar Grid: Column A (HMM Regimes) & Column B (GA Strategy Optimizer) -->
+            <div class="phase5-grid">
+              
+              <!-- PILLAR A: HIDDEN MARKOV MODEL (HMM) REGIMES -->
+              <div class="phase5-panel" id="hmm-panel">
+                <div class="p5-panel-header">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="p5-badge" style="background:rgba(56, 189, 248, 0.15); color:#38bdf8; border-color:rgba(56, 189, 248, 0.3);">Part A • HMM</span>
+                    <span style="font-weight:700; font-size:13px; color:#fff;">Latent Regime Classifier</span>
+                  </div>
+                  <div class="current-regime-pill" id="hmm-current-regime-pill">
+                    <span class="regime-dot" id="regime-status-dot"></span>
+                    <span id="hmm-current-regime-label">BULLISH</span>
+                    <span id="hmm-current-confidence" style="font-family:var(--font-mono); font-size:10px; opacity:0.8;">(82.4%)</span>
+                  </div>
+                </div>
+
+                <!-- Regime Probabilities Bars -->
+                <div class="regime-prob-group">
+                  <div class="rpg-item">
+                    <div class="rpg-top">
+                      <span style="color:#00f59b; font-weight:700;">🟢 Bullish State</span>
+                      <b id="prob-bull-val">--%</b>
+                    </div>
+                    <div class="rpg-bar-track">
+                      <div class="rpg-bar-fill" id="prob-bull-bar" style="width:0%; background:#00f59b;"></div>
+                    </div>
+                  </div>
+                  <div class="rpg-item">
+                    <div class="rpg-top">
+                      <span style="color:#ff3366; font-weight:700;">🔴 Bearish State</span>
+                      <b id="prob-bear-val">--%</b>
+                    </div>
+                    <div class="rpg-bar-track">
+                      <div class="rpg-bar-fill" id="prob-bear-bar" style="width:0%; background:#ff3366;"></div>
+                    </div>
+                  </div>
+                  <div class="rpg-item">
+                    <div class="rpg-top">
+                      <span style="color:#38bdf8; font-weight:700;">🟡 Sideways / Consolidation</span>
+                      <b id="prob-side-val">--%</b>
+                    </div>
+                    <div class="rpg-bar-track">
+                      <div class="rpg-bar-fill" id="prob-side-bar" style="width:0%; background:#38bdf8;"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- HMM Transition Matrix & Characteristics -->
+                <div class="hmm-details-row">
+                  <!-- Transition Matrix Table -->
+                  <div class="hmm-trans-box">
+                    <div class="hmm-box-title">Transition Matrix P(S_t | S_t-1)</div>
+                    <table class="hmm-matrix-table" id="hmm-matrix-table">
+                      <thead>
+                        <tr><th>From \ To</th><th>Bull</th><th>Bear</th><th>Side</th></tr>
+                      </thead>
+                      <tbody id="hmm-matrix-body">
+                        <!-- populated dynamically -->
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Regime Characteristics -->
+                  <div class="hmm-stats-box">
+                    <div class="hmm-box-title">Regime Econometric Properties</div>
+                    <div class="hmm-char-list" id="hmm-char-list">
+                      <!-- populated dynamically -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PILLAR B: GENETIC ALGORITHM (GA) OPTIMIZATION -->
+              <div class="phase5-panel" id="ga-panel">
+                <div class="p5-panel-header">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="p5-badge" style="background:rgba(168, 85, 247, 0.15); color:#c084fc; border-color:rgba(168, 85, 247, 0.3);">Part B • GA Optimizer</span>
+                    <span style="font-weight:700; font-size:13px; color:#fff;">Indicator Parameter Evolution</span>
+                  </div>
+                  <div id="ga-status-badge" class="ga-status-tag">Status: Ready</div>
+                </div>
+
+                <!-- Parameter Comparison Table (Baseline vs GA Optimized) -->
+                <div class="ga-table-wrap">
+                  <table class="ga-param-table">
+                    <thead>
+                      <tr>
+                        <th>Indicator Parameter</th>
+                        <th>Fixed Baseline</th>
+                        <th>GA Evolved</th>
+                        <th>Optimization Role</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ga-param-tbody">
+                      <tr><td>RSI Period</td><td>14</td><td id="ga-param-rsi">--</td><td>Mean Reversion Horizon</td></tr>
+                      <tr><td>RSI Oversold / Overbought</td><td>30 / 70</td><td id="ga-param-osob">-- / --</td><td>Threshold Asymmetry</td></tr>
+                      <tr><td>EMA Fast / Slow</td><td>12 / 26</td><td id="ga-param-ema">-- / --</td><td>Trend Filtering Speed</td></tr>
+                      <tr><td>MACD Signal Line</td><td>9</td><td id="ga-param-macd">--</td><td>Crossover Smoothing</td></tr>
+                      <tr><td>Bollinger Bands Multiplier</td><td>2.0 σ</td><td id="ga-param-bb">-- σ</td><td>Volatility Envelope</td></tr>
+                      <tr><td>Stop Loss / Take Profit</td><td>5.0% / 10.0%</td><td id="ga-param-sltp">--% / --%</td><td>Risk / Reward Skew</td></tr>
+                      <tr><td>HMM Regime Guard</td><td>Disabled</td><td id="ga-param-regime">--</td><td>Bearish Regime Avoidance</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Out-of-Sample Performance Comparison & Lift Cards -->
+                <div class="perf-lift-grid">
+                  <div class="lift-card">
+                    <span class="lc-label">In-Sample Train (60%)</span>
+                    <div class="lc-val" id="is-sharpe-val" style="color:#38bdf8;">--</div>
+                    <span class="lc-sub" id="is-return-sub">Return: --%</span>
+                  </div>
+                  <div class="lift-card">
+                    <span class="lc-label">Out-of-Sample Unseen (20%)</span>
+                    <div class="lc-val" id="oos-sharpe-val" style="color:#00f59b;">--</div>
+                    <span class="lc-sub" id="oos-return-sub">Return: --%</span>
+                  </div>
+                  <div class="lift-card">
+                    <span class="lc-label">OOS Sharpe Lift vs Baseline</span>
+                    <div class="lc-val" id="oos-lift-val" style="color:#f59e0b;">--</div>
+                    <span class="lc-sub" id="oos-lift-sub">Base Sharpe: --</span>
+                  </div>
+                  <div class="lift-card">
+                    <span class="lc-label">Walk-Forward Efficiency (WFE)</span>
+                    <div class="lc-val" id="wfe-val" style="color:#a855f7;">--</div>
+                    <span class="lc-sub" id="wfe-risk-sub">Overfitting Risk: --</span>
+                  </div>
+                </div>
+
+                <!-- Walk-Forward Folds Breakdown -->
+                <div class="wfv-folds-accordion" id="wfv-folds-container">
+                  <!-- populated dynamically with 3 folds -->
+                </div>
+              </div>
             </div>
           </div>
         </section>
