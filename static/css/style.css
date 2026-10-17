@@ -334,9 +334,12 @@ body {
 /* DUAL WORKSPACE LAYOUT (Sidebar + Main Chart + Pattern Drawer) */
 .workspace-grid {
   display: grid;
-  grid-template-columns: 310px 1fr 340px;
+  grid-template-columns: 310px minmax(0, 1fr) 340px;
   gap: 20px;
   align-items: start;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* LEFT SIDEBAR: WATCHLIST */
@@ -453,6 +456,9 @@ body {
 
 /* CENTER: CHARTING STATION */
 .chart-station {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
   background: var(--bg-card);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border-subtle);
@@ -721,14 +727,27 @@ body.full-screener-active {
   position: relative;
   width: 100%;
   height: 520px;
+  min-width: 0 !important;
+  max-width: 100% !important;
   background: #090d16;
   border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.05);
   overflow: hidden;
+  box-sizing: border-box;
 }
 #tradingview-chart-container {
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  position: relative;
+}
+#tradingview-chart-container .tv-lightweight-charts {
+  max-width: 100% !important;
+}
+#tradingview-chart-container canvas {
+  max-width: 100% !important;
 }
 .chart-hud-overlay {
   position: absolute;

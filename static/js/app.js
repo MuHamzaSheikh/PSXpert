@@ -855,21 +855,58 @@ async function loadNewsSentiment(cat = null) {
 }
 
 // 4b. FULL SCREENER TOGGLE & RESIZING
+function getOptimalChartDimensions() {
+  if (state.isFullScreener) {
+    const width = Math.max(window.innerWidth - 40, 600);
+    const height = Math.max(window.innerHeight - 145, 400);
+    return { width, height };
+  }
+
+  // Normal Dashboard Mode: compute exact available width within the 3-column workspace
+  const workspace = document.getElementById('workspace');
+  const watchlist = document.getElementById('watchlist-panel');
+  const insights = document.getElementById('drawer-panel') || document.querySelector('.drawer-panel');
+  const viewArea = elements.chartViewArea || document.getElementById('chart-view-area');
+  
+  let targetWidth = 0;
+  if (workspace && watchlist && insights) {
+    const wsWidth = workspace.clientWidth;
+    const wlWidth = watchlist.offsetWidth || 310;
+    const insWidth = insights.offsetWidth || 340;
+    // workspace grid gap is 20px (between col1-col2 and col2-col3 = 40px)
+    // chart-station has padding: 20px (left + right = 40px) and border: 2px
+    const computed = wsWidth - wlWidth - insWidth - 40 - 42;
+    if (computed > 320) {
+      targetWidth = Math.floor(computed);
+    }
+  }
+
+  if (!targetWidth || targetWidth < 300) {
+    if (viewArea && viewArea.clientWidth > 300 && viewArea.clientWidth < window.innerWidth - 300) {
+      targetWidth = viewArea.clientWidth;
+    } else {
+      targetWidth = 750;
+    }
+  }
+
+  return { width: targetWidth, height: 520 };
+}
+
 function resizeChartNow() {
   const resize = () => {
-    if (state.chart && elements.chartContainer) {
-      const width = elements.chartContainer.clientWidth;
-      const height = elements.chartContainer.clientHeight;
-      if (width > 0 && height > 0) {
-        state.chart.applyOptions({ width, height });
-        state.chart.timeScale().fitContent();
-      }
+    if (!state.chart || !elements.chartContainer) return;
+    const { width, height } = getOptimalChartDimensions();
+    if (width > 0 && height > 0) {
+      state.chart.applyOptions({ width, height });
+      state.chart.timeScale().fitContent();
     }
   };
+
   resize();
+  requestAnimationFrame(resize);
   setTimeout(resize, 40);
   setTimeout(resize, 120);
-  setTimeout(resize, 300);
+  setTimeout(resize, 350);
 }
 
 function updateScreenerUI() {
@@ -920,6 +957,10 @@ function toggleFullScreener(forceState = null) {
     if (document.fullscreenElement && document.exitFullscreen) {
       document.exitFullscreen().catch(err => console.warn(err));
     }
+    // Smoothly scroll back to dashboard chart if needed
+    if (targetStation) {
+      targetStation.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   }
 
   updateScreenerUI();
@@ -946,19 +987,16 @@ function bindEventListeners() {
   // Native Fullscreen Change Handler (e.g. user presses ESC or browser exits fullscreen)
   document.addEventListener('fullscreenchange', () => {
     const isNativeFullscreen = !!document.fullscreenElement;
-    if (!isNativeFullscreen && state.isFullScreener) {
+    if (!isNativeFullscreen) {
       toggleFullScreener(false);
+    } else {
+      resizeChartNow();
     }
   });
 
   // Window Resize
   window.addEventListener('resize', () => {
-    if (state.chart && elements.chartContainer) {
-      state.chart.applyOptions({
-        width: elements.chartContainer.clientWidth,
-        height: elements.chartContainer.clientHeight
-      });
-    }
+    resizeChartNow();
   });
 
   // News Filter Tabs
