@@ -15,30 +15,34 @@
     <!-- 1. LIVE RUNNING TICKER TAPE -->
     <div class="ticker-tape-container" id="ticker-tape-container">
       <div class="ticker-tape" id="ticker-tape">
-        <div class="tape-item"><span class="tape-symbol">CONNECTING TO PSX REAL DATA...</span></div>
+        <div class="tape-item"><span class="tape-symbol">Loading market data...</span></div>
       </div>
     </div>
 
     <!-- 2. NAVBAR -->
     <nav class="navbar" id="navbar">
       <div class="nav-brand">
-        <div class="brand-badge">📈</div>
+        <div class="brand-badge">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+        </div>
         <div class="brand-text">
-          <h1>PSXpert Terminal</h1>
-          <span>Pakistan Stock Exchange Real-Data Suite</span>
+          <h1>PSXpert</h1>
+          <span>Pakistan Stock Exchange Analytics</span>
         </div>
       </div>
 
       <div class="search-container">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" class="search-input" placeholder="Search 800+ PSX stocks (e.g. OGDC, LUCK, MEBL)..." autocomplete="off">
+        <span class="search-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </span>
+        <input type="text" id="search-input" class="search-input" placeholder="Search stocks by symbol or company (e.g. OGDC, LUCK, MEBL)..." autocomplete="off">
         <div class="search-results-dropdown" id="search-results"></div>
       </div>
 
       <div class="nav-actions">
         <div class="status-pill">
           <span class="pulse-dot"></span>
-          <span>POSTGRESQL 18: ONLINE</span>
+          <span>Market Feed Active</span>
         </div>
       </div>
     </nav>
@@ -51,11 +55,11 @@
         <!-- Card 1: KSE-100 -->
         <div class="stat-card" id="kse-summary-card">
           <div class="stat-header">
-            <span class="stat-title">KSE-100 Benchmark Index</span>
+            <span class="stat-title">KSE-100 Index</span>
             <span class="stat-delta" id="kse-change">0.00 (0.00%)</span>
           </div>
           <div class="stat-value" id="kse-price">164,776.44</div>
-          <div style="display:flex; justify-content:space-between; font-size:11px; font-family:var(--font-mono); color:var(--text-muted); margin-top:6px;">
+          <div class="stat-subrow">
             <span id="kse-high-low">H: 165,194.00 | L: 164,706.85</span>
             <span id="kse-52w-range">52W: 78,500 - 170,000</span>
           </div>
@@ -65,49 +69,49 @@
         <div class="stat-card" id="breadth-card">
           <div class="stat-header">
             <span class="stat-title">Market Breadth</span>
-            <span style="font-size:11px; color:var(--text-muted);">Session Closes</span>
+            <span class="stat-sublabel">Session Closes</span>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:baseline;">
-            <span style="color:#00f59b; font-weight:700; font-family:var(--font-mono);">Adv: <span id="breadth-adv">184</span></span>
-            <span style="color:#64748b; font-weight:600; font-family:var(--font-mono);">Unch: <span id="breadth-unch">86</span></span>
-            <span style="color:#ff3366; font-weight:700; font-family:var(--font-mono);">Dec: <span id="breadth-dec">215</span></span>
+          <div class="stat-metric-row">
+            <span class="metric-adv">Adv: <b id="breadth-adv">184</b></span>
+            <span class="metric-unch">Unch: <b id="breadth-unch">86</b></span>
+            <span class="metric-dec">Dec: <b id="breadth-dec">215</b></span>
           </div>
           <div class="progress-bar-container" id="breadth-bar">
-            <div class="progress-segment" style="width:40%; background:#00f59b;"></div>
-            <div class="progress-segment" style="width:20%; background:#64748b;"></div>
-            <div class="progress-segment" style="width:40%; background:#ff3366;"></div>
+            <div class="progress-segment seg-adv" style="width:40%;"></div>
+            <div class="progress-segment seg-unch" style="width:20%;"></div>
+            <div class="progress-segment seg-dec" style="width:40%;"></div>
           </div>
         </div>
 
-        <!-- Card 3: FinBERT Sentiment -->
+        <!-- Card 3: Sentiment -->
         <div class="stat-card" id="sentiment-card">
           <div class="stat-header">
-            <span class="stat-title">FinBERT News Sentiment</span>
-            <span style="font-size:11px; color:#38bdf8; font-weight:600;">Phase 3 AI</span>
+            <span class="stat-title">News Sentiment</span>
+            <span class="stat-sublabel">Headlines Stream</span>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:baseline;">
-            <span style="color:#00f59b; font-weight:700; font-family:var(--font-mono);">Pos: <span id="sent-pos">53</span></span>
-            <span style="color:#38bdf8; font-weight:600; font-family:var(--font-mono);">Neu: <span id="sent-neu">49</span></span>
-            <span style="color:#ff3366; font-weight:700; font-family:var(--font-mono);">Neg: <span id="sent-neg">82</span></span>
+          <div class="stat-metric-row">
+            <span class="metric-adv">Pos: <b id="sent-pos">53</b></span>
+            <span class="metric-unch">Neu: <b id="sent-neu">49</b></span>
+            <span class="metric-dec">Neg: <b id="sent-neg">82</b></span>
           </div>
           <div class="progress-bar-container" id="sent-bar">
-            <div class="progress-segment" style="width:29%; background:#00f59b;"></div>
-            <div class="progress-segment" style="width:27%; background:#38bdf8;"></div>
-            <div class="progress-segment" style="width:44%; background:#ff3366;"></div>
+            <div class="progress-segment seg-adv" style="width:29%;"></div>
+            <div class="progress-segment seg-unch" style="width:27%;"></div>
+            <div class="progress-segment seg-dec" style="width:44%;"></div>
           </div>
         </div>
 
         <!-- Card 4: Detected Patterns -->
         <div class="stat-card" id="patterns-stat-card">
           <div class="stat-header">
-            <span class="stat-title">Active Candlestick Formations</span>
-            <span style="font-size:11px; color:#f59e0b; font-weight:600;">20+ Patterns</span>
+            <span class="stat-title">Detected Formations</span>
+            <span class="stat-sublabel">Technical Scanner</span>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:baseline;">
-            <div class="stat-value" id="total-patterns-count" style="color:#38bdf8;">--</div>
-            <div style="text-align:right; font-family:var(--font-mono); font-size:12px;">
-              <span style="color:#00f59b;">▲ <span id="bullish-patterns-count">--</span> Bullish</span><br>
-              <span style="color:#ff3366;">▼ <span id="bearish-patterns-count">--</span> Bearish</span>
+          <div class="stat-metric-row" style="align-items:baseline;">
+            <div class="stat-value" id="total-patterns-count">--</div>
+            <div class="pattern-stat-breakdown">
+              <span class="metric-adv">Bullish: <b id="bullish-patterns-count">--</b></span>
+              <span class="metric-dec">Bearish: <b id="bearish-patterns-count">--</b></span>
             </div>
           </div>
         </div>
@@ -172,7 +176,7 @@
               <span class="toggle-chip" id="toggle-ema200">EMA 200</span>
               <span class="toggle-chip active-patterns" id="toggle-volume">Volume</span>
               <span class="toggle-chip active-patterns" id="toggle-patterns">Candle Patterns</span>
-              <span class="toggle-chip active-patterns" id="toggle-hmm-regimes" style="border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">🧬 HMM Regimes</span>
+              <span class="toggle-chip active-patterns" id="toggle-hmm-regimes">HMM Regimes</span>
             </div>
 
             <!-- Full Screener Toggle Button -->
@@ -204,19 +208,20 @@
             <div id="tradingview-chart-container"></div>
           </div>
 
-          <!-- Quantitative Technical Indicators & Diagnostic Analysis Section (Phase 4) -->
+          <!-- Quantitative Technical Indicators Section -->
           <div class="quant-section" id="quant-section">
             <div class="quant-header">
               <div class="quant-title-wrap">
-                <span class="quant-icon">⚡</span>
+                <span class="quant-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </span>
                 <div>
-                  <h3 class="quant-title">Quantitative Indicators & System Diagnostic</h3>
-                  <p class="quant-subtitle">Phase 4 Algorithmic Technical Engine (Zero Lookahead Bias)</p>
+                  <h3 class="quant-title">Technical Indicators</h3>
+                  <p class="quant-subtitle">Multi-period momentum, volatility, and trend metrics</p>
                 </div>
               </div>
               <div class="quant-disclaimer-badge">
-                <span class="warning-dot"></span>
-                <span>Analytical Diagnostics Only • Not Guaranteed Buy/Sell Signals</span>
+                <span>Research & Analysis Only • Non-Advisory</span>
               </div>
             </div>
 
@@ -353,10 +358,10 @@
               </div>
             </div>
 
-            <!-- Plain-English Diagnostic Explanations -->
+            <!-- Diagnostic Explanations -->
             <div class="diagnostics-box">
               <div class="diag-header">
-                <span class="diag-title">System Diagnostic Explanations</span>
+                <span class="diag-title">Indicator Summary</span>
                 <span class="diag-tag">Multi-Indicator Synthesis</span>
               </div>
               <ul class="diag-list" id="diag-list">
@@ -365,20 +370,22 @@
             </div>
           </div>
 
-          <!-- Phase 5: Quantitative Research Contribution — HMM Regimes & Genetic Algorithm (GA) -->
+          <!-- Market Regimes & Strategy Optimization Section -->
           <div class="quant-section" id="phase5-quant-section">
             <div class="quant-header">
               <div class="quant-title-wrap">
-                <span class="quant-icon" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(56, 189, 248, 0.2) 100%); border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">🧬</span>
+                <span class="quant-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </span>
                 <div>
-                  <h3 class="quant-title">Latent Market Regimes (HMM) & Genetic Algorithm (GA)</h3>
-                  <p class="quant-subtitle">Phase 5 Core Quantitative Research • Walk-Forward Anti-Overfitting Validation</p>
+                  <h3 class="quant-title">Market Regimes & Strategy Optimization</h3>
+                  <p class="quant-subtitle">Hidden Markov Model regime classification and Genetic Algorithm indicator optimization</p>
                 </div>
               </div>
               <div class="quant-actions-wrap">
                 <button class="ga-run-btn" id="btn-run-ga" onclick="runGAOptimization(state.activeSymbol)" title="Run Genetic Algorithm Parameter Optimization & Walk-Forward Validation">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-                  <span>Run GA Optimization</span>
+                  <span>Run Optimization</span>
                 </button>
               </div>
             </div>
@@ -389,14 +396,14 @@
               <!-- PILLAR A: HIDDEN MARKOV MODEL (HMM) REGIMES -->
               <div class="phase5-panel" id="hmm-panel">
                 <div class="p5-panel-header">
-                  <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="p5-badge" style="background:rgba(56, 189, 248, 0.15); color:#38bdf8; border-color:rgba(56, 189, 248, 0.3);">Part A • HMM</span>
-                    <span style="font-weight:700; font-size:13px; color:#fff;">Latent Regime Classifier</span>
+                  <div class="p5-header-title-wrap">
+                    <span class="p5-badge">HMM Regimes</span>
+                    <span class="p5-panel-title">Latent Regime Classifier</span>
                   </div>
                   <div class="current-regime-pill" id="hmm-current-regime-pill">
                     <span class="regime-dot" id="regime-status-dot"></span>
                     <span id="hmm-current-regime-label">BULLISH</span>
-                    <span id="hmm-current-confidence" style="font-family:var(--font-mono); font-size:10px; opacity:0.8;">(82.4%)</span>
+                    <span id="hmm-current-confidence">(82.4%)</span>
                   </div>
                 </div>
 
@@ -404,29 +411,29 @@
                 <div class="regime-prob-group">
                   <div class="rpg-item">
                     <div class="rpg-top">
-                      <span style="color:#00f59b; font-weight:700;">🟢 Bullish State</span>
+                      <span>Bullish State</span>
                       <b id="prob-bull-val">--%</b>
                     </div>
                     <div class="rpg-bar-track">
-                      <div class="rpg-bar-fill" id="prob-bull-bar" style="width:0%; background:#00f59b;"></div>
+                      <div class="rpg-bar-fill seg-bull" id="prob-bull-bar" style="width:0%;"></div>
                     </div>
                   </div>
                   <div class="rpg-item">
                     <div class="rpg-top">
-                      <span style="color:#ff3366; font-weight:700;">🔴 Bearish State</span>
+                      <span>Bearish State</span>
                       <b id="prob-bear-val">--%</b>
                     </div>
                     <div class="rpg-bar-track">
-                      <div class="rpg-bar-fill" id="prob-bear-bar" style="width:0%; background:#ff3366;"></div>
+                      <div class="rpg-bar-fill seg-bear" id="prob-bear-bar" style="width:0%;"></div>
                     </div>
                   </div>
                   <div class="rpg-item">
                     <div class="rpg-top">
-                      <span style="color:#38bdf8; font-weight:700;">🟡 Sideways / Consolidation</span>
+                      <span>Sideways State</span>
                       <b id="prob-side-val">--%</b>
                     </div>
                     <div class="rpg-bar-track">
-                      <div class="rpg-bar-fill" id="prob-side-bar" style="width:0%; background:#38bdf8;"></div>
+                      <div class="rpg-bar-fill seg-side" id="prob-side-bar" style="width:0%;"></div>
                     </div>
                   </div>
                 </div>
@@ -448,7 +455,7 @@
 
                   <!-- Regime Characteristics -->
                   <div class="hmm-stats-box">
-                    <div class="hmm-box-title">Regime Econometric Properties</div>
+                    <div class="hmm-box-title">Econometric Properties</div>
                     <div class="hmm-char-list" id="hmm-char-list">
                       <!-- populated dynamically -->
                     </div>
@@ -459,9 +466,9 @@
               <!-- PILLAR B: GENETIC ALGORITHM (GA) OPTIMIZATION -->
               <div class="phase5-panel" id="ga-panel">
                 <div class="p5-panel-header">
-                  <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="p5-badge" style="background:rgba(168, 85, 247, 0.15); color:#c084fc; border-color:rgba(168, 85, 247, 0.3);">Part B • GA Optimizer</span>
-                    <span style="font-weight:700; font-size:13px; color:#fff;">Indicator Parameter Evolution</span>
+                  <div class="p5-header-title-wrap">
+                    <span class="p5-badge">Genetic Algorithm</span>
+                    <span class="p5-panel-title">Parameter Optimization</span>
                   </div>
                   <div id="ga-status-badge" class="ga-status-tag">Status: Ready</div>
                 </div>
@@ -469,9 +476,9 @@
                 <!-- Active Configuration Indicator & Evaluation Periods -->
                 <div class="ga-config-bar">
                   <div class="ga-mode-selector">
-                    <span style="font-size:11px; color:#94a3b8; font-weight:600;">Active Strategy Configuration:</span>
-                    <button type="button" class="ga-mode-pill active" id="ga-mode-evolved" onclick="switchGAConfigMode('evolved')">⚡ GA Evolved (Active)</button>
-                    <button type="button" class="ga-mode-pill" id="ga-mode-baseline" onclick="switchGAConfigMode('baseline')">Fixed Baseline</button>
+                    <span class="ga-mode-label">Active Strategy:</span>
+                    <button type="button" class="ga-mode-pill active" id="ga-mode-evolved" onclick="switchGAConfigMode('evolved')">Optimized Settings</button>
+                    <button type="button" class="ga-mode-pill" id="ga-mode-baseline" onclick="switchGAConfigMode('baseline')">Baseline Defaults</button>
                   </div>
                   <div class="ga-eval-periods" id="ga-eval-periods">
                     <span class="eval-period-tag" id="eval-period-train" title="Chronological In-Sample Parameter Search Window">Train: 60%</span>
@@ -507,23 +514,23 @@
                 <div class="perf-lift-grid">
                   <div class="lift-card">
                     <span class="lc-label">In-Sample Train (60%)</span>
-                    <div class="lc-val" id="is-sharpe-val" style="color:#38bdf8;">--</div>
+                    <div class="lc-val" id="is-sharpe-val">--</div>
                     <span class="lc-sub" id="is-return-sub">Return: --%</span>
                   </div>
                   <div class="lift-card">
                     <span class="lc-label">Out-of-Sample Unseen (20%)</span>
-                    <div class="lc-val" id="oos-sharpe-val" style="color:#00f59b;">--</div>
+                    <div class="lc-val metric-adv" id="oos-sharpe-val">--</div>
                     <span class="lc-sub" id="oos-return-sub">Return: --%</span>
                   </div>
                   <div class="lift-card">
                     <span class="lc-label">OOS Sharpe Lift vs Baseline</span>
-                    <div class="lc-val" id="oos-lift-val" style="color:#f59e0b;">--</div>
+                    <div class="lc-val" id="oos-lift-val">--</div>
                     <span class="lc-sub" id="oos-lift-sub">Base Sharpe: --</span>
                   </div>
                   <div class="lift-card">
                     <span class="lc-label">Walk-Forward Efficiency (WFE)</span>
-                    <div class="lc-val" id="wfe-val" style="color:#a855f7;">--</div>
-                    <span class="lc-sub" id="wfe-risk-sub">Overfitting Risk: --</span>
+                    <div class="lc-val" id="wfe-val">--</div>
+                    <span class="lc-sub" id="wfe-risk-sub">Risk: --</span>
                   </div>
                 </div>
 
@@ -535,15 +542,14 @@
                 <!-- Optimization Rationale & Overfitting Limitations Notice -->
                 <div class="ga-rationale-box">
                   <div class="ga-rationale-header">
-                    <span class="ga-rationale-title">🔬 Quantitative Methodology & Rationale</span>
-                    <span class="ga-obj-formula">Objective: Maximize Sharpe − 2.0 × MaxDrawdown</span>
+                    <span class="ga-rationale-title">Optimization Methodology</span>
+                    <span class="ga-obj-formula">Objective: Sharpe − 2.0 × MaxDrawdown</span>
                   </div>
                   <p class="ga-rationale-text">
-                    <b>Why Optimization was Performed:</b> Classical static indicators (such as 14 RSI or 12/26 EMA) assume stationary Western markets and frequently whipsaw in volatile emerging markets like the Pakistan Stock Exchange. Genetic evolution searches for non-linear indicator synergies, asymmetric oversold/overbought thresholds, and regime-conditioned risk boundaries.
+                    <b>Rationale:</b> Classical static indicator parameters (such as 14 RSI or 12/26 EMA) assume stationary conditions and frequently generate false signals during regime shifts in the Pakistan Stock Exchange. Evolutionary search identifies parameter combinations, asymmetric thresholds, and regime-conditioned risk boundaries.
                   </p>
                   <div class="ga-limitation-alert">
-                    <span class="limitation-icon">⚠️</span>
-                    <span><b>Academic & Quant Limitations:</b> Genetic Algorithms do not guarantee future profitability. Optimizing historical data inherently risks parameter memorization (overfitting). PSXpert enforces chronological Train/Validation/Test splits and 3-fold Walk-Forward Validation (WFE ratio &ge; 0.50) to evaluate whether statistical edge holds out-of-sample.</span>
+                    <span><b>Validation Notice:</b> Historical indicator optimization does not guarantee future market profitability. Walk-Forward validation evaluates out-of-sample stability to identify potential overfitting.</span>
                   </div>
                 </div>
               </div>
@@ -558,7 +564,7 @@
           <div class="drawer-card" id="patterns-card">
             <div class="panel-title-bar">
               <h2 class="panel-title">Detected Formations</h2>
-              <span style="font-size:11px; color:#00f59b; font-weight:600; font-family:var(--font-mono);">Live Scanner</span>
+              <span class="panel-badge-sub">Scanner</span>
             </div>
             <div class="patterns-list-container" id="patterns-container">
               <!-- Dynamically populated pattern cards -->
@@ -568,23 +574,23 @@
           <!-- News & Sentiment Drawer -->
           <div class="drawer-card" id="news-card">
             <div class="panel-title-bar">
-              <div style="display:flex; align-items:center; gap:8px;">
-                <h2 class="panel-title">FinBERT Market Catalysts</h2>
-                <span class="live-pulse-dot" title="Live Financial & Geopolitical Intelligence"></span>
+              <div class="panel-title-wrap">
+                <h2 class="panel-title">Market News & Sentiment</h2>
+                <span class="live-pulse-dot" title="News Feed Active"></span>
               </div>
               <button class="news-refresh-btn" id="btn-refresh-news" title="Refresh Live Financial & Geopolitical Feeds">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                <span>Live Refresh</span>
+                <span>Refresh</span>
               </button>
             </div>
 
             <!-- Geopolitical & Financial Category Filter Tabs -->
             <div class="news-filter-tabs" id="news-filter-tabs">
-              <button class="nft-btn active" data-cat="ALL">ALL</button>
-              <button class="nft-btn" data-cat="GEOPOLITICAL">🌍 GEOPOLITICS</button>
-              <button class="nft-btn" data-cat="MACRO_IMF">🏛️ MACRO/IMF</button>
-              <button class="nft-btn" data-cat="ENERGY_OIL">⚡ ENERGY</button>
-              <button class="nft-btn" data-cat="TECH_AI">💻 TECH</button>
+              <button class="nft-btn active" data-cat="ALL">All</button>
+              <button class="nft-btn" data-cat="GEOPOLITICAL">Geopolitical</button>
+              <button class="nft-btn" data-cat="MACRO_IMF">Macro & IMF</button>
+              <button class="nft-btn" data-cat="ENERGY_OIL">Energy & Oil</button>
+              <button class="nft-btn" data-cat="TECH_AI">Technology</button>
             </div>
 
             <div class="news-list-container" id="news-container">

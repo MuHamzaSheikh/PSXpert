@@ -175,38 +175,38 @@ function initChart() {
     width: container.clientWidth,
     height: container.clientHeight,
     layout: {
-      background: { color: '#090d16' },
-      textColor: '#94a3b8',
-      fontFamily: 'Inter, sans-serif'
+      background: { color: '#ffffff' },
+      textColor: '#475569',
+      fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     },
     grid: {
-      vertLines: { color: 'rgba(255, 255, 255, 0.04)' },
-      horzLines: { color: 'rgba(255, 255, 255, 0.04)' }
+      vertLines: { color: '#f1f5f9' },
+      horzLines: { color: '#f1f5f9' }
     },
     crosshair: {
       mode: LightweightCharts.CrosshairMode.Normal,
       vertLine: {
-        color: '#38bdf8',
+        color: '#94a3b8',
         width: 1,
         style: LightweightCharts.LineStyle.Dashed,
-        labelBackgroundColor: '#0f172a'
+        labelBackgroundColor: '#334155'
       },
       horzLine: {
-        color: '#38bdf8',
+        color: '#94a3b8',
         width: 1,
         style: LightweightCharts.LineStyle.Dashed,
-        labelBackgroundColor: '#0f172a'
+        labelBackgroundColor: '#334155'
       }
     },
     rightPriceScale: {
-      borderColor: 'rgba(255, 255, 255, 0.08)',
+      borderColor: '#e2e8f0',
       scaleMargins: {
         top: 0.1,
         bottom: 0.22
       }
     },
     timeScale: {
-      borderColor: 'rgba(255, 255, 255, 0.08)',
+      borderColor: '#e2e8f0',
       timeVisible: true,
       secondsVisible: false
     }
@@ -214,11 +214,11 @@ function initChart() {
 
   // Candlestick Series
   const candleSeries = chart.addCandlestickSeries({
-    upColor: '#00f59b',
-    downColor: '#ff3366',
+    upColor: '#16a34a',
+    downColor: '#dc2626',
     borderVisible: false,
-    wickUpColor: '#00f59b',
-    wickDownColor: '#ff3366'
+    wickUpColor: '#16a34a',
+    wickDownColor: '#dc2626'
   });
 
   // Volume Histogram Series
@@ -233,21 +233,21 @@ function initChart() {
 
   // Moving Average Lines
   const ema20Series = chart.addLineSeries({
-    color: '#00e5ff',
+    color: '#2563eb',
     lineWidth: 1.5,
     title: 'EMA 20',
     visible: state.indicators.ema20
   });
 
   const ema50Series = chart.addLineSeries({
-    color: '#ffb300',
+    color: '#d97706',
     lineWidth: 1.5,
     title: 'EMA 50',
     visible: state.indicators.ema50
   });
 
   const ema200Series = chart.addLineSeries({
-    color: '#d500f9',
+    color: '#7c3aed',
     lineWidth: 1.5,
     title: 'EMA 200',
     visible: state.indicators.ema200
@@ -298,7 +298,7 @@ async function loadMarketSummary() {
 
     // Render KSE-100 Hero Card
     elements.ksePrice.textContent = formatPKR(data.close);
-    const deltaColor = data.pct_change >= 0 ? '#00f59b' : '#ff3366';
+    const deltaColor = data.pct_change >= 0 ? '#16a34a' : '#dc2626';
     const deltaSign = data.pct_change >= 0 ? '+' : '';
     elements.kseChange.style.color = deltaColor;
     elements.kseChange.textContent = `${deltaSign}${data.point_change.toFixed(2)} (${deltaSign}${data.pct_change.toFixed(2)}%)`;
@@ -314,9 +314,9 @@ async function loadMarketSummary() {
     const decPct = (b.declines / (b.total || 1)) * 100;
     const unchPct = (b.unchanged / (b.total || 1)) * 100;
     elements.breadthBar.innerHTML = `
-      <div class="progress-segment" style="width:${advPct}%; background:#00f59b;"></div>
-      <div class="progress-segment" style="width:${unchPct}%; background:#64748b;"></div>
-      <div class="progress-segment" style="width:${decPct}%; background:#ff3366;"></div>
+      <div class="progress-segment" style="width:${advPct}%; background:#16a34a;"></div>
+      <div class="progress-segment" style="width:${unchPct}%; background:#94a3b8;"></div>
+      <div class="progress-segment" style="width:${decPct}%; background:#dc2626;"></div>
     `;
 
     // Render FinBERT Sentiment Overview
@@ -326,9 +326,9 @@ async function loadMarketSummary() {
     elements.sentNeu.textContent = s.neutral;
     const sTotal = (s.positive + s.negative + s.neutral) || 1;
     elements.sentBar.innerHTML = `
-      <div class="progress-segment" style="width:${(s.positive/sTotal)*100}%; background:#00f59b;"></div>
-      <div class="progress-segment" style="width:${(s.neutral/sTotal)*100}%; background:#38bdf8;"></div>
-      <div class="progress-segment" style="width:${(s.negative/sTotal)*100}%; background:#ff3366;"></div>
+      <div class="progress-segment" style="width:${(s.positive/sTotal)*100}%; background:#16a34a;"></div>
+      <div class="progress-segment" style="width:${(s.neutral/sTotal)*100}%; background:#64748b;"></div>
+      <div class="progress-segment" style="width:${(s.negative/sTotal)*100}%; background:#dc2626;"></div>
     `;
 
     renderTickerTape(data);
@@ -344,7 +344,7 @@ function renderTickerTape(summary) {
       <span class="tape-symbol">KSE-100</span>
       <span class="tape-price">${formatPKR(summary.close)}</span>
       <span class="${summary.pct_change >= 0 ? 'tape-up' : 'tape-down'}">
-        ${summary.pct_change >= 0 ? '▲' : '▼'} ${summary.pct_change.toFixed(2)}%
+        ${summary.pct_change >= 0 ? '+' : ''}${summary.pct_change.toFixed(2)}%
       </span>
     </div>
   `;
@@ -356,7 +356,7 @@ function renderTickerTape(summary) {
         <span class="tape-symbol">${m.symbol}</span>
         <span class="tape-price">PKR ${m.close.toFixed(2)}</span>
         <span class="${isUp ? 'tape-up' : 'tape-down'}">
-          ${isUp ? '▲' : '▼'} ${m.pct_change > 0 ? '+' : ''}${m.pct_change.toFixed(2)}%
+          ${isUp ? '+' : ''}${m.pct_change.toFixed(2)}%
         </span>
       </div>
     `;
@@ -425,7 +425,7 @@ function renderWatchlist() {
     </div>
     <div class="stock-price-col">
       <div class="stock-curr-price">${formatPKR(kseSummary.close)}</div>
-      <div class="stock-pct" style="color:${kseUp ? '#00f59b' : '#ff3366'}">
+      <div class="stock-pct" style="color:${kseUp ? '#16a34a' : '#dc2626'}">
         ${kseUp ? '+' : ''}${kseSummary.pct_change.toFixed(2)}%
       </div>
     </div>
@@ -445,7 +445,7 @@ function renderWatchlist() {
       </div>
       <div class="stock-price-col">
         <div class="stock-curr-price">PKR ${stock.close.toFixed(2)}</div>
-        <div class="stock-pct" style="color:${isUp ? '#00f59b' : '#ff3366'}">
+        <div class="stock-pct" style="color:${isUp ? '#16a34a' : '#dc2626'}">
           ${isUp ? '+' : ''}${stock.pct_change.toFixed(2)}%
         </div>
       </div>
@@ -477,7 +477,7 @@ async function selectSymbol(symbol) {
     const isUp = netPct >= 0;
 
     elements.activeMainPrice.textContent = `PKR ${formatPKR(latest.close)}`;
-    elements.activePriceDelta.style.color = isUp ? '#00f59b' : '#ff3366';
+    elements.activePriceDelta.style.color = isUp ? '#16a34a' : '#dc2626';
     elements.activePriceDelta.textContent = `${isUp ? '+' : ''}${netPct.toFixed(2)}% in period`;
 
     // Stats Bar Update
@@ -499,7 +499,7 @@ async function selectSymbol(symbol) {
     const volumeData = data.candles.map(c => ({
       time: c.time,
       value: c.volume,
-      color: c.close >= c.open ? 'rgba(0, 245, 155, 0.45)' : 'rgba(255, 51, 102, 0.45)'
+      color: c.close >= c.open ? 'rgba(22, 163, 74, 0.45)' : 'rgba(220, 38, 38, 0.45)'
     }));
     state.volumeSeries.setData(volumeData);
 
@@ -534,41 +534,49 @@ function updateChartMarkers() {
   if (!state.candleSeries) return;
   const markers = [];
 
-  // 1. Candlestick Formations
+  // 1. Candlestick Formations (Keep chart legible: label latest 8 patterns with full text, older patterns with clean discrete markers)
   if (state.indicators.patterns && state.activePatterns && state.activePatterns.length) {
-    state.activePatterns.forEach(p => {
+    const totalPatterns = state.activePatterns.length;
+    state.activePatterns.forEach((p, idx) => {
       const isBull = p.type === 'BULLISH';
       const isBear = p.type === 'BEARISH';
+      const isRecent = idx >= totalPatterns - 6; // Label latest 6 patterns with text to maintain visual clarity
       markers.push({
         time: p.date,
         position: isBull ? 'belowBar' : (isBear ? 'aboveBar' : 'aboveBar'),
-        color: isBull ? '#00f59b' : (isBear ? '#ff3366' : '#94a3b8'),
+        color: isBull ? '#16a34a' : (isBear ? '#dc2626' : '#64748b'),
         shape: isBull ? 'arrowUp' : (isBear ? 'arrowDown' : 'circle'),
-        text: p.pattern,
-        size: 1.1
+        text: isRecent ? p.pattern : undefined,
+        size: isRecent ? 1.0 : 0.8
       });
     });
   }
 
-  // 2. Hidden Markov Model (HMM) Latent Regime Shifts
+  // 2. Hidden Markov Model (HMM) Latent Regime Shifts (Only show on major sustained regime flips)
   if (state.indicators.hmmRegimes && state.activeHMM && state.activeHMM.history_sample) {
     const history = state.activeHMM.history_sample;
+    const flips = [];
     for (let i = 1; i < history.length; i++) {
       const curr = history[i];
       const prev = history[i - 1];
       if (curr.regime !== prev.regime) {
-        const isBull = curr.regime === 'BULLISH';
-        const isBear = curr.regime === 'BEARISH';
-        markers.push({
-          time: curr.date,
-          position: isBull ? 'belowBar' : (isBear ? 'aboveBar' : 'aboveBar'),
-          color: isBull ? '#a855f7' : (isBear ? '#f43f5e' : '#38bdf8'),
-          shape: isBull ? 'arrowUp' : (isBear ? 'arrowDown' : 'square'),
-          text: `Regime: ${curr.regime}`,
-          size: 1.3
-        });
+        flips.push(curr);
       }
     }
+    // Show only the latest 4 significant regime shifts to prevent chart crowding
+    const recentFlips = flips.slice(-4);
+    recentFlips.forEach(curr => {
+      const isBull = curr.regime === 'BULLISH';
+      const isBear = curr.regime === 'BEARISH';
+      markers.push({
+        time: curr.date,
+        position: isBull ? 'belowBar' : (isBear ? 'aboveBar' : 'aboveBar'),
+        color: isBull ? '#16a34a' : (isBear ? '#dc2626' : '#2563eb'),
+        shape: isBull ? 'arrowUp' : (isBear ? 'arrowDown' : 'square'),
+        text: `${curr.regime} Regime`,
+        size: 1.1
+      });
+    });
   }
 
   // Sort markers chronologically
@@ -595,23 +603,20 @@ function renderPatternsList(patterns) {
     card.className = 'pattern-card';
     
     let pillClass = 'pill-neutral';
-    let icon = '◆';
     if (p.type === 'BULLISH') {
       pillClass = 'pill-bullish';
-      icon = '▲';
     } else if (p.type === 'BEARISH') {
       pillClass = 'pill-bearish';
-      icon = '▼';
     }
 
     card.innerHTML = `
       <div class="pattern-header">
-        <div class="pattern-title">${icon} ${p.pattern}</div>
+        <div class="pattern-title">${p.pattern}</div>
         <span class="pill-badge ${pillClass}">${p.signal}</span>
       </div>
-      <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+      <div class="pattern-meta-row">
         <span class="pattern-date">${p.date}</span>
-        <span style="font-size:11px; font-family:var(--font-mono); color:#fff;">PKR ${formatPKR(p.close)}</span>
+        <span class="pattern-price">PKR ${formatPKR(p.close)}</span>
       </div>
       <div class="pattern-desc">${p.description}</div>
     `;
@@ -667,7 +672,7 @@ async function loadQuantitativeIndicators(symbol) {
       elements.macdBadge.textContent = isPositive ? 'MOMENTUM +' : 'MOMENTUM -';
     } else {
       elements.macdDiffVal.textContent = '--';
-      elements.macdDiffVal.style.color = '#fff';
+      elements.macdDiffVal.style.color = 'var(--text-main)';
       elements.macdLineVal.textContent = '--';
       elements.macdSigVal.textContent = '--';
       elements.macdBadge.className = 'qc-badge neutral';
@@ -882,11 +887,11 @@ async function loadHMMRegimes(symbol) {
       states.forEach(fromState => {
         const fromRow = tm[fromState] || {};
         rowsHtml += `<tr>`;
-        rowsHtml += `<td style="font-weight:700; color:#cbd5e1;">${labels[fromState]}</td>`;
+        rowsHtml += `<td style="font-weight:600; color:var(--text-main);">${labels[fromState]}</td>`;
         states.forEach(toState => {
           const p = (fromRow[toState] || 0) * 100;
           const isDiag = fromState === toState;
-          rowsHtml += `<td style="${isDiag ? 'color:#c084fc; font-weight:700; background:rgba(168,85,247,0.08);' : ''}">${p.toFixed(1)}%</td>`;
+          rowsHtml += `<td style="${isDiag ? 'color:var(--text-main); font-weight:700; background:var(--bg-secondary);' : ''}">${p.toFixed(1)}%</td>`;
         });
         rowsHtml += `</tr>`;
       });
@@ -901,18 +906,18 @@ async function loadHMMRegimes(symbol) {
       order.forEach(st => {
         const item = stats[st];
         if (!item) return;
-        const col = st === 'BULLISH' ? '#00f59b' : (st === 'BEARISH' ? '#ff3366' : '#38bdf8');
+        const col = st === 'BULLISH' ? '#16a34a' : (st === 'BEARISH' ? '#dc2626' : '#2563eb');
         const retSign = item.annualized_return_pct > 0 ? '+' : '';
         charsHtml += `
           <div class="hmm-char-item" style="border-left: 3px solid ${col};">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-weight:700; color:${col};">${st}</span>
-              <span style="font-size:11px; color:#94a3b8;">Persistence: <b>${(item.transition_persistence * 100).toFixed(0)}%</b></span>
+              <span style="font-weight:700; font-size:11px; color:${col};">${st}</span>
+              <span style="font-size:10px; color:var(--text-muted);">Persistence: <b>${(item.transition_persistence * 100).toFixed(0)}%</b></span>
             </div>
-            <div style="display:flex; gap:12px; margin-top:3px; font-size:11px; color:#cbd5e1;">
-              <span>Ann. Return: <b style="color:${item.annualized_return_pct >= 0 ? '#00f59b' : '#ff3366'};">${retSign}${item.annualized_return_pct}%</b></span>
-              <span>Ann. Vol: <b>${item.annualized_volatility_pct}%</b></span>
-              <span>Duration: <b>${item.expected_duration_days} d</b></span>
+            <div style="display:flex; gap:10px; margin-top:2px; font-size:10.5px; color:var(--text-secondary); font-family:var(--font-mono);">
+              <span>Return: <b style="color:${item.annualized_return_pct >= 0 ? '#16a34a' : '#dc2626'};">${retSign}${item.annualized_return_pct}%</b></span>
+              <span>Vol: <b>${item.annualized_volatility_pct}%</b></span>
+              <span>Duration: <b>${item.expected_duration_days}d</b></span>
             </div>
           </div>
         `;
@@ -986,31 +991,31 @@ async function runGAOptimization(symbol) {
     if (lift && elements.oosLiftVal) {
       const liftSign = lift.sharpe_lift >= 0 ? '+' : '';
       elements.oosLiftVal.textContent = `${liftSign}${lift.sharpe_lift.toFixed(2)}`;
-      elements.oosLiftVal.style.color = lift.sharpe_lift >= 0 ? '#00f59b' : '#ff3366';
+      elements.oosLiftVal.style.color = lift.sharpe_lift >= 0 ? '#16a34a' : '#dc2626';
       elements.oosLiftSub.textContent = `Base Sharpe: ${oosBase ? oosBase.sharpe_ratio.toFixed(2) : '--'}`;
     }
 
     if (wfv && elements.wfeVal) {
       elements.wfeVal.textContent = wfv.walk_forward_efficiency_ratio.toFixed(2);
       elements.wfeRiskSub.textContent = `Risk: ${wfv.overfitting_risk_assessment}`;
-      elements.wfeVal.style.color = wfv.walk_forward_efficiency_ratio >= 0.45 ? '#00f59b' : '#f59e0b';
+      elements.wfeVal.style.color = wfv.walk_forward_efficiency_ratio >= 0.45 ? '#16a34a' : '#d97706';
     }
 
     // 3. Populate Chronological Walk-Forward Folds Breakdown
     if (elements.wfvFoldsContainer && wfv?.folds) {
-      let foldsHtml = '<div style="font-size:11px; font-weight:700; color:#94a3b8; margin-bottom:8px;">Chronological Walk-Forward Folds (Anti-Overfitting Validation):</div>';
+      let foldsHtml = '<div style="font-size:11px; font-weight:700; color:#64748b; margin-bottom:8px;">Walk-Forward Out-of-Sample Folds:</div>';
       wfv.folds.forEach(f => {
         const beatBase = f.outperforms_baseline;
         foldsHtml += `
           <div class="wfv-fold-item">
             <div class="wfv-fold-header">
               <span class="wfv-fold-title">Fold ${f.fold}: Test Window (${f.test_period})</span>
-              <span class="wfv-fold-tag ${beatBase ? 'beat' : 'trail'}">${beatBase ? '✓ Outperformed' : '≈ Par'}</span>
+              <span class="wfv-fold-tag ${beatBase ? 'beat' : 'trail'}">${beatBase ? 'Outperformed' : 'At Par'}</span>
             </div>
             <div class="wfv-fold-metrics">
-              <div>IS Sharpe: <b>${f.in_sample_sharpe.toFixed(2)}</b></div>
-              <div>OOS Sharpe: <b style="color:${f.out_of_sample_sharpe >= 0 ? '#00f59b' : '#ff3366'};">${f.out_of_sample_sharpe.toFixed(2)}</b></div>
-              <div>OOS Return: <b>+${f.out_of_sample_return_pct.toFixed(1)}%</b></div>
+              <div>Train Sharpe: <b>${f.in_sample_sharpe.toFixed(2)}</b></div>
+              <div>Test Sharpe: <b style="color:${f.out_of_sample_sharpe >= 0 ? '#16a34a' : '#dc2626'};">${f.out_of_sample_sharpe.toFixed(2)}</b></div>
+              <div>Test Return: <b>+${f.out_of_sample_return_pct.toFixed(1)}%</b></div>
               <div>Base Return: <b>+${f.baseline_oos_return_pct.toFixed(1)}%</b></div>
             </div>
           </div>
@@ -1025,9 +1030,9 @@ async function runGAOptimization(symbol) {
       const trainTag = document.getElementById('eval-period-train');
       const valTag = document.getElementById('eval-period-val');
       const testTag = document.getElementById('eval-period-test');
-      if (trainTag && summary.train_period) trainTag.textContent = `Train (60%): ${summary.train_period}`;
-      if (valTag && summary.val_period) valTag.textContent = `Val (20%): ${summary.val_period}`;
-      if (testTag && summary.test_period) testTag.textContent = `Unseen Test (20%): ${summary.test_period.replace(' (UNSEEN OUT-OF-SAMPLE)', '')}`;
+      if (trainTag && summary.train_period) trainTag.textContent = `Train: ${summary.train_period}`;
+      if (valTag && summary.val_period) valTag.textContent = `Val: ${summary.val_period}`;
+      if (testTag && summary.test_period) testTag.textContent = `Test: ${summary.test_period.replace(' (UNSEEN OUT-OF-SAMPLE)', '')}`;
     }
 
     if (elements.gaStatusBadge) {
@@ -1061,7 +1066,7 @@ function switchGAConfigMode(mode) {
   const colsBase = document.querySelectorAll('.col-base');
 
   if (mode === 'baseline') {
-    if (btnBaseline) { btnBaseline.classList.add('active'); btnBaseline.style.color = '#38bdf8'; btnBaseline.style.borderColor = 'rgba(56,189,248,0.5)'; }
+    if (btnBaseline) { btnBaseline.classList.add('active'); btnBaseline.style.color = ''; btnBaseline.style.borderColor = ''; }
     if (btnEvolved) { btnEvolved.classList.remove('active'); btnEvolved.style.color = ''; btnEvolved.style.borderColor = ''; }
     if (thBaseline) thBaseline.classList.add('active-col');
     if (thEvolved) thEvolved.classList.remove('active-col');
@@ -1069,7 +1074,7 @@ function switchGAConfigMode(mode) {
     colsEvolved.forEach(el => el.classList.remove('highlight'));
     if (elements.gaStatusBadge) {
       elements.gaStatusBadge.className = 'ga-status-tag';
-      elements.gaStatusBadge.textContent = 'Active: Fixed Baseline (Defaults)';
+      elements.gaStatusBadge.textContent = 'Active: Baseline Defaults';
     }
   } else {
     if (btnEvolved) { btnEvolved.classList.add('active'); btnEvolved.style.color = ''; btnEvolved.style.borderColor = ''; }
@@ -1080,7 +1085,7 @@ function switchGAConfigMode(mode) {
     colsBase.forEach(el => el.classList.remove('highlight'));
     if (elements.gaStatusBadge) {
       elements.gaStatusBadge.className = 'ga-status-tag ready';
-      elements.gaStatusBadge.textContent = 'Active: GA Evolved (Optimal)';
+      elements.gaStatusBadge.textContent = 'Active: Optimized Settings';
     }
   }
 }
@@ -1120,13 +1125,12 @@ async function loadNewsSentiment(cat = null) {
       if (item.sentiment_label === 'NEGATIVE') labelClass = 'pill-bearish';
 
       let catClass = 'cat-corp';
-      let catIcon = '🏢';
-      if (item.category === 'GEOPOLITICAL') { catClass = 'cat-geo'; catIcon = '🌍'; }
-      else if (item.category === 'MACRO_IMF') { catClass = 'cat-macro'; catIcon = '🏛️'; }
-      else if (item.category === 'ENERGY_OIL') { catClass = 'cat-energy'; catIcon = '⚡'; }
-      else if (item.category === 'TECH_AI') { catClass = 'cat-tech'; catIcon = '💻'; }
-      else if (item.category === 'BANKING') { catClass = 'cat-bank'; catIcon = '🏦'; }
-      else if (item.category === 'CEMENT') { catClass = 'cat-cement'; catIcon = '🏗️'; }
+      if (item.category === 'GEOPOLITICAL') { catClass = 'cat-geo'; }
+      else if (item.category === 'MACRO_IMF') { catClass = 'cat-macro'; }
+      else if (item.category === 'ENERGY_OIL') { catClass = 'cat-energy'; }
+      else if (item.category === 'TECH_AI') { catClass = 'cat-tech'; }
+      else if (item.category === 'BANKING') { catClass = 'cat-bank'; }
+      else if (item.category === 'CEMENT') { catClass = 'cat-cement'; }
 
       // Targeted Industries Badges
       const industries = item.targeted_industries || [];
@@ -1140,36 +1144,36 @@ async function loadNewsSentiment(cat = null) {
 
       card.innerHTML = `
         <div class="news-item-top">
-          <span class="news-cat-pill ${catClass}">${catIcon} ${item.category_badge || item.category}</span>
-          <span class="pill-badge ${labelClass}">FinBERT: ${item.sentiment_label} (${(item.confidence * 100).toFixed(0)}%)</span>
+          <span class="news-cat-pill ${catClass}">${item.category_badge || item.category}</span>
+          <span class="pill-badge ${labelClass}">${item.sentiment_label} (${(item.confidence * 100).toFixed(0)}%)</span>
         </div>
 
         <a href="${item.url}" target="_blank" class="news-headline">${item.headline}</a>
 
         ${indHtml ? `
           <div class="news-industries-row">
-            <span style="color:#64748b; font-size:10px; font-weight:700;">Targeted Industries:</span>
+            <span class="news-row-label">Targeted:</span>
             ${indHtml}
           </div>
         ` : ''}
 
         ${stocksHtml ? `
           <div class="news-stocks-row">
-            <span style="color:#64748b; font-size:10px; font-weight:700;">Impacted Stocks:</span>
+            <span class="news-row-label">Stocks:</span>
             ${stocksHtml}
           </div>
         ` : ''}
 
         ${item.impact_analysis ? `
           <div class="news-transmission-box">
-            <div class="news-transmission-title">💡 Transmission Impact:</div>
+            <div class="news-transmission-title">Impact Analysis:</div>
             <div>${item.impact_analysis}</div>
           </div>
         ` : ''}
 
         <div class="news-meta">
           <span>${item.publisher} • ${item.published_at ? item.published_at.split('T')[0] : ''}</span>
-          <span style="color:#38bdf8; font-size:10px; font-family:var(--font-mono);">Polarity: ${item.sentiment_score > 0 ? '+' : ''}${item.sentiment_score.toFixed(2)}</span>
+          <span class="news-polarity">Score: ${item.sentiment_score > 0 ? '+' : ''}${item.sentiment_score.toFixed(2)}</span>
         </div>
       `;
       container.appendChild(card);
