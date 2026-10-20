@@ -1534,6 +1534,67 @@ body.full-screener-active {
   border-radius: 4px;
 }
 
+/* GA Active Configuration & Evaluation Periods Bar */
+.ga-config-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+.ga-mode-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ga-mode-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.ga-mode-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+.ga-mode-pill.active {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: rgba(168, 85, 247, 0.5);
+  color: #c084fc;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.25);
+}
+.ga-eval-periods {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.eval-period-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: #38bdf8;
+}
+.eval-period-tag.test {
+  background: rgba(0, 245, 155, 0.1);
+  border-color: rgba(0, 245, 155, 0.3);
+  color: #00f59b;
+}
+
 /* GA Parameter Comparison Table */
 .ga-table-wrap {
   overflow-x: auto;
@@ -1637,6 +1698,82 @@ body.full-screener-active {
 .fold-stats {
   display: flex;
   gap: 12px;
+}
+
+/* GA Active Column Highlighting */
+.ga-param-table th.active-col {
+  color: #c084fc;
+}
+.ga-param-table td.col-evolved.highlight {
+  background: rgba(168, 85, 247, 0.12);
+  color: #e9d5ff;
+}
+.ga-param-table td.col-base.highlight {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+/* GA Quantitative Rationale & Limitations Box */
+.ga-rationale-box {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+.ga-rationale-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ga-rationale-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #c084fc;
+  font-family: var(--font-mono);
+  letter-spacing: 0.3px;
+}
+.ga-obj-formula {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+.ga-rationale-text {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
+}
+.ga-rationale-text b {
+  color: #e2e8f0;
+}
+.ga-limitation-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 5px;
+  padding: 8px 10px;
+  font-size: 10.5px;
+  color: #fbbf24;
+  line-height: 1.45;
+}
+.limitation-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: -1px;
 }
 
 /* RESPONSIVE DESIGN */

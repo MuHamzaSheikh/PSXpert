@@ -1019,10 +1019,24 @@ async function runGAOptimization(symbol) {
       elements.wfvFoldsContainer.innerHTML = foldsHtml;
     }
 
+    // 4. Update Chronological Evaluation Periods Display
+    const summary = data.data_summary;
+    if (summary) {
+      const trainTag = document.getElementById('eval-period-train');
+      const valTag = document.getElementById('eval-period-val');
+      const testTag = document.getElementById('eval-period-test');
+      if (trainTag && summary.train_period) trainTag.textContent = `Train (60%): ${summary.train_period}`;
+      if (valTag && summary.val_period) valTag.textContent = `Val (20%): ${summary.val_period}`;
+      if (testTag && summary.test_period) testTag.textContent = `Unseen Test (20%): ${summary.test_period.replace(' (UNSEEN OUT-OF-SAMPLE)', '')}`;
+    }
+
     if (elements.gaStatusBadge) {
       elements.gaStatusBadge.className = 'ga-status-tag ready';
       elements.gaStatusBadge.textContent = 'Status: Converged (WFE Validated)';
     }
+
+    // Set initial active highlight on evolved column
+    switchGAConfigMode('evolved');
 
   } catch (err) {
     console.error('Error running GA optimization:', err);
@@ -1037,10 +1051,45 @@ async function runGAOptimization(symbol) {
   }
 }
 
+// Interactive Strategy Configuration Mode Switcher
+function switchGAConfigMode(mode) {
+  const btnEvolved = document.getElementById('ga-mode-evolved');
+  const btnBaseline = document.getElementById('ga-mode-baseline');
+  const thEvolved = document.getElementById('th-evolved-col');
+  const thBaseline = document.getElementById('th-baseline-col');
+  const colsEvolved = document.querySelectorAll('.col-evolved');
+  const colsBase = document.querySelectorAll('.col-base');
+
+  if (mode === 'baseline') {
+    if (btnBaseline) { btnBaseline.classList.add('active'); btnBaseline.style.color = '#38bdf8'; btnBaseline.style.borderColor = 'rgba(56,189,248,0.5)'; }
+    if (btnEvolved) { btnEvolved.classList.remove('active'); btnEvolved.style.color = ''; btnEvolved.style.borderColor = ''; }
+    if (thBaseline) thBaseline.classList.add('active-col');
+    if (thEvolved) thEvolved.classList.remove('active-col');
+    colsBase.forEach(el => el.classList.add('highlight'));
+    colsEvolved.forEach(el => el.classList.remove('highlight'));
+    if (elements.gaStatusBadge) {
+      elements.gaStatusBadge.className = 'ga-status-tag';
+      elements.gaStatusBadge.textContent = 'Active: Fixed Baseline (Defaults)';
+    }
+  } else {
+    if (btnEvolved) { btnEvolved.classList.add('active'); btnEvolved.style.color = ''; btnEvolved.style.borderColor = ''; }
+    if (btnBaseline) { btnBaseline.classList.remove('active'); btnBaseline.style.color = ''; btnBaseline.style.borderColor = ''; }
+    if (thEvolved) thEvolved.classList.add('active-col');
+    if (thBaseline) thBaseline.classList.remove('active-col');
+    colsEvolved.forEach(el => el.classList.add('highlight'));
+    colsBase.forEach(el => el.classList.remove('highlight'));
+    if (elements.gaStatusBadge) {
+      elements.gaStatusBadge.className = 'ga-status-tag ready';
+      elements.gaStatusBadge.textContent = 'Active: GA Evolved (Optimal)';
+    }
+  }
+}
+
 // Global window exposure for robust accessibility
 window.runGAOptimization = runGAOptimization;
 window.loadHMMRegimes = loadHMMRegimes;
 window.selectSymbol = selectSymbol;
+window.switchGAConfigMode = switchGAConfigMode;
 
 // 4. NEWS & SENTIMENT LOADING (FinBERT Market Catalysts & Geopolitical Intelligence)
 async function loadNewsSentiment(cat = null) {

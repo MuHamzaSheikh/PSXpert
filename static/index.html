@@ -466,25 +466,39 @@
                   <div id="ga-status-badge" class="ga-status-tag">Status: Ready</div>
                 </div>
 
+                <!-- Active Configuration Indicator & Evaluation Periods -->
+                <div class="ga-config-bar">
+                  <div class="ga-mode-selector">
+                    <span style="font-size:11px; color:#94a3b8; font-weight:600;">Active Strategy Configuration:</span>
+                    <button type="button" class="ga-mode-pill active" id="ga-mode-evolved" onclick="switchGAConfigMode('evolved')">⚡ GA Evolved (Active)</button>
+                    <button type="button" class="ga-mode-pill" id="ga-mode-baseline" onclick="switchGAConfigMode('baseline')">Fixed Baseline</button>
+                  </div>
+                  <div class="ga-eval-periods" id="ga-eval-periods">
+                    <span class="eval-period-tag" id="eval-period-train" title="Chronological In-Sample Parameter Search Window">Train: 60%</span>
+                    <span class="eval-period-tag" id="eval-period-val" title="Intermediate Overfitting Filter Window">Val: 20%</span>
+                    <span class="eval-period-tag test" id="eval-period-test" title="Strict Unseen Out-of-Sample Test Window">Unseen Test: 20%</span>
+                  </div>
+                </div>
+
                 <!-- Parameter Comparison Table (Baseline vs GA Optimized) -->
                 <div class="ga-table-wrap">
                   <table class="ga-param-table">
                     <thead>
                       <tr>
                         <th>Indicator Parameter</th>
-                        <th>Fixed Baseline</th>
-                        <th>GA Evolved</th>
+                        <th id="th-baseline-col">Fixed Baseline</th>
+                        <th id="th-evolved-col" class="active-col">GA Evolved</th>
                         <th>Optimization Role</th>
                       </tr>
                     </thead>
                     <tbody id="ga-param-tbody">
-                      <tr><td>RSI Period</td><td>14</td><td id="ga-param-rsi">--</td><td>Mean Reversion Horizon</td></tr>
-                      <tr><td>RSI Oversold / Overbought</td><td>30 / 70</td><td id="ga-param-osob">-- / --</td><td>Threshold Asymmetry</td></tr>
-                      <tr><td>EMA Fast / Slow</td><td>12 / 26</td><td id="ga-param-ema">-- / --</td><td>Trend Filtering Speed</td></tr>
-                      <tr><td>MACD Signal Line</td><td>9</td><td id="ga-param-macd">--</td><td>Crossover Smoothing</td></tr>
-                      <tr><td>Bollinger Bands Multiplier</td><td>2.0 σ</td><td id="ga-param-bb">-- σ</td><td>Volatility Envelope</td></tr>
-                      <tr><td>Stop Loss / Take Profit</td><td>5.0% / 10.0%</td><td id="ga-param-sltp">--% / --%</td><td>Risk / Reward Skew</td></tr>
-                      <tr><td>HMM Regime Guard</td><td>Disabled</td><td id="ga-param-regime">--</td><td>Bearish Regime Avoidance</td></tr>
+                      <tr><td>RSI Period</td><td class="col-base">14</td><td id="ga-param-rsi" class="col-evolved">--</td><td>Mean Reversion Horizon</td></tr>
+                      <tr><td>RSI Oversold / Overbought</td><td class="col-base">30 / 70</td><td id="ga-param-osob" class="col-evolved">-- / --</td><td>Threshold Asymmetry</td></tr>
+                      <tr><td>EMA Fast / Slow</td><td class="col-base">12 / 26</td><td id="ga-param-ema" class="col-evolved">-- / --</td><td>Trend Filtering Speed</td></tr>
+                      <tr><td>MACD Signal Line</td><td class="col-base">9</td><td id="ga-param-macd" class="col-evolved">--</td><td>Crossover Smoothing</td></tr>
+                      <tr><td>Bollinger Bands Multiplier</td><td class="col-base">2.0 σ</td><td id="ga-param-bb" class="col-evolved">-- σ</td><td>Volatility Envelope</td></tr>
+                      <tr><td>Stop Loss / Take Profit</td><td class="col-base">5.0% / 10.0%</td><td id="ga-param-sltp" class="col-evolved">--% / --%</td><td>Risk / Reward Skew</td></tr>
+                      <tr><td>HMM Regime Guard</td><td class="col-base">Disabled</td><td id="ga-param-regime" class="col-evolved">--</td><td>Bearish Regime Avoidance</td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -516,6 +530,21 @@
                 <!-- Walk-Forward Folds Breakdown -->
                 <div class="wfv-folds-accordion" id="wfv-folds-container">
                   <!-- populated dynamically with 3 folds -->
+                </div>
+
+                <!-- Optimization Rationale & Overfitting Limitations Notice -->
+                <div class="ga-rationale-box">
+                  <div class="ga-rationale-header">
+                    <span class="ga-rationale-title">🔬 Quantitative Methodology & Rationale</span>
+                    <span class="ga-obj-formula">Objective: Maximize Sharpe − 2.0 × MaxDrawdown</span>
+                  </div>
+                  <p class="ga-rationale-text">
+                    <b>Why Optimization was Performed:</b> Classical static indicators (such as 14 RSI or 12/26 EMA) assume stationary Western markets and frequently whipsaw in volatile emerging markets like the Pakistan Stock Exchange. Genetic evolution searches for non-linear indicator synergies, asymmetric oversold/overbought thresholds, and regime-conditioned risk boundaries.
+                  </p>
+                  <div class="ga-limitation-alert">
+                    <span class="limitation-icon">⚠️</span>
+                    <span><b>Academic & Quant Limitations:</b> Genetic Algorithms do not guarantee future profitability. Optimizing historical data inherently risks parameter memorization (overfitting). PSXpert enforces chronological Train/Validation/Test splits and 3-fold Walk-Forward Validation (WFE ratio &ge; 0.50) to evaluate whether statistical edge holds out-of-sample.</span>
+                  </div>
                 </div>
               </div>
             </div>
