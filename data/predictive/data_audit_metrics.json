@@ -1,0 +1,238 @@
+{
+  "database_dialect": "postgresql",
+  "table_counts": {
+    "companies": 811,
+    "company_financials": 91896,
+    "corporate_announcements": 20884,
+    "corporate_payouts": 1727,
+    "data_sources": 5,
+    "market_indices": 6127,
+    "news_articles": 249,
+    "news_entities": 999,
+    "news_sentiment": 617,
+    "stock_prices": 2096135,
+    "technical_indicators": 110816
+  },
+  "companies": {
+    "total": 811,
+    "kse100_true": 100,
+    "active_true": 483,
+    "unclassified_sector": 711,
+    "debt_sukuk_tickers": 63,
+    "etf_pref_tickers": 16
+  },
+  "stock_prices": {
+    "total_rows": 2096135,
+    "distinct_symbols": 811,
+    "min_date": "2000-08-15",
+    "max_date": "2026-10-13",
+    "nonpos_close": 1330,
+    "bad_hl": 149,
+    "flat_hl": 407412,
+    "flat_oc": 347946,
+    "zero_vol": 65977,
+    "ohlc_envelope_violations": 264587,
+    "weekend_phantom_rows": 13424,
+    "market_cap_populated": 475244,
+    "non_kse100_calendar_rows_since_2002": 17360
+  },
+  "market_indices": {
+    "total_rows": 6127,
+    "min_date": "2002-01-01",
+    "max_date": "2026-10-13",
+    "zero_vol_rows": 6127,
+    "weekend_rows": 0
+  },
+  "technical_indicators": {
+    "total_rows": 110816,
+    "distinct_symbols": 20,
+    "min_date": "2000-08-15",
+    "max_date": "2026-10-13"
+  },
+  "company_financials": [
+    {
+      "statement_type": "ANNUAL",
+      "rows": 10758,
+      "syms": 96,
+      "min_end": "2021-06-30",
+      "max_end": "2026-06-30",
+      "pub_eq_end": 366,
+      "pub_lt_end": 1106,
+      "future_period_end": 0,
+      "sentinel_12121_rows": 0
+    },
+    {
+      "statement_type": "BALANCE_SHEET",
+      "rows": 32202,
+      "syms": 140,
+      "min_end": "2021-12-31",
+      "max_end": "2026-06-30",
+      "pub_eq_end": 32202,
+      "pub_lt_end": 0,
+      "future_period_end": 0,
+      "sentinel_12121_rows": 0
+    },
+    {
+      "statement_type": "CASH_FLOW",
+      "rows": 20091,
+      "syms": 140,
+      "min_end": "2021-12-31",
+      "max_end": "2026-06-30",
+      "pub_eq_end": 20091,
+      "pub_lt_end": 0,
+      "future_period_end": 0,
+      "sentinel_12121_rows": 0
+    },
+    {
+      "statement_type": "INCOME_STATEMENT",
+      "rows": 25114,
+      "syms": 140,
+      "min_end": "2021-12-31",
+      "max_end": "2026-06-30",
+      "pub_eq_end": 25114,
+      "pub_lt_end": 0,
+      "future_period_end": 0,
+      "sentinel_12121_rows": 0
+    },
+    {
+      "statement_type": "QUARTERLY",
+      "rows": 3731,
+      "syms": 100,
+      "min_end": "2015-03-31",
+      "max_end": "2027-09-30",
+      "pub_eq_end": 2315,
+      "pub_lt_end": 12,
+      "future_period_end": 24,
+      "sentinel_12121_rows": 2262
+    }
+  ],
+  "news_articles": {
+    "total_articles": 249,
+    "articles_2026": 185,
+    "articles_archive": 64,
+    "post_price_cutoff_articles": 131,
+    "min_pub": "2002-06-15 01:00:00+06",
+    "max_pub": "2026-10-20 21:55:19+05"
+  },
+  "corporate_payouts": [
+    {
+      "payout_type": "type",
+      "cnt": 1381
+    },
+    {
+      "payout_type": "dividend",
+      "cnt": 334
+    },
+    {
+      "payout_type": "split",
+      "cnt": 7
+    },
+    {
+      "payout_type": "bonus",
+      "cnt": 5
+    }
+  ],
+  "csv_inventory": [
+    {
+      "path": "data/financial_news.csv",
+      "size_kb": 614.7
+    },
+    {
+      "path": "data/financial_news_historical_2002_2026.csv",
+      "size_kb": 196.2
+    },
+    {
+      "path": "data/kse100_constituents.csv",
+      "size_kb": 4.6
+    },
+    {
+      "path": "data/kse100_corporate_announcements.csv",
+      "size_kb": 4846.4
+    },
+    {
+      "path": "data/kse100_corporate_payouts_2001_2026.csv",
+      "size_kb": 192.7
+    },
+    {
+      "path": "data/kse100_financial_ratios.csv",
+      "size_kb": 63.2
+    },
+    {
+      "path": "data/kse100_fundamentals_annual.csv",
+      "size_kb": 128.4
+    },
+    {
+      "path": "data/kse100_fundamentals_quarterly.csv",
+      "size_kb": 60.1
+    },
+    {
+      "path": "data/kse100_index_history_2002_2026.csv",
+      "size_kb": 238.9
+    },
+    {
+      "path": "data/kse100_stocks_historical_2002_2026.csv",
+      "size_kb": 29261.9
+    },
+    {
+      "path": "data/psx_companies_directory.csv",
+      "size_kb": 12.0
+    },
+    {
+      "path": "data/psx_market_snapshot_ohlcv.csv",
+      "size_kb": 94.3
+    },
+    {
+      "path": "data/processed/companies_clean.csv",
+      "size_kb": 8.8
+    },
+    {
+      "path": "data/processed/company_financials_clean.csv",
+      "size_kb": 1164.5
+    },
+    {
+      "path": "data/processed/corporate_announcements_clean.csv",
+      "size_kb": 3916.5
+    },
+    {
+      "path": "data/processed/corporate_payouts_clean.csv",
+      "size_kb": 64.6
+    },
+    {
+      "path": "data/processed/market_indices_clean.csv",
+      "size_kb": 407.7
+    },
+    {
+      "path": "data/processed/news_articles_clean.csv",
+      "size_kb": 604.5
+    },
+    {
+      "path": "data/processed/news_entities_clean.csv",
+      "size_kb": 22.7
+    },
+    {
+      "path": "data/processed/psx_technical_indicators_dataset.csv",
+      "size_kb": 30052.4
+    },
+    {
+      "path": "data/processed/stock_prices_clean.csv",
+      "size_kb": 28630.6
+    }
+  ],
+  "intraday_availability": {
+    "intraday_tables_found": [],
+    "has_subdaily_db_prices": false,
+    "intraday_files_found": [
+      "C:\\Users\\HP\\psxpert\\data\\predictive\\intraday_features.csv",
+      "C:\\Users\\HP\\psxpert\\data\\predictive\\intraday_targets.csv"
+    ],
+    "historical_intraday_rows_available": 0,
+    "status": "UNAVAILABLE_NO_HISTORICAL_INTRADAY_SOURCE",
+    "frequency_policy": "Intraday 5-minute bars (Asia/Karachi PKT, right-closed & right-labeled) are strictly isolated from daily EOD observations. No upsampling/disaggregation from daily bars is permitted.",
+    "session_hours_policy": {
+      "mon_thu_continuous": "09:30:00 - 15:30:00 PKT",
+      "friday_morning": "09:15:00 - 12:00:00 PKT",
+      "friday_afternoon": "14:30:00 - 16:30:00 PKT"
+    },
+    "target_horizons_policy": "30-minute (6 x 5m bars) and 60-minute (12 x 5m bars), restricted strictly within the same continuous session_id."
+  }
+}

@@ -1,0 +1,363 @@
+{
+  "elapsed_seconds": 279.85,
+  "daily_meta": {
+    "total_rows": 2024340,
+    "distinct_symbols": 726,
+    "kse100_current_symbols": 100,
+    "date_min": "2002-01-01",
+    "date_max": "2026-10-13",
+    "total_feature_columns": 158,
+    "total_target_columns": 34,
+    "splits": {
+      "calendar_source": "PSX KSE-100 Exchange Trading Days (market_indices)",
+      "total_trading_days": 6127,
+      "start_date": "2002-01-01",
+      "end_date": "2026-10-13",
+      "max_target_horizon_days": 25,
+      "purge_policy": "25 trading days purged before every Validation/Test start",
+      "primary_splits": [
+        {
+          "name": "TRAIN",
+          "start_date": "2002-01-01",
+          "end_date": "2021-11-26",
+          "trading_days": 4923,
+          "purpose": "Model fitting, scaler/feature-selector estimation, HMM parameter training"
+        },
+        {
+          "name": "PURGE_TRAIN_VAL",
+          "start_date": "2021-11-29",
+          "end_date": "2021-12-31",
+          "trading_days": 25,
+          "purpose": "25-session purge buffer separating Train 20d targets (<=23 cal span) from Val"
+        },
+        {
+          "name": "VAL",
+          "start_date": "2022-01-03",
+          "end_date": "2024-05-20",
+          "trading_days": 586,
+          "purpose": "Hyperparameter tuning, ensemble calibration, early stopping"
+        },
+        {
+          "name": "PURGE_VAL_TEST",
+          "start_date": "2024-05-21",
+          "end_date": "2024-06-28",
+          "trading_days": 25,
+          "purpose": "25-session purge buffer separating Val 20d targets (<=23 cal span) from Test"
+        },
+        {
+          "name": "TEST",
+          "start_date": "2024-07-01",
+          "end_date": "2026-10-13",
+          "trading_days": 568,
+          "purpose": "Strictly unseen out-of-sample final generalization benchmark"
+        }
+      ],
+      "fundamentals_subsplits": [
+        {
+          "name": "FUND_TRAIN",
+          "start_date": "2022-01-03",
+          "end_date": "2024-05-20",
+          "trading_days": 586
+        },
+        {
+          "name": "FUND_PURGE_TRAIN_VAL",
+          "start_date": "2024-05-21",
+          "end_date": "2024-06-28",
+          "trading_days": 25
+        },
+        {
+          "name": "FUND_VAL",
+          "start_date": "2024-07-01",
+          "end_date": "2025-05-20",
+          "trading_days": 220
+        },
+        {
+          "name": "FUND_PURGE_VAL_TEST",
+          "start_date": "2025-05-21",
+          "end_date": "2025-06-30",
+          "trading_days": 25
+        },
+        {
+          "name": "FUND_TEST",
+          "start_date": "2025-07-01",
+          "end_date": "2026-10-13",
+          "trading_days": 323
+        }
+      ],
+      "walk_forward_folds": [
+        {
+          "fold": 1,
+          "train_start": "2002-01-01",
+          "train_effective_end": "2021-11-26",
+          "purge_start": "2021-11-29",
+          "purge_end": "2021-12-31",
+          "purge_days": 25,
+          "test_start": "2022-01-03",
+          "test_end": "2022-12-30",
+          "train_sessions": 4923,
+          "test_sessions": 247
+        },
+        {
+          "fold": 2,
+          "train_start": "2002-01-01",
+          "train_effective_end": "2022-11-25",
+          "purge_start": "2022-11-28",
+          "purge_end": "2022-12-30",
+          "purge_days": 25,
+          "test_start": "2023-01-02",
+          "test_end": "2023-12-29",
+          "train_sessions": 5170,
+          "test_sessions": 245
+        },
+        {
+          "fold": 3,
+          "train_start": "2002-01-01",
+          "train_effective_end": "2023-11-23",
+          "purge_start": "2023-11-24",
+          "purge_end": "2023-12-29",
+          "purge_days": 25,
+          "test_start": "2024-01-01",
+          "test_end": "2024-12-31",
+          "train_sessions": 5415,
+          "test_sessions": 246
+        },
+        {
+          "fold": 4,
+          "train_start": "2002-01-01",
+          "train_effective_end": "2024-11-25",
+          "purge_start": "2024-11-26",
+          "purge_end": "2024-12-31",
+          "purge_days": 25,
+          "test_start": "2025-01-01",
+          "test_end": "2025-12-31",
+          "train_sessions": 5661,
+          "test_sessions": 248
+        },
+        {
+          "fold": 5,
+          "train_start": "2002-01-01",
+          "train_effective_end": "2025-11-25",
+          "purge_start": "2025-11-26",
+          "purge_end": "2025-12-31",
+          "purge_days": 25,
+          "test_start": "2026-01-01",
+          "test_end": "2026-10-13",
+          "train_sessions": 5909,
+          "test_sessions": 193
+        }
+      ]
+    },
+    "hmm_train_metadata": {
+      "n_states": 3,
+      "state_map": {
+        "1": "BULLISH",
+        "2": "BEARISH",
+        "0": "SIDEWAYS"
+      },
+      "startprob": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "transmat": [
+        [
+          0.941854,
+          0.037194,
+          0.020952
+        ],
+        [
+          0.034754,
+          0.962721,
+          0.002525
+        ],
+        [
+          0.051967,
+          0.0,
+          0.948033
+        ]
+      ],
+      "means": [
+        [
+          0.013638,
+          0.012922,
+          0.039853
+        ],
+        [
+          0.042241,
+          -0.654091,
+          -0.776471
+        ],
+        [
+          -0.123515,
+          1.416133,
+          1.626788
+        ]
+      ]
+    },
+    "news_alignment_audit": {
+      "total_articles": 249,
+      "excluded_post_cutoff": 131,
+      "archive_placeholder_jun15": 64,
+      "rolled_to_next_trading_day": 41,
+      "usable_aligned_articles": 118
+    },
+    "tx_cost_roundtrip_bps": 50,
+    "threshold_formula": "0.0050 + 0.35 * max(vol_20d, 0.005) * sqrt(h)"
+  },
+  "target_stats": {
+    "1d": {
+      "valid_count": 1782766,
+      "invalid_count": 241574,
+      "up_pct": 26.32,
+      "neutral_pct": 47.96,
+      "down_pct": 25.73
+    },
+    "5d": {
+      "valid_count": 1618949,
+      "invalid_count": 405391,
+      "up_pct": 29.97,
+      "neutral_pct": 40.89,
+      "down_pct": 29.14
+    },
+    "20d": {
+      "valid_count": 1424875,
+      "invalid_count": 599465,
+      "up_pct": 34.22,
+      "neutral_pct": 34.96,
+      "down_pct": 30.82
+    }
+  },
+  "preprocessing_summary": {
+    "feature_count": 123,
+    "train_row_count": 1552063,
+    "val_row_count_excluded_from_fit": 206146,
+    "test_row_count_excluded_from_fit": 246397,
+    "screening_csv": "C:\\Users\\HP\\psxpert\\data\\predictive\\train_feature_screening.csv",
+    "metadata_json": "C:\\Users\\HP\\psxpert\\data\\predictive\\train_preprocessing_metadata.json",
+    "zero_variance_features": [
+      "news_stock_count_1d",
+      "has_fundamentals",
+      "fin_sales_to_price_pit",
+      "news_sector_count_7d",
+      "has_sector_news_7d",
+      "fin_earnings_yield_pit",
+      "news_mkt_count_1d",
+      "fin_revenue_yoy_growth",
+      "fin_net_margin",
+      "fin_fcf_margin",
+      "fin_debt_to_assets",
+      "fin_pub_verified_flag",
+      "fin_gross_margin",
+      "fin_debt_to_equity",
+      "fin_roa",
+      "fin_operating_margin",
+      "fin_book_to_price_pit",
+      "fin_staleness_days",
+      "fin_net_income_yoy_growth",
+      "fin_current_ratio",
+      "fin_roe",
+      "fin_ocf_to_ni",
+      "fin_fcf_yield_pit",
+      "news_stock_count_7d",
+      "has_stock_news_7d"
+    ],
+    "top_10_features_by_train_mi": [
+      {
+        "feature": "kse100_log_ret_1d",
+        "train_mi_dir_1d": 0.076418,
+        "train_spearman_ret_1d": 0.05497,
+        "train_missing_pct": 0.01
+      },
+      {
+        "feature": "kse100_vol_20d",
+        "train_mi_dir_1d": 0.074409,
+        "train_spearman_ret_1d": -0.00683,
+        "train_missing_pct": 0.19
+      },
+      {
+        "feature": "kse100_ret_5d",
+        "train_mi_dir_1d": 0.074233,
+        "train_spearman_ret_1d": 0.03904,
+        "train_missing_pct": 0.04
+      },
+      {
+        "feature": "kse100_ret_1d",
+        "train_mi_dir_1d": 0.074079,
+        "train_spearman_ret_1d": 0.05497,
+        "train_missing_pct": 0.01
+      },
+      {
+        "feature": "kse100_ret_20d",
+        "train_mi_dir_1d": 0.072559,
+        "train_spearman_ret_1d": 0.03889,
+        "train_missing_pct": 0.19
+      },
+      {
+        "feature": "kse100_dist_sma200",
+        "train_mi_dir_1d": 0.072034,
+        "train_spearman_ret_1d": 0.01501,
+        "train_missing_pct": 2.49
+      },
+      {
+        "feature": "kse100_rsi_14",
+        "train_mi_dir_1d": 0.071528,
+        "train_spearman_ret_1d": 0.05046,
+        "train_missing_pct": 0.12
+      },
+      {
+        "feature": "kse100_dist_sma50",
+        "train_mi_dir_1d": 0.07096,
+        "train_spearman_ret_1d": 0.03877,
+        "train_missing_pct": 0.51
+      },
+      {
+        "feature": "mkt_pct_above_sma50",
+        "train_mi_dir_1d": 0.068863,
+        "train_spearman_ret_1d": 0.04149,
+        "train_missing_pct": 0.51
+      },
+      {
+        "feature": "hmm_mkt_entropy",
+        "train_mi_dir_1d": 0.068244,
+        "train_spearman_ret_1d": 0.00814,
+        "train_missing_pct": 0.19
+      }
+    ]
+  },
+  "intraday_summary": {
+    "rows_written": 0,
+    "feature_columns": 24,
+    "target_columns": 16,
+    "files": [
+      "C:\\Users\\HP\\psxpert\\data\\predictive\\intraday_features.parquet",
+      "C:\\Users\\HP\\psxpert\\data\\predictive\\intraday_features.csv",
+      "C:\\Users\\HP\\psxpert\\data\\predictive\\intraday_targets.parquet",
+      "C:\\Users\\HP\\psxpert\\data\\predictive\\intraday_targets.csv"
+    ],
+    "audit": {
+      "intraday_tables_found": [],
+      "has_subdaily_db_prices": false,
+      "intraday_files_found": [
+        "C:\\Users\\HP\\psxpert\\data\\predictive\\intraday_features.csv",
+        "C:\\Users\\HP\\psxpert\\data\\predictive\\intraday_targets.csv"
+      ],
+      "historical_intraday_rows_available": 0,
+      "status": "UNAVAILABLE_NO_HISTORICAL_INTRADAY_SOURCE",
+      "frequency_policy": "Intraday 5-minute bars (Asia/Karachi PKT, right-closed & right-labeled) are strictly isolated from daily EOD observations. No upsampling/disaggregation from daily bars is permitted.",
+      "session_hours_policy": {
+        "mon_thu_continuous": "09:30:00 - 15:30:00 PKT",
+        "friday_morning": "09:15:00 - 12:00:00 PKT",
+        "friday_afternoon": "14:30:00 - 16:30:00 PKT"
+      },
+      "target_horizons_policy": "30-minute (6 x 5m bars) and 60-minute (12 x 5m bars), restricted strictly within the same continuous session_id."
+    }
+  },
+  "report_files": [
+    "C:\\Users\\HP\\psxpert\\data\\predictive\\chronological_splits.json",
+    "C:\\Users\\HP\\psxpert\\data\\predictive\\feature_dictionary.csv",
+    "C:\\Users\\HP\\psxpert\\reports\\predictive\\FEATURE_DICTIONARY.md",
+    "C:\\Users\\HP\\psxpert\\reports\\predictive\\DATA_AUDIT_REPORT.md",
+    "C:\\Users\\HP\\psxpert\\reports\\predictive\\MISSING_DATA_AND_LEAKAGE_REPORT.md",
+    "C:\\Users\\HP\\psxpert\\reports\\predictive\\CHRONOLOGICAL_SPLITS_AND_OVERLAP_POLICY.md"
+  ]
+}

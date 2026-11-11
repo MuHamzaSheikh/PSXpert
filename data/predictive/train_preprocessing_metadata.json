@@ -1,0 +1,2227 @@
+{
+  "fitted_exclusively_on_split": "TRAIN",
+  "train_row_count": 1552063,
+  "val_row_count_excluded_from_fit": 206146,
+  "test_row_count_excluded_from_fit": 246397,
+  "mi_sample_size_train": 25000,
+  "selected_model_feature_count": 123,
+  "features": {
+    "volume": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 14102442.0,
+      "impute_median": 13500.0,
+      "clipped_mean": 587420.226617,
+      "clipped_std": 1973864.923709
+    },
+    "is_current_kse100": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.237672,
+      "clipped_std": 0.425657
+    },
+    "is_active_listing_snapshot": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 1.0,
+      "clipped_mean": 0.811493,
+      "clipped_std": 0.391116
+    },
+    "is_shariah": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.159072,
+      "clipped_std": 0.365743
+    },
+    "has_valid_sector": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.237672,
+      "clipped_std": 0.425657
+    },
+    "calendar_gap_days": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 1.0,
+      "clip_p99": 10.0,
+      "impute_median": 1.0,
+      "clipped_mean": 1.331832,
+      "clipped_std": 1.237478
+    },
+    "is_true_ohlc": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 1.0,
+      "clipped_mean": 0.737288,
+      "clipped_std": 0.440107
+    },
+    "is_zero_volume": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.036741,
+      "clipped_std": 0.188126
+    },
+    "ret_1d": {
+      "train_count": 1543449,
+      "train_missing_rate": 0.00555,
+      "clip_p01": -0.146341,
+      "clip_p99": 0.181641,
+      "impute_median": 0.0,
+      "clipped_mean": 0.00152,
+      "clipped_std": 0.044989
+    },
+    "log_ret_1d": {
+      "train_count": 1543449,
+      "train_missing_rate": 0.00555,
+      "clip_p01": -0.158224,
+      "clip_p99": 0.166904,
+      "impute_median": 0.0,
+      "clipped_mean": 0.000519,
+      "clipped_std": 0.044656
+    },
+    "ret_2d": {
+      "train_count": 1460667,
+      "train_missing_rate": 0.058887,
+      "clip_p01": -0.168963,
+      "clip_p99": 0.233766,
+      "impute_median": 0.0,
+      "clipped_mean": 0.003278,
+      "clipped_std": 0.059367
+    },
+    "ret_5d": {
+      "train_count": 1344721,
+      "train_missing_rate": 0.133591,
+      "clip_p01": -0.225412,
+      "clip_p99": 0.353373,
+      "impute_median": 0.0,
+      "clipped_mean": 0.007868,
+      "clipped_std": 0.089294
+    },
+    "ret_10d": {
+      "train_count": 1215914,
+      "train_missing_rate": 0.216582,
+      "clip_p01": -0.275,
+      "clip_p99": 0.522165,
+      "impute_median": 0.0,
+      "clipped_mean": 0.014994,
+      "clipped_std": 0.123174
+    },
+    "ret_20d": {
+      "train_count": 1145449,
+      "train_missing_rate": 0.261983,
+      "clip_p01": -0.329433,
+      "clip_p99": 0.745336,
+      "impute_median": 0.001263,
+      "clipped_mean": 0.026818,
+      "clipped_std": 0.172765
+    },
+    "ret_60d": {
+      "train_count": 1073883,
+      "train_missing_rate": 0.308093,
+      "clip_p01": -0.457288,
+      "clip_p99": 1.375,
+      "impute_median": 0.010304,
+      "clipped_mean": 0.070545,
+      "clipped_std": 0.309908
+    },
+    "vol_5d": {
+      "train_count": 1520007,
+      "train_missing_rate": 0.020654,
+      "clip_p01": 0.0,
+      "clip_p99": 0.222013,
+      "impute_median": 0.026926,
+      "clipped_mean": 0.037003,
+      "clipped_std": 0.036142
+    },
+    "vol_20d": {
+      "train_count": 1538534,
+      "train_missing_rate": 0.008717,
+      "clip_p01": 0.007055,
+      "clip_p99": 0.226767,
+      "impute_median": 0.03087,
+      "clipped_mean": 0.041477,
+      "clipped_std": 0.03566
+    },
+    "vol_60d": {
+      "train_count": 1524782,
+      "train_missing_rate": 0.017577,
+      "clip_p01": 0.010127,
+      "clip_p99": 0.23642,
+      "impute_median": 0.032301,
+      "clipped_mean": 0.043543,
+      "clipped_std": 0.036459
+    },
+    "vol_ratio_5_20": {
+      "train_count": 1507893,
+      "train_missing_rate": 0.028459,
+      "clip_p01": 0.010597,
+      "clip_p99": 1.863116,
+      "impute_median": 0.91046,
+      "clipped_mean": 0.917817,
+      "clipped_std": 0.397042
+    },
+    "parkinson_vol_20d": {
+      "train_count": 1228976,
+      "train_missing_rate": 0.208166,
+      "clip_p01": 0.006246,
+      "clip_p99": 0.123798,
+      "impute_median": 0.021614,
+      "clipped_mean": 0.027061,
+      "clipped_std": 0.019423
+    },
+    "overnight_gap_pct": {
+      "train_count": 1143092,
+      "train_missing_rate": 0.263502,
+      "clip_p01": -0.121509,
+      "clip_p99": 0.125,
+      "impute_median": 0.0,
+      "clipped_mean": 0.001051,
+      "clipped_std": 0.032599
+    },
+    "intraday_ret_pct": {
+      "train_count": 1144318,
+      "train_missing_rate": 0.262712,
+      "clip_p01": -0.119623,
+      "clip_p99": 0.153846,
+      "impute_median": 0.0,
+      "clipped_mean": 0.00115,
+      "clipped_std": 0.038827
+    },
+    "turnover_pkr": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 748867682.639995,
+      "impute_median": 315545.0,
+      "clipped_mean": 27243578.005676,
+      "clipped_std": 101033216.853156
+    },
+    "log_volume": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 16.461859,
+      "impute_median": 9.510519,
+      "clipped_mean": 9.463475,
+      "clipped_std": 3.572712
+    },
+    "log_turnover_pkr": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 20.434073,
+      "impute_median": 12.66206,
+      "clipped_mean": 12.50372,
+      "clipped_std": 4.216796
+    },
+    "trailing_20d_adv_pkr": {
+      "train_count": 1546108,
+      "train_missing_rate": 0.003837,
+      "clip_p01": 1108.021,
+      "clip_p99": 719172768.5,
+      "impute_median": 615734.375,
+      "clipped_mean": 28774874.330118,
+      "clipped_std": 98644439.771117
+    },
+    "volume_ratio_20d": {
+      "train_count": 1540069,
+      "train_missing_rate": 0.007728,
+      "clip_p01": 0.0,
+      "clip_p99": 8.267742,
+      "impute_median": 0.540005,
+      "clipped_mean": 1.036755,
+      "clipped_std": 1.425114
+    },
+    "amihud_illiquidity_20d": {
+      "train_count": 1480707,
+      "train_missing_rate": 0.045975,
+      "clip_p01": 2.7e-05,
+      "clip_p99": 33.325698,
+      "impute_median": 0.110757,
+      "clipped_mean": 1.899605,
+      "clipped_std": 5.135644
+    },
+    "zero_volume_days_20d": {
+      "train_count": 1549404,
+      "train_missing_rate": 0.001713,
+      "clip_p01": 0.0,
+      "clip_p99": 13.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.679787,
+      "clipped_std": 2.033581
+    },
+    "hl_spread_pct": {
+      "train_count": 1144318,
+      "train_missing_rate": 0.262712,
+      "clip_p01": 0.000909,
+      "clip_p99": 0.306189,
+      "impute_median": 0.036061,
+      "clipped_mean": 0.049558,
+      "clipped_std": 0.048935
+    },
+    "dist_sma_20": {
+      "train_count": 1539589,
+      "train_missing_rate": 0.008037,
+      "clip_p01": -0.292337,
+      "clip_p99": 0.401051,
+      "impute_median": -0.001378,
+      "clipped_mean": 0.005242,
+      "clipped_std": 0.104566
+    },
+    "dist_sma_50": {
+      "train_count": 1520404,
+      "train_missing_rate": 0.020398,
+      "clip_p01": -0.42714,
+      "clip_p99": 0.646481,
+      "impute_median": -0.001484,
+      "clipped_mean": 0.013188,
+      "clipped_std": 0.167367
+    },
+    "dist_sma_200": {
+      "train_count": 1428925,
+      "train_missing_rate": 0.079338,
+      "clip_p01": -0.703758,
+      "clip_p99": 1.290065,
+      "impute_median": 0.004816,
+      "clipped_mean": 0.045715,
+      "clipped_std": 0.333152
+    },
+    "dist_ema_20": {
+      "train_count": 1539589,
+      "train_missing_rate": 0.008037,
+      "clip_p01": -0.268844,
+      "clip_p99": 0.321768,
+      "impute_median": -0.001574,
+      "clipped_mean": 0.002267,
+      "clipped_std": 0.088822
+    },
+    "ema_20_50_spread": {
+      "train_count": 1520404,
+      "train_missing_rate": 0.020398,
+      "clip_p01": -0.244364,
+      "clip_p99": 0.220679,
+      "impute_median": -7.7e-05,
+      "clipped_mean": 0.001042,
+      "clipped_std": 0.072523
+    },
+    "ema_50_200_spread": {
+      "train_count": 1428925,
+      "train_missing_rate": 0.079338,
+      "clip_p01": -0.55673,
+      "clip_p99": 0.520311,
+      "impute_median": 0.005797,
+      "clipped_mean": 0.005406,
+      "clipped_std": 0.187684
+    },
+    "rsi_14": {
+      "train_count": 1542832,
+      "train_missing_rate": 0.005948,
+      "clip_p01": 19.860047,
+      "clip_p99": 84.412642,
+      "impute_median": 49.648775,
+      "clipped_mean": 50.406705,
+      "clipped_std": 12.530143
+    },
+    "macd_diff_pct": {
+      "train_count": 1530587,
+      "train_missing_rate": 0.013837,
+      "clip_p01": -0.050248,
+      "clip_p99": 0.043953,
+      "impute_median": 0.000117,
+      "clipped_mean": 2.5e-05,
+      "clipped_std": 0.014212
+    },
+    "bb_bandwidth": {
+      "train_count": 1533520,
+      "train_missing_rate": 0.011947,
+      "clip_p01": 3.698807,
+      "clip_p99": 121.923461,
+      "impute_median": 19.657475,
+      "clipped_mean": 26.064509,
+      "clipped_std": 21.354066
+    },
+    "bb_percent_b": {
+      "train_count": 1533520,
+      "train_missing_rate": 0.011947,
+      "clip_p01": -0.166904,
+      "clip_p99": 1.242973,
+      "impute_median": 0.487672,
+      "clipped_mean": 0.503235,
+      "clipped_std": 0.32897
+    },
+    "atr_pct": {
+      "train_count": 1543486,
+      "train_missing_rate": 0.005526,
+      "clip_p01": 1.177613,
+      "clip_p99": 32.239812,
+      "impute_median": 4.322848,
+      "clipped_mean": 5.767667,
+      "clipped_std": 4.804604
+    },
+    "dmi_plus_14": {
+      "train_count": 1542921,
+      "train_missing_rate": 0.00589,
+      "clip_p01": 7.836677,
+      "clip_p99": 66.056665,
+      "impute_median": 26.780594,
+      "clipped_mean": 28.499313,
+      "clipped_std": 11.73012
+    },
+    "dmi_minus_14": {
+      "train_count": 1542921,
+      "train_missing_rate": 0.00589,
+      "clip_p01": 6.064885,
+      "clip_p99": 61.3034,
+      "impute_median": 24.585403,
+      "clipped_mean": 26.210215,
+      "clipped_std": 11.37123
+    },
+    "adx_14": {
+      "train_count": 1534535,
+      "train_missing_rate": 0.011293,
+      "clip_p01": 8.713225,
+      "clip_p99": 62.794686,
+      "impute_median": 22.729136,
+      "clipped_mean": 25.23325,
+      "clipped_std": 11.433308
+    },
+    "dmi_diff": {
+      "train_count": 1542921,
+      "train_missing_rate": 0.00589,
+      "clip_p01": -42.275513,
+      "clip_p99": 51.790675,
+      "impute_median": 1.748427,
+      "clipped_mean": 2.294227,
+      "clipped_std": 17.551882
+    },
+    "obv_zscore_20": {
+      "train_count": 1532320,
+      "train_missing_rate": 0.01272,
+      "clip_p01": -2.807175,
+      "clip_p99": 3.464396,
+      "impute_median": 0.49961,
+      "clipped_mean": 0.349169,
+      "clipped_std": 1.343991
+    },
+    "stoch_k": {
+      "train_count": 1535621,
+      "train_missing_rate": 0.010594,
+      "clip_p01": 0.0,
+      "clip_p99": 100.0,
+      "impute_median": 46.587421,
+      "clipped_mean": 47.630888,
+      "clipped_std": 27.748567
+    },
+    "stoch_d": {
+      "train_count": 1534047,
+      "train_missing_rate": 0.011608,
+      "clip_p01": 1.102333,
+      "clip_p99": 98.563644,
+      "impute_median": 46.606487,
+      "clipped_mean": 47.632666,
+      "clipped_std": 26.853403
+    },
+    "stoch_k_minus_d": {
+      "train_count": 1534047,
+      "train_missing_rate": 0.011608,
+      "clip_p01": -19.809767,
+      "clip_p99": 21.32113,
+      "impute_median": -0.104151,
+      "clipped_mean": -0.009055,
+      "clipped_std": 7.896449
+    },
+    "candle_body_pct": {
+      "train_count": 1144318,
+      "train_missing_rate": 0.262712,
+      "clip_p01": -0.135877,
+      "clip_p99": 0.133334,
+      "impute_median": 0.0,
+      "clipped_mean": -0.000332,
+      "clipped_std": 0.038332
+    },
+    "candle_range_pct": {
+      "train_count": 1144318,
+      "train_missing_rate": 0.262712,
+      "clip_p01": 0.000909,
+      "clip_p99": 0.306189,
+      "impute_median": 0.036061,
+      "clipped_mean": 0.049558,
+      "clipped_std": 0.048935
+    },
+    "upper_shadow_ratio": {
+      "train_count": 1144318,
+      "train_missing_rate": 0.262712,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.153846,
+      "clipped_mean": 0.24829,
+      "clipped_std": 0.281195
+    },
+    "lower_shadow_ratio": {
+      "train_count": 1144318,
+      "train_missing_rate": 0.262712,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.125,
+      "clipped_mean": 0.217046,
+      "clipped_std": 0.260373
+    },
+    "body_to_range_ratio": {
+      "train_count": 1144318,
+      "train_missing_rate": 0.262712,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.527027,
+      "clipped_mean": 0.534664,
+      "clipped_std": 0.3367
+    },
+    "close_position_in_range": {
+      "train_count": 1144318,
+      "train_missing_rate": 0.262712,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.439024,
+      "clipped_mean": 0.475032,
+      "clipped_std": 0.362707
+    },
+    "candlestick_pattern_signal_num": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": -2.0,
+      "clip_p99": 2.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.004638,
+      "clipped_std": 0.639134
+    },
+    "is_bullish_pattern": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.157476,
+      "clipped_std": 0.364249
+    },
+    "is_bearish_pattern": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.150786,
+      "clipped_std": 0.357841
+    },
+    "is_doji_true_ohlc": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.100422,
+      "clipped_std": 0.300562
+    },
+    "bullish_patterns_5d": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 3.0,
+      "impute_median": 1.0,
+      "clipped_mean": 0.781425,
+      "clipped_std": 0.831329
+    },
+    "bearish_patterns_5d": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 3.0,
+      "impute_median": 1.0,
+      "clipped_mean": 0.750028,
+      "clipped_std": 0.815407
+    },
+    "listing_age_sessions": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 24.0,
+      "clip_p99": 4533.0,
+      "impute_median": 1468.0,
+      "clipped_mean": 1666.70057,
+      "clipped_std": 1173.832873
+    },
+    "trailing_20d_adv_rank": {
+      "train_count": 1546108,
+      "train_missing_rate": 0.003837,
+      "clip_p01": 4.0,
+      "clip_p99": 372.0,
+      "impute_median": 159.0,
+      "clipped_mean": 163.896241,
+      "clipped_std": 98.715902
+    },
+    "is_trailing_top100_liquid": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.314374,
+      "clipped_std": 0.464266
+    },
+    "sector_ret_1d": {
+      "train_count": 242099,
+      "train_missing_rate": 0.844015,
+      "clip_p01": -0.048349,
+      "clip_p99": 0.049353,
+      "impute_median": 0.000239,
+      "clipped_mean": 0.000727,
+      "clipped_std": 0.016926
+    },
+    "sector_ret_5d": {
+      "train_count": 240093,
+      "train_missing_rate": 0.845307,
+      "clip_p01": -0.121629,
+      "clip_p99": 0.136372,
+      "impute_median": 0.002465,
+      "clipped_mean": 0.004275,
+      "clipped_std": 0.043358
+    },
+    "sector_ret_20d": {
+      "train_count": 236450,
+      "train_missing_rate": 0.847654,
+      "clip_p01": -0.205181,
+      "clip_p99": 0.317972,
+      "impute_median": 0.010919,
+      "clipped_mean": 0.017087,
+      "clipped_std": 0.094268
+    },
+    "stock_minus_sector_ret_5d": {
+      "train_count": 235254,
+      "train_missing_rate": 0.848425,
+      "clip_p01": -0.147801,
+      "clip_p99": 0.176599,
+      "impute_median": -0.001695,
+      "clipped_mean": -8.7e-05,
+      "clipped_std": 0.050972
+    },
+    "kse100_ret_1d": {
+      "train_count": 1551943,
+      "train_missing_rate": 7.7e-05,
+      "clip_p01": -0.038946,
+      "clip_p99": 0.03495,
+      "impute_median": 0.00116,
+      "clipped_mean": 0.000937,
+      "clipped_std": 0.011883
+    },
+    "kse100_ret_5d": {
+      "train_count": 1551442,
+      "train_missing_rate": 0.0004,
+      "clip_p01": -0.090031,
+      "clip_p99": 0.081757,
+      "impute_median": 0.006533,
+      "clipped_mean": 0.005076,
+      "clipped_std": 0.028479
+    },
+    "kse100_ret_20d": {
+      "train_count": 1549182,
+      "train_missing_rate": 0.001856,
+      "clip_p01": -0.170495,
+      "clip_p99": 0.18578,
+      "impute_median": 0.022521,
+      "clipped_mean": 0.019981,
+      "clipped_std": 0.063574
+    },
+    "kse100_log_ret_1d": {
+      "train_count": 1551943,
+      "train_missing_rate": 7.7e-05,
+      "clip_p01": -0.039725,
+      "clip_p99": 0.034353,
+      "impute_median": 0.001159,
+      "clipped_mean": 0.000865,
+      "clipped_std": 0.011903
+    },
+    "kse100_vol_20d": {
+      "train_count": 1549182,
+      "train_missing_rate": 0.001856,
+      "clip_p01": 0.00388,
+      "clip_p99": 0.032207,
+      "impute_median": 0.009425,
+      "clipped_mean": 0.010765,
+      "clipped_std": 0.005471
+    },
+    "kse100_dist_sma50": {
+      "train_count": 1544083,
+      "train_missing_rate": 0.005142,
+      "clip_p01": -0.165799,
+      "clip_p99": 0.180836,
+      "impute_median": 0.024744,
+      "clipped_mean": 0.021975,
+      "clipped_std": 0.059245
+    },
+    "kse100_dist_sma200": {
+      "train_count": 1513346,
+      "train_missing_rate": 0.024946,
+      "clip_p01": -0.314297,
+      "clip_p99": 0.44061,
+      "impute_median": 0.091968,
+      "clipped_mean": 0.085048,
+      "clipped_std": 0.123929
+    },
+    "kse100_rsi_14": {
+      "train_count": 1550181,
+      "train_missing_rate": 0.001213,
+      "clip_p01": 20.472181,
+      "clip_p99": 87.866539,
+      "impute_median": 57.639793,
+      "clipped_mean": 57.184834,
+      "clipped_std": 15.219067
+    },
+    "hmm_mkt_prob_bullish": {
+      "train_count": 1549182,
+      "train_missing_rate": 0.001856,
+      "clip_p01": 0.0,
+      "clip_p99": 0.999973,
+      "impute_median": 0.025823,
+      "clipped_mean": 0.420645,
+      "clipped_std": 0.472214
+    },
+    "hmm_mkt_prob_bearish": {
+      "train_count": 1549182,
+      "train_missing_rate": 0.001856,
+      "clip_p01": 1e-06,
+      "clip_p99": 1.0,
+      "impute_median": 0.000257,
+      "clipped_mean": 0.169265,
+      "clipped_std": 0.360787
+    },
+    "hmm_mkt_prob_sideways": {
+      "train_count": 1549182,
+      "train_missing_rate": 0.001856,
+      "clip_p01": 0.0,
+      "clip_p99": 0.999495,
+      "impute_median": 0.042673,
+      "clipped_mean": 0.41009,
+      "clipped_std": 0.459111
+    },
+    "hmm_mkt_regime_id": {
+      "train_count": 1549182,
+      "train_missing_rate": 0.001856,
+      "clip_p01": -1.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.251827,
+      "clipped_std": 0.72691
+    },
+    "hmm_mkt_entropy": {
+      "train_count": 1549182,
+      "train_missing_rate": 0.001856,
+      "clip_p01": 0.0,
+      "clip_p99": 0.692606,
+      "impute_median": 0.01231,
+      "clipped_mean": 0.105094,
+      "clipped_std": 0.188835
+    },
+    "hmm_mkt_regime_duration": {
+      "train_count": 1549182,
+      "train_missing_rate": 0.001856,
+      "clip_p01": 1.0,
+      "clip_p99": 95.0,
+      "impute_median": 13.0,
+      "clipped_mean": 19.858581,
+      "clipped_std": 20.013344
+    },
+    "mkt_median_ret_1d": {
+      "train_count": 1551943,
+      "train_missing_rate": 7.7e-05,
+      "clip_p01": -0.046916,
+      "clip_p99": 0.031581,
+      "impute_median": 0.0,
+      "clipped_mean": -0.001213,
+      "clipped_std": 0.011159
+    },
+    "mkt_pct_above_sma50": {
+      "train_count": 1544083,
+      "train_missing_rate": 0.005142,
+      "clip_p01": 0.065306,
+      "clip_p99": 0.929224,
+      "impute_median": 0.48895,
+      "clipped_mean": 0.493086,
+      "clipped_std": 0.2223
+    },
+    "mkt_adv_decline_ratio": {
+      "train_count": 1551943,
+      "train_missing_rate": 7.7e-05,
+      "clip_p01": -0.75,
+      "clip_p99": 0.613027,
+      "impute_median": -0.012376,
+      "clipped_mean": -0.027671,
+      "clipped_std": 0.290007
+    },
+    "rel_strength_kse100_5d": {
+      "train_count": 1344721,
+      "train_missing_rate": 0.133591,
+      "clip_p01": -0.220911,
+      "clip_p99": 0.343503,
+      "impute_median": -0.005379,
+      "clipped_mean": 0.003155,
+      "clipped_std": 0.084969
+    },
+    "rel_strength_kse100_20d": {
+      "train_count": 1145449,
+      "train_missing_rate": 0.261983,
+      "clip_p01": -0.333352,
+      "clip_p99": 0.700544,
+      "impute_median": -0.014426,
+      "clipped_mean": 0.007607,
+      "clipped_std": 0.159485
+    },
+    "rolling_beta_60d": {
+      "train_count": 1524782,
+      "train_missing_rate": 0.017577,
+      "clip_p01": -1.39626,
+      "clip_p99": 3.626604,
+      "impute_median": 0.845913,
+      "clipped_mean": 0.892896,
+      "clipped_std": 0.813035
+    },
+    "rolling_corr_kse100_60d": {
+      "train_count": 1520592,
+      "train_missing_rate": 0.020277,
+      "clip_p01": -0.18119,
+      "clip_p99": 0.812404,
+      "impute_median": 0.280043,
+      "clipped_mean": 0.296529,
+      "clipped_std": 0.232988
+    },
+    "fin_pub_verified_flag": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_gross_margin": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_operating_margin": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_net_margin": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_roe": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_roa": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_fcf_margin": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_ocf_to_ni": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_debt_to_equity": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_debt_to_assets": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_current_ratio": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_revenue_yoy_growth": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_net_income_yoy_growth": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "has_fundamentals": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "fin_staleness_days": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "market_cap_missing_flag": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 1.0,
+      "clipped_mean": 0.776091,
+      "clipped_std": 0.416862
+    },
+    "fin_earnings_yield_pit": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_book_to_price_pit": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_sales_to_price_pit": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "fin_fcf_yield_pit": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "news_mkt_count_1d": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_mkt_sent_mean_1d": {
+      "train_count": 3928,
+      "train_missing_rate": 0.997469,
+      "clip_p01": -0.67878,
+      "clip_p99": 0.4849,
+      "impute_median": -0.039575,
+      "clipped_mean": -0.120593,
+      "clipped_std": 0.294637
+    },
+    "news_mkt_count_7d": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 4.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.057677,
+      "clipped_std": 0.456465
+    },
+    "news_mkt_sent_mean_7d": {
+      "train_count": 27681,
+      "train_missing_rate": 0.982165,
+      "clip_p01": -0.67878,
+      "clip_p99": 0.4849,
+      "impute_median": -0.141367,
+      "clipped_mean": -0.124794,
+      "clipped_std": 0.296197
+    },
+    "news_mkt_neg_share_7d": {
+      "train_count": 27681,
+      "train_missing_rate": 0.982165,
+      "clip_p01": 0.0,
+      "clip_p99": 0.8,
+      "impute_median": 0.375,
+      "clipped_mean": 0.35977,
+      "clipped_std": 0.227779
+    },
+    "has_mkt_news_7d": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.017835,
+      "clipped_std": 0.132351
+    },
+    "news_stock_count_1d": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_stock_sent_mean_1d": {
+      "train_count": 151,
+      "train_missing_rate": 0.999903,
+      "clip_p01": -0.9637,
+      "clip_p99": 0.80595,
+      "impute_median": -0.35444,
+      "clipped_mean": -0.302888,
+      "clipped_std": 0.533462
+    },
+    "news_stock_count_7d": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_stock_sent_mean_7d": {
+      "train_count": 1040,
+      "train_missing_rate": 0.99933,
+      "clip_p01": -0.9637,
+      "clip_p99": 0.9109,
+      "impute_median": -0.35444,
+      "clipped_mean": -0.298343,
+      "clipped_std": 0.538822
+    },
+    "has_stock_news_7d": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_sector_count_7d": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_sector_sent_mean_7d": {
+      "train_count": 3559,
+      "train_missing_rate": 0.997707,
+      "clip_p01": -0.9574,
+      "clip_p99": 0.701,
+      "impute_median": -0.18725,
+      "clipped_mean": -0.201668,
+      "clipped_std": 0.476001
+    },
+    "has_sector_news_7d": {
+      "train_count": 1552063,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    }
+  },
+  "fundamentals_subsplit_train_row_count": 206146,
+  "fundamentals_regime_features": {
+    "volume": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 14281422.8,
+      "impute_median": 28000.0,
+      "clipped_mean": 687674.350977,
+      "clipped_std": 2050011.605379
+    },
+    "is_current_kse100": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.2657,
+      "clipped_std": 0.441705
+    },
+    "is_active_listing_snapshot": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 1.0,
+      "clipped_mean": 0.902923,
+      "clipped_std": 0.296062
+    },
+    "is_shariah": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.179009,
+      "clipped_std": 0.38336
+    },
+    "has_valid_sector": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.2657,
+      "clipped_std": 0.441705
+    },
+    "calendar_gap_days": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 1.0,
+      "clip_p99": 8.0,
+      "impute_median": 1.0,
+      "clipped_mean": 1.259777,
+      "clipped_std": 0.990501
+    },
+    "is_true_ohlc": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 1.0,
+      "clipped_mean": 0.834622,
+      "clipped_std": 0.371521
+    },
+    "is_zero_volume": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.015756,
+      "clipped_std": 0.124529
+    },
+    "ret_1d": {
+      "train_count": 205336,
+      "train_missing_rate": 0.003929,
+      "clip_p01": -0.096774,
+      "clip_p99": 0.111111,
+      "impute_median": 0.0,
+      "clipped_mean": 0.000679,
+      "clipped_std": 0.035293
+    },
+    "log_ret_1d": {
+      "train_count": 205336,
+      "train_missing_rate": 0.003929,
+      "clip_p01": -0.101783,
+      "clip_p99": 0.105361,
+      "impute_median": 0.0,
+      "clipped_mean": 5.9e-05,
+      "clipped_std": 0.035196
+    },
+    "ret_2d": {
+      "train_count": 196206,
+      "train_missing_rate": 0.048218,
+      "clip_p01": -0.134512,
+      "clip_p99": 0.155667,
+      "impute_median": 0.0,
+      "clipped_mean": 0.001569,
+      "clipped_std": 0.047638
+    },
+    "ret_5d": {
+      "train_count": 182726,
+      "train_missing_rate": 0.113609,
+      "clip_p01": -0.177299,
+      "clip_p99": 0.281756,
+      "impute_median": -0.000821,
+      "clipped_mean": 0.003958,
+      "clipped_std": 0.071194
+    },
+    "ret_10d": {
+      "train_count": 166986,
+      "train_missing_rate": 0.189962,
+      "clip_p01": -0.217295,
+      "clip_p99": 0.398189,
+      "impute_median": -0.002355,
+      "clipped_mean": 0.006665,
+      "clipped_std": 0.096471
+    },
+    "ret_20d": {
+      "train_count": 158183,
+      "train_missing_rate": 0.232665,
+      "clip_p01": -0.265564,
+      "clip_p99": 0.565082,
+      "impute_median": -0.005296,
+      "clipped_mean": 0.011823,
+      "clipped_std": 0.133588
+    },
+    "ret_60d": {
+      "train_count": 151220,
+      "train_missing_rate": 0.266442,
+      "clip_p01": -0.378345,
+      "clip_p99": 1.014193,
+      "impute_median": -0.023617,
+      "clipped_mean": 0.015744,
+      "clipped_std": 0.2277
+    },
+    "vol_5d": {
+      "train_count": 203143,
+      "train_missing_rate": 0.014567,
+      "clip_p01": 0.000357,
+      "clip_p99": 0.118487,
+      "impute_median": 0.024836,
+      "clipped_mean": 0.030462,
+      "clipped_std": 0.022291
+    },
+    "vol_20d": {
+      "train_count": 205330,
+      "train_missing_rate": 0.003958,
+      "clip_p01": 0.004987,
+      "clip_p99": 0.108104,
+      "impute_median": 0.028802,
+      "clipped_mean": 0.033196,
+      "clipped_std": 0.01912
+    },
+    "vol_60d": {
+      "train_count": 204837,
+      "train_missing_rate": 0.00635,
+      "clip_p01": 0.00879,
+      "clip_p99": 0.101211,
+      "impute_median": 0.030001,
+      "clipped_mean": 0.034492,
+      "clipped_std": 0.017587
+    },
+    "vol_ratio_5_20": {
+      "train_count": 202308,
+      "train_missing_rate": 0.018618,
+      "clip_p01": 0.10256,
+      "clip_p99": 1.864805,
+      "impute_median": 0.912145,
+      "clipped_mean": 0.926858,
+      "clipped_std": 0.396808
+    },
+    "parkinson_vol_20d": {
+      "train_count": 184347,
+      "train_missing_rate": 0.105745,
+      "clip_p01": 0.005872,
+      "clip_p99": 0.066309,
+      "impute_median": 0.020797,
+      "clipped_mean": 0.023115,
+      "clipped_std": 0.011478
+    },
+    "overnight_gap_pct": {
+      "train_count": 171869,
+      "train_missing_rate": 0.166275,
+      "clip_p01": -0.095238,
+      "clip_p99": 0.088235,
+      "impute_median": 0.000177,
+      "clipped_mean": -0.000156,
+      "clipped_std": 0.029046
+    },
+    "intraday_ret_pct": {
+      "train_count": 172054,
+      "train_missing_rate": 0.165378,
+      "clip_p01": -0.098861,
+      "clip_p99": 0.125,
+      "impute_median": -0.000159,
+      "clipped_mean": 0.001203,
+      "clipped_std": 0.034234
+    },
+    "turnover_pkr": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 492869181.464997,
+      "impute_median": 784109.22,
+      "clipped_mean": 23435295.73191,
+      "clipped_std": 71708241.804919
+    },
+    "log_volume": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 16.47447,
+      "impute_median": 10.239996,
+      "clipped_mean": 10.195545,
+      "clipped_std": 3.208137
+    },
+    "log_turnover_pkr": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 20.015754,
+      "impute_median": 13.572305,
+      "clipped_mean": 13.52761,
+      "clipped_std": 3.397713
+    },
+    "trailing_20d_adv_pkr": {
+      "train_count": 205858,
+      "train_missing_rate": 0.001397,
+      "clip_p01": 10099.515,
+      "clip_p99": 411482377.037575,
+      "impute_median": 1478705.915,
+      "clipped_mean": 23994181.266947,
+      "clipped_std": 63848441.205806
+    },
+    "volume_ratio_20d": {
+      "train_count": 205632,
+      "train_missing_rate": 0.002493,
+      "clip_p01": 0.0,
+      "clip_p99": 8.142603,
+      "impute_median": 0.556622,
+      "clipped_mean": 1.045054,
+      "clipped_std": 1.400378
+    },
+    "amihud_illiquidity_20d": {
+      "train_count": 203290,
+      "train_missing_rate": 0.013854,
+      "clip_p01": 5.3e-05,
+      "clip_p99": 15.158429,
+      "impute_median": 0.041166,
+      "clipped_mean": 0.858505,
+      "clipped_std": 2.319768
+    },
+    "zero_volume_days_20d": {
+      "train_count": 206018,
+      "train_missing_rate": 0.000621,
+      "clip_p01": 0.0,
+      "clip_p99": 11.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.266545,
+      "clipped_std": 1.376238
+    },
+    "hl_spread_pct": {
+      "train_count": 172054,
+      "train_missing_rate": 0.165378,
+      "clip_p01": 0.000613,
+      "clip_p99": 0.183098,
+      "impute_median": 0.033427,
+      "clipped_mean": 0.042603,
+      "clipped_std": 0.033995
+    },
+    "dist_sma_20": {
+      "train_count": 205546,
+      "train_missing_rate": 0.002911,
+      "clip_p01": -0.196727,
+      "clip_p99": 0.309411,
+      "impute_median": -0.004975,
+      "clipped_mean": 0.001312,
+      "clipped_std": 0.078631
+    },
+    "dist_sma_50": {
+      "train_count": 204680,
+      "train_missing_rate": 0.007111,
+      "clip_p01": -0.2736,
+      "clip_p99": 0.505591,
+      "impute_median": -0.012712,
+      "clipped_mean": 0.001339,
+      "clipped_std": 0.123284
+    },
+    "dist_sma_200": {
+      "train_count": 200587,
+      "train_missing_rate": 0.026966,
+      "clip_p01": -0.453685,
+      "clip_p99": 1.075887,
+      "impute_median": -0.060191,
+      "clipped_mean": -0.017091,
+      "clipped_std": 0.25373
+    },
+    "dist_ema_20": {
+      "train_count": 205546,
+      "train_missing_rate": 0.002911,
+      "clip_p01": -0.173459,
+      "clip_p99": 0.254401,
+      "impute_median": -0.00546,
+      "clipped_mean": -0.00056,
+      "clipped_std": 0.066647
+    },
+    "ema_20_50_spread": {
+      "train_count": 204680,
+      "train_missing_rate": 0.007111,
+      "clip_p01": -0.134491,
+      "clip_p99": 0.180385,
+      "impute_median": -0.008807,
+      "clipped_mean": -0.004874,
+      "clipped_std": 0.051563
+    },
+    "ema_50_200_spread": {
+      "train_count": 200587,
+      "train_missing_rate": 0.026966,
+      "clip_p01": -0.304359,
+      "clip_p99": 0.43779,
+      "impute_median": -0.048206,
+      "clipped_mean": -0.034924,
+      "clipped_std": 0.133149
+    },
+    "rsi_14": {
+      "train_count": 205690,
+      "train_missing_rate": 0.002212,
+      "clip_p01": 22.274668,
+      "clip_p99": 82.741265,
+      "impute_median": 48.495403,
+      "clipped_mean": 49.364788,
+      "clipped_std": 11.553336
+    },
+    "macd_diff_pct": {
+      "train_count": 205149,
+      "train_missing_rate": 0.004836,
+      "clip_p01": -0.033385,
+      "clip_p99": 0.032224,
+      "impute_median": 0.000222,
+      "clipped_mean": 0.000219,
+      "clipped_std": 0.010489
+    },
+    "bb_bandwidth": {
+      "train_count": 205052,
+      "train_missing_rate": 0.005307,
+      "clip_p01": 2.789561,
+      "clip_p99": 83.494365,
+      "impute_median": 16.254692,
+      "clipped_mean": 20.085549,
+      "clipped_std": 14.30763
+    },
+    "bb_percent_b": {
+      "train_count": 205052,
+      "train_missing_rate": 0.005307,
+      "clip_p01": -0.166865,
+      "clip_p99": 1.236235,
+      "impute_median": 0.455226,
+      "clipped_mean": 0.483456,
+      "clipped_std": 0.323077
+    },
+    "atr_pct": {
+      "train_count": 205723,
+      "train_missing_rate": 0.002052,
+      "clip_p01": 0.70151,
+      "clip_p99": 13.224476,
+      "impute_median": 4.141663,
+      "clipped_mean": 4.663281,
+      "clipped_std": 2.29732
+    },
+    "dmi_plus_14": {
+      "train_count": 205644,
+      "train_missing_rate": 0.002435,
+      "clip_p01": 8.135318,
+      "clip_p99": 61.038636,
+      "impute_median": 25.908077,
+      "clipped_mean": 27.315292,
+      "clipped_std": 10.685212
+    },
+    "dmi_minus_14": {
+      "train_count": 205644,
+      "train_missing_rate": 0.002435,
+      "clip_p01": 6.888049,
+      "clip_p99": 58.770309,
+      "impute_median": 24.922102,
+      "clipped_mean": 26.628334,
+      "clipped_std": 11.081028
+    },
+    "adx_14": {
+      "train_count": 205255,
+      "train_missing_rate": 0.004322,
+      "clip_p01": 8.235929,
+      "clip_p99": 59.942229,
+      "impute_median": 20.706421,
+      "clipped_mean": 23.181232,
+      "clipped_std": 10.65098
+    },
+    "dmi_diff": {
+      "train_count": 205644,
+      "train_missing_rate": 0.002435,
+      "clip_p01": -38.312261,
+      "clip_p99": 44.54605,
+      "impute_median": 0.225214,
+      "clipped_mean": 0.697521,
+      "clipped_std": 15.775198
+    },
+    "obv_zscore_20": {
+      "train_count": 204764,
+      "train_missing_rate": 0.006704,
+      "clip_p01": -2.8456,
+      "clip_p99": 3.409885,
+      "impute_median": 0.34206,
+      "clipped_mean": 0.235923,
+      "clipped_std": 1.357623
+    },
+    "stoch_k": {
+      "train_count": 205043,
+      "train_missing_rate": 0.005351,
+      "clip_p01": 1.256735,
+      "clip_p99": 99.121231,
+      "impute_median": 44.599537,
+      "clipped_mean": 46.048532,
+      "clipped_std": 26.65612
+    },
+    "stoch_d": {
+      "train_count": 204897,
+      "train_missing_rate": 0.006059,
+      "clip_p01": 2.736958,
+      "clip_p99": 96.645076,
+      "impute_median": 44.631092,
+      "clipped_mean": 46.043946,
+      "clipped_std": 25.733379
+    },
+    "stoch_k_minus_d": {
+      "train_count": 204897,
+      "train_missing_rate": 0.006059,
+      "clip_p01": -19.831259,
+      "clip_p99": 21.098579,
+      "impute_median": -0.081405,
+      "clipped_mean": -0.005197,
+      "clipped_std": 7.832197
+    },
+    "candle_body_pct": {
+      "train_count": 172054,
+      "train_missing_rate": 0.165378,
+      "clip_p01": -0.109707,
+      "clip_p99": 0.111111,
+      "impute_median": -0.000159,
+      "clipped_mean": 4.7e-05,
+      "clipped_std": 0.033828
+    },
+    "candle_range_pct": {
+      "train_count": 172054,
+      "train_missing_rate": 0.165378,
+      "clip_p01": 0.000613,
+      "clip_p99": 0.183098,
+      "impute_median": 0.033427,
+      "clipped_mean": 0.042603,
+      "clipped_std": 0.033995
+    },
+    "upper_shadow_ratio": {
+      "train_count": 172054,
+      "train_missing_rate": 0.165378,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.144288,
+      "clipped_mean": 0.238132,
+      "clipped_std": 0.270004
+    },
+    "lower_shadow_ratio": {
+      "train_count": 172054,
+      "train_missing_rate": 0.165378,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.125,
+      "clipped_mean": 0.211232,
+      "clipped_std": 0.248357
+    },
+    "body_to_range_ratio": {
+      "train_count": 172054,
+      "train_missing_rate": 0.165378,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.548387,
+      "clipped_mean": 0.550636,
+      "clipped_std": 0.330423
+    },
+    "close_position_in_range": {
+      "train_count": 172054,
+      "train_missing_rate": 0.165378,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.442217,
+      "clipped_mean": 0.475504,
+      "clipped_std": 0.355327
+    },
+    "candlestick_pattern_signal_num": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": -2.0,
+      "clip_p99": 2.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.003396,
+      "clipped_std": 0.670031
+    },
+    "is_bullish_pattern": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.17345,
+      "clipped_std": 0.378636
+    },
+    "is_bearish_pattern": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.163738,
+      "clipped_std": 0.370038
+    },
+    "is_doji_true_ohlc": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.093899,
+      "clipped_std": 0.291689
+    },
+    "bullish_patterns_5d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 3.0,
+      "impute_median": 1.0,
+      "clipped_mean": 0.861142,
+      "clipped_std": 0.842501
+    },
+    "bearish_patterns_5d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 3.0,
+      "impute_median": 1.0,
+      "clipped_mean": 0.813118,
+      "clipped_std": 0.828495
+    },
+    "listing_age_sessions": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 72.0,
+      "clip_p99": 5412.0,
+      "impute_median": 3599.0,
+      "clipped_mean": 3300.006049,
+      "clipped_std": 1490.456193
+    },
+    "trailing_20d_adv_rank": {
+      "train_count": 205858,
+      "train_missing_rate": 0.001397,
+      "clip_p01": 4.0,
+      "clip_p99": 366.0,
+      "impute_median": 176.0,
+      "clipped_mean": 176.669481,
+      "clipped_std": 102.281778
+    },
+    "is_trailing_top100_liquid": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.284347,
+      "clipped_std": 0.451103
+    },
+    "sector_ret_1d": {
+      "train_count": 38658,
+      "train_missing_rate": 0.812473,
+      "clip_p01": -0.042879,
+      "clip_p99": 0.048036,
+      "impute_median": -6.9e-05,
+      "clipped_mean": 0.000716,
+      "clipped_std": 0.015289
+    },
+    "sector_ret_5d": {
+      "train_count": 38626,
+      "train_missing_rate": 0.812628,
+      "clip_p01": -0.087989,
+      "clip_p99": 0.119466,
+      "impute_median": 0.000137,
+      "clipped_mean": 0.003733,
+      "clipped_std": 0.03839
+    },
+    "sector_ret_20d": {
+      "train_count": 38528,
+      "train_missing_rate": 0.813103,
+      "clip_p01": -0.150406,
+      "clip_p99": 0.283884,
+      "impute_median": 0.002693,
+      "clipped_mean": 0.014706,
+      "clipped_std": 0.085263
+    },
+    "stock_minus_sector_ret_5d": {
+      "train_count": 38298,
+      "train_missing_rate": 0.814219,
+      "clip_p01": -0.118694,
+      "clip_p99": 0.142256,
+      "impute_median": -0.001598,
+      "clipped_mean": -0.000229,
+      "clipped_std": 0.043428
+    },
+    "kse100_ret_1d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": -0.029843,
+      "clip_p99": 0.026684,
+      "impute_median": 0.001268,
+      "clipped_mean": 0.00101,
+      "clipped_std": 0.009692
+    },
+    "kse100_ret_5d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": -0.058171,
+      "clip_p99": 0.069168,
+      "impute_median": 0.004197,
+      "clipped_mean": 0.005419,
+      "clipped_std": 0.025676
+    },
+    "kse100_ret_20d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": -0.076846,
+      "clip_p99": 0.174064,
+      "impute_median": 0.012806,
+      "clipped_mean": 0.020753,
+      "clipped_std": 0.056891
+    },
+    "kse100_log_ret_1d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": -0.030297,
+      "clip_p99": 0.026334,
+      "impute_median": 0.001267,
+      "clipped_mean": 0.000963,
+      "clipped_std": 0.009703
+    },
+    "kse100_vol_20d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.004159,
+      "clip_p99": 0.018861,
+      "impute_median": 0.008917,
+      "clipped_mean": 0.009502,
+      "clipped_std": 0.003382
+    },
+    "kse100_dist_sma50": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": -0.062335,
+      "clip_p99": 0.189252,
+      "impute_median": 0.010949,
+      "clipped_mean": 0.022242,
+      "clipped_std": 0.053524
+    },
+    "kse100_dist_sma200": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": -0.090487,
+      "clip_p99": 0.410827,
+      "impute_median": -0.002878,
+      "clipped_mean": 0.065349,
+      "clipped_std": 0.135013
+    },
+    "kse100_rsi_14": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 29.75876,
+      "clip_p99": 93.481812,
+      "impute_median": 54.077854,
+      "clipped_mean": 56.013762,
+      "clipped_std": 15.479271
+    },
+    "hmm_mkt_prob_bullish": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.999968,
+      "impute_median": 0.296878,
+      "clipped_mean": 0.47962,
+      "clipped_std": 0.478286
+    },
+    "hmm_mkt_prob_bearish": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 1e-06,
+      "clip_p99": 0.999999,
+      "impute_median": 0.0002,
+      "clipped_mean": 0.064696,
+      "clipped_std": 0.22694
+    },
+    "hmm_mkt_prob_sideways": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 1e-06,
+      "clip_p99": 0.999528,
+      "impute_median": 0.20878,
+      "clipped_mean": 0.455684,
+      "clipped_std": 0.467156
+    },
+    "hmm_mkt_regime_id": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": -1.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.419639,
+      "clipped_std": 0.609102
+    },
+    "hmm_mkt_entropy": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 2e-05,
+      "clip_p99": 0.692289,
+      "impute_median": 0.012676,
+      "clipped_mean": 0.1007,
+      "clipped_std": 0.186523
+    },
+    "hmm_mkt_regime_duration": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 1.0,
+      "clip_p99": 75.0,
+      "impute_median": 18.0,
+      "clipped_mean": 23.212257,
+      "clipped_std": 19.86282
+    },
+    "mkt_median_ret_1d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": -0.038473,
+      "clip_p99": 0.018934,
+      "impute_median": 0.0,
+      "clipped_mean": -0.001213,
+      "clipped_std": 0.009074
+    },
+    "mkt_pct_above_sma50": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.143243,
+      "clip_p99": 0.912195,
+      "impute_median": 0.388379,
+      "clipped_mean": 0.435835,
+      "clipped_std": 0.199798
+    },
+    "mkt_adv_decline_ratio": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": -0.722955,
+      "clip_p99": 0.622857,
+      "impute_median": -0.032787,
+      "clipped_mean": -0.03528,
+      "clipped_std": 0.299137
+    },
+    "rel_strength_kse100_5d": {
+      "train_count": 182726,
+      "train_missing_rate": 0.113609,
+      "clip_p01": -0.173997,
+      "clip_p99": 0.269306,
+      "impute_median": -0.006829,
+      "clipped_mean": -0.001447,
+      "clipped_std": 0.066013
+    },
+    "rel_strength_kse100_20d": {
+      "train_count": 158183,
+      "train_missing_rate": 0.232665,
+      "clip_p01": -0.266899,
+      "clip_p99": 0.510414,
+      "impute_median": -0.021101,
+      "clipped_mean": -0.009098,
+      "clipped_std": 0.117093
+    },
+    "rolling_beta_60d": {
+      "train_count": 204837,
+      "train_missing_rate": 0.00635,
+      "clip_p01": -0.905791,
+      "clip_p99": 2.927713,
+      "impute_median": 0.968756,
+      "clipped_mean": 0.996747,
+      "clipped_std": 0.722255
+    },
+    "rolling_corr_kse100_60d": {
+      "train_count": 204620,
+      "train_missing_rate": 0.007403,
+      "clip_p01": -0.169756,
+      "clip_p99": 0.807139,
+      "impute_median": 0.341371,
+      "clipped_mean": 0.346686,
+      "clipped_std": 0.236232
+    },
+    "fin_pub_verified_flag": {
+      "train_count": 44689,
+      "train_missing_rate": 0.783217,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.408646,
+      "clipped_std": 0.491584
+    },
+    "fin_gross_margin": {
+      "train_count": 33471,
+      "train_missing_rate": 0.837634,
+      "clip_p01": -0.022077,
+      "clip_p99": 0.670526,
+      "impute_median": 0.193139,
+      "clipped_mean": 0.233291,
+      "clipped_std": 0.157417
+    },
+    "fin_operating_margin": {
+      "train_count": 35009,
+      "train_missing_rate": 0.830174,
+      "clip_p01": -4.278194,
+      "clip_p99": 0.544003,
+      "impute_median": 0.109765,
+      "clipped_mean": 0.080473,
+      "clipped_std": 0.486298
+    },
+    "fin_net_margin": {
+      "train_count": 39642,
+      "train_missing_rate": 0.807699,
+      "clip_p01": -582.677368,
+      "clip_p99": 0.596919,
+      "impute_median": 0.072317,
+      "clipped_mean": -5.837988,
+      "clipped_std": 58.531974
+    },
+    "fin_roe": {
+      "train_count": 39207,
+      "train_missing_rate": 0.80981,
+      "clip_p01": -0.313621,
+      "clip_p99": 1.259312,
+      "impute_median": 0.136901,
+      "clipped_mean": 0.174795,
+      "clipped_std": 0.213759
+    },
+    "fin_roa": {
+      "train_count": 39875,
+      "train_missing_rate": 0.806569,
+      "clip_p01": -0.154263,
+      "clip_p99": 0.328464,
+      "impute_median": 0.048694,
+      "clipped_mean": 0.062775,
+      "clipped_std": 0.079519
+    },
+    "fin_fcf_margin": {
+      "train_count": 39899,
+      "train_missing_rate": 0.806453,
+      "clip_p01": -11.361344,
+      "clip_p99": 10.310818,
+      "impute_median": 0.009397,
+      "clipped_mean": 0.218357,
+      "clipped_std": 1.831912
+    },
+    "fin_ocf_to_ni": {
+      "train_count": 38609,
+      "train_missing_rate": 0.81271,
+      "clip_p01": -28.485395,
+      "clip_p99": 50.664085,
+      "impute_median": 0.680745,
+      "clipped_mean": 1.60054,
+      "clipped_std": 8.787819
+    },
+    "fin_debt_to_equity": {
+      "train_count": 37664,
+      "train_missing_rate": 0.817295,
+      "clip_p01": 0.001177,
+      "clip_p99": 3.85334,
+      "impute_median": 0.498232,
+      "clipped_mean": 0.689335,
+      "clipped_std": 0.741662
+    },
+    "fin_debt_to_assets": {
+      "train_count": 38332,
+      "train_missing_rate": 0.814054,
+      "clip_p01": 0.00029,
+      "clip_p99": 0.602773,
+      "impute_median": 0.170067,
+      "clipped_mean": 0.200258,
+      "clipped_std": 0.171362
+    },
+    "fin_current_ratio": {
+      "train_count": 33630,
+      "train_missing_rate": 0.836863,
+      "clip_p01": 0.157716,
+      "clip_p99": 15.214392,
+      "impute_median": 1.323995,
+      "clipped_mean": 1.736417,
+      "clipped_std": 1.780768
+    },
+    "fin_revenue_yoy_growth": {
+      "train_count": 10438,
+      "train_missing_rate": 0.949366,
+      "clip_p01": -0.888629,
+      "clip_p99": 0.974463,
+      "impute_median": 0.158869,
+      "clipped_mean": 0.119491,
+      "clipped_std": 0.34778
+    },
+    "fin_net_income_yoy_growth": {
+      "train_count": 10264,
+      "train_missing_rate": 0.95021,
+      "clip_p01": -4.658256,
+      "clip_p99": 5.46031,
+      "impute_median": -0.082054,
+      "clipped_mean": -0.13344,
+      "clipped_std": 1.563988
+    },
+    "has_fundamentals": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.216783,
+      "clipped_std": 0.412054
+    },
+    "fin_staleness_days": {
+      "train_count": 44689,
+      "train_missing_rate": 0.783217,
+      "clip_p01": 2.0,
+      "clip_p99": 360.0,
+      "impute_median": 149.0,
+      "clipped_mean": 157.821321,
+      "clipped_std": 102.410519
+    },
+    "market_cap_missing_flag": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 1.0,
+      "impute_median": 1.0,
+      "clipped_mean": 0.742648,
+      "clipped_std": 0.437175
+    },
+    "fin_earnings_yield_pit": {
+      "train_count": 39875,
+      "train_missing_rate": 0.806569,
+      "clip_p01": -1.401299,
+      "clip_p99": 1.508029,
+      "impute_median": 0.146262,
+      "clipped_mean": 0.168082,
+      "clipped_std": 0.326597
+    },
+    "fin_book_to_price_pit": {
+      "train_count": 40127,
+      "train_missing_rate": 0.805347,
+      "clip_p01": -0.40688,
+      "clip_p99": 6.561332,
+      "impute_median": 1.296504,
+      "clipped_mean": 1.59934,
+      "clipped_std": 1.328634
+    },
+    "fin_sales_to_price_pit": {
+      "train_count": 40139,
+      "train_missing_rate": 0.805288,
+      "clip_p01": 0.000155,
+      "clip_p99": 47.054086,
+      "impute_median": 1.788584,
+      "clipped_mean": 4.224652,
+      "clipped_std": 7.615095
+    },
+    "fin_fcf_yield_pit": {
+      "train_count": 40132,
+      "train_missing_rate": 0.805322,
+      "clip_p01": -3.15319,
+      "clip_p99": 11.506842,
+      "impute_median": 0.011755,
+      "clipped_mean": 0.436152,
+      "clipped_std": 1.962856
+    },
+    "news_mkt_count_1d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_mkt_sent_mean_1d": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "news_mkt_count_7d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_mkt_sent_mean_7d": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "news_mkt_neg_share_7d": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "has_mkt_news_7d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_stock_count_1d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_stock_sent_mean_1d": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "news_stock_count_7d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_stock_sent_mean_7d": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "has_stock_news_7d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_sector_count_7d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    },
+    "news_sector_sent_mean_7d": {
+      "train_count": 0,
+      "train_missing_rate": 1.0,
+      "clip_p01": null,
+      "clip_p99": null,
+      "impute_median": null,
+      "clipped_mean": null,
+      "clipped_std": null
+    },
+    "has_sector_news_7d": {
+      "train_count": 206146,
+      "train_missing_rate": 0.0,
+      "clip_p01": 0.0,
+      "clip_p99": 0.0,
+      "impute_median": 0.0,
+      "clipped_mean": 0.0,
+      "clipped_std": 0.0
+    }
+  }
+}

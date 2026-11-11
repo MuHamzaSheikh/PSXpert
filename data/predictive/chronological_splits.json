@@ -1,0 +1,139 @@
+{
+  "calendar_source": "PSX KSE-100 Exchange Trading Days (market_indices)",
+  "total_trading_days": 6127,
+  "start_date": "2002-01-01",
+  "end_date": "2026-10-13",
+  "max_target_horizon_days": 25,
+  "purge_policy": "25 trading days purged before every Validation/Test start",
+  "primary_splits": [
+    {
+      "name": "TRAIN",
+      "start_date": "2002-01-01",
+      "end_date": "2021-11-26",
+      "trading_days": 4923,
+      "purpose": "Model fitting, scaler/feature-selector estimation, HMM parameter training"
+    },
+    {
+      "name": "PURGE_TRAIN_VAL",
+      "start_date": "2021-11-29",
+      "end_date": "2021-12-31",
+      "trading_days": 25,
+      "purpose": "25-session purge buffer separating Train 20d targets (<=23 cal span) from Val"
+    },
+    {
+      "name": "VAL",
+      "start_date": "2022-01-03",
+      "end_date": "2024-05-20",
+      "trading_days": 586,
+      "purpose": "Hyperparameter tuning, ensemble calibration, early stopping"
+    },
+    {
+      "name": "PURGE_VAL_TEST",
+      "start_date": "2024-05-21",
+      "end_date": "2024-06-28",
+      "trading_days": 25,
+      "purpose": "25-session purge buffer separating Val 20d targets (<=23 cal span) from Test"
+    },
+    {
+      "name": "TEST",
+      "start_date": "2024-07-01",
+      "end_date": "2026-10-13",
+      "trading_days": 568,
+      "purpose": "Strictly unseen out-of-sample final generalization benchmark"
+    }
+  ],
+  "fundamentals_subsplits": [
+    {
+      "name": "FUND_TRAIN",
+      "start_date": "2022-01-03",
+      "end_date": "2024-05-20",
+      "trading_days": 586
+    },
+    {
+      "name": "FUND_PURGE_TRAIN_VAL",
+      "start_date": "2024-05-21",
+      "end_date": "2024-06-28",
+      "trading_days": 25
+    },
+    {
+      "name": "FUND_VAL",
+      "start_date": "2024-07-01",
+      "end_date": "2025-05-20",
+      "trading_days": 220
+    },
+    {
+      "name": "FUND_PURGE_VAL_TEST",
+      "start_date": "2025-05-21",
+      "end_date": "2025-06-30",
+      "trading_days": 25
+    },
+    {
+      "name": "FUND_TEST",
+      "start_date": "2025-07-01",
+      "end_date": "2026-10-13",
+      "trading_days": 323
+    }
+  ],
+  "walk_forward_folds": [
+    {
+      "fold": 1,
+      "train_start": "2002-01-01",
+      "train_effective_end": "2021-11-26",
+      "purge_start": "2021-11-29",
+      "purge_end": "2021-12-31",
+      "purge_days": 25,
+      "test_start": "2022-01-03",
+      "test_end": "2022-12-30",
+      "train_sessions": 4923,
+      "test_sessions": 247
+    },
+    {
+      "fold": 2,
+      "train_start": "2002-01-01",
+      "train_effective_end": "2022-11-25",
+      "purge_start": "2022-11-28",
+      "purge_end": "2022-12-30",
+      "purge_days": 25,
+      "test_start": "2023-01-02",
+      "test_end": "2023-12-29",
+      "train_sessions": 5170,
+      "test_sessions": 245
+    },
+    {
+      "fold": 3,
+      "train_start": "2002-01-01",
+      "train_effective_end": "2023-11-23",
+      "purge_start": "2023-11-24",
+      "purge_end": "2023-12-29",
+      "purge_days": 25,
+      "test_start": "2024-01-01",
+      "test_end": "2024-12-31",
+      "train_sessions": 5415,
+      "test_sessions": 246
+    },
+    {
+      "fold": 4,
+      "train_start": "2002-01-01",
+      "train_effective_end": "2024-11-25",
+      "purge_start": "2024-11-26",
+      "purge_end": "2024-12-31",
+      "purge_days": 25,
+      "test_start": "2025-01-01",
+      "test_end": "2025-12-31",
+      "train_sessions": 5661,
+      "test_sessions": 248
+    },
+    {
+      "fold": 5,
+      "train_start": "2002-01-01",
+      "train_effective_end": "2025-11-25",
+      "purge_start": "2025-11-26",
+      "purge_end": "2025-12-31",
+      "purge_days": 25,
+      "test_start": "2026-01-01",
+      "test_end": "2026-10-13",
+      "train_sessions": 5909,
+      "test_sessions": 193
+    }
+  ]
+}
