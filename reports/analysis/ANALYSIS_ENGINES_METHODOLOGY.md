@@ -8,12 +8,12 @@
 
 The analysis layer is organized under `src/analysis/` into decoupled modules so each engine can be invoked independently or together by the API, future forecasting pipelines, or screener workflows:
 
-- [`common.py`](file:///c:/Users/HP/psxpert/src/analysis/common.py) — Company metadata resolution, KSE-100 trading calendar alignment, weekend phantom/non-positive price filtering, causal split adjustment helpers, JSON sanitization (`NaN`/`Inf`/`Decimal` protection).
-- [`technical_engine.py`](file:///c:/Users/HP/psxpert/src/analysis/technical_engine.py) — `TechnicalAnalysisEngine` implementing 7 causal technical pillars + composite deterministic scoring. Reuses `TechnicalIndicatorCalculator`, `CandlestickPatternDetector`, `load_clean_corporate_actions`, `adjust_splits_and_flag_glitches`, and `CausalMarketRegimeHMM`.
-- [`fundamental_engine.py`](file:///c:/Users/HP/psxpert/src/analysis/fundamental_engine.py) — `FundamentalAnalysisEngine` implementing 7 point-in-time fundamental pillars + composite deterministic scoring. Reuses `load_clean_corporate_actions` and `parse_ended_date_from_title`.
-- [`persistence.py`](file:///c:/Users/HP/psxpert/src/analysis/persistence.py) — PostgreSQL `analysis_results` schema, SHA-256 `compute_source_fingerprint`, cache lookup, and transactional upserts (`ENGINE_VERSION = "psxpert_analysis_v1.1"`).
-- [`service.py`](file:///c:/Users/HP/psxpert/src/analysis/service.py) — `AnalysisService` facade coordinating Technical-only, Fundamental-only, and Combined executions with cache validation.
-- [`router.py`](file:///c:/Users/HP/psxpert/src/analysis/router.py) — FastAPI `APIRouter` mounted in [`app.py`](file:///c:/Users/HP/psxpert/app.py).
+- [`common.py`](../../src/analysis/common.py) — Company metadata resolution, KSE-100 trading calendar alignment, weekend phantom/non-positive price filtering, causal split adjustment helpers, JSON sanitization (`NaN`/`Inf`/`Decimal` protection).
+- [`technical_engine.py`](../../src/analysis/technical_engine.py) — `TechnicalAnalysisEngine` implementing 7 causal technical pillars + composite deterministic scoring. Reuses `TechnicalIndicatorCalculator`, `CandlestickPatternDetector`, `load_clean_corporate_actions`, `adjust_splits_and_flag_glitches`, and `CausalMarketRegimeHMM`.
+- [`fundamental_engine.py`](../../src/analysis/fundamental_engine.py) — `FundamentalAnalysisEngine` implementing 7 point-in-time fundamental pillars + composite deterministic scoring. Reuses `load_clean_corporate_actions` and `parse_ended_date_from_title`.
+- [`persistence.py`](../../src/analysis/persistence.py) — PostgreSQL `analysis_results` schema, SHA-256 `compute_source_fingerprint`, cache lookup, and transactional upserts (`ENGINE_VERSION = "psxpert_analysis_v1.1"`).
+- [`service.py`](../../src/analysis/service.py) — `AnalysisService` facade coordinating Technical-only, Fundamental-only, and Combined executions with cache validation.
+- [`router.py`](../../src/analysis/router.py) — FastAPI `APIRouter` mounted in [`app.py`](../../app.py).
 
 ---
 
@@ -106,7 +106,7 @@ Weighted across observable applicable domains (automatically renormalizing weigh
 
 ## 5. Verified Sample Results Across PSX Sectors
 
-All outputs below were exported directly to [`sample_analysis_results.json`](file:///c:/Users/HP/psxpert/reports/analysis/sample_analysis_results.json):
+All outputs below were exported directly to [`sample_analysis_results.json`](./sample_analysis_results.json):
 
 | Symbol | As-Of Date | Sector | Tech Score / Stance | Close (PKR) | RSI (14) | Fund Score / Stance | P/E | P/B | Div Yield | ROE (%) | Sector Peers |
 |---|---|---|---|---:|---:|---|---:|---:|---:|---:|---|

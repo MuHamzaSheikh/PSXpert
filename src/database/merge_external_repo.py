@@ -352,7 +352,13 @@ class ExternalRepoMerger:
 
 
 if __name__ == "__main__":
-    repo_path = r"C:\Users\HP\.gemini\antigravity-ide\brain\b5290a13-c586-4e0f-ba99-dd263f4c8fe4\scratch\PSX-Data"
+    repo_path = os.getenv("PSX_EXTERNAL_DATA_DIR")
+    if not repo_path:
+        args = [a for a in sys.argv[1:] if not a.startswith("--")]
+        if args:
+            repo_path = args[0]
+    if not repo_path:
+        raise SystemExit("Usage: python -m src.database.merge_external_repo <external_repo_dir> [--fundamentals-only] (or set PSX_EXTERNAL_DATA_DIR)")
     fund_only = "--fundamentals-only" in sys.argv
     merger = ExternalRepoMerger(repo_path)
     merger.run_all(fundamentals_only=fund_only)

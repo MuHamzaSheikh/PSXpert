@@ -16,6 +16,7 @@ from sqlalchemy import text
 import pandas as pd
 import numpy as np
 
+from config.paths import STATIC_DIR
 from src.database.connection import get_session
 from src.analysis.candlestick_patterns import CandlestickPatternDetector
 from src.sentiment.impact_analyzer import NewsImpactAnalyzer
@@ -46,7 +47,6 @@ app.add_middleware(
 
 pattern_detector = CandlestickPatternDetector()
 impact_analyzer = NewsImpactAnalyzer()
-STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 
 @app.get("/api/market-summary")

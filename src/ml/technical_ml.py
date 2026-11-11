@@ -24,6 +24,11 @@ from sqlalchemy import text
 from sqlalchemy.engine import Connection
 from xgboost import XGBClassifier
 
+from config.paths import (
+    ML_REPORTS_DIR,
+    PREDICTIVE_DATA_DIR,
+    TECHNICAL_ARTIFACTS_DIR,
+)
 from src.analysis.common import (
     get_company_metadata,
     load_clean_symbol_prices,
@@ -44,9 +49,9 @@ logger = logging.getLogger(__name__)
 
 TECHNICAL_MODEL_VERSION = "psxpert_tech_ml_v2.0"
 LABEL_NAMES = ["Bearish", "Neutral", "Bullish"]  # indices 0, 1, 2
-DEFAULT_ARTIFACTS_DIR = Path("artifacts/technical")
+DEFAULT_ARTIFACTS_DIR = TECHNICAL_ARTIFACTS_DIR
 DEFAULT_MODEL_DIR = DEFAULT_ARTIFACTS_DIR
-DEFAULT_REPORTS_DIR = Path("reports/ml")
+DEFAULT_REPORTS_DIR = ML_REPORTS_DIR
 
 # Strictly causal, stationary feature schema aligned with Step 2 & feature_dictionary.csv.
 # Excludes raw price levels, future targets, fundamental ratios, news counts, and
@@ -408,9 +413,9 @@ def _apply_calibrator(probs: np.ndarray, calibrator: Optional[LogisticRegression
 
 
 def train_and_evaluate_technical_models(
-    parquet_path: str | Path = "data/predictive/daily_features.parquet",
+    parquet_path: str | Path = PREDICTIVE_DATA_DIR / "daily_features.parquet",
     out_dir: str | Path = DEFAULT_ARTIFACTS_DIR,
-    targets_path: str | Path = "data/predictive/daily_targets.parquet",
+    targets_path: str | Path = PREDICTIVE_DATA_DIR / "daily_targets.parquet",
     reports_dir: str | Path = DEFAULT_REPORTS_DIR,
 ) -> dict[str, Any]:
     """
@@ -822,7 +827,7 @@ class TechnicalMLPredictor:
         bpath = self.model_dir / "technical_model_bundle.joblib"
         if not bpath.exists():
             raise FileNotFoundError(
-                f"Technical ML artifact missing at {model_pkl} (and {bpath}). Run train_ml_models.py first."
+                f"Technical ML artifact missing at {model_pkl} (and {bpath}). Run scripts/training/train_ml_models.py first."
             )
         self._bundle = joblib.load(bpath)
         self._load_count += 1

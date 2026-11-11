@@ -21,9 +21,13 @@ import psycopg2
 from psycopg2.extras import execute_values
 
 
-def enrich_database_ohlc():
+def enrich_database_ohlc(external_data_dir: str | Path | None = None):
     start_time = time.time()
-    data_dir = Path("C:/Users/HP/.gemini/antigravity-ide/brain/b5290a13-c586-4e0f-ba99-dd263f4c8fe4/scratch/PSX-Data")
+    raw_override = external_data_dir or os.getenv("PSX_EXTERNAL_DATA_DIR")
+    if not raw_override:
+        print("PSX_EXTERNAL_DATA_DIR environment variable or external_data_dir argument must be provided.")
+        return
+    data_dir = Path(raw_override)
     if not data_dir.exists():
         print(f"Data directory not found: {data_dir}")
         return
@@ -31,10 +35,10 @@ def enrich_database_ohlc():
     csv_files = sorted(glob.glob(str(data_dir / "PSX_*_Full_Data.csv")))
     print(f"Found {len(csv_files)} yearly CSV files to process.")
 
-    db_url = get_database_url()
-    # Direct psycopg2 connection for maximum batch update speed
     user = os.getenv("POSTGRES_USER", "postgres")
-    password = os.getenv("POSTGRES_PASSWORD", "hamza1234")
+    password = os.getenv("POSTGRES_PASSWORD")
+    if not password:
+        raise RuntimeError("POSTGRES_PASSWORD environment variable is required to run direct PostgreSQL enrichment.")
     host = os.getenv("POSTGRES_HOST", "localhost")
     port = os.getenv("POSTGRES_PORT", "5432")
     dbname = os.getenv("POSTGRES_DB", "psxpert")

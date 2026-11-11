@@ -134,7 +134,7 @@ def run_comprehensive_audit(engine, project_root: Path) -> Dict[str, Any]:
 
     # CSV coverage summary
     csv_files = []
-    for sub in [project_root / "data", project_root / "data" / "processed"]:
+    for sub in [project_root / "data" / "raw", project_root / "data" / "processed"]:
         if sub.exists():
             for f in sorted(sub.glob("*.csv")):
                 csv_files.append({

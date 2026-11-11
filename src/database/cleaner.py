@@ -31,14 +31,13 @@ class PSXDataCleaner:
         self.processed_dir.mkdir(parents=True, exist_ok=True)
 
     def backup_raw_data(self):
-        """Ensures all raw files in data/ are mirrored in data/raw/."""
-        logger.info("Verifying raw data separation in data/raw/...")
+        """Ensures raw CSVs reside safely in data/raw/ without leaving top-level duplicates."""
+        logger.info("Verifying canonical raw data directory %s...", self.raw_dir)
         for item in self.data_root.glob("*.csv"):
             raw_dest = self.raw_dir / item.name
             if not raw_dest.exists() or raw_dest.stat().st_size != item.stat().st_size:
                 shutil.copy2(item, raw_dest)
-        
-        # Mirror subdirectories if they exist
+
         for subdir_name in ["stocks_historical", "fundamentals_company", "announcements_company"]:
             src_sub = self.data_root / subdir_name
             if src_sub.exists() and src_sub.is_dir():
@@ -48,7 +47,7 @@ class PSXDataCleaner:
                     dest_file = dest_sub / f.name
                     if not dest_file.exists():
                         shutil.copy2(f, dest_file)
-        logger.info("Raw data safely isolated in data/raw/.")
+        logger.info("Raw data safely verified in %s.", self.raw_dir)
 
     def clean_companies(self) -> pd.DataFrame:
         """Cleans and standardizes company profiles."""

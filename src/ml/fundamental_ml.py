@@ -16,6 +16,7 @@ import sklearn
 from sqlalchemy import text
 from sqlalchemy.engine import Connection
 
+from config.paths import FUNDAMENTAL_ARTIFACTS_DIR, ML_REPORTS_DIR
 from src.analysis.common import safe_div, safe_float, sanitize_for_json
 from src.analysis.fundamental_engine import FundamentalAnalysisEngine
 from src.ml.metrics import evaluate_by_regime, evaluate_multiclass_predictions
@@ -25,9 +26,9 @@ logger = logging.getLogger(__name__)
 
 FUNDAMENTAL_ML_VERSION = "psxpert_fund_ml_audit_v2.0"
 FUND_CLASSES = ["Weak", "Moderate", "Strong"]  # 0, 1, 2
-DEFAULT_FUND_ARTIFACTS_DIR = Path("artifacts/fundamental")
+DEFAULT_FUND_ARTIFACTS_DIR = FUNDAMENTAL_ARTIFACTS_DIR
 DEFAULT_FUND_DIR = DEFAULT_FUND_ARTIFACTS_DIR
-DEFAULT_FUND_REPORTS_DIR = Path("reports/ml")
+DEFAULT_FUND_REPORTS_DIR = ML_REPORTS_DIR
 
 FUND_FEATURE_COLS: list[str] = [
     "eps_pkr",
@@ -570,7 +571,7 @@ class FundamentalMLAdvisor:
             "module_version": FUNDAMENTAL_ML_VERSION,
             "training_status": "BLOCKED_INSUFFICIENT_RELIABLE_LABELS",
             "model_deployed": False,
-            "blocking_reasons": ["Readiness report not generated yet; run train_ml_models.py."],
+            "blocking_reasons": ["Readiness report not generated yet; run scripts/training/train_ml_models.py."],
         }
 
     def get_status_summary(self) -> dict[str, Any]:

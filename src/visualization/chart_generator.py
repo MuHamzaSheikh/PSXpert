@@ -29,7 +29,8 @@ class CandlestickChartGenerator:
     """
 
     def __init__(self, output_dir: Optional[str] = None):
-        self.output_dir = Path(output_dir or "reports/charts")
+        from config.paths import CHARTS_REPORTS_DIR
+        self.output_dir = Path(output_dir) if output_dir else CHARTS_REPORTS_DIR
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.detector = CandlestickPatternDetector()
 
