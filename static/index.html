@@ -601,6 +601,69 @@
         </aside>
 
       </div>
+
+      <!-- DUAL-ENGINE TECHNICAL & FUNDAMENTAL ANALYSIS SUITE -->
+      <section class="analysis-suite-section" id="analysis-suite-section">
+        <div class="analysis-suite-header">
+          <div class="as-title-group">
+            <div class="quant-title-wrap">
+              <span class="quant-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+              </span>
+              <div>
+                <div class="as-heading-row">
+                  <h2 class="as-title">Technical &amp; Fundamental Analysis Engines</h2>
+                  <span class="as-symbol-tag" id="as-symbol-tag">KSE100</span>
+                  <span class="as-cache-pill neutral" id="as-cache-pill">Awaiting Equity Selection</span>
+                </div>
+                <p class="quant-subtitle">Independent causal technical diagnostics, audited IFRS point-in-time fundamentals, and cross-engine alignment (research &amp; analysis only)</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="as-controls-bar">
+            <div class="as-mode-tabs" id="as-mode-tabs" role="tablist" aria-label="Analysis API Mode">
+              <button type="button" class="as-mode-btn active" data-mode="combined" id="as-tab-combined">Combined View</button>
+              <button type="button" class="as-mode-btn" data-mode="technical" id="as-tab-technical">Technical Only</button>
+              <button type="button" class="as-mode-btn" data-mode="fundamental" id="as-tab-fundamental">Fundamental Only</button>
+              <button type="button" class="as-mode-btn" data-mode="unified" id="as-tab-unified">Unified (?mode=)</button>
+            </div>
+
+            <div class="as-unified-select-wrap" id="as-unified-wrap" style="display:none;">
+              <label for="as-unified-select" class="as-control-label">Query:</label>
+              <select id="as-unified-select" class="filter-select">
+                <option value="both">mode=both</option>
+                <option value="technical">mode=technical</option>
+                <option value="fundamental">mode=fundamental</option>
+              </select>
+            </div>
+
+            <div class="as-date-wrap">
+              <label for="as-cutoff-date" class="as-control-label">As-Of Date:</label>
+              <input type="date" id="as-cutoff-date" class="as-date-input" title="Optional historical point-in-time cutoff date (blank = latest session)">
+              <button type="button" class="as-subtle-btn" id="as-btn-clear-date" title="Reset to latest available trading date" style="display:none;">Latest</button>
+            </div>
+
+            <button type="button" class="as-refresh-btn" id="as-btn-refresh" title="Force fresh backend calculation (?force_refresh=true)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              <span>Refresh Analysis</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="as-endpoint-strip" id="as-endpoint-strip">
+          <span>Active Endpoint: <code id="as-endpoint-label">None (Index Selected)</code></span>
+          <span id="as-freshness-meta"></span>
+        </div>
+
+        <!-- Dynamic Content Region (Loading / Empty / Error / Technical / Fundamental / Combined) -->
+        <div class="as-body" id="as-content-root">
+          <div class="as-state-card" id="as-initial-placeholder">
+            <div class="as-state-title">Select a PSX Equity to Run Analysis</div>
+            <p class="as-state-desc">Choose any company from the Watchlist or Search bar to load real-time Technical, Fundamental, and Combined Engine diagnostics.</p>
+          </div>
+        </div>
+      </section>
     </main>
 
   </div>

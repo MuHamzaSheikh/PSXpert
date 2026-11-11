@@ -26,6 +26,12 @@ const state = {
   },
   activeHMM: null,
   activeGA: null,
+  analysisMode: 'combined',
+  unifiedSubMode: 'both',
+  analysisAsOfDate: '',
+  analysisCache: {},
+  activeAnalysisPayload: null,
+  analysisReqSeq: 0,
   chart: null,
   candleSeries: null,
   volumeSeries: null,
@@ -150,7 +156,20 @@ const elements = {
   wfeVal: document.getElementById('wfe-val'),
   wfeRiskSub: document.getElementById('wfe-risk-sub'),
   wfvFoldsContainer: document.getElementById('wfv-folds-container'),
-  toggleHmmRegimes: document.getElementById('toggle-hmm-regimes')
+  toggleHmmRegimes: document.getElementById('toggle-hmm-regimes'),
+
+  // Dual-Engine Analysis Suite DOM elements
+  asSymbolTag: document.getElementById('as-symbol-tag'),
+  asCachePill: document.getElementById('as-cache-pill'),
+  asModeTabs: document.getElementById('as-mode-tabs'),
+  asUnifiedWrap: document.getElementById('as-unified-wrap'),
+  asUnifiedSelect: document.getElementById('as-unified-select'),
+  asCutoffDate: document.getElementById('as-cutoff-date'),
+  asBtnClearDate: document.getElementById('as-btn-clear-date'),
+  asBtnRefresh: document.getElementById('as-btn-refresh'),
+  asEndpointLabel: document.getElementById('as-endpoint-label'),
+  asFreshnessMeta: document.getElementById('as-freshness-meta'),
+  asContentRoot: document.getElementById('as-content-root')
 };
 
 // Initialize Application
@@ -458,6 +477,9 @@ function renderWatchlist() {
 async function selectSymbol(symbol) {
   state.activeSymbol = symbol;
   renderWatchlist();
+
+  // Trigger dual-engine Technical / Fundamental analysis in parallel without blocking chart rendering
+  loadAnalysisSuite(symbol);
 
   try {
     const res = await fetch(`/api/ohlcv/${symbol}?days=${state.activeDays}`);
@@ -1472,6 +1494,56 @@ function bindEventListeners() {
       elements.searchResults.style.display = 'none';
     }
   });
+
+  // Dual-Engine Analysis Mode Tabs
+  if (elements.asModeTabs) {
+    elements.asModeTabs.querySelectorAll('.as-mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        elements.asModeTabs.querySelectorAll('.as-mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.analysisMode = btn.dataset.mode;
+        if (elements.asUnifiedWrap) {
+          elements.asUnifiedWrap.style.display = state.analysisMode === 'unified' ? 'inline-flex' : 'none';
+        }
+        loadAnalysisSuite(state.activeSymbol);
+      });
+    });
+  }
+
+  // Unified Endpoint Sub-Mode Selector (?mode=both|technical|fundamental)
+  if (elements.asUnifiedSelect) {
+    elements.asUnifiedSelect.addEventListener('change', (e) => {
+      state.unifiedSubMode = e.target.value;
+      loadAnalysisSuite(state.activeSymbol);
+    });
+  }
+
+  // Point-in-Time Historical Cutoff Date Selector
+  if (elements.asCutoffDate) {
+    elements.asCutoffDate.addEventListener('change', (e) => {
+      state.analysisAsOfDate = (e.target.value || '').trim();
+      if (elements.asBtnClearDate) {
+        elements.asBtnClearDate.style.display = state.analysisAsOfDate ? 'inline-block' : 'none';
+      }
+      loadAnalysisSuite(state.activeSymbol);
+    });
+  }
+
+  if (elements.asBtnClearDate) {
+    elements.asBtnClearDate.addEventListener('click', () => {
+      state.analysisAsOfDate = '';
+      if (elements.asCutoffDate) elements.asCutoffDate.value = '';
+      elements.asBtnClearDate.style.display = 'none';
+      loadAnalysisSuite(state.activeSymbol);
+    });
+  }
+
+  // Force Refresh Analysis Button (?force_refresh=true)
+  if (elements.asBtnRefresh) {
+    elements.asBtnRefresh.addEventListener('click', () => {
+      loadAnalysisSuite(state.activeSymbol, { forceRefresh: true });
+    });
+  }
 }
 
 // Utility: format PKR
@@ -1479,3 +1551,890 @@ function formatPKR(val) {
   if (val === undefined || val === null) return '0.00';
   return Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+
+// =========================================================================
+// 6. TECHNICAL & FUNDAMENTAL ANALYSIS SUITE CONTROLLER & RENDERERS
+// =========================================================================
+
+function isMissingVal(v) {
+  return v === null || v === undefined || (typeof v === 'number' && Number.isNaN(v));
+}
+
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function fmtNum(v, digits = 2, suffix = '', prefix = '') {
+  if (isMissingVal(v)) return '<span class="as-kv-val na">N/A</span>';
+  const num = Number(v);
+  return `<span class="as-kv-val">${prefix}${num.toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits })}${suffix}</span>`;
+}
+
+function fmtSigned(v, digits = 2, suffix = '') {
+  if (isMissingVal(v)) return '<span class="as-kv-val na">N/A</span>';
+  const num = Number(v);
+  const cls = num > 0 ? 'positive' : (num < 0 ? 'negative' : '');
+  const sign = num > 0 ? '+' : '';
+  return `<span class="as-kv-val ${cls}">${sign}${num.toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits })}${suffix}</span>`;
+}
+
+function fmtCompactPKR(v) {
+  if (isMissingVal(v)) return '<span class="as-kv-val na">N/A</span>';
+  const num = Number(v);
+  const abs = Math.abs(num);
+  const sign = num < 0 ? '-' : '';
+  if (abs >= 1e12) return `<span class="as-kv-val">${sign}${(abs / 1e12).toFixed(2)}T PKR</span>`;
+  if (abs >= 1e9) return `<span class="as-kv-val">${sign}${(abs / 1e9).toFixed(2)}B PKR</span>`;
+  if (abs >= 1e6) return `<span class="as-kv-val">${sign}${(abs / 1e6).toFixed(2)}M PKR</span>`;
+  if (abs >= 1e3) return `<span class="as-kv-val">${sign}${(abs / 1e3).toFixed(2)}K PKR</span>`;
+  return `<span class="as-kv-val">${sign}${abs.toFixed(0)} PKR</span>`;
+}
+
+function toneForLabel(label) {
+  if (!label) return 'neutral';
+  const u = String(label).toUpperCase();
+  if (u.includes('BULL') || u === 'STRONG' || u === 'CONSTRUCTIVE' || u.includes('ACCUMULATION') || u === 'IMPROVING' || u.includes('OUTPERFORMING') || u.includes('FAVORABLE') || u === 'CONSISTENT_PAYER' || u === 'REGULAR_PAYER' || u === 'GOLDEN_ALIGNMENT') {
+    return 'positive';
+  }
+  if (u.includes('BEAR') || u === 'WEAK' || u.includes('DISTRIBUTION') || u === 'DECLINING' || u.includes('LAGGING') || u.includes('ELEVATED_ABOVE_MEDIAN') || u === 'LOWER_BAND_BREAKDOWN' || u.includes('DEATH_ALIGNMENT')) {
+    return 'negative';
+  }
+  if (u.includes('DIVERGENT') || u === 'OVERBOUGHT' || u === 'HIGH_VOLATILITY' || u === 'PARTIAL_COVERAGE' || u === 'PARTIAL_PRICE_ONLY') {
+    return 'warning';
+  }
+  return 'neutral';
+}
+
+function formatEnumLabel(label) {
+  if (!label) return 'N/A';
+  return String(label).replace(/_/g, ' ');
+}
+
+function kvRow(label, valHtml, reasonTooltip = '') {
+  const titleAttr = reasonTooltip ? ` title="${escapeHtml(reasonTooltip)}"` : '';
+  return `<div class="as-kv-row"${titleAttr}><span class="as-kv-label">${escapeHtml(label)}</span>${valHtml}</div>`;
+}
+
+function buildAnalysisEndpoint(symbol, mode, subMode, asOfDate, forceRefresh) {
+  const sym = encodeURIComponent((symbol || '').trim().toUpperCase());
+  const params = new URLSearchParams();
+  let base = `/api/analysis/combined/${sym}`;
+
+  if (mode === 'technical') {
+    base = `/api/analysis/technical/${sym}`;
+  } else if (mode === 'fundamental') {
+    base = `/api/analysis/fundamental/${sym}`;
+  } else if (mode === 'unified') {
+    base = `/api/analysis/${sym}`;
+    params.set('mode', subMode || 'both');
+  }
+
+  if (asOfDate) params.set('as_of_date', asOfDate);
+  if (forceRefresh) params.set('force_refresh', 'true');
+
+  const qs = params.toString();
+  return qs ? `${base}?${qs}` : base;
+}
+
+async function loadAnalysisSuite(symbol, opts = {}) {
+  const root = elements.asContentRoot;
+  if (!root) return;
+
+  const sym = (symbol || 'KSE100').trim().toUpperCase();
+  const forceRefresh = !!opts.forceRefresh;
+  const reqId = ++state.analysisReqSeq;
+
+  if (elements.asSymbolTag) elements.asSymbolTag.textContent = sym;
+
+  // Market Index guard: KSE100 is an index, not a single equity
+  if (!sym || sym === 'KSE100') {
+    if (elements.asEndpointLabel) elements.asEndpointLabel.textContent = 'None (Index Selected)';
+    if (elements.asFreshnessMeta) elements.asFreshnessMeta.textContent = '';
+    setCacheBadge('neutral', 'Index Mode');
+    renderAnalysisIndexEmptyState(root);
+    return;
+  }
+
+  const mode = state.analysisMode || 'combined';
+  const subMode = state.unifiedSubMode || 'both';
+  const asOfDate = state.analysisAsOfDate || '';
+  const routeKey = mode === 'unified' ? `unified:${subMode}` : mode;
+  const cacheKey = `${sym}|${asOfDate || 'LATEST'}|${routeKey}`;
+  const url = buildAnalysisEndpoint(sym, mode, subMode, asOfDate, forceRefresh);
+
+  if (elements.asEndpointLabel) {
+    elements.asEndpointLabel.textContent = `GET ${url}`;
+  }
+
+  // Client-side session cache check (avoids duplicate HTTP calls when switching tabs/timeframes)
+  if (!forceRefresh && state.analysisCache[cacheKey]) {
+    const cachedPayload = state.analysisCache[cacheKey];
+    state.activeAnalysisPayload = cachedPayload;
+    renderAnalysisPayload(root, cachedPayload, mode, subMode, true);
+    return;
+  }
+
+  // Render loading state
+  setCacheBadge('neutral', 'Loading...');
+  if (elements.asFreshnessMeta) elements.asFreshnessMeta.textContent = '';
+  if (elements.asBtnRefresh) elements.asBtnRefresh.disabled = true;
+  root.innerHTML = `
+    <div class="as-state-card" id="as-loading-state">
+      <div class="as-spinner"></div>
+      <div class="as-state-title">Running ${escapeHtml(formatEnumLabel(routeKey))} Analysis for ${escapeHtml(sym)}</div>
+      <p class="as-state-desc">Querying point-in-time PostgreSQL indicators, IFRS disclosures, corporate payouts, and KSE-100 HMM regimes...</p>
+    </div>
+  `;
+
+  try {
+    const res = await fetch(url);
+    let body = null;
+    try {
+      body = await res.json();
+    } catch (_) {
+      body = null;
+    }
+
+    if (reqId !== state.analysisReqSeq) return; // Ignore stale response after rapid stock switch
+
+    if (!res.ok) {
+      const detail = body?.detail || `HTTP ${res.status} error from ${url}`;
+      throw new Error(detail);
+    }
+
+    state.analysisCache[cacheKey] = body;
+    state.activeAnalysisPayload = body;
+    renderAnalysisPayload(root, body, mode, subMode, false);
+  } catch (err) {
+    if (reqId !== state.analysisReqSeq) return;
+    console.error('Analysis Engine API error:', err);
+    setCacheBadge('error', 'API Error');
+    renderAnalysisErrorState(root, sym, err.message || 'Unable to fetch analysis from backend.');
+  } finally {
+    if (reqId === state.analysisReqSeq && elements.asBtnRefresh) {
+      elements.asBtnRefresh.disabled = false;
+    }
+  }
+}
+
+function setCacheBadge(variant, text) {
+  const el = elements.asCachePill;
+  if (!el) return;
+  el.className = `as-cache-pill ${variant}`;
+  el.textContent = text;
+}
+
+function renderAnalysisIndexEmptyState(root) {
+  const picks = ['OGDC', 'MEBL', 'LUCK', 'SYS', 'FFC', 'AICL', 'TELE'];
+  root.innerHTML = `
+    <div class="as-state-card" id="as-empty-index-state">
+      <div class="as-state-title">KSE-100 Index Active — Select an Equity for Dual-Engine Analysis</div>
+      <p class="as-state-desc">
+        Technical &amp; Fundamental Engine endpoints evaluate individual PSX-listed equities (including point-in-time IFRS financials, sector peer medians, and equity-specific S/R &amp; HMM beta). Select a stock from the Watchlist or pick a sector benchmark below:
+      </p>
+      <div class="as-quick-picks">
+        ${picks.map(s => `<button type="button" class="as-quick-btn" onclick="selectSymbol('${s}')">${s}</button>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderAnalysisErrorState(root, sym, message) {
+  root.innerHTML = `
+    <div class="as-state-card error" id="as-error-state">
+      <div class="as-state-title">Analysis Request Failed for ${escapeHtml(sym)}</div>
+      <p class="as-state-desc">${escapeHtml(message)}</p>
+      <div class="as-quick-picks">
+        <button type="button" class="as-refresh-btn" onclick="loadAnalysisSuite('${escapeHtml(sym)}', { forceRefresh: true })">Retry Analysis</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderAnalysisPayload(root, payload, mode, subMode, fromClientSession) {
+  const cacheInfo = payload?.cache || {};
+  if (cacheInfo.hit) {
+    setCacheBadge('hit', `PostgreSQL Cache Hit (ID #${cacheInfo.analysis_id || '--'})`);
+  } else if (fromClientSession) {
+    setCacheBadge('hit', 'Session Cached');
+  } else {
+    setCacheBadge('miss', `Computed Fresh (ID #${cacheInfo.analysis_id || '--'})`);
+  }
+
+  if (elements.asFreshnessMeta) {
+    const asOf = payload?.as_of_date || '--';
+    const cut = payload?.data_cutoff_timestamp || '--';
+    elements.asFreshnessMeta.innerHTML = `As-Of: <code>${escapeHtml(asOf)}</code> | Data Cutoff: <code>${escapeHtml(cut)}</code>`;
+  }
+
+  const effectiveType = payload?.analysis_type || (
+    mode === 'technical' ? 'TECHNICAL' :
+    mode === 'fundamental' ? 'FUNDAMENTAL' :
+    (mode === 'unified' && subMode !== 'both' ? subMode.toUpperCase() : 'COMBINED')
+  );
+
+  if (effectiveType === 'TECHNICAL') {
+    root.innerHTML = renderTechnicalPanel(payload, false);
+  } else if (effectiveType === 'FUNDAMENTAL') {
+    root.innerHTML = renderFundamentalPanel(payload, false);
+  } else {
+    root.innerHTML = renderCombinedPanel(payload);
+  }
+}
+
+function renderSignalListCard(title, items, variant, emptyMsg) {
+  const list = Array.isArray(items) && items.length
+    ? `<ul class="as-signal-list">${items.map(item => `<li><span class="as-dot"></span><span>${escapeHtml(item)}</span></li>`).join('')}</ul>`
+    : `<div class="as-card-note" style="border-top:none; padding-top:0;">${escapeHtml(emptyMsg)}</div>`;
+
+  return `
+    <div class="as-signal-card ${variant}">
+      <div class="as-card-title">${escapeHtml(title)} (${Array.isArray(items) ? items.length : 0})</div>
+      ${list}
+    </div>
+  `;
+}
+
+function renderCombinedPanel(data) {
+  const align = data?.cross_engine_alignment || {};
+  const tech = data?.technical_analysis || {};
+  const fund = data?.fundamental_analysis || {};
+
+  const tScore = tech?.technical_score;
+  const fScore = fund?.fundamental_score;
+  const tAssess = tech?.overall_assessment || 'INSUFFICIENT_DATA';
+  const fAssess = fund?.overall_assessment || 'INSUFFICIENT_FUNDAMENTAL_DATA';
+  const alignLabel = align?.alignment_label || 'PARTIAL_COVERAGE';
+
+  // Confirming drivers & disagreements
+  const agreements = [];
+  const disagreements = [];
+
+  if (alignLabel === 'BULLISH_ALIGNED') {
+    agreements.push('Both Technical and Fundamental engines maintain constructive/positive assessments.');
+  } else if (alignLabel === 'BEARISH_ALIGNED') {
+    agreements.push('Both Technical and Fundamental engines indicate weakness/caution.');
+  } else if (alignLabel === 'MIXED_OR_NEUTRAL') {
+    agreements.push('Neither engine triggers an extreme directional conflict; signals remain balanced.');
+  }
+
+  const bullSigs = tech?.bullish_signals || [];
+  const bearSigs = tech?.bearish_signals || [];
+  const fStrengths = fund?.strengths || [];
+  const fWeaknesses = fund?.weaknesses || [];
+
+  if (bullSigs.length && fStrengths.length) {
+    agreements.push(`Technical upside drivers (${bullSigs.length}) reinforce Fundamental strengths (${fStrengths.length}).`);
+  }
+  if (bearSigs.length && fWeaknesses.length) {
+    agreements.push(`Technical bearish signals (${bearSigs.length}) align with Fundamental pressure areas (${fWeaknesses.length}).`);
+  }
+  bullSigs.slice(0, 3).forEach(s => agreements.push(`[Technical] ${s}`));
+  fStrengths.slice(0, 3).forEach(s => agreements.push(`[Fundamental] ${s}`));
+
+  if (alignLabel === 'DIVERGENT_FUND_OVER_TECH') {
+    disagreements.push(`Engine Divergence: Fundamental profile is ${formatEnumLabel(fAssess)} (${fScore ?? 'N/A'}/100), whereas Technical price action is ${formatEnumLabel(tAssess)} (${tScore !== null && tScore !== undefined ? tScore.toFixed(1) : 'N/A'}/100).`);
+  } else if (alignLabel === 'DIVERGENT_TECH_OVER_FUND') {
+    disagreements.push(`Engine Divergence: Technical momentum is ${formatEnumLabel(tAssess)} (${tScore !== null && tScore !== undefined ? tScore.toFixed(1) : 'N/A'}/100) despite ${formatEnumLabel(fAssess)} fundamentals.`);
+  } else if (alignLabel === 'PARTIAL_COVERAGE') {
+    disagreements.push(align?.note || 'One engine lacks complete underlying records; cross-engine agreement cannot be established.');
+  }
+  bearSigs.slice(0, 3).forEach(s => disagreements.push(`[Technical Bearish] ${s}`));
+  fWeaknesses.slice(0, 3).forEach(s => disagreements.push(`[Fundamental Weakness] ${s}`));
+
+  const risksAndLimits = [
+    ...(tech?.conflicting_signals || []).map(x => `[Technical] ${x}`),
+    ...(fund?.conflicting_signals || []).map(x => `[Fundamental] ${x}`),
+    ...(fund?.data_quality_notes || []).map(x => `[Data Audit] ${x}`)
+  ];
+
+  const tScoreDisp = !isMissingVal(tScore) ? `${tScore > 0 ? '+' : ''}${Number(tScore).toFixed(1)} / 100` : 'N/A';
+  const fScoreDisp = !isMissingVal(fScore) ? `${Number(fScore).toFixed(1)} / 100` : 'N/A';
+
+  return `
+    <div class="as-engine-panel" id="as-combined-summary-panel">
+      <div class="as-panel-header">
+        <div>
+          <div class="as-panel-title">Combined Technical &amp; Fundamental Synthesis — ${escapeHtml(data?.symbol || '')} (${escapeHtml(data?.company_name || '')})</div>
+          <div class="as-panel-sub">Sector: ${escapeHtml(data?.sector || 'N/A')} (${escapeHtml(data?.sector_category || 'N/A')}) • Independent pillar evaluations (no investment advice or price forecasts)</div>
+        </div>
+        <span class="as-badge ${toneForLabel(alignLabel)}">${escapeHtml(formatEnumLabel(alignLabel))}</span>
+      </div>
+
+      <div class="as-combined-top-grid">
+        <div class="as-hero-card">
+          <div class="as-hero-top">
+            <span class="as-hero-label">Technical Engine</span>
+            <span class="as-badge ${toneForLabel(tAssess)}">${escapeHtml(formatEnumLabel(tAssess))}</span>
+          </div>
+          <div class="as-score-row">
+            <span class="as-score-num ${toneForLabel(tAssess)}">${tScoreDisp}</span>
+            <span class="as-kv-label">Trend: <b>${escapeHtml(tech?.trend_analysis?.overall_trend || 'N/A')}</b></span>
+          </div>
+          <div class="as-mini-meta-grid">
+            <div>RSI (14): <b>${!isMissingVal(tech?.momentum_analysis?.indicators?.rsi_14) ? Number(tech.momentum_analysis.indicators.rsi_14).toFixed(1) : 'N/A'}</b></div>
+            <div>HMM Regime: <b>${escapeHtml(tech?.hmm_market_context?.market_regime || 'N/A')}</b></div>
+            <div>Support 1: <b>${!isMissingVal(tech?.support_resistance?.nearest_support_pkr) ? formatPKR(tech.support_resistance.nearest_support_pkr) : 'N/A'}</b></div>
+            <div>Resist 1: <b>${!isMissingVal(tech?.support_resistance?.nearest_resistance_pkr) ? formatPKR(tech.support_resistance.nearest_resistance_pkr) : 'N/A'}</b></div>
+          </div>
+          <p class="as-hero-summary">${escapeHtml(tech?.summary || 'Technical summary unavailable.')}</p>
+        </div>
+
+        <div class="as-hero-card">
+          <div class="as-hero-top">
+            <span class="as-hero-label">Fundamental Engine</span>
+            <span class="as-badge ${toneForLabel(fAssess)}">${escapeHtml(formatEnumLabel(fAssess))}</span>
+          </div>
+          <div class="as-score-row">
+            <span class="as-score-num ${toneForLabel(fAssess)}">${fScoreDisp}</span>
+            <span class="as-kv-label">Period: <b>${escapeHtml(fund?.reporting_period_context?.latest_complete_period_end || 'N/A')}</b></span>
+          </div>
+          <div class="as-mini-meta-grid">
+            <div>P/E: <b>${!isMissingVal(fund?.valuation?.pe_ratio) ? Number(fund.valuation.pe_ratio).toFixed(2) + 'x' : 'N/A'}</b></div>
+            <div>P/B: <b>${!isMissingVal(fund?.valuation?.pb_ratio) ? Number(fund.valuation.pb_ratio).toFixed(2) + 'x' : 'N/A'}</b></div>
+            <div>ROE: <b>${!isMissingVal(fund?.profitability?.roe_pct) ? Number(fund.profitability.roe_pct).toFixed(1) + '%' : 'N/A'}</b></div>
+            <div>Div Yield: <b>${!isMissingVal(fund?.valuation?.dividend_yield_pct) ? Number(fund.valuation.dividend_yield_pct).toFixed(2) + '%' : 'N/A'}</b></div>
+          </div>
+          <p class="as-hero-summary">${escapeHtml(fund?.summary || 'Fundamental summary unavailable.')}</p>
+        </div>
+
+        <div class="as-hero-card">
+          <div class="as-hero-top">
+            <span class="as-hero-label">Cross-Engine Alignment</span>
+            <span class="as-badge ${toneForLabel(alignLabel)}">${escapeHtml(formatEnumLabel(alignLabel))}</span>
+          </div>
+          <p class="as-hero-summary" style="color:var(--text-main); font-weight:500;">
+            ${escapeHtml(align?.note || 'Compare technical timing against audited fundamental profile independently.')}
+          </p>
+          <div class="as-mini-meta-grid" style="grid-template-columns:1fr;">
+            <div>KSE-100 HMM Prob Bull/Side/Bear: <b>${
+              tech?.hmm_market_context?.probabilities
+                ? `${(tech.hmm_market_context.probabilities.bullish * 100).toFixed(0)}% / ${(tech.hmm_market_context.probabilities.sideways * 100).toFixed(0)}% / ${(tech.hmm_market_context.probabilities.bearish * 100).toFixed(0)}%`
+                : 'N/A'
+            }</b></div>
+            <div>Sector Benchmark Status: <b>${escapeHtml(formatEnumLabel(fund?.sector_comparison?.status || 'N/A'))}</b></div>
+          </div>
+          <div class="as-card-note">Diagnostic research synthesis only — does not constitute investment advice or return forecasts.</div>
+        </div>
+      </div>
+
+      <div class="as-synthesis-grid">
+        ${renderSignalListCard('Agreements & Supporting Drivers', agreements, 'bull', 'No confirming positive drivers recorded.')}
+        ${renderSignalListCard('Disagreements & Negative Pressures', disagreements, 'bear', 'No negative divergences recorded.')}
+        ${renderSignalListCard('Conflicts, Risks & Data Limitations', risksAndLimits.slice(0, 8), 'warn', 'No material data conflicts detected.')}
+      </div>
+    </div>
+
+    ${renderTechnicalPanel(tech, true)}
+    ${renderFundamentalPanel(fund, true)}
+  `;
+}
+
+function renderTechnicalPanel(t, nested) {
+  if (!t) return '';
+  if (t.status === 'NO_PRICE_DATA') {
+    return `
+      <div class="as-engine-panel" id="as-technical-panel">
+        <div class="as-panel-header">
+          <div class="as-panel-title">Technical Analysis — ${escapeHtml(t.symbol || '')}</div>
+          <span class="as-badge neutral">NO PRICE DATA</span>
+        </div>
+        <p class="as-hero-summary">${escapeHtml(t.summary || 'No valid positive equity closing prices found.')}</p>
+      </div>
+    `;
+  }
+
+  const ps = t.price_snapshot || {};
+  const tr = t.trend_analysis || {};
+  const trInd = tr.indicators || {};
+  const mom = t.momentum_analysis || {};
+  const momInd = mom.indicators || {};
+  const vola = t.volatility_analysis || {};
+  const volaInd = vola.indicators || {};
+  const vol = t.volume_analysis || {};
+  const volInd = vol.indicators || {};
+  const cs = t.candlestick_analysis || {};
+  const sr = t.support_resistance || {};
+  const hmm = t.hmm_market_context || {};
+  const hmmP = hmm.probabilities || {};
+  const fresh = t.data_freshness || {};
+  const compScores = t.score_methodology?.component_scores || {};
+
+  const scoreDisp = !isMissingVal(t.technical_score)
+    ? `${t.technical_score > 0 ? '+' : ''}${Number(t.technical_score).toFixed(1)} / 100`
+    : 'N/A';
+
+  const patsRows = (cs.patterns || []).length
+    ? (cs.patterns || []).map(p => `
+        <tr>
+          <td>${escapeHtml(p.date)} <span style="color:var(--text-faint);">(${p.bars_ago}d)</span></td>
+          <td class="text-cell"><b>${escapeHtml(p.pattern)}</b></td>
+          <td><span class="as-badge ${toneForLabel(p.signal_type)}">${escapeHtml(p.signal_type)}</span></td>
+          <td><span class="as-badge neutral">${escapeHtml(p.strength)}</span></td>
+          <td class="num">${!isMissingVal(p.volume_ratio_vs_20d) ? Number(p.volume_ratio_vs_20d).toFixed(2) + 'x' : 'N/A'}</td>
+        </tr>
+      `).join('')
+    : `<tr><td colspan="5" class="text-cell" style="text-align:center; color:var(--text-muted); padding:10px;">No qualifying non-flat candlestick formations in the last ${cs.lookback_sessions || 10} sessions.</td></tr>`;
+
+  const supRows = (sr.support_levels || []).length
+    ? (sr.support_levels || []).map(s => `
+        <tr>
+          <td style="color:var(--bullish); font-weight:700;">PKR ${Number(s.level_pkr).toFixed(2)}</td>
+          <td class="num" style="color:var(--bearish);">${Number(s.distance_pct).toFixed(2)}%</td>
+          <td class="num">${s.confirmations}</td>
+          <td class="text-cell">${escapeHtml((s.sources || []).join(', '))}</td>
+        </tr>
+      `).join('')
+    : `<tr><td colspan="4" class="text-cell" style="color:var(--text-muted);">No causal support zones identified below spot.</td></tr>`;
+
+  const resRows = (sr.resistance_levels || []).length
+    ? (sr.resistance_levels || []).map(r => `
+        <tr>
+          <td style="color:var(--bearish); font-weight:700;">PKR ${Number(r.level_pkr).toFixed(2)}</td>
+          <td class="num" style="color:var(--bullish);">+${Number(r.distance_pct).toFixed(2)}%</td>
+          <td class="num">${r.confirmations}</td>
+          <td class="text-cell">${escapeHtml((r.sources || []).join(', '))}</td>
+        </tr>
+      `).join('')
+    : `<tr><td colspan="4" class="text-cell" style="color:var(--text-muted);">Spot at trailing high — no causal overhead resistance zone.</td></tr>`;
+
+  const pos52 = !isMissingVal(sr.position_in_252d_range_pct) ? Math.min(100, Math.max(0, Number(sr.position_in_252d_range_pct))) : 0;
+
+  return `
+    <div class="as-engine-panel" id="as-technical-panel">
+      <div class="as-panel-header">
+        <div>
+          <div class="as-panel-title">${nested ? 'Technical Analysis Breakdown' : `Technical Analysis — ${escapeHtml(t.symbol)} (${escapeHtml(t.company_name || '')})`}</div>
+          <div class="as-panel-sub">
+            Latest Session: ${escapeHtml(ps.latest_trading_date || '--')} • Spot: PKR ${!isMissingVal(ps.close_pkr) ? formatPKR(ps.close_pkr) : 'N/A'} (${!isMissingVal(ps.change_1d_pct) ? (ps.change_1d_pct >= 0 ? '+' : '') + Number(ps.change_1d_pct).toFixed(2) + '%' : 'N/A'}) • Clean Sessions: ${fresh.total_trading_sessions ?? '--'}
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="as-score-num ${toneForLabel(t.overall_assessment)}" style="font-size:17px;">Score: ${scoreDisp}</span>
+          <span class="as-badge ${toneForLabel(t.overall_assessment)}">${escapeHtml(formatEnumLabel(t.overall_assessment))}</span>
+        </div>
+      </div>
+
+      <p class="as-hero-summary" style="color:var(--text-main);">
+        ${escapeHtml(t.summary || '')}
+        ${Object.keys(compScores).length ? ` <span style="font-family:var(--font-mono); font-size:10.5px; color:var(--text-muted);">[Sub-scores — Trend: ${compScores.trend_structure ?? 'N/A'}, Mom: ${compScores.momentum_signals ?? 'N/A'}, Vol: ${compScores.volume_flow ?? 'N/A'}, Patterns/SR: ${compScores.candlestick_and_levels ?? 'N/A'}, HMM: ${compScores.hmm_market_regime ?? 'N/A'}]</span>` : ''}
+      </p>
+
+      <!-- 4-Card Technical Pillars -->
+      <div class="as-cards-grid-4">
+        <!-- 1. Trend -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Trend &amp; Strength</span>
+            <span class="as-badge ${toneForLabel(tr.overall_trend)}">${escapeHtml(tr.overall_trend || 'N/A')}</span>
+          </div>
+          <div class="as-kv-list">
+            ${kvRow('Short / Long Term', `<span class="as-kv-val">${escapeHtml(tr.short_term_trend || 'N/A')} / ${escapeHtml(formatEnumLabel(tr.long_term_trend))}</span>`)}
+            ${kvRow('Strength (ADX 14)', !isMissingVal(trInd.adx_14) ? `<span class="as-kv-val">${Number(trInd.adx_14).toFixed(1)} (${escapeHtml(formatEnumLabel(tr.trend_strength))})</span>` : '<span class="as-kv-val na">N/A</span>')}
+            ${kvRow('+DI / -DI', (!isMissingVal(trInd.dmi_plus_14) && !isMissingVal(trInd.dmi_minus_14)) ? `<span class="as-kv-val">${Number(trInd.dmi_plus_14).toFixed(1)} / ${Number(trInd.dmi_minus_14).toFixed(1)}</span>` : '<span class="as-kv-val na">N/A</span>')}
+            ${kvRow('EMA 20 / SMA 50', (isMissingVal(trInd.ema_20) && isMissingVal(trInd.sma_50)) ? '<span class="as-kv-val na">N/A</span>' : `<span class="as-kv-val">${!isMissingVal(trInd.ema_20) ? Number(trInd.ema_20).toFixed(2) : 'N/A'} / ${!isMissingVal(trInd.sma_50) ? Number(trInd.sma_50).toFixed(2) : 'N/A'}</span>`)}
+            ${kvRow('SMA 200 (Dist %)', !isMissingVal(trInd.sma_200) ? `<span class="as-kv-val">${Number(trInd.sma_200).toFixed(2)} (${!isMissingVal(trInd.distance_from_sma200_pct) ? Number(trInd.distance_from_sma200_pct).toFixed(1) + '%' : 'N/A'})</span>` : '<span class="as-kv-val na">N/A (&lt;200d)</span>')}
+          </div>
+          ${tr.ma_cross_status ? `<div class="as-card-note">${escapeHtml(tr.recent_ma_cross || tr.ma_cross_status)}</div>` : ''}
+        </div>
+
+        <!-- 2. Momentum -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Momentum Condition</span>
+            <span class="as-badge ${toneForLabel(mom.momentum_bias)}">${escapeHtml(mom.momentum_bias || 'N/A')}</span>
+          </div>
+          <div class="as-kv-list">
+            ${kvRow('RSI (14)', !isMissingVal(momInd.rsi_14) ? `<span class="as-kv-val">${Number(momInd.rsi_14).toFixed(2)} (${escapeHtml(formatEnumLabel(mom.rsi_condition))})</span>` : '<span class="as-kv-val na">N/A</span>')}
+            ${kvRow('RSI 5d Change', fmtSigned(mom.rsi_5d_change, 2, ' pts'))}
+            ${kvRow('MACD Line / Signal', (!isMissingVal(momInd.macd_line) && !isMissingVal(momInd.macd_signal)) ? `<span class="as-kv-val">${Number(momInd.macd_line).toFixed(2)} / ${Number(momInd.macd_signal).toFixed(2)}</span>` : '<span class="as-kv-val na">N/A</span>')}
+            ${kvRow('MACD Hist', fmtSigned(momInd.macd_diff, 3))}
+            ${kvRow('Stoch %K / %D', (!isMissingVal(momInd.stoch_k) && !isMissingVal(momInd.stoch_d)) ? `<span class="as-kv-val">${Number(momInd.stoch_k).toFixed(1)} / ${Number(momInd.stoch_d).toFixed(1)} (${escapeHtml(mom.stochastic_condition)})</span>` : '<span class="as-kv-val na">N/A</span>')}
+          </div>
+          <div class="as-card-note">${escapeHtml(mom.recent_macd_cross || `RSI Divergence: ${formatEnumLabel(mom.rsi_divergence)}`)}</div>
+        </div>
+
+        <!-- 3. Volatility -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Volatility Condition</span>
+            <span class="as-badge ${toneForLabel(vola.volatility_regime)}">${escapeHtml(formatEnumLabel(vola.volatility_regime))}</span>
+          </div>
+          <div class="as-kv-list">
+            ${kvRow('20D Ann. Vol', fmtNum(volaInd.historical_vol_20d_ann_pct, 1, '%'))}
+            ${kvRow('60D Ann. Vol', fmtNum(volaInd.historical_vol_60d_ann_pct, 1, '%'))}
+            ${kvRow('1Y Vol Percentile', fmtNum(vola.volatility_percentile_252d, 1, 'th pct'))}
+            ${kvRow('ATR (14) / ATR%', (!isMissingVal(volaInd.atr_14)) ? `<span class="as-kv-val">${Number(volaInd.atr_14).toFixed(2)} (${!isMissingVal(volaInd.atr_pct) ? Number(volaInd.atr_pct).toFixed(2) + '%' : 'N/A'})</span>` : '<span class="as-kv-val na">N/A</span>')}
+            ${kvRow('Bollinger (%B / Width)', (!isMissingVal(volaInd.bb_percent_b)) ? `<span class="as-kv-val">${Number(volaInd.bb_percent_b).toFixed(2)} / ${!isMissingVal(volaInd.bb_bandwidth) ? Number(volaInd.bb_bandwidth).toFixed(1) + '%' : 'N/A'}</span>` : '<span class="as-kv-val na">N/A</span>')}
+          </div>
+          <div class="as-card-note">BB State: ${escapeHtml(formatEnumLabel(vola.bollinger_state))} • ATR ${escapeHtml(vola.atr_trend || 'STABLE')}</div>
+        </div>
+
+        <!-- 4. Volume -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Volume &amp; Flow</span>
+            <span class="as-badge ${toneForLabel(vol.obv_trend)}">${escapeHtml(formatEnumLabel(vol.volume_condition))}</span>
+          </div>
+          <div class="as-kv-list">
+            ${kvRow('Latest Volume', !isMissingVal(volInd.latest_volume) ? `<span class="as-kv-val">${Number(volInd.latest_volume).toLocaleString()}</span>` : '<span class="as-kv-val na">N/A</span>')}
+            ${kvRow('20D Avg Volume', !isMissingVal(volInd.volume_sma_20) ? `<span class="as-kv-val">${Number(volInd.volume_sma_20).toLocaleString()}</span>` : '<span class="as-kv-val na">N/A</span>')}
+            ${kvRow('Vol Ratio (20D / 60D)', !isMissingVal(volInd.volume_ratio_20d) ? `<span class="as-kv-val">${Number(volInd.volume_ratio_20d).toFixed(2)}x / ${!isMissingVal(volInd.volume_ratio_60d) ? Number(volInd.volume_ratio_60d).toFixed(2) + 'x' : 'N/A'}</span>` : '<span class="as-kv-val na">N/A</span>')}
+            ${kvRow('20D Turnover', fmtCompactPKR(volInd.avg_daily_turnover_20d_pkr))}
+            ${kvRow('OBV Flow', `<span class="as-kv-val ${toneForLabel(vol.obv_trend)}">${escapeHtml((vol.obv_trend || 'N/A').split(' ')[0])}</span>`)}
+          </div>
+          <div class="as-card-note">${escapeHtml(formatEnumLabel(vol.volume_price_confirmation))}${vol.obv_divergence && vol.obv_divergence !== 'NONE' ? ` • ${escapeHtml(formatEnumLabel(vol.obv_divergence))}` : ''}</div>
+        </div>
+      </div>
+
+      <!-- Support/Resistance, Candlesticks & HMM Market Context -->
+      <div class="as-cards-grid-3">
+        <!-- Support & Resistance -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Causal Support &amp; Resistance</span>
+            <span class="as-badge neutral">52W Pos: ${!isMissingVal(sr.position_in_252d_range_pct) ? Number(sr.position_in_252d_range_pct).toFixed(0) + '%' : 'N/A'}</span>
+          </div>
+          <div class="as-range-track"><div class="as-range-fill" style="width:${pos52}%;"></div></div>
+          <div class="as-range-labels">
+            <span>252D Low: ${!isMissingVal(sr.trailing_252d_low_pkr) ? formatPKR(sr.trailing_252d_low_pkr) : 'N/A'}</span>
+            <span>252D High: ${!isMissingVal(sr.trailing_252d_high_pkr) ? formatPKR(sr.trailing_252d_high_pkr) : 'N/A'}</span>
+          </div>
+          <div class="as-table-wrap">
+            <table class="as-table">
+              <thead><tr><th>Resistance</th><th class="num">Dist</th><th class="num">Hits</th><th>Source</th></tr></thead>
+              <tbody>${resRows}</tbody>
+              <thead><tr><th>Support</th><th class="num">Dist</th><th class="num">Hits</th><th>Source</th></tr></thead>
+              <tbody>${supRows}</tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Candlestick Patterns -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Candlestick Formations (10D)</span>
+            <span class="as-badge ${toneForLabel(cs.pattern_bias_5d)}">Bias: ${escapeHtml(cs.pattern_bias_5d || 'NONE')}</span>
+          </div>
+          <div class="as-table-wrap">
+            <table class="as-table">
+              <thead><tr><th>Date</th><th>Pattern</th><th>Type</th><th>Strength</th><th class="num">Vol</th></tr></thead>
+              <tbody>${patsRows}</tbody>
+            </table>
+          </div>
+          <div class="as-card-note">Flat EOD bars (High == Low) excluded from Doji detection: ${cs.suppressed_flat_bar_patterns ?? 0}</div>
+        </div>
+
+        <!-- HMM Market Regime Context -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">HMM Market-Regime Context (KSE-100)</span>
+            <span class="as-badge ${toneForLabel(hmm.market_regime)}">${escapeHtml(hmm.market_regime || 'N/A')}</span>
+          </div>
+          <div class="as-prob-bars">
+            <div class="rpg-item">
+              <div class="rpg-top"><span>Bullish Prob</span><b>${!isMissingVal(hmmP.bullish) ? (hmmP.bullish * 100).toFixed(1) + '%' : 'N/A'}</b></div>
+              <div class="rpg-bar-track"><div class="rpg-bar-fill seg-bull" style="width:${(hmmP.bullish || 0) * 100}%;"></div></div>
+            </div>
+            <div class="rpg-item">
+              <div class="rpg-top"><span>Sideways Prob</span><b>${!isMissingVal(hmmP.sideways) ? (hmmP.sideways * 100).toFixed(1) + '%' : 'N/A'}</b></div>
+              <div class="rpg-bar-track"><div class="rpg-bar-fill seg-side" style="width:${(hmmP.sideways || 0) * 100}%;"></div></div>
+            </div>
+            <div class="rpg-item">
+              <div class="rpg-top"><span>Bearish Prob</span><b>${!isMissingVal(hmmP.bearish) ? (hmmP.bearish * 100).toFixed(1) + '%' : 'N/A'}</b></div>
+              <div class="rpg-bar-track"><div class="rpg-bar-fill seg-bear" style="width:${(hmmP.bearish || 0) * 100}%;"></div></div>
+            </div>
+          </div>
+          <div class="as-kv-list" style="margin-top:4px;">
+            ${kvRow('Regime Date / Duration', `<span class="as-kv-val">${escapeHtml(hmm.regime_date || '--')} (${hmm.regime_duration_sessions ?? '--'}d)</span>`)}
+            ${kvRow('State Entropy', fmtNum(hmm.regime_entropy, 3))}
+            ${kvRow('60D Beta vs KSE-100', fmtNum(hmm.stock_vs_market_60d_beta, 2))}
+            ${kvRow('60D Corr vs KSE-100', fmtNum(hmm.stock_vs_market_60d_correlation, 2))}
+          </div>
+          <div class="as-card-note">${escapeHtml(hmm.leakage_policy || '')}</div>
+        </div>
+      </div>
+
+      <!-- Signals Lists -->
+      <div class="as-cards-grid-3">
+        ${renderSignalListCard('Bullish Technical Signals', t.bullish_signals, 'bull', 'No bullish technical signals detected.')}
+        ${renderSignalListCard('Bearish Technical Signals', t.bearish_signals, 'bear', 'No bearish technical signals detected.')}
+        ${renderSignalListCard('Conflicting Technical Signals & Hygiene Notes', t.conflicting_signals, 'warn', 'No inter-indicator conflicts flagged.')}
+      </div>
+    </div>
+  `;
+}
+
+function renderFundamentalPanel(f, nested) {
+  if (!f) return '';
+  const mkt = f.market_snapshot || {};
+
+  if (f.status === 'NO_FINANCIAL_STATEMENTS') {
+    const notesHtml = (f.data_quality_notes || []).map(n => `<li><span class="as-dot"></span><span>${escapeHtml(n)}</span></li>`).join('');
+    return `
+      <div class="as-engine-panel" id="as-fundamental-panel">
+        <div class="as-panel-header">
+          <div>
+            <div class="as-panel-title">${nested ? 'Fundamental Analysis Breakdown' : `Fundamental Analysis — ${escapeHtml(f.symbol)}`}</div>
+            <div class="as-panel-sub">Sector: ${escapeHtml(f.sector || 'OTHER / UNCLASSIFIED')} • Latest Price (${escapeHtml(mkt.trading_date || '--')}): PKR ${!isMissingVal(mkt.close_pkr) ? formatPKR(mkt.close_pkr) : 'N/A'}</div>
+          </div>
+          <span class="as-badge neutral">NO IFRS STATEMENTS</span>
+        </div>
+        <div class="as-state-card" id="as-no-fundamentals-state">
+          <div class="as-state-title">Audited IFRS Financial Statements Unavailable</div>
+          <p class="as-state-desc">${escapeHtml(f.summary || 'Financial statements are missing in PostgreSQL up to the requested date; ratios are explicitly reported as unavailable rather than replaced with zeros.')}</p>
+        </div>
+        ${notesHtml ? `<div class="as-signal-card warn"><div class="as-card-title">Data Coverage &amp; Audit Notes</div><ul class="as-signal-list">${notesHtml}</ul></div>` : ''}
+      </div>
+    `;
+  }
+
+  const rpc = f.reporting_period_context || {};
+  const prof = f.profitability || {};
+  const val = f.valuation || {};
+  const hlth = f.financial_health || {};
+  const gr = f.growth || {};
+  const cf = f.cash_flow_analysis || {};
+  const dv = f.dividend_analysis || {};
+  const sec = f.sector_comparison || {};
+
+  const scoreDisp = !isMissingVal(f.fundamental_score) ? `${Number(f.fundamental_score).toFixed(1)} / 100` : 'N/A';
+
+  const profMissing = prof.missing_reasons || {};
+  const hlthMissing = hlth.missing_reasons || {};
+
+  // Historical periods table
+  const histRows = (rpc.historical_periods_summary || []).length
+    ? [...rpc.historical_periods_summary].reverse().map(p => `
+        <tr>
+          <td>${escapeHtml(p.period_end_date)}</td>
+          <td>${escapeHtml(p.effective_pub_date)} ${p.pub_verified ? '<span style="color:var(--bullish);">✓</span>' : '<span style="color:var(--text-faint);" title="Statutory +100d fallback">est</span>'}</td>
+          <td class="num">${!isMissingVal(p.total_revenue_pkr) ? (Number(p.total_revenue_pkr) / 1e9).toFixed(2) + 'B' : 'N/A'}</td>
+          <td class="num">${!isMissingVal(p.net_income_pkr) ? (Number(p.net_income_pkr) / 1e9).toFixed(2) + 'B' : 'N/A'}</td>
+          <td class="num">${!isMissingVal(p.basic_eps_pkr) ? Number(p.basic_eps_pkr).toFixed(2) : 'N/A'}</td>
+          <td class="num">${!isMissingVal(p.free_cash_flow_pkr) ? (Number(p.free_cash_flow_pkr) / 1e9).toFixed(2) + 'B' : 'N/A'}</td>
+        </tr>
+      `).join('')
+    : `<tr><td colspan="6" class="text-cell" style="color:var(--text-muted);">No multi-year periods recorded.</td></tr>`;
+
+  // Sector benchmark block
+  let sectorHtml = '';
+  if (sec.status === 'OK') {
+    const bm = sec.benchmarks || {};
+    const metricLabels = {
+      roe_pct: 'ROE (%)',
+      roa_pct: 'ROA (%)',
+      net_margin_pct: 'Net Margin (%)',
+      operating_margin_pct: 'Op. Margin (%)',
+      pe_ratio: 'P/E Ratio (x)',
+      pb_ratio: 'P/B Ratio (x)',
+      debt_to_equity: 'Debt / Equity (x)',
+      current_ratio: 'Current Ratio (x)',
+      interest_coverage_ratio: 'Interest Cov (x)',
+      revenue_growth_yoy_pct: 'Revenue YoY (%)',
+      cash_flow_implied_yield_pct: 'CF Div Yield (%)'
+    };
+    const bmRows = Object.entries(bm).map(([k, row]) => {
+      const label = metricLabels[k] || k;
+      return `
+        <tr>
+          <td class="text-cell"><b>${escapeHtml(label)}</b></td>
+          <td class="num">${!isMissingVal(row.company_value) ? Number(row.company_value).toFixed(2) : '<span style="color:var(--text-faint);">N/A</span>'}</td>
+          <td class="num">${!isMissingVal(row.sector_median) ? Number(row.sector_median).toFixed(2) : 'N/A'}</td>
+          <td class="num">${!isMissingVal(row.diff_vs_median) ? (row.diff_vs_median >= 0 ? '+' : '') + Number(row.diff_vs_median).toFixed(2) : 'N/A'}</td>
+          <td class="num">${row.peers_with_metric ?? '--'}</td>
+          <td><span class="as-badge ${toneForLabel(row.relative_position)}">${escapeHtml(formatEnumLabel(row.relative_position || 'N/A'))}</span></td>
+        </tr>
+      `;
+    }).join('');
+    const peersChips = (sec.comparable_peers || []).map(p =>
+      `<button type="button" class="as-peer-chip" onclick="selectSymbol('${escapeHtml(p.symbol)}')" title="Period ${escapeHtml(p.period_end_date)} (Pub ${escapeHtml(p.effective_pub_date)})">${escapeHtml(p.symbol)}</button>`
+    ).join('');
+
+    sectorHtml = `
+      <div class="as-card" style="grid-column: 1 / -1;">
+        <div class="as-card-head">
+          <span class="as-card-title">Sector Peer Comparison — ${escapeHtml(sec.sector)}</span>
+          <span class="as-badge positive">${sec.comparable_peers_count} Comparable Peers</span>
+        </div>
+        <div class="as-table-wrap">
+          <table class="as-table">
+            <thead><tr><th>Metric</th><th class="num">Company</th><th class="num">Sector Median</th><th class="num">Diff</th><th class="num">Peers</th><th>Position</th></tr></thead>
+            <tbody>${bmRows || '<tr><td colspan="6" class="text-cell">No shared sector metrics available.</td></tr>'}</tbody>
+          </table>
+        </div>
+        <div class="as-peer-chips"><span class="as-kv-label" style="margin-right:4px;">Peers:</span>${peersChips}</div>
+        <div class="as-card-note">${escapeHtml(sec.comparison_window_rule || '')}</div>
+      </div>
+    `;
+  } else {
+    sectorHtml = `
+      <div class="as-card" style="grid-column: 1 / -1;">
+        <div class="as-card-head">
+          <span class="as-card-title">Sector Peer Comparison — ${escapeHtml(sec.sector || 'N/A')}</span>
+          <span class="as-badge neutral">INSUFFICIENT SECTOR DATA</span>
+        </div>
+        <p class="as-hero-summary">${escapeHtml(sec.reason || 'Fewer than 2 peers have comparable IFRS reporting windows.')}</p>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="as-engine-panel" id="as-fundamental-panel">
+      <div class="as-panel-header">
+        <div>
+          <div class="as-panel-title">${nested ? 'Fundamental Analysis Breakdown' : `Fundamental Analysis — ${escapeHtml(f.symbol)} (${escapeHtml(f.company_name || '')})`}</div>
+          <div class="as-panel-sub">
+            Latest Reporting Period: <b>${escapeHtml(rpc.latest_complete_period_end || 'N/A')}</b> • Disclosed: ${escapeHtml(rpc.effective_publication_date || '--')} (${rpc.pub_verified ? 'Verified PSX Announcement' : 'Statutory +100d Fallback'}) • Unit: ${escapeHtml(rpc.currency_unit || 'PKR')}
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="as-score-num ${toneForLabel(f.overall_assessment)}" style="font-size:17px;">Score: ${scoreDisp}</span>
+          <span class="as-badge ${toneForLabel(f.overall_assessment)}">${escapeHtml(formatEnumLabel(f.overall_assessment))}</span>
+        </div>
+      </div>
+
+      <p class="as-hero-summary" style="color:var(--text-main);">${escapeHtml(f.summary || '')}</p>
+
+      <!-- 4-Card Fundamental Pillars Row 1 -->
+      <div class="as-cards-grid-4">
+        <!-- 1. Profitability -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Profitability</span>
+            <span class="as-badge neutral">${escapeHtml(prof.period_end_date || '--')}</span>
+          </div>
+          <div class="as-kv-list">
+            ${kvRow('EPS (Basic)', !isMissingVal(prof.eps_pkr) ? `<span class="as-kv-val">${Number(prof.eps_pkr).toFixed(2)} PKR${prof.eps_source === 'derived_net_income_over_shares' ? ' *' : ''}</span>` : '<span class="as-kv-val na">N/A</span>')}
+            ${kvRow('ROE', fmtNum(prof.roe_pct, 2, '%'), profMissing.roe_pct || '')}
+            ${kvRow('ROA', fmtNum(prof.roa_pct, 2, '%'))}
+            ${kvRow('Net Margin', fmtNum(prof.net_margin_pct, 2, '%'))}
+            ${kvRow('Operating Margin', fmtNum(prof.operating_margin_pct, 2, '%'), profMissing.operating_margin_pct || '')}
+            ${kvRow('Revenue / Net Income', `${!isMissingVal(prof.revenue_pkr) ? (prof.revenue_pkr / 1e9).toFixed(1) + 'B' : 'N/A'} / ${!isMissingVal(prof.net_income_pkr) ? (prof.net_income_pkr / 1e9).toFixed(1) + 'B' : 'N/A'}`.includes('N/A / N/A') ? '<span class="as-kv-val na">N/A</span>' : `<span class="as-kv-val">${!isMissingVal(prof.revenue_pkr) ? (prof.revenue_pkr / 1e9).toFixed(1) + 'B' : 'N/A'} / ${!isMissingVal(prof.net_income_pkr) ? (prof.net_income_pkr / 1e9).toFixed(1) + 'B' : 'N/A'}</span>`)}
+          </div>
+          ${(profMissing.operating_margin_pct || prof.eps_source === 'derived_net_income_over_shares') ? `<div class="as-card-note">${escapeHtml(profMissing.operating_margin_pct || 'EPS derived as Net Income / Ordinary Shares (*)')}</div>` : ''}
+        </div>
+
+        <!-- 2. Valuation -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Valuation Metrics</span>
+            <span class="as-badge neutral">${escapeHtml(val.price_date || '--')}</span>
+          </div>
+          <div class="as-kv-list">
+            ${kvRow('Spot Price', !isMissingVal(val.price_pkr) ? `<span class="as-kv-val">PKR ${formatPKR(val.price_pkr)}</span>` : '<span class="as-kv-val na">N/A</span>')}
+            ${kvRow('Market Cap', fmtCompactPKR(val.market_cap_pkr))}
+            ${kvRow('P/E Ratio', fmtNum(val.pe_ratio, 2, 'x'))}
+            ${kvRow('P/B Ratio', fmtNum(val.pb_ratio, 2, 'x'))}
+            ${kvRow('Earnings Yield', fmtNum(val.earnings_yield_pct, 2, '%'))}
+            ${kvRow('Dividend Yield', fmtNum(val.dividend_yield_pct, 2, '%'))}
+          </div>
+          <div class="as-card-note">Basis: ${escapeHtml(formatEnumLabel(val.valuation_basis || 'N/A'))}${val.notes?.length ? ' • ' + escapeHtml(val.notes.join('; ')) : ''}</div>
+        </div>
+
+        <!-- 3. Financial Health -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Financial Health</span>
+            <span class="as-badge neutral">${escapeHtml(hlth.period_end_date || '--')}</span>
+          </div>
+          <div class="as-kv-list">
+            ${kvRow('Debt / Equity', fmtNum(hlth.debt_to_equity, 3, 'x'), hlthMissing.debt_to_equity || '')}
+            ${kvRow('Debt / Assets', fmtNum(hlth.debt_to_assets, 3, 'x'))}
+            ${kvRow('Equity / Assets', fmtNum(hlth.equity_to_assets, 3, 'x'))}
+            ${kvRow('Current Ratio', fmtNum(hlth.current_ratio, 2, 'x'), hlthMissing.current_ratio || '')}
+            ${kvRow('Interest Coverage', fmtNum(hlth.interest_coverage_ratio, 2, 'x'), hlthMissing.interest_coverage_ratio || '')}
+            ${kvRow('Cash & Equiv.', fmtCompactPKR(hlth.cash_and_equivalents_pkr))}
+          </div>
+          ${Object.values(hlthMissing).length ? `<div class="as-card-note">${escapeHtml(Object.values(hlthMissing)[0])}</div>` : ''}
+        </div>
+
+        <!-- 4. Growth -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Growth Trajectory</span>
+            <span class="as-badge ${gr.is_1y_comparable ? 'neutral' : 'warning'}">${gr.is_1y_comparable ? '1Y YoY' : (gr.comparison_span_days ? gr.comparison_span_days + 'd Span' : 'Limited')}</span>
+          </div>
+          <div class="as-kv-list">
+            ${kvRow('Revenue YoY', fmtSigned(gr.revenue_growth_yoy_pct, 2, '%'))}
+            ${kvRow('Net Income YoY', fmtSigned(gr.net_income_growth_yoy_pct, 2, '%'))}
+            ${kvRow('EPS YoY', fmtSigned(gr.eps_growth_yoy_pct, 2, '%'))}
+            ${kvRow('Multi-Yr Rev CAGR', fmtSigned(gr.multi_year_revenue_cagr_pct, 2, '%'))}
+            ${kvRow('Multi-Yr NI CAGR', fmtSigned(gr.multi_year_net_income_cagr_pct, 2, '%'))}
+          </div>
+          <div class="as-card-note">${gr.comparison_prior_period ? `${escapeHtml(gr.comparison_prior_period)} → ${escapeHtml(gr.comparison_current_period)}` : 'Insufficient prior annual statements'}${gr.notes?.length ? ' • ' + escapeHtml(gr.notes[0]) : ''}</div>
+        </div>
+      </div>
+
+      <!-- Row 2: Cash Flow + Dividends + Multi-Year History -->
+      <div class="as-cards-grid-3">
+        <!-- Cash Flow Analysis -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Cash Flow Analysis</span>
+            <span class="as-badge ${toneForLabel(cf.cash_flow_trend)}">${escapeHtml(formatEnumLabel(cf.cash_flow_trend || cf.status || 'N/A'))}</span>
+          </div>
+          <div class="as-kv-list">
+            ${kvRow('Operating Cash Flow', fmtCompactPKR(cf.operating_cash_flow_pkr))}
+            ${kvRow('CapEx', fmtCompactPKR(cf.capital_expenditure_pkr))}
+            ${kvRow('Free Cash Flow', fmtCompactPKR(cf.free_cash_flow_pkr))}
+            ${kvRow('FCF Margin', fmtNum(cf.fcf_margin_pct, 2, '%'))}
+            ${kvRow('OCF / Net Income', fmtNum(cf.ocf_to_net_income_ratio, 2, 'x'))}
+            ${kvRow('Positive FCF Yrs', `<span class="as-kv-val">${escapeHtml(cf.positive_fcf_periods || 'N/A')}</span>`)}
+          </div>
+        </div>
+
+        <!-- Dividend Analysis -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Dividend Analysis</span>
+            <span class="as-badge ${toneForLabel(dv.consistency)}">${escapeHtml(formatEnumLabel(dv.consistency || 'N/A'))}</span>
+          </div>
+          <div class="as-kv-list">
+            ${kvRow('TTM Announced DPS', fmtNum(dv.ttm_announced_dps_pkr, 2, ' PKR'))}
+            ${kvRow('Announced Yield', fmtNum(dv.announced_ttm_dividend_yield_pct, 2, '%'))}
+            ${kvRow('CF Div Yield', fmtNum(dv.cash_flow_implied_yield_pct, 2, '%'))}
+            ${kvRow('Latest Payout Ratio', fmtNum(dv.latest_cash_payout_ratio_pct, 1, '%'))}
+            ${kvRow('FCF Div Coverage', fmtNum(dv.latest_fcf_dividend_coverage, 2, 'x'))}
+            ${kvRow('Paid Yrs (IFRS)', `<span class="as-kv-val">${escapeHtml(dv.ifrs_periods_with_cash_dividends || 'N/A')}</span>`)}
+          </div>
+        </div>
+
+        <!-- Multi-Year Historical Statements Table -->
+        <div class="as-card">
+          <div class="as-card-head">
+            <span class="as-card-title">Disclosed Annual IFRS History</span>
+            <span class="as-badge neutral">${(rpc.historical_periods_summary || []).length} Periods</span>
+          </div>
+          <div class="as-table-wrap">
+            <table class="as-table">
+              <thead><tr><th>Period</th><th>Public</th><th class="num">Rev</th><th class="num">NI</th><th class="num">EPS</th><th class="num">FCF</th></tr></thead>
+              <tbody>${histRows}</tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sector Peer Comparison -->
+      <div class="as-cards-grid-2">
+        ${sectorHtml}
+      </div>
+
+      <!-- Fundamental Strengths, Weaknesses & Audit Notes -->
+      <div class="as-cards-grid-3">
+        ${renderSignalListCard('Fundamental Strengths', f.strengths, 'bull', 'No standout fundamental strengths flagged.')}
+        ${renderSignalListCard('Fundamental Weaknesses', f.weaknesses, 'bear', 'No major fundamental weaknesses flagged.')}
+        ${renderSignalListCard('Conflicts & Data Quality Notes', [...(f.conflicting_signals || []), ...(f.data_quality_notes || [])], 'warn', 'No conflicts or quality caveats.')}
+      </div>
+    </div>
+  `;
+}
+
+window.loadAnalysisSuite = loadAnalysisSuite;
+window.formatPKR = formatPKR;
