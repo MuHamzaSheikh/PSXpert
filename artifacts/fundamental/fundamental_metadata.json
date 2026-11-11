@@ -1,0 +1,785 @@
+{
+  "model_name": "PSXpert Fundamental Health ML Classifier",
+  "algorithm": null,
+  "candidate_models_benchmarked_diagnostic_only": [
+    "catboost",
+    "lightgbm",
+    "xgboost"
+  ],
+  "module_version": "psxpert_fund_ml_audit_v2.0",
+  "version": "psxpert_fund_ml_audit_v2.0",
+  "assessed_at": "2026-11-11T16:13:12.253793+00:00",
+  "trained_at": null,
+  "training_status": "BLOCKED_INSUFFICIENT_RELIABLE_LABELS",
+  "model_exported": false,
+  "model_deployed": false,
+  "feature_names": [
+    "eps_pkr",
+    "revenue_growth_yoy",
+    "net_income_growth_yoy",
+    "eps_growth_yoy",
+    "roe",
+    "roa",
+    "gross_margin",
+    "operating_margin",
+    "net_margin",
+    "pe_pit",
+    "pb_pit",
+    "earnings_yield_pit",
+    "debt_to_equity",
+    "current_ratio",
+    "interest_coverage",
+    "ocf_margin",
+    "fcf_margin",
+    "ocf_to_ni",
+    "fcf_yield_pit",
+    "cf_dividend_yield_pit",
+    "cash_payout_ratio",
+    "fcf_dividend_coverage",
+    "sector_roe_diff",
+    "sector_net_margin_diff",
+    "sector_pe_diff",
+    "sector_pb_diff",
+    "sector_de_diff",
+    "is_bank",
+    "has_classified_sector"
+  ],
+  "audit_summary": {
+    "total_unique_disclosures": 573,
+    "total_companies": 140,
+    "banks_count": 12,
+    "unclassified_sector_firms": 61,
+    "inactive_delisted_firms": 0,
+    "external_credit_rating_labels": 0,
+    "missingness_pct": {
+      "eps_pkr": 1.7,
+      "revenue_growth_yoy": 37.3,
+      "net_income_growth_yoy": 36.1,
+      "eps_growth_yoy": 26.7,
+      "roe": 12.2,
+      "roa": 11.2,
+      "gross_margin": 29.8,
+      "operating_margin": 29.7,
+      "net_margin": 13.3,
+      "pe_pit": 22.7,
+      "pb_pit": 12.2,
+      "earnings_yield_pit": 11.2,
+      "debt_to_equity": 16.4,
+      "current_ratio": 27.9,
+      "interest_coverage": 27.1,
+      "ocf_margin": 14.8,
+      "fcf_margin": 13.1,
+      "ocf_to_ni": 25.0,
+      "fcf_yield_pit": 11.2,
+      "cf_dividend_yield_pit": 20.8,
+      "cash_payout_ratio": 30.0,
+      "fcf_dividend_coverage": 23.0,
+      "sector_roe_diff": 66.5,
+      "sector_net_margin_diff": 66.3,
+      "sector_pe_diff": 68.6,
+      "sector_pb_diff": 66.3,
+      "sector_de_diff": 68.6,
+      "is_bank": 0.0,
+      "has_classified_sector": 0.0
+    }
+  },
+  "split_transition_counts": {
+    "train_strict_within_fund_train": {
+      "count": 142,
+      "classes": {
+        "Weak": 60,
+        "Moderate": 46,
+        "Strong": 36
+      }
+    },
+    "val_train_to_val": {
+      "count": 137,
+      "classes": {
+        "Weak": 48,
+        "Moderate": 51,
+        "Strong": 38
+      }
+    },
+    "val_to_test_transitions": {
+      "count": 89,
+      "classes": {
+        "Weak": 30,
+        "Moderate": 28,
+        "Strong": 31
+      }
+    },
+    "strict_within_fund_test": {
+      "count": 24,
+      "classes": {
+        "Weak": 5,
+        "Moderate": 9,
+        "Strong": 10
+      }
+    }
+  },
+  "blocking_reasons": [
+    "Zero independent historical ground-truth financial health labels (credit ratings=0, delisted/defaulted IFRS firms=0).",
+    "Using contemporaneous accounting ratios to score Strong/Moderate/Weak would merely clone FundamentalAnalysisEngine deterministically (circular tautology).",
+    "Non-circular inter-temporal (t -> t+1) sample depth is severely underpowered: only 142 strictly in-train transitions (1 fiscal cycle FY22->FY23) and only 24 transitions fully inside FUND_TEST (min_test_class=5).",
+    "Structural feature gaps: 61/140 (43.6%) firms lack PSX sector tags for sector-relative metrics; 27.9% missing current_ratio and 27.1% missing interest_coverage.",
+    "100% survivorship bias among all 140 audited IFRS companies (zero inactive/failed historical companies in company_financials)."
+  ],
+  "diagnostic_only_not_deployed_benchmark": {
+    "catboost_diag": {
+      "val_test_metrics": {
+        "n_samples": 89,
+        "accuracy": 0.5393,
+        "precision_macro": 0.386,
+        "recall_macro": 0.5251,
+        "f1_macro": 0.4442,
+        "precision_weighted": 0.3959,
+        "recall_weighted": 0.5393,
+        "f1_weighted": 0.4559,
+        "roc_auc_ovr_macro": 0.6505,
+        "roc_auc_ovr_weighted": 0.6556,
+        "brier_score": 0.6179,
+        "log_loss": 1.0344,
+        "ece": 0.1556,
+        "calibration_bins": [
+          {
+            "bin": "[0.0,0.1]",
+            "count": 0,
+            "mean_confidence": null,
+            "empirical_accuracy": null
+          },
+          {
+            "bin": "[0.1,0.2]",
+            "count": 0,
+            "mean_confidence": null,
+            "empirical_accuracy": null
+          },
+          {
+            "bin": "[0.2,0.3]",
+            "count": 0,
+            "mean_confidence": null,
+            "empirical_accuracy": null
+          },
+          {
+            "bin": "[0.3,0.4]",
+            "count": 7,
+            "mean_confidence": 0.3836,
+            "empirical_accuracy": 0.2857
+          },
+          {
+            "bin": "[0.4,0.5]",
+            "count": 20,
+            "mean_confidence": 0.4537,
+            "empirical_accuracy": 0.65
+          },
+          {
+            "bin": "[0.5,0.6]",
+            "count": 17,
+            "mean_confidence": 0.5447,
+            "empirical_accuracy": 0.4706
+          },
+          {
+            "bin": "[0.6,0.7]",
+            "count": 17,
+            "mean_confidence": 0.6608,
+            "empirical_accuracy": 0.5294
+          },
+          {
+            "bin": "[0.7,0.8]",
+            "count": 19,
+            "mean_confidence": 0.7481,
+            "empirical_accuracy": 0.5789
+          },
+          {
+            "bin": "[0.8,0.9]",
+            "count": 9,
+            "mean_confidence": 0.8365,
+            "empirical_accuracy": 0.5556
+          },
+          {
+            "bin": "[0.9,1.0]",
+            "count": 0,
+            "mean_confidence": null,
+            "empirical_accuracy": null
+          }
+        ],
+        "confusion_matrix": [
+          [
+            25,
+            1,
+            4
+          ],
+          [
+            9,
+            0,
+            19
+          ],
+          [
+            4,
+            4,
+            23
+          ]
+        ],
+        "confusion_matrix_normalized": [
+          [
+            0.8333,
+            0.0333,
+            0.1333
+          ],
+          [
+            0.3214,
+            0.0,
+            0.6786
+          ],
+          [
+            0.129,
+            0.129,
+            0.7419
+          ]
+        ],
+        "per_class": {
+          "Weak": {
+            "precision": 0.6579,
+            "recall": 0.8333,
+            "f1": 0.7353,
+            "support": 30
+          },
+          "Moderate": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 28
+          },
+          "Strong": {
+            "precision": 0.5,
+            "recall": 0.7419,
+            "f1": 0.5974,
+            "support": 31
+          }
+        }
+      },
+      "by_regime": {
+        "BULLISH": {
+          "n_samples": 24,
+          "accuracy": 0.625,
+          "precision_macro": 0.4815,
+          "recall_macro": 0.5084,
+          "f1_macro": 0.4873,
+          "roc_auc_ovr_macro": 0.7752,
+          "brier_score": 0.4647,
+          "ece": 0.2661
+        },
+        "SIDEWAYS": {
+          "n_samples": 61,
+          "accuracy": 0.5246,
+          "precision_macro": 0.376,
+          "recall_macro": 0.5614,
+          "f1_macro": 0.4444,
+          "roc_auc_ovr_macro": 0.6303,
+          "brier_score": 0.6626,
+          "ece": 0.1811
+        }
+      }
+    },
+    "lightgbm_diag": {
+      "val_test_metrics": {
+        "n_samples": 89,
+        "accuracy": 0.4944,
+        "precision_macro": 0.4215,
+        "recall_macro": 0.4822,
+        "f1_macro": 0.4408,
+        "precision_weighted": 0.4288,
+        "recall_weighted": 0.4944,
+        "f1_weighted": 0.4505,
+        "roc_auc_ovr_macro": 0.6671,
+        "roc_auc_ovr_weighted": 0.6724,
+        "brier_score": 0.7095,
+        "log_loss": 1.2986,
+        "ece": 0.2956,
+        "calibration_bins": [
+          {
+            "bin": "[0.0,0.1]",
+            "count": 0,
+            "mean_confidence": null,
+            "empirical_accuracy": null
+          },
+          {
+            "bin": "[0.1,0.2]",
+            "count": 0,
+            "mean_confidence": null,
+            "empirical_accuracy": null
+          },
+          {
+            "bin": "[0.2,0.3]",
+            "count": 0,
+            "mean_confidence": null,
+            "empirical_accuracy": null
+          },
+          {
+            "bin": "[0.3,0.4]",
+            "count": 1,
+            "mean_confidence": 0.3609,
+            "empirical_accuracy": 1.0
+          },
+          {
+            "bin": "[0.4,0.5]",
+            "count": 5,
+            "mean_confidence": 0.4763,
+            "empirical_accuracy": 0.6
+          },
+          {
+            "bin": "[0.5,0.6]",
+            "count": 12,
+            "mean_confidence": 0.5428,
+            "empirical_accuracy": 0.3333
+          },
+          {
+            "bin": "[0.6,0.7]",
+            "count": 16,
+            "mean_confidence": 0.6458,
+            "empirical_accuracy": 0.4375
+          },
+          {
+            "bin": "[0.7,0.8]",
+            "count": 11,
+            "mean_confidence": 0.739,
+            "empirical_accuracy": 0.3636
+          },
+          {
+            "bin": "[0.8,0.9]",
+            "count": 18,
+            "mean_confidence": 0.8543,
+            "empirical_accuracy": 0.3333
+          },
+          {
+            "bin": "[0.9,1.0]",
+            "count": 26,
+            "mean_confidence": 0.95,
+            "empirical_accuracy": 0.7308
+          }
+        ],
+        "confusion_matrix": [
+          [
+            19,
+            8,
+            3
+          ],
+          [
+            9,
+            2,
+            17
+          ],
+          [
+            5,
+            3,
+            23
+          ]
+        ],
+        "confusion_matrix_normalized": [
+          [
+            0.6333,
+            0.2667,
+            0.1
+          ],
+          [
+            0.3214,
+            0.0714,
+            0.6071
+          ],
+          [
+            0.1613,
+            0.0968,
+            0.7419
+          ]
+        ],
+        "per_class": {
+          "Weak": {
+            "precision": 0.5758,
+            "recall": 0.6333,
+            "f1": 0.6032,
+            "support": 30
+          },
+          "Moderate": {
+            "precision": 0.1538,
+            "recall": 0.0714,
+            "f1": 0.0976,
+            "support": 28
+          },
+          "Strong": {
+            "precision": 0.5349,
+            "recall": 0.7419,
+            "f1": 0.6216,
+            "support": 31
+          }
+        }
+      },
+      "by_regime": {
+        "BULLISH": {
+          "n_samples": 24,
+          "accuracy": 0.5833,
+          "precision_macro": 0.4852,
+          "recall_macro": 0.4579,
+          "f1_macro": 0.4709,
+          "roc_auc_ovr_macro": 0.7762,
+          "brier_score": 0.4876,
+          "ece": 0.2258
+        },
+        "SIDEWAYS": {
+          "n_samples": 61,
+          "accuracy": 0.4754,
+          "precision_macro": 0.443,
+          "recall_macro": 0.5027,
+          "f1_macro": 0.4406,
+          "roc_auc_ovr_macro": 0.6687,
+          "brier_score": 0.7786,
+          "ece": 0.324
+        }
+      }
+    },
+    "xgboost_diag": {
+      "val_test_metrics": {
+        "n_samples": 89,
+        "accuracy": 0.4944,
+        "precision_macro": 0.4027,
+        "recall_macro": 0.4818,
+        "f1_macro": 0.4185,
+        "precision_weighted": 0.409,
+        "recall_weighted": 0.4944,
+        "f1_weighted": 0.4284,
+        "roc_auc_ovr_macro": 0.6715,
+        "roc_auc_ovr_weighted": 0.6755,
+        "brier_score": 0.624,
+        "log_loss": 1.0469,
+        "ece": 0.1683,
+        "calibration_bins": [
+          {
+            "bin": "[0.0,0.1]",
+            "count": 0,
+            "mean_confidence": null,
+            "empirical_accuracy": null
+          },
+          {
+            "bin": "[0.1,0.2]",
+            "count": 0,
+            "mean_confidence": null,
+            "empirical_accuracy": null
+          },
+          {
+            "bin": "[0.2,0.3]",
+            "count": 0,
+            "mean_confidence": null,
+            "empirical_accuracy": null
+          },
+          {
+            "bin": "[0.3,0.4]",
+            "count": 2,
+            "mean_confidence": 0.3988,
+            "empirical_accuracy": 0.5
+          },
+          {
+            "bin": "[0.4,0.5]",
+            "count": 14,
+            "mean_confidence": 0.4641,
+            "empirical_accuracy": 0.2143
+          },
+          {
+            "bin": "[0.5,0.6]",
+            "count": 19,
+            "mean_confidence": 0.5415,
+            "empirical_accuracy": 0.5263
+          },
+          {
+            "bin": "[0.6,0.7]",
+            "count": 18,
+            "mean_confidence": 0.6551,
+            "empirical_accuracy": 0.5
+          },
+          {
+            "bin": "[0.7,0.8]",
+            "count": 18,
+            "mean_confidence": 0.749,
+            "empirical_accuracy": 0.5556
+          },
+          {
+            "bin": "[0.8,0.9]",
+            "count": 11,
+            "mean_confidence": 0.8423,
+            "empirical_accuracy": 0.4545
+          },
+          {
+            "bin": "[0.9,1.0]",
+            "count": 7,
+            "mean_confidence": 0.9217,
+            "empirical_accuracy": 0.8571
+          }
+        ],
+        "confusion_matrix": [
+          [
+            21,
+            4,
+            5
+          ],
+          [
+            9,
+            1,
+            18
+          ],
+          [
+            8,
+            1,
+            22
+          ]
+        ],
+        "confusion_matrix_normalized": [
+          [
+            0.7,
+            0.1333,
+            0.1667
+          ],
+          [
+            0.3214,
+            0.0357,
+            0.6429
+          ],
+          [
+            0.2581,
+            0.0323,
+            0.7097
+          ]
+        ],
+        "per_class": {
+          "Weak": {
+            "precision": 0.5526,
+            "recall": 0.7,
+            "f1": 0.6176,
+            "support": 30
+          },
+          "Moderate": {
+            "precision": 0.1667,
+            "recall": 0.0357,
+            "f1": 0.0588,
+            "support": 28
+          },
+          "Strong": {
+            "precision": 0.4889,
+            "recall": 0.7097,
+            "f1": 0.5789,
+            "support": 31
+          }
+        }
+      },
+      "by_regime": {
+        "BULLISH": {
+          "n_samples": 24,
+          "accuracy": 0.5833,
+          "precision_macro": 0.4387,
+          "recall_macro": 0.4714,
+          "f1_macro": 0.4455,
+          "roc_auc_ovr_macro": 0.8628,
+          "brier_score": 0.4225,
+          "ece": 0.2138
+        },
+        "SIDEWAYS": {
+          "n_samples": 61,
+          "accuracy": 0.4754,
+          "precision_macro": 0.447,
+          "recall_macro": 0.5057,
+          "f1_macro": 0.4188,
+          "roc_auc_ovr_macro": 0.6485,
+          "brier_score": 0.6866,
+          "ece": 0.2454
+        }
+      }
+    },
+    "majority_baseline": {
+      "n_samples": 89,
+      "accuracy": 0.3371,
+      "precision_macro": 0.1124,
+      "recall_macro": 0.3333,
+      "f1_macro": 0.1681,
+      "precision_weighted": 0.1136,
+      "recall_weighted": 0.3371,
+      "f1_weighted": 0.17,
+      "roc_auc_ovr_macro": null,
+      "roc_auc_ovr_weighted": null,
+      "brier_score": null,
+      "log_loss": null,
+      "ece": null,
+      "calibration_bins": null,
+      "confusion_matrix": [
+        [
+          30,
+          0,
+          0
+        ],
+        [
+          28,
+          0,
+          0
+        ],
+        [
+          31,
+          0,
+          0
+        ]
+      ],
+      "confusion_matrix_normalized": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "per_class": {
+        "Weak": {
+          "precision": 0.3371,
+          "recall": 1.0,
+          "f1": 0.5042,
+          "support": 30
+        },
+        "Moderate": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 28
+        },
+        "Strong": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 31
+        }
+      }
+    },
+    "simple_rule_baseline": {
+      "n_samples": 89,
+      "accuracy": 0.4944,
+      "precision_macro": 0.4745,
+      "recall_macro": 0.4876,
+      "f1_macro": 0.4778,
+      "precision_weighted": 0.4783,
+      "recall_weighted": 0.4944,
+      "f1_weighted": 0.4832,
+      "roc_auc_ovr_macro": null,
+      "roc_auc_ovr_weighted": null,
+      "brier_score": null,
+      "log_loss": null,
+      "ece": null,
+      "calibration_bins": null,
+      "confusion_matrix": [
+        [
+          18,
+          7,
+          5
+        ],
+        [
+          9,
+          7,
+          12
+        ],
+        [
+          5,
+          7,
+          19
+        ]
+      ],
+      "confusion_matrix_normalized": [
+        [
+          0.6,
+          0.2333,
+          0.1667
+        ],
+        [
+          0.3214,
+          0.25,
+          0.4286
+        ],
+        [
+          0.1613,
+          0.2258,
+          0.6129
+        ]
+      ],
+      "per_class": {
+        "Weak": {
+          "precision": 0.5625,
+          "recall": 0.6,
+          "f1": 0.5806,
+          "support": 30
+        },
+        "Moderate": {
+          "precision": 0.3333,
+          "recall": 0.25,
+          "f1": 0.2857,
+          "support": 28
+        },
+        "Strong": {
+          "precision": 0.5278,
+          "recall": 0.6129,
+          "f1": 0.5672,
+          "support": 31
+        }
+      }
+    }
+  },
+  "target_definition": {
+    "target_name": "next_12m_fundamental_health_and_distress_outcome",
+    "classes": [
+      "Strong",
+      "Moderate",
+      "Weak"
+    ],
+    "economic_definition": {
+      "Strong": "Company maintains or achieves investment-grade credit stability (PACRA/VIS >= A-), delivers positive YoY operating income/EPS growth, ROE >= sector median (or >= 15%), positive Free Cash Flow (OCF/NI >= 0.8), and maintains uninterrupted cash dividends.",
+      "Moderate": "Company stays solvent with positive operating cash flow and no rating downgrade or covenant breach, but shows flat/modest earnings growth, margin compression, or moderate leverage.",
+      "Weak": "Independent external credit rating downgrade to sub-investment tier (< BBB) / PSX Defaulter Counter placement / dividend omission after prior payouts, OR severe realized FY_{t+1} distress (net loss <= 0, negative operating cash flow, equity erosion, or Interest Coverage < 1.25x)."
+    },
+    "mandatory_data_prerequisites": [
+      "1. Historical PACRA / VIS credit-rating panel and PSX Defaulter Segment / delisting date logs (eliminating 100% survivorship bias).",
+      "2. >= 8-10 years of audited annual + clean quarterly IFRS disclosures across >= 300+ firms (>= 1,500 non-overlapping train transitions before Val/Test).",
+      "3. Full sector classification for the 61 currently unclassified IFRS firms (of 711 unclassified total) and pre-2025 corporate_payouts dividend backfill."
+    ]
+  },
+  "proposed_target_definition": {
+    "target_name": "next_12m_fundamental_health_and_distress_outcome",
+    "classes": [
+      "Strong",
+      "Moderate",
+      "Weak"
+    ],
+    "economic_definition": {
+      "Strong": "Company maintains or achieves investment-grade credit stability (PACRA/VIS >= A-), delivers positive YoY operating income/EPS growth, ROE >= sector median (or >= 15%), positive Free Cash Flow (OCF/NI >= 0.8), and maintains uninterrupted cash dividends.",
+      "Moderate": "Company stays solvent with positive operating cash flow and no rating downgrade or covenant breach, but shows flat/modest earnings growth, margin compression, or moderate leverage.",
+      "Weak": "Independent external credit rating downgrade to sub-investment tier (< BBB) / PSX Defaulter Counter placement / dividend omission after prior payouts, OR severe realized FY_{t+1} distress (net loss <= 0, negative operating cash flow, equity erosion, or Interest Coverage < 1.25x)."
+    },
+    "mandatory_data_prerequisites": [
+      "1. Historical PACRA / VIS credit-rating panel and PSX Defaulter Segment / delisting date logs (eliminating 100% survivorship bias).",
+      "2. >= 8-10 years of audited annual + clean quarterly IFRS disclosures across >= 300+ firms (>= 1,500 non-overlapping train transitions before Val/Test).",
+      "3. Full sector classification for the 61 currently unclassified IFRS firms (of 711 unclassified total) and pre-2025 corporate_payouts dividend backfill."
+    ]
+  },
+  "python_and_library_versions": {
+    "python": "3.13.7",
+    "joblib": "1.5.2",
+    "scikit_learn": "1.7.2",
+    "catboost": "1.2.10",
+    "lightgbm": "4.7.0",
+    "xgboost": "3.4.1"
+  },
+  "artifact_files": {
+    "model_pkl": null,
+    "preprocessor_pkl": null,
+    "features_json": "artifacts\\fundamental\\fundamental_features.json",
+    "metadata_json": "artifacts\\fundamental\\fundamental_metadata.json",
+    "disclosures_dataset": "reports\\ml\\fundamental_disclosures_features.parquet"
+  }
+}

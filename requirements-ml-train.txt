@@ -1,0 +1,7 @@
+# Optional Offline Multi-Candidate Training & Audit Benchmark Dependencies
+# Used by train_ml_models.py when comparing all candidate algorithms (LightGBM / CatBoost benchmarks).
+-r requirements.txt
+lightgbm>=4.7.0,<5.0.0
+catboost>=1.2.10,<2.0.0
+pyarrow>=21.0.0
+
