@@ -5,6 +5,7 @@ and FinBERT news sentiment from PostgreSQL.
 """
 
 import json
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from fastapi import FastAPI, HTTPException, Query
@@ -23,7 +24,16 @@ from src.analysis.regime_hmm import MarketRegimeHMM
 from src.analysis.walk_forward import WalkForwardEngine
 from src.analysis.genetic_algorithm import BASELINE_PARAMS
 
-app = FastAPI(title="PSXpert Terminal API", version="1.0.0")
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    from src.ml.router import preload_ml_service_on_startup
+
+    svc = preload_ml_service_on_startup()
+    _app.state.ml_service = svc
+    yield
+
+
+app = FastAPI(title="PSXpert Terminal API", version="1.0.0", lifespan=lifespan)
 
 # Enable CORS for local development
 app.add_middleware(
@@ -577,7 +587,11 @@ def run_ga_optimization(
 
 
 from src.analysis.router import router as analysis_router
+from src.ml.models_router import router as models_router
+from src.ml.router import router as ml_router
 
+app.include_router(models_router)
+app.include_router(ml_router)
 app.include_router(analysis_router)
 
 # Mount static directory for frontend files
