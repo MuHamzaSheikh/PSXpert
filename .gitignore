@@ -15,3 +15,12 @@ data/raw/
 reset_*.ps1
 reset_*.bat
 scratch/
+
+# Generated predictive data panels & scratch training telemetry
+catboost_info/
+data/predictive/*.parquet
+data/predictive/daily_targets_kse100_sample.csv
+reports/ml/*.parquet
+
+# Legacy v1 local model cache (superseded by artifacts/)
+models/
