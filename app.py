@@ -576,6 +576,10 @@ def run_ga_optimization(
     return results
 
 
+from src.analysis.router import router as analysis_router
+
+app.include_router(analysis_router)
+
 # Mount static directory for frontend files
 STATIC_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
