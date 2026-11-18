@@ -88,7 +88,21 @@ export const api = {
     if (symbol && symbol !== 'ALL') params.append('symbol', symbol);
     params.append('limit', limit.toString());
 
-    return safeFetch<NewsArticle[]>(`/api/sentiment/latest?${params.toString()}`, MOCK_NEWS);
+    const result = await safeFetch<NewsArticle[]>(`/api/sentiment/latest?${params.toString()}`, MOCK_NEWS);
+    if (result.isMock) {
+      let filtered = [...MOCK_NEWS];
+      if (category && category !== 'ALL') {
+        filtered = filtered.filter(n => n.category === category);
+      }
+      if (symbol && symbol !== 'ALL') {
+        filtered = filtered.filter(n =>
+          n.symbols_mentioned?.includes(symbol) ||
+          n.impacted_stocks?.includes(symbol)
+        );
+      }
+      return { data: filtered.slice(0, limit), isMock: true };
+    }
+    return result;
   },
 
   // 7. Refresh Live RSS News Stream

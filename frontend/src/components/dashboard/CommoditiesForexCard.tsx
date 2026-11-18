@@ -18,11 +18,11 @@ export const CommoditiesForexCard: React.FC = () => {
         {MOCK_COMMODITIES.map(item => (
           <div
             key={item.name}
-            className="p-3 rounded-xl bg-bg-elevated/60 border border-border/80 flex flex-col justify-between space-y-1 hover:border-brand-500/40 transition-colors"
+            className="p-3 rounded-xl bg-bg-elevated/60 border border-border/80 flex flex-col justify-between space-y-1.5 h-full hover:border-brand-500/40 transition-colors"
           >
             <div className="text-[11px] text-fg-muted font-medium line-clamp-1">{item.name}</div>
             <div className="text-base font-bold font-mono text-fg">{item.rate}</div>
-            <div className={`flex items-center gap-0.5 text-xs font-mono font-semibold ${item.isUp ? 'text-bull' : 'text-bear'}`}>
+            <div className={`flex items-center gap-0.5 text-xs font-mono font-semibold pt-1 border-t border-border/30 ${item.isUp ? 'text-bull' : 'text-bear'}`}>
               {item.isUp ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
               <span>{item.change}</span>
             </div>

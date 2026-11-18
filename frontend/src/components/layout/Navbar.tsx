@@ -12,8 +12,6 @@ import {
   Settings,
   Menu,
   X,
-  ChevronDown,
-  Sparkles,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { MarketStatusBar } from './MarketStatusBar';
@@ -59,29 +57,48 @@ export const Navbar: React.FC = () => {
         <MarketStatusBar />
 
         {/* Main Nav Header */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3 lg:gap-4">
           {/* 1. Left: Brand Logo & Wordmark */}
-          <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white shadow-md shadow-brand-500/25 group-hover:scale-105 transition-transform duration-200">
-              <TrendingUp className="w-5 h-5 stroke-[2.5]" />
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-xl tracking-tight text-fg group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
-                  PSXpert
-                </span>
-                <span className="px-1.5 py-0.2 rounded text-[10px] font-bold uppercase tracking-wider bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20">
-                  AI
+          <div className="flex items-center gap-3 lg:gap-5 flex-shrink-0">
+            <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white shadow-md shadow-brand-500/25 group-hover:scale-105 transition-transform duration-200">
+                <TrendingUp className="w-5 h-5 stroke-[2.5]" />
+              </div>
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1.5">
+                  <span className="font-extrabold text-lg sm:text-xl tracking-tight text-fg group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                    PSXpert
+                  </span>
+                  <span className="px-1.5 py-0.2 rounded text-[10px] font-bold uppercase tracking-wider bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20">
+                    AI
+                  </span>
+                </div>
+                <span className="text-[10px] font-medium text-fg-subtle tracking-wide hidden sm:inline whitespace-nowrap">
+                  Pakistan Stock Exchange
                 </span>
               </div>
-              <span className="text-[10px] font-medium text-fg-subtle tracking-wide hidden sm:inline">
-                Pakistan Stock Exchange Intelligence
-              </span>
+            </Link>
+
+            {/* Quick Search Bar next to Logo (Investify-style, guaranteed single line) */}
+            <div className="hidden md:block w-48 lg:w-56 xl:w-64 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsSearchOpen(true)}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-xl border border-border bg-bg-elevated/70 hover:bg-bg-elevated hover:border-brand-500/50 text-xs text-fg-subtle transition-all duration-150 whitespace-nowrap min-w-0"
+              >
+                <div className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
+                  <Search className="w-4 h-4 text-brand-600 dark:text-brand-400 flex-shrink-0" />
+                  <span className="truncate whitespace-nowrap text-left block">Search stocks, sectors...</span>
+                </div>
+                <kbd className="inline-flex items-center px-1.5 py-0.5 rounded bg-bg-card border border-border text-[10px] font-mono text-fg-muted flex-shrink-0 ml-1">
+                  ⌘K
+                </kbd>
+              </button>
             </div>
-          </Link>
+          </div>
 
           {/* 2. Middle: Navigation Links (Desktop) */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 flex-shrink">
             {navLinks.map(link => {
               const Icon = link.icon;
               return (
@@ -89,42 +106,25 @@ export const Navbar: React.FC = () => {
                   key={link.path}
                   to={link.path}
                   className={({ isActive }) =>
-                    `relative px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all duration-150 ${
+                    `relative px-2.5 xl:px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap transition-all duration-150 ${
                       isActive
                         ? 'text-brand-600 dark:text-brand-400 bg-brand-500/10 font-bold'
                         : 'text-fg-muted hover:text-fg hover:bg-bg-elevated'
                     }`
                   }
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-3.5 h-3.5 xl:w-4 xl:h-4 flex-shrink-0" />
                   <span>{link.name}</span>
                   {link.isNew && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse flex-shrink-0" />
                   )}
                 </NavLink>
               );
             })}
           </nav>
 
-          {/* 3. Center/Right: Global Search Omnibar */}
-          <div className="flex-1 max-w-xs xl:max-w-sm hidden md:block">
-            <button
-              type="button"
-              onClick={() => setIsSearchOpen(true)}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-xl border border-border bg-bg-elevated/70 hover:bg-bg-elevated hover:border-brand-500/50 text-xs text-fg-subtle transition-all duration-150"
-            >
-              <div className="flex items-center gap-2">
-                <Search className="w-4 h-4 text-brand-600 dark:text-brand-400" />
-                <span>Search stocks, sectors...</span>
-              </div>
-              <kbd className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-bg-card border border-border text-[10px] font-mono text-fg-muted">
-                ⌘K
-              </kbd>
-            </button>
-          </div>
-
-          {/* 4. Right: Quick Actions */}
-          <div className="flex items-center gap-2">
+          {/* 3. Right: Quick Actions */}
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             {/* Mobile Search Icon */}
             <button
               onClick={() => setIsSearchOpen(true)}
@@ -150,7 +150,7 @@ export const Navbar: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/portfolio')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-brand-500 hover:bg-brand-600 shadow-sm shadow-brand-500/25 transition-colors"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-brand-500 hover:bg-brand-600 shadow-sm shadow-brand-500/25 transition-colors whitespace-nowrap"
             >
               <span>Sign In</span>
             </button>
@@ -176,13 +176,13 @@ export const Navbar: React.FC = () => {
                   setIsMobileMenuOpen(false);
                   setIsSearchOpen(true);
                 }}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl border border-border bg-bg-elevated text-xs text-fg-subtle"
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl border border-border bg-bg-elevated text-xs text-fg-subtle whitespace-nowrap min-w-0"
               >
-                <div className="flex items-center gap-2">
-                  <Search className="w-4 h-4 text-brand-600" />
-                  <span>Search PSX stocks, sectors...</span>
+                <div className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
+                  <Search className="w-4 h-4 text-brand-600 flex-shrink-0" />
+                  <span className="truncate whitespace-nowrap text-left block">Search PSX stocks, sectors...</span>
                 </div>
-                <kbd className="px-1.5 py-0.5 rounded bg-bg-card border border-border text-[10px] font-mono">
+                <kbd className="px-1.5 py-0.5 rounded bg-bg-card border border-border text-[10px] font-mono flex-shrink-0 ml-1">
                   Ctrl+K
                 </kbd>
               </button>

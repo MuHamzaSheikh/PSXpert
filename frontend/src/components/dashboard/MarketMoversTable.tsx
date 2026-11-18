@@ -104,11 +104,11 @@ export const MarketMoversTable: React.FC<MarketMoversTableProps> = ({ stocks = [
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
           <thead>
-            <tr className="border-b border-border text-fg-subtle text-[11px] font-semibold uppercase tracking-wider">
-              <th className="pb-2.5 pl-1">Symbol & Company</th>
-              <th className="pb-2.5 text-right">Price (PKR)</th>
-              <th className="pb-2.5 text-right">Change</th>
-              <th className="pb-2.5 text-right pr-1">Volume</th>
+            <tr className="border-b border-border bg-bg-elevated/40 text-fg-subtle text-[11px] font-semibold uppercase tracking-wider">
+              <th className="py-3 px-3 sm:px-4 text-left w-1/2 sm:w-5/12">Symbol &amp; Company</th>
+              <th className="py-3 px-3 sm:px-4 text-right w-1/4 sm:w-2/12">Price (PKR)</th>
+              <th className="py-3 px-3 sm:px-4 text-right w-1/4 sm:w-2/12">Change (%)</th>
+              <th className="py-3 px-3 sm:px-4 text-right hidden sm:table-cell sm:w-3/12">Traded Volume</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border/40">
@@ -121,12 +121,12 @@ export const MarketMoversTable: React.FC<MarketMoversTableProps> = ({ stocks = [
                   className="group hover:bg-bg-elevated/70 cursor-pointer transition-colors"
                 >
                   {/* Stock Symbol & Company Badge */}
-                  <td className="py-2.5 pl-1">
+                  <td className="py-3 px-3 sm:px-4 text-left">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center font-mono font-bold text-xs text-brand-600 dark:text-brand-400 group-hover:scale-105 transition-transform">
+                      <div className="w-8 h-8 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center font-mono font-bold text-xs text-brand-600 dark:text-brand-400 group-hover:scale-105 transition-transform flex-shrink-0">
                         {stock.symbol.slice(0, 3)}
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
                           <span className="font-mono font-bold text-fg group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                             {stock.symbol}
@@ -137,7 +137,7 @@ export const MarketMoversTable: React.FC<MarketMoversTableProps> = ({ stocks = [
                             </span>
                           )}
                         </div>
-                        <div className="text-[11px] text-fg-subtle line-clamp-1 max-w-[140px] sm:max-w-[200px]">
+                        <div className="text-[11px] text-fg-subtle line-clamp-1">
                           {stock.company_name}
                         </div>
                       </div>
@@ -145,12 +145,12 @@ export const MarketMoversTable: React.FC<MarketMoversTableProps> = ({ stocks = [
                   </td>
 
                   {/* Price */}
-                  <td className="py-2.5 text-right font-mono font-bold text-fg text-sm">
+                  <td className="py-3 px-3 sm:px-4 text-right font-mono font-bold text-fg text-sm whitespace-nowrap">
                     {stock.close ? stock.close.toFixed(2) : '--'}
                   </td>
 
                   {/* Change % Pill */}
-                  <td className="py-2.5 text-right">
+                  <td className="py-3 px-3 sm:px-4 text-right whitespace-nowrap">
                     <span
                       className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md font-mono text-xs font-bold ${
                         isBull ? 'bg-bull-bg text-bull' : 'bg-bear-bg text-bear'
@@ -162,7 +162,7 @@ export const MarketMoversTable: React.FC<MarketMoversTableProps> = ({ stocks = [
                   </td>
 
                   {/* Volume */}
-                  <td className="py-2.5 text-right pr-1 font-mono text-fg-muted">
+                  <td className="py-3 px-3 sm:px-4 text-right hidden sm:table-cell font-mono text-fg-muted whitespace-nowrap">
                     {formatVolume(stock.volume)}
                   </td>
                 </tr>

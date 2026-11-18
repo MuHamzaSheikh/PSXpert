@@ -43,7 +43,7 @@ export const IndicatorCardsGrid: React.FC<IndicatorCardsGridProps> = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* 1. RSI (14) Card */}
-      <Card className="p-4 space-y-3 flex flex-col justify-between">
+      <Card className="p-4 space-y-3 flex flex-col justify-between h-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-fg">
             <Gauge className="w-4 h-4 text-brand-600 dark:text-brand-400" />
@@ -77,13 +77,13 @@ export const IndicatorCardsGrid: React.FC<IndicatorCardsGridProps> = ({
           </div>
         </div>
 
-        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-1 border-t border-border/50">
+        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-2 mt-auto border-t border-border/50">
           {diagnostics?.rsi_condition?.explanation || 'Momentum sits in healthy constructive territory.'}
         </p>
       </Card>
 
       {/* 2. MACD (12, 26, 9) Card */}
-      <Card className="p-4 space-y-3 flex flex-col justify-between">
+      <Card className="p-4 space-y-3 flex flex-col justify-between h-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-fg">
             <TrendingUp className="w-4 h-4 text-brand-600 dark:text-brand-400" />
@@ -111,13 +111,13 @@ export const IndicatorCardsGrid: React.FC<IndicatorCardsGridProps> = ({
           </div>
         </div>
 
-        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-1 border-t border-border/50">
+        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-2 mt-auto border-t border-border/50">
           {diagnostics?.macd_condition?.explanation || 'MACD trades above signal line with positive histogram.'}
         </p>
       </Card>
 
       {/* 3. Bollinger Bands (20, 2.0) Card */}
-      <Card className="p-4 space-y-3 flex flex-col justify-between">
+      <Card className="p-4 space-y-3 flex flex-col justify-between h-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-fg">
             <Layers className="w-4 h-4 text-brand-600 dark:text-brand-400" />
@@ -137,17 +137,17 @@ export const IndicatorCardsGrid: React.FC<IndicatorCardsGridProps> = ({
           </div>
         </div>
 
-        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-1 border-t border-border/50">
+        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-2 mt-auto border-t border-border/50">
           {diagnostics?.bollinger_condition?.explanation || 'Price maintains posture within the statistical upper envelope.'}
         </p>
       </Card>
 
       {/* 4. ADX / DMI (14) Card */}
-      <Card className="p-4 space-y-3 flex flex-col justify-between">
+      <Card className="p-4 space-y-3 flex flex-col justify-between h-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-fg">
             <Sliders className="w-4 h-4 text-brand-600 dark:text-brand-400" />
-            <span>ADX & Directional (+DI/-DI)</span>
+            <span>ADX &amp; Directional (+DI/-DI)</span>
           </div>
           <span
             className={`text-[10px] px-2 py-0.5 rounded-full font-bold border ${
@@ -169,13 +169,13 @@ export const IndicatorCardsGrid: React.FC<IndicatorCardsGridProps> = ({
           </div>
         </div>
 
-        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-1 border-t border-border/50">
+        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-2 mt-auto border-t border-border/50">
           {diagnostics?.trend_strength?.explanation || 'Bullish buyers maintain directional control.'}
         </p>
       </Card>
 
       {/* 5. ATR Volatility (14) Card */}
-      <Card className="p-4 space-y-3 flex flex-col justify-between">
+      <Card className="p-4 space-y-3 flex flex-col justify-between h-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-fg">
             <Activity className="w-4 h-4 text-brand-600 dark:text-brand-400" />
@@ -191,13 +191,13 @@ export const IndicatorCardsGrid: React.FC<IndicatorCardsGridProps> = ({
           <div className="text-[11px] text-fg-subtle">Average daily session price swing</div>
         </div>
 
-        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-1 border-t border-border/50">
+        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-2 mt-auto border-t border-border/50">
           {diagnostics?.volatility?.explanation || 'Typical daily volatility defines healthy risk boundaries.'}
         </p>
       </Card>
 
       {/* 6. Stochastic (14, 3, 3) Card */}
-      <Card className="p-4 space-y-3 flex flex-col justify-between">
+      <Card className="p-4 space-y-3 flex flex-col justify-between h-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-fg">
             <BarChart2 className="w-4 h-4 text-brand-600 dark:text-brand-400" />
@@ -218,13 +218,13 @@ export const IndicatorCardsGrid: React.FC<IndicatorCardsGridProps> = ({
           </div>
         </div>
 
-        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-1 border-t border-border/50">
+        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-2 mt-auto border-t border-border/50">
           {diagnostics?.stochastic_cycle?.explanation || 'Fast Stochastic remains in healthy expansion zone.'}
         </p>
       </Card>
 
       {/* 7. On-Balance Volume (OBV) Card */}
-      <Card className="p-4 space-y-3 flex flex-col justify-between">
+      <Card className="p-4 space-y-3 flex flex-col justify-between h-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-fg">
             <DollarSign className="w-4 h-4 text-brand-600 dark:text-brand-400" />
@@ -242,13 +242,13 @@ export const IndicatorCardsGrid: React.FC<IndicatorCardsGridProps> = ({
           <div className="text-[11px] text-fg-subtle">Price-Volume cumulative flow above 20 EMA</div>
         </div>
 
-        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-1 border-t border-border/50">
+        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-2 mt-auto border-t border-border/50">
           {diagnostics?.volume_flow?.explanation || 'Cumulative volume flow confirms institutional buying.'}
         </p>
       </Card>
 
       {/* 8. Moving Average Alignment Card */}
-      <Card className="p-4 space-y-3 flex flex-col justify-between">
+      <Card className="p-4 space-y-3 flex flex-col justify-between h-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-fg">
             <Maximize2 className="w-4 h-4 text-brand-600 dark:text-brand-400" />
@@ -264,7 +264,7 @@ export const IndicatorCardsGrid: React.FC<IndicatorCardsGridProps> = ({
           <div className="text-[11px] text-fg-subtle">Golden Cross regime confirmed</div>
         </div>
 
-        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-1 border-t border-border/50">
+        <p className="text-[11px] text-fg-muted line-clamp-2 leading-relaxed pt-2 mt-auto border-t border-border/50">
           {diagnostics?.trend_alignment?.explanation || 'Hierarchical moving average order establishes primary uptrend.'}
         </p>
       </Card>

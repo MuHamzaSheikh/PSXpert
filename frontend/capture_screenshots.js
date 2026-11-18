@@ -16,6 +16,7 @@ async function captureAll() {
 
   const routes = [
     { url: 'http://localhost:5173/', file: 'dashboard_desktop.png' },
+    { url: 'http://localhost:5173/insights', file: 'research_insights_desktop.png' },
     { url: 'http://localhost:5173/screener', file: 'screener_desktop.png' },
     { url: 'http://localhost:5173/analysis/MEBL', file: 'analysis_desktop.png' },
     { url: 'http://localhost:5173/portfolio', file: 'portfolio_desktop.png' },

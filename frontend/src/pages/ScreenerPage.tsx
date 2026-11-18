@@ -316,13 +316,13 @@ export const ScreenerPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Search Input */}
           <div className="relative">
-            <Search className="w-4 h-4 text-fg-subtle absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-fg-subtle absolute left-3 top-3 pointer-events-none" />
             <input
               type="text"
-              placeholder="Search ticker or name..."
+              placeholder="Search ticker or company name..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 rounded-xl border border-border bg-bg text-xs text-fg placeholder:text-fg-subtle outline-none focus:border-brand-500"
+              className="w-full pl-9 pr-3 h-10 rounded-xl border border-border bg-bg text-xs text-fg placeholder:text-fg-subtle outline-none focus:border-brand-500 truncate whitespace-nowrap"
             />
           </div>
 
@@ -334,7 +334,7 @@ export const ScreenerPage: React.FC = () => {
                 setSelectedSector(e.target.value);
                 setSearchParams(e.target.value === 'ALL' ? {} : { sector: e.target.value });
               }}
-              className="w-full px-3 py-2 rounded-xl border border-border bg-bg text-xs text-fg outline-none focus:border-brand-500"
+              className="w-full px-3 h-10 rounded-xl border border-border bg-bg text-xs text-fg outline-none focus:border-brand-500 truncate"
             >
               <option value="ALL">All Industry Sectors</option>
               {sectors.map(sec => (
@@ -348,7 +348,7 @@ export const ScreenerPage: React.FC = () => {
             <select
               value={rsiFilter}
               onChange={e => setRsiFilter(e.target.value as any)}
-              className="w-full px-3 py-2 rounded-xl border border-border bg-bg text-xs text-fg outline-none focus:border-brand-500"
+              className="w-full px-3 h-10 rounded-xl border border-border bg-bg text-xs text-fg outline-none focus:border-brand-500 truncate"
             >
               <option value="ALL">RSI: Any Condition</option>
               <option value="OVERSOLD">RSI &lt; 35 (Oversold Dip)</option>
@@ -362,7 +362,7 @@ export const ScreenerPage: React.FC = () => {
             <select
               value={trendFilter}
               onChange={e => setTrendFilter(e.target.value as any)}
-              className="w-full px-3 py-2 rounded-xl border border-border bg-bg text-xs text-fg outline-none focus:border-brand-500"
+              className="w-full px-3 h-10 rounded-xl border border-border bg-bg text-xs text-fg outline-none focus:border-brand-500 truncate"
             >
               <option value="ALL">Trend: All Trends</option>
               <option value="UPTREND">Price &gt; SMA 50 &gt; 200 (Uptrend)</option>

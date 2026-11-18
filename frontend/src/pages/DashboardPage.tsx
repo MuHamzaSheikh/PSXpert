@@ -133,7 +133,7 @@ export const DashboardPage: React.FC = () => {
             <Card
               key={idx.symbol}
               onClick={() => navigate('/analysis/KSE100')}
-              className="p-3.5 cursor-pointer hover:border-brand-500/50 hover:shadow-card transition-all flex flex-col justify-between space-y-1.5"
+              className="p-3.5 cursor-pointer hover:border-brand-500/50 hover:shadow-card transition-all flex flex-col justify-between space-y-1.5 h-full"
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono font-bold text-xs text-fg">{idx.symbol}</span>
