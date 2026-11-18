@@ -3,8 +3,8 @@ import puppeteer from 'puppeteer-core';
 const CHROME_PATH = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const ARTIFACT_DIR = 'C:\\Users\\malik\\.gemini\\antigravity\\brain\\97199a0d-0ea1-44d0-8dad-00d8808834cf';
 
-async function capture() {
-  console.log('Launching browser...');
+async function captureAll() {
+  console.log('Launching Chrome...');
   const browser = await puppeteer.launch({
     executablePath: CHROME_PATH,
     headless: true,
@@ -12,29 +12,35 @@ async function capture() {
   });
 
   const page = await browser.newPage();
-
-  // 1. Desktop Screenshot
-  console.log('Capturing Desktop Screenshot...');
   await page.setViewport({ width: 1440, height: 960, deviceScaleFactor: 1 });
-  await page.goto('http://localhost:5173/', { waitUntil: 'networkidle0', timeout: 20000 });
-  // wait extra 1.5s for charts and animations to render smoothly
-  await new Promise(r => setTimeout(r, 1500));
-  await page.screenshot({ path: `${ARTIFACT_DIR}\\dashboard_desktop.png`, fullPage: false });
-  console.log('Desktop screenshot saved.');
 
-  // 2. Mobile Screenshot
-  console.log('Capturing Mobile Screenshot...');
+  const routes = [
+    { url: 'http://localhost:5173/', file: 'dashboard_desktop.png' },
+    { url: 'http://localhost:5173/screener', file: 'screener_desktop.png' },
+    { url: 'http://localhost:5173/analysis/MEBL', file: 'analysis_desktop.png' },
+    { url: 'http://localhost:5173/portfolio', file: 'portfolio_desktop.png' },
+    { url: 'http://localhost:5173/assistant', file: 'assistant_desktop.png' },
+  ];
+
+  for (const r of routes) {
+    console.log(`Capturing ${r.url} -> ${r.file}...`);
+    await page.goto(r.url, { waitUntil: 'networkidle0', timeout: 25000 });
+    await new Promise(res => setTimeout(res, 1200));
+    await page.screenshot({ path: `${ARTIFACT_DIR}\\${r.file}`, fullPage: false });
+  }
+
+  // Also capture mobile for analysis page
+  console.log('Capturing mobile view for analysis...');
   await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
-  await page.reload({ waitUntil: 'networkidle0', timeout: 20000 });
-  await new Promise(r => setTimeout(r, 1500));
-  await page.screenshot({ path: `${ARTIFACT_DIR}\\dashboard_mobile.png`, fullPage: false });
-  console.log('Mobile screenshot saved.');
+  await page.goto('http://localhost:5173/analysis/MEBL', { waitUntil: 'networkidle0', timeout: 25000 });
+  await new Promise(res => setTimeout(res, 1200));
+  await page.screenshot({ path: `${ARTIFACT_DIR}\\analysis_mobile.png`, fullPage: false });
 
   await browser.close();
-  console.log('Done!');
+  console.log('All screenshots captured successfully!');
 }
 
-capture().catch(err => {
+captureAll().catch(err => {
   console.error('Capture error:', err);
   process.exit(1);
 });
