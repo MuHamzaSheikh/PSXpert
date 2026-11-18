@@ -14,18 +14,28 @@ async function captureAll() {
   const page = await browser.newPage();
   await page.setViewport({ width: 1440, height: 960, deviceScaleFactor: 1 });
 
+  // Prevent external Google Font SSL timeouts from blocking page capture
+  await page.setRequestInterception(true);
+  page.on('request', req => {
+    if (req.url().includes('fonts.googleapis.com') || req.url().includes('fonts.gstatic.com')) {
+      req.abort();
+    } else {
+      req.continue();
+    }
+  });
+
   const routes = [
-    { url: 'http://localhost:5173/', file: 'dashboard_desktop.png' },
-    { url: 'http://localhost:5173/insights', file: 'research_insights_desktop.png' },
-    { url: 'http://localhost:5173/screener', file: 'screener_desktop.png' },
-    { url: 'http://localhost:5173/analysis/MEBL', file: 'analysis_desktop.png' },
-    { url: 'http://localhost:5173/portfolio', file: 'portfolio_desktop.png' },
-    { url: 'http://localhost:5173/assistant', file: 'assistant_desktop.png' },
+    { url: 'http://127.0.0.1:5173/', file: 'dashboard_desktop.png' },
+    { url: 'http://127.0.0.1:5173/insights', file: 'research_insights_desktop.png' },
+    { url: 'http://127.0.0.1:5173/screener', file: 'screener_desktop.png' },
+    { url: 'http://127.0.0.1:5173/analysis/MEBL', file: 'analysis_desktop.png' },
+    { url: 'http://127.0.0.1:5173/portfolio', file: 'portfolio_desktop.png' },
+    { url: 'http://127.0.0.1:5173/assistant', file: 'assistant_desktop.png' },
   ];
 
   for (const r of routes) {
     console.log(`Capturing ${r.url} -> ${r.file}...`);
-    await page.goto(r.url, { waitUntil: 'networkidle0', timeout: 25000 });
+    await page.goto(r.url, { waitUntil: 'domcontentloaded', timeout: 15000 });
     await new Promise(res => setTimeout(res, 1200));
     await page.screenshot({ path: `${ARTIFACT_DIR}\\${r.file}`, fullPage: false });
   }
@@ -33,7 +43,7 @@ async function captureAll() {
   // Also capture mobile for analysis page
   console.log('Capturing mobile view for analysis...');
   await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
-  await page.goto('http://localhost:5173/analysis/MEBL', { waitUntil: 'networkidle0', timeout: 25000 });
+  await page.goto('http://127.0.0.1:5173/analysis/MEBL', { waitUntil: 'domcontentloaded', timeout: 15000 });
   await new Promise(res => setTimeout(res, 1200));
   await page.screenshot({ path: `${ARTIFACT_DIR}\\analysis_mobile.png`, fullPage: false });
 

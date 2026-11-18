@@ -44,14 +44,14 @@ Design language inspired by modern financial terminals and [Investify.pk](https:
 
 ## 2. Typography
 
-- **Primary Font Family:** `"Plus Jakarta Sans", Inter, -apple-system, sans-serif`
-- **Monospace / Numerical Font Family:** `"JetBrains Mono", ui-monospace, monospace`
-- **Tabular Figures:** All financial tables, prices, percentage changes, and timestamps MUST use `font-variant-numeric: tabular-nums` or `font-mono` to prevent jitter on real-time value updates.
+- **Sole Platform Font Family:** `"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`
+- **Single Typeface Architecture:** Only the **Inter** font family is loaded and used across all screens, tables, headers, navigation, badges, charts, and buttons.
+- **Tabular Figures in Inter:** All financial tables, prices, percentage changes, and timestamps utilize Inter with `font-variant-numeric: tabular-nums` and `font-feature-settings: "tnum" 1, "cv05" 1` to guarantee vertical column alignment without introducing a second typeface.
 - **Hierarchy:**
   - Page Titles: `text-2xl font-bold tracking-tight` (24px)
   - Section Headers: `text-lg font-semibold tracking-tight` (18px)
   - Card Titles: `text-sm font-medium text-fg-muted uppercase tracking-wider`
-  - Big Numerical Values: `text-2xl font-extrabold font-mono tracking-tight`
+  - Big Numerical Values: `text-2xl font-extrabold tracking-tight`
   - Table Cell Text: `text-sm` (14px)
   - Badges & Microcopy: `text-xs font-semibold` (12px)
 

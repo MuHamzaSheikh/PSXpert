@@ -48,7 +48,7 @@ export const TradingViewChart: React.FC<TradingViewChartProps> = ({
       layout: {
         background: { type: ColorType.Solid, color: 'transparent' },
         textColor: isDark ? '#94A3B8' : '#475569',
-        fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
+        fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
       },
       grid: {
         vertLines: { color: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)' },
