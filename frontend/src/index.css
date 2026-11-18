@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #f0f9f9;
+  --color-brand-100: #d7efef;
+  --color-brand-200: #b2dfdf;
+  --color-brand-300: #7fc5c5;
+  --color-brand-400: #4da6a6;
+  --color-brand-500: #238989;
+  --color-brand-600: #1b6e6e;
+  --color-brand-700: #165757;
+  --color-brand-800: #134646;
+  --color-brand-900: #0f2929;
+  --color-brand-950: #071818;
+
+  --color-bull: #10b981;
+  --color-bull-bg: rgba(16, 185, 129, 0.12);
+  --color-bear: #f43f5e;
+  --color-bear-bg: rgba(244, 63, 94, 0.12);
+
+  --color-border: var(--theme-border);
+  --color-bg: var(--theme-bg);
+  --color-bg-card: var(--theme-bg-card);
+  --color-bg-elevated: var(--theme-bg-elevated);
+  --color-bg-subtle: var(--theme-bg-subtle);
+  --color-fg: var(--theme-fg);
+  --color-fg-muted: var(--theme-fg-muted);
+  --color-fg-subtle: var(--theme-fg-subtle);
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+:root {
+  --theme-bg: #F8FBFB;
+  --theme-bg-card: #FFFFFF;
+  --theme-bg-elevated: #F1F6F6;
+  --theme-bg-subtle: #E8F0F0;
+  --theme-border: #E2E8F0;
+  --theme-fg: #0F172A;
+  --theme-fg-muted: #475569;
+  --theme-fg-subtle: #94A3B8;
+  color-scheme: light;
+}
+
+.dark {
+  --theme-bg: #0C1416;
+  --theme-bg-card: #131F22;
+  --theme-bg-elevated: #18272B;
+  --theme-bg-subtle: #1F3338;
+  --theme-border: #22363B;
+  --theme-fg: #F1F5F9;
+  --theme-fg-muted: #94A3B8;
+  --theme-fg-subtle: #64748B;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--theme-bg);
+  color: var(--theme-fg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular figures for financial numbers */
+.tabular-nums, .font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-border);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-fg-subtle);
+}
