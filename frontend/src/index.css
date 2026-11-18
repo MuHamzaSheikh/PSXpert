@@ -13,22 +13,34 @@
   --color-brand-900: #0f2929;
   --color-brand-950: #071818;
 
-  --color-bull: #10b981;
-  --color-bull-bg: rgba(16, 185, 129, 0.12);
-  --color-bear: #f43f5e;
-  --color-bear-bg: rgba(244, 63, 94, 0.12);
+--color-bull: #10b981;
+--color-bull-bg: rgba(16, 185, 129, 0.12);
+--color-bear: #f43f5e;
+--color-bear-bg: rgba(244, 63, 94, 0.12);
 
-  --color-border: var(--theme-border);
-  --color-bg: var(--theme-bg);
-  --color-bg-card: var(--theme-bg-card);
-  --color-bg-elevated: var(--theme-bg-elevated);
-  --color-bg-subtle: var(--theme-bg-subtle);
-  --color-fg: var(--theme-fg);
-  --color-fg-muted: var(--theme-fg-muted);
-  --color-fg-subtle: var(--theme-fg-subtle);
+--color-border: var(--theme-border);
+--color-bg: var(--theme-bg);
+--color-bg-card: var(--theme-bg-card);
+--color-bg-elevated: var(--theme-bg-elevated);
+--color-bg-subtle: var(--theme-bg-subtle);
+--color-fg: var(--theme-fg);
+--color-fg-muted: var(--theme-fg-muted);
+--color-fg-subtle: var(--theme-fg-subtle);
 
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+--font-sans: 'Inter',
+system-ui,
+-apple-system,
+BlinkMacSystemFont,
+'Segoe UI',
+Roboto,
+sans-serif;
+--font-mono: 'Inter',
+system-ui,
+-apple-system,
+BlinkMacSystemFont,
+'Segoe UI',
+Roboto,
+sans-serif;
 }
 
 :root {
@@ -71,7 +83,12 @@ body {
 }
 
 /* Tabular figures for financial numbers using Inter as the single universal typeface */
-.tabular-nums, .font-mono, code, kbd, samp, pre {
+.tabular-nums,
+.font-mono,
+code,
+kbd,
+samp,
+pre {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1, "cv05" 1;

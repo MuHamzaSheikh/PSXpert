@@ -117,25 +117,25 @@ export const MarketStatusBar: React.FC<{ compact?: boolean }> = ({ compact = fal
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2 bg-bg-elevated/70 border-b border-border text-xs text-fg-muted">
-      <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-1.5 bg-bg-elevated/70 border-b border-border text-[11px] sm:text-xs text-fg-muted overflow-x-clip">
+      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
         <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-border bg-bg-card font-medium">
           <span className={`w-2 h-2 rounded-full ${status.isOpen ? 'bg-bull animate-pulse' : 'bg-bear'}`} />
           <span className={status.isOpen ? 'text-bull font-semibold' : 'text-fg-muted font-semibold'}>
             {status.statusText}
           </span>
         </div>
-        <span className="text-fg-subtle">•</span>
+        <span className="text-fg-subtle hidden xs:inline">•</span>
         <span className="font-mono text-fg">{status.pktTimeString}</span>
-        <span className="text-fg-subtle">•</span>
-        <span>{status.sessionDetails}</span>
+        <span className="text-fg-subtle hidden sm:inline">•</span>
+        <span className="hidden sm:inline line-clamp-1">{status.sessionDetails}</span>
       </div>
 
-      <div className="flex items-center gap-4 text-fg-subtle">
-        <span className="hidden md:inline">PSX Standard Continuous & Murabaha Market</span>
-        <span className="flex items-center gap-1 text-[11px] text-brand-600 dark:text-brand-400">
-          <Clock className="w-3.5 h-3.5" />
-          <span>Real-time Ticker Feed</span>
+      <div className="flex items-center gap-3 text-fg-subtle ml-auto">
+        <span className="hidden lg:inline">PSX Continuous &amp; Murabaha Market</span>
+        <span className="flex items-center gap-1 text-[10px] sm:text-[11px] text-brand-600 dark:text-brand-400 font-medium">
+          <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+          <span>DPS Real-time</span>
         </span>
       </div>
     </div>

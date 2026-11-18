@@ -9,7 +9,7 @@ interface AppShellProps {
 
 export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-bg text-fg antialiased selection:bg-brand-500/20 selection:text-brand-600">
+    <div className="min-h-screen flex flex-col bg-bg text-fg antialiased selection:bg-brand-500/20 selection:text-brand-600 overflow-x-clip">
       {/* 1. Top Navbar with Market Status Strip */}
       <Navbar />
 
