@@ -1,0 +1,4 @@
+Model,Stage 1 (Full Features) Accuracy,Features Count (S1),Stage 2 (Top Features) Accuracy,Features Count (S2),Accuracy Gain
+Technical Model,39.67%,25,39.58%,12,-0.09%
+Fundamental Model,35.72%,16,35.96%,8,+0.24%
+Combined Ensemble,38.09%,41,38.63%,20,+0.54%
