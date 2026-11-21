@@ -74,10 +74,17 @@ export interface Candle {
 export interface Pattern {
   index: number;
   date: string;
-  name: string;
+  name?: string;
+  pattern?: string;
   type: 'BULLISH' | 'BEARISH' | 'NEUTRAL';
   signal: string;
   description?: string;
+  open?: number;
+  high?: number;
+  low?: number;
+  close?: number;
+  volume?: number;
+  symbol?: string;
 }
 
 export interface OHLCVResponse {

@@ -193,10 +193,12 @@ export const MarketAnalysisPage: React.FC = () => {
           {ohlcv ? (
             <TradingViewChart
               candles={ohlcv.candles}
+              patterns={ohlcv.patterns || []}
               symbol={symbol}
               height={400}
               showVolume
               showEMAs
+              showPatterns
             />
           ) : (
             <div className="h-[400px] flex items-center justify-center text-fg-subtle">

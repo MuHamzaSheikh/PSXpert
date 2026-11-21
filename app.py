@@ -67,11 +67,13 @@ def get_market_summary() -> Dict[str, Any]:
             raise HTTPException(status_code=404, detail="KSE-100 index data not found.")
 
         # 2. 52-Week High and Low for KSE-100
-        stats_52w = session.execute(text("""
+        is_sqlite = (session.bind.dialect.name == "sqlite") if session.bind else False
+        date_filter = "date('now', '-365 days')" if is_sqlite else "(CURRENT_DATE - INTERVAL '365 days')"
+        stats_52w = session.execute(text(f"""
             SELECT MAX(high) as high_52w, MIN(low) as low_52w
             FROM market_indices
             WHERE index_symbol = 'KSE100'
-              AND trading_date >= (CURRENT_DATE - INTERVAL '365 days');
+              AND trading_date >= {date_filter};
         """)).fetchone()
 
         # 3. Market Breadth from latest stock sessions (fast indexed join)
