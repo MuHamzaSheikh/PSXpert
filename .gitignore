@@ -24,3 +24,9 @@ reports/model_evaluation/*.parquet
 
 # Archived v1 local model cache (superseded by artifacts/)
 archive/v1_models/
+
+# Raw data dumps and bulk archives
+*.zip
+psx all data/
+data/raw/*.xlsx
+
