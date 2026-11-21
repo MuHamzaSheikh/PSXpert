@@ -1,0 +1,12 @@
+{
+  "command": "python -m m1.v3 --as-of 2026-11-16T14:00:00+05:00",
+  "python": "3.13.7",
+  "numpy": "2.2.6",
+  "pandas": "2.3.2",
+  "sklearn": "1.7.2",
+  "scipy": "1.16.3",
+  "xgboost": "3.4.1",
+  "lightgbm": "4.7.0",
+  "catboost": "1.2.10",
+  "seed": 42
+}

@@ -1,0 +1,39 @@
+{
+  "v1_rows": 34780,
+  "v2_rows": 34780,
+  "verified_targets": 34780,
+  "filing_audit": {
+    "raw_ifrs_rows": 44802,
+    "annual_report_matches": 314,
+    "ambiguous_periods": 2,
+    "eligible_annual_periods": 150,
+    "unmatched_periods": 149,
+    "incomplete_periods": 21,
+    "eligible_tickers": 57
+  },
+  "original": {
+    "rows": 34780,
+    "tickers": 57,
+    "first_signal": "2022-08-30T23:59:59+05:00",
+    "last_signal": "2026-09-15T23:59:59+05:00",
+    "last_label": "2026-10-13T23:59:59+05:00",
+    "classes": {
+      "BULLISH": 15504,
+      "BEARISH": 9849,
+      "SIDEWAYS": 9427
+    }
+  },
+  "eligible": {
+    "rows": 34780,
+    "tickers": 57,
+    "first_signal": "2022-08-30T23:59:59+05:00",
+    "last_signal": "2026-09-15T23:59:59+05:00",
+    "last_label": "2026-10-13T23:59:59+05:00",
+    "classes": {
+      "BULLISH": 15504,
+      "BEARISH": 9849,
+      "SIDEWAYS": 9427
+    }
+  },
+  "price_policy": "Unadjusted price returns, excluding dividends. Unknown action dates and accounting vintages remain limitations."
+}

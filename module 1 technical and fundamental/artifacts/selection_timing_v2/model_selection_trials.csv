@@ -1,0 +1,43 @@
+candidate,params,inner_val_ndcg,excess_return_pct,fold,stage,inner_val_ap,log_loss
+xgbranker_d2_lr0.01,"{'max_depth': 2, 'learning_rate': 0.01, 'n_estimators': 160, 'reg_lambda': 10.0, 'subsample': 0.85}",0.380343894297271,-19.964920181508415,fold_1,fundamental,,
+xgbranker_d3_lr0.03,"{'max_depth': 3, 'learning_rate': 0.03, 'n_estimators': 140, 'reg_lambda': 10.0, 'subsample': 0.85}",0.348857591290723,-22.233361372485547,fold_1,fundamental,,
+xgbranker_d2_lr0.05,"{'max_depth': 2, 'learning_rate': 0.05, 'n_estimators': 100, 'reg_lambda': 5.0, 'subsample': 0.9}",0.3681610814151582,-20.454567137578675,fold_1,fundamental,,
+xgbranker_d3_lr0.01,"{'max_depth': 3, 'learning_rate': 0.01, 'n_estimators': 200, 'reg_lambda': 15.0, 'subsample': 0.75}",0.36109968482377364,-21.838793353775195,fold_1,fundamental,,
+simple_value_composite,inverse_pe_pb_sum,0.4742794690472731,6.8401488685565655,fold_1,fundamental,,
+cross_sectional_momentum,momentum_20_pct,0.5696750597216699,-6.50072461714011,fold_1,fundamental,,
+xgb_d2_lr0.01,"{'max_depth': 2, 'learning_rate': 0.01, 'n_estimators': 160, 'reg_lambda': 10.0, 'subsample': 0.85}",,,fold_1,technical,0.42958275208621394,0.7181146320681896
+xgb_d3_lr0.03,"{'max_depth': 3, 'learning_rate': 0.03, 'n_estimators': 140, 'reg_lambda': 10.0, 'subsample': 0.85}",,,fold_1,technical,0.4205067006367466,0.729021944889403
+xgb_d2_lr0.05,"{'max_depth': 2, 'learning_rate': 0.05, 'n_estimators': 100, 'reg_lambda': 5.0, 'subsample': 0.9}",,,fold_1,technical,0.42427441492082335,0.7245239728888205
+xgb_d3_lr0.05,"{'max_depth': 3, 'learning_rate': 0.05, 'n_estimators': 120, 'reg_lambda': 10.0, 'subsample': 0.85}",,,fold_1,technical,0.4211756262798411,0.7329628843945243
+logistic_regression_C0.01,{'C': 0.01},,,fold_1,technical,0.41056660333777123,0.7300454135941072
+logistic_regression_C0.1,{'C': 0.1},,,fold_1,technical,0.40556355580746,0.7313049660264653
+logistic_regression_C1.0,{'C': 1.0},,,fold_1,technical,0.40367895096168316,0.7326132961799722
+sma_breakout,close_vs_sma_20_pct,,,fold_1,technical,0.43128220405168005,0.7640574128771677
+xgbranker_d2_lr0.01,"{'max_depth': 2, 'learning_rate': 0.01, 'n_estimators': 160, 'reg_lambda': 10.0, 'subsample': 0.85}",0.475878266255314,-9.375049897675936,fold_2,fundamental,,
+xgbranker_d3_lr0.03,"{'max_depth': 3, 'learning_rate': 0.03, 'n_estimators': 140, 'reg_lambda': 10.0, 'subsample': 0.85}",0.471050824821027,-9.051615552359843,fold_2,fundamental,,
+xgbranker_d2_lr0.05,"{'max_depth': 2, 'learning_rate': 0.05, 'n_estimators': 100, 'reg_lambda': 5.0, 'subsample': 0.9}",0.4472133698786262,-12.020439034749579,fold_2,fundamental,,
+xgbranker_d3_lr0.01,"{'max_depth': 3, 'learning_rate': 0.01, 'n_estimators': 200, 'reg_lambda': 15.0, 'subsample': 0.75}",0.4717921691374117,-9.16674532252656,fold_2,fundamental,,
+simple_value_composite,inverse_pe_pb_sum,0.5954307715995933,1.7736964304808673,fold_2,fundamental,,
+cross_sectional_momentum,momentum_20_pct,0.5585577847856987,3.479004660796991,fold_2,fundamental,,
+xgb_d2_lr0.01,"{'max_depth': 2, 'learning_rate': 0.01, 'n_estimators': 160, 'reg_lambda': 10.0, 'subsample': 0.85}",,,fold_2,technical,0.41098032370199405,0.6748322734999621
+xgb_d3_lr0.03,"{'max_depth': 3, 'learning_rate': 0.03, 'n_estimators': 140, 'reg_lambda': 10.0, 'subsample': 0.85}",,,fold_2,technical,0.4141640927592009,0.6791413550822646
+xgb_d2_lr0.05,"{'max_depth': 2, 'learning_rate': 0.05, 'n_estimators': 100, 'reg_lambda': 5.0, 'subsample': 0.9}",,,fold_2,technical,0.4148857148233973,0.6778938881295384
+xgb_d3_lr0.05,"{'max_depth': 3, 'learning_rate': 0.05, 'n_estimators': 120, 'reg_lambda': 10.0, 'subsample': 0.85}",,,fold_2,technical,0.41319461893834425,0.6806768070192345
+logistic_regression_C0.01,{'C': 0.01},,,fold_2,technical,0.4046973074584968,0.6800654313812239
+logistic_regression_C0.1,{'C': 0.1},,,fold_2,technical,0.40420993751232837,0.6808091925293356
+logistic_regression_C1.0,{'C': 1.0},,,fold_2,technical,0.4048472312325057,0.6807323466996826
+sma_breakout,close_vs_sma_20_pct,,,fold_2,technical,0.4002593719814056,0.7802245884149155
+xgbranker_d2_lr0.01,"{'max_depth': 2, 'learning_rate': 0.01, 'n_estimators': 160, 'reg_lambda': 10.0, 'subsample': 0.85}",0.5960351160099772,8.468454013911982,fold_3,fundamental,,
+xgbranker_d3_lr0.03,"{'max_depth': 3, 'learning_rate': 0.03, 'n_estimators': 140, 'reg_lambda': 10.0, 'subsample': 0.85}",0.819277006741703,22.31696563184418,fold_3,fundamental,,
+xgbranker_d2_lr0.05,"{'max_depth': 2, 'learning_rate': 0.05, 'n_estimators': 100, 'reg_lambda': 5.0, 'subsample': 0.9}",0.658114240576501,9.29104655085756,fold_3,fundamental,,
+xgbranker_d3_lr0.01,"{'max_depth': 3, 'learning_rate': 0.01, 'n_estimators': 200, 'reg_lambda': 15.0, 'subsample': 0.75}",0.8102297170552913,21.620922732336776,fold_3,fundamental,,
+simple_value_composite,inverse_pe_pb_sum,0.6444742233667983,10.44903980316081,fold_3,fundamental,,
+cross_sectional_momentum,momentum_20_pct,0.5167997798894198,2.4341873880826266,fold_3,fundamental,,
+xgb_d2_lr0.01,"{'max_depth': 2, 'learning_rate': 0.01, 'n_estimators': 160, 'reg_lambda': 10.0, 'subsample': 0.85}",,,fold_3,technical,0.43300673520690447,0.6937184219086701
+xgb_d3_lr0.03,"{'max_depth': 3, 'learning_rate': 0.03, 'n_estimators': 140, 'reg_lambda': 10.0, 'subsample': 0.85}",,,fold_3,technical,0.4560720020709569,0.6922548928133309
+xgb_d2_lr0.05,"{'max_depth': 2, 'learning_rate': 0.05, 'n_estimators': 100, 'reg_lambda': 5.0, 'subsample': 0.9}",,,fold_3,technical,0.45285029150503014,0.69262740684098
+xgb_d3_lr0.05,"{'max_depth': 3, 'learning_rate': 0.05, 'n_estimators': 120, 'reg_lambda': 10.0, 'subsample': 0.85}",,,fold_3,technical,0.4528530223153668,0.6925662460735219
+logistic_regression_C0.01,{'C': 0.01},,,fold_3,technical,0.4283897131111462,0.6969602296681381
+logistic_regression_C0.1,{'C': 0.1},,,fold_3,technical,0.4246333569740337,0.6990656461330501
+logistic_regression_C1.0,{'C': 1.0},,,fold_3,technical,0.4244250793445845,0.6998658983552709
+sma_breakout,close_vs_sma_20_pct,,,fold_3,technical,0.41804351409950646,0.7921507647437664

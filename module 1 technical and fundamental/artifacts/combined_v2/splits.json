@@ -1,0 +1,137 @@
+{
+  "embargo_market_sessions": 5,
+  "market_wide_target_purge": true,
+  "windows": [
+    {
+      "fold": 0,
+      "role": "train",
+      "rows": 7638,
+      "tickers": 43,
+      "first_signal": "2022-08-30T23:59:59+05:00",
+      "last_signal": "2023-12-18T23:59:59+05:00",
+      "last_label": "2024-01-16T23:59:59+05:00",
+      "classes": {
+        "BULLISH": 3534,
+        "BEARISH": 2372,
+        "SIDEWAYS": 1732
+      }
+    },
+    {
+      "fold": 0,
+      "role": "calibration",
+      "rows": 4577,
+      "tickers": 46,
+      "first_signal": "2024-01-24T23:59:59+05:00",
+      "last_signal": "2024-07-03T23:59:59+05:00",
+      "last_label": "2024-08-02T23:59:59+05:00",
+      "classes": {
+        "BULLISH": 2167,
+        "SIDEWAYS": 1379,
+        "BEARISH": 1031
+      }
+    },
+    {
+      "fold": 0,
+      "role": "validation",
+      "rows": 6183,
+      "tickers": 50,
+      "first_signal": "2024-08-12T23:59:59+05:00",
+      "last_signal": "2025-02-20T23:59:59+05:00",
+      "last_label": "2025-03-20T23:59:59+05:00",
+      "classes": {
+        "BULLISH": 3208,
+        "SIDEWAYS": 1544,
+        "BEARISH": 1431
+      }
+    },
+    {
+      "fold": 1,
+      "role": "train",
+      "rows": 14593,
+      "tickers": 47,
+      "first_signal": "2022-08-30T23:59:59+05:00",
+      "last_signal": "2024-08-19T23:59:59+05:00",
+      "last_label": "2024-09-16T23:59:59+05:00",
+      "classes": {
+        "BULLISH": 6277,
+        "BEARISH": 4478,
+        "SIDEWAYS": 3838
+      }
+    },
+    {
+      "fold": 1,
+      "role": "calibration",
+      "rows": 4889,
+      "tickers": 50,
+      "first_signal": "2024-09-25T23:59:59+05:00",
+      "last_signal": "2025-02-20T23:59:59+05:00",
+      "last_label": "2025-03-20T23:59:59+05:00",
+      "classes": {
+        "BULLISH": 2550,
+        "SIDEWAYS": 1189,
+        "BEARISH": 1150
+      }
+    },
+    {
+      "fold": 1,
+      "role": "validation",
+      "rows": 6359,
+      "tickers": 50,
+      "first_signal": "2025-04-03T23:59:59+05:00",
+      "last_signal": "2025-10-17T23:59:59+05:00",
+      "last_label": "2025-11-14T23:59:59+05:00",
+      "classes": {
+        "BULLISH": 3259,
+        "SIDEWAYS": 1670,
+        "BEARISH": 1430
+      }
+    },
+    {
+      "fold": 2,
+      "role": "train",
+      "rows": 22001,
+      "tickers": 54,
+      "first_signal": "2022-08-30T23:59:59+05:00",
+      "last_signal": "2025-04-09T23:59:59+05:00",
+      "last_label": "2025-05-09T23:59:59+05:00",
+      "classes": {
+        "BULLISH": 9826,
+        "BEARISH": 6425,
+        "SIDEWAYS": 5750
+      }
+    },
+    {
+      "fold": 2,
+      "role": "calibration",
+      "rows": 4866,
+      "tickers": 50,
+      "first_signal": "2025-05-19T23:59:59+05:00",
+      "last_signal": "2025-10-17T23:59:59+05:00",
+      "last_label": "2025-11-14T23:59:59+05:00",
+      "classes": {
+        "BULLISH": 2661,
+        "SIDEWAYS": 1240,
+        "BEARISH": 965
+      }
+    },
+    {
+      "fold": 2,
+      "role": "validation",
+      "rows": 5515,
+      "tickers": 51,
+      "first_signal": "2025-11-24T23:59:59+05:00",
+      "last_signal": "2026-09-15T23:59:59+05:00",
+      "last_label": "2026-10-13T23:59:59+05:00",
+      "classes": {
+        "BULLISH": 2063,
+        "BEARISH": 1861,
+        "SIDEWAYS": 1591
+      }
+    }
+  ],
+  "fresh_eligible_rows": 0,
+  "fresh_eligible_sessions": 0,
+  "fresh_test_available": false,
+  "historical_last_signal": "2026-09-15T18:59:59+00:00",
+  "historical_last_label": "2026-10-13T18:59:59+00:00"
+}

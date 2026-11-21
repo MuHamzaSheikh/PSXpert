@@ -5,6 +5,7 @@ data/processed/
 artifacts/.matplotlib/
 data/pypsx/
 .qa/
-data/collected/**/original_documents/
+data/collected/
 *.pdf
+
 

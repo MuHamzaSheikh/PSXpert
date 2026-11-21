@@ -1,0 +1,499 @@
+{
+  "fold_1": {
+    "unfiltered": [
+      {
+        "position_id": 119,
+        "symbol": "BOP",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 12.83,
+        "shares": 130792.93337649752,
+        "last_known_close": 12.5,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -3.0720966484801266
+      },
+      {
+        "position_id": 120,
+        "symbol": "NBP",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 78.19,
+        "shares": 21461.48273718459,
+        "last_known_close": 79.3,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 0.919618877094253
+      },
+      {
+        "position_id": 121,
+        "symbol": "LUCK",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 1395.92,
+        "shares": 1202.1271528600944,
+        "last_known_close": 1428.76,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 1.8525703478709303
+      },
+      {
+        "position_id": 122,
+        "symbol": "AHCL",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 88.15,
+        "shares": 19036.566480096008,
+        "last_known_close": 87.96,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -0.7155416903006357
+      },
+      {
+        "position_id": 123,
+        "symbol": "CPHL",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 101.0,
+        "shares": 16614.587477430327,
+        "last_known_close": 92.93,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -8.490099009900986
+      },
+      {
+        "position_id": 124,
+        "symbol": "BML",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 4.09,
+        "shares": 410286.87902700814,
+        "last_known_close": 3.87,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -5.878973105134466
+      },
+      {
+        "position_id": 125,
+        "symbol": "ATLH",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 917.07,
+        "shares": 1829.8203356564527,
+        "last_known_close": 909.06,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -1.3734338709149858
+      },
+      {
+        "position_id": 126,
+        "symbol": "KTML",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 151.18,
+        "shares": 11099.83685157073,
+        "last_known_close": 171.42,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 12.888014287604166
+      },
+      {
+        "position_id": 127,
+        "symbol": "POWER",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 11.02,
+        "shares": 152275.25727953386,
+        "last_known_close": 11.19,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 1.0426497277676976
+      },
+      {
+        "position_id": 128,
+        "symbol": "KOHC",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 430.7,
+        "shares": 3896.1535528685004,
+        "last_known_close": 403.7,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -6.768864638959837
+      }
+    ],
+    "filtered": [
+      {
+        "position_id": 120,
+        "symbol": "BOP",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 12.83,
+        "shares": 127736.59250951235,
+        "last_known_close": 12.5,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -3.0720966484801266
+      },
+      {
+        "position_id": 121,
+        "symbol": "NBP",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 78.19,
+        "shares": 20959.975468692206,
+        "last_known_close": 79.3,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 0.919618877094253
+      },
+      {
+        "position_id": 122,
+        "symbol": "LUCK",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 1395.92,
+        "shares": 1174.0361065799211,
+        "last_known_close": 1428.76,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 1.8525703478709303
+      },
+      {
+        "position_id": 123,
+        "symbol": "AHCL",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 88.15,
+        "shares": 18591.724128157042,
+        "last_known_close": 87.96,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -0.7155416903006357
+      },
+      {
+        "position_id": 124,
+        "symbol": "CPHL",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 101.0,
+        "shares": 16226.341404921222,
+        "last_known_close": 92.93,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -8.490099009900986
+      },
+      {
+        "position_id": 125,
+        "symbol": "BML",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 4.09,
+        "shares": 400699.38432690554,
+        "last_known_close": 3.87,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -5.878973105134466
+      },
+      {
+        "position_id": 126,
+        "symbol": "ATLH",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 917.07,
+        "shares": 1787.0614913769325,
+        "last_known_close": 909.06,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -1.3734338709149858
+      },
+      {
+        "position_id": 127,
+        "symbol": "KTML",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 151.18,
+        "shares": 10840.458274223069,
+        "last_known_close": 171.42,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 12.888014287604166
+      },
+      {
+        "position_id": 128,
+        "symbol": "POWER",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 11.02,
+        "shares": 148716.9221322181,
+        "last_known_close": 11.19,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 1.0426497277676976
+      },
+      {
+        "position_id": 129,
+        "symbol": "KOHC",
+        "entry_session": 5721,
+        "scheduled_exit_session": 5730,
+        "entry_price": 430.7,
+        "shares": 3805.109082649277,
+        "last_known_close": 403.7,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -6.768864638959837
+      }
+    ]
+  },
+  "fold_2": {
+    "unfiltered": [
+      {
+        "position_id": 121,
+        "symbol": "NCPL",
+        "entry_session": 5851,
+        "scheduled_exit_session": 5860,
+        "entry_price": 28.0,
+        "shares": 48124.066601549086,
+        "last_known_close": 28.61,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 1.6785714285714297
+      },
+      {
+        "position_id": 122,
+        "symbol": "NML",
+        "entry_session": 5851,
+        "scheduled_exit_session": 5860,
+        "entry_price": 157.46,
+        "shares": 8557.562967378219,
+        "last_known_close": 157.38,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -0.5508065540454794
+      },
+      {
+        "position_id": 123,
+        "symbol": "NPL",
+        "entry_session": 5851,
+        "scheduled_exit_session": 5860,
+        "entry_price": 42.46,
+        "shares": 31735.135771158133,
+        "last_known_close": 42.0,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -1.5833725859632604
+      },
+      {
+        "position_id": 124,
+        "symbol": "ATRL",
+        "entry_session": 5851,
+        "scheduled_exit_session": 5860,
+        "entry_price": 655.24,
+        "shares": 2056.458495884522,
+        "last_known_close": 660.44,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 0.293602344179245
+      },
+      {
+        "position_id": 125,
+        "symbol": "KAPCO",
+        "entry_session": 5851,
+        "scheduled_exit_session": 5860,
+        "entry_price": 36.88,
+        "shares": 36536.71000117609,
+        "last_known_close": 35.35,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -4.648590021691978
+      },
+      {
+        "position_id": 126,
+        "symbol": "BOP",
+        "entry_session": 5851,
+        "scheduled_exit_session": 5860,
+        "entry_price": 19.69,
+        "shares": 68434.42685847508,
+        "last_known_close": 21.71,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 9.759014728288474
+      },
+      {
+        "position_id": 127,
+        "symbol": "OGDC",
+        "entry_session": 5851,
+        "scheduled_exit_session": 5860,
+        "entry_price": 272.98,
+        "shares": 4936.163326409899,
+        "last_known_close": 270.4,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -1.445124184921986
+      },
+      {
+        "position_id": 128,
+        "symbol": "HBL",
+        "entry_session": 5851,
+        "scheduled_exit_session": 5860,
+        "entry_price": 259.41,
+        "shares": 5194.379032586925,
+        "last_known_close": 254.51,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -2.388901738560589
+      },
+      {
+        "position_id": 129,
+        "symbol": "BAFL",
+        "entry_session": 5852,
+        "scheduled_exit_session": 5861,
+        "entry_price": 105.76,
+        "shares": 12728.609672623867,
+        "last_known_close": 101.69,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -4.348335854765517
+      },
+      {
+        "position_id": 130,
+        "symbol": "PSO",
+        "entry_session": 5852,
+        "scheduled_exit_session": 5861,
+        "entry_price": 422.41,
+        "shares": 3186.8984138081487,
+        "last_known_close": 420.85,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -0.8693094386969964
+      }
+    ],
+    "filtered": [
+      {
+        "position_id": 7,
+        "symbol": "BOP",
+        "entry_session": 5857,
+        "scheduled_exit_session": 5866,
+        "entry_price": 18.57,
+        "shares": 57983.56152446098,
+        "last_known_close": 21.71,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 16.408992999461493
+      }
+    ]
+  },
+  "fold_3": {
+    "unfiltered": [
+      {
+        "position_id": 127,
+        "symbol": "ILP",
+        "entry_session": 5991,
+        "scheduled_exit_session": 6000,
+        "entry_price": 78.52,
+        "shares": 10971.898651754622,
+        "last_known_close": 75.09,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -4.868313805399893
+      },
+      {
+        "position_id": 128,
+        "symbol": "HMB",
+        "entry_session": 5991,
+        "scheduled_exit_session": 6000,
+        "entry_price": 107.05,
+        "shares": 8047.7672315345435,
+        "last_known_close": 110.03,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 2.2837459131247133
+      },
+      {
+        "position_id": 129,
+        "symbol": "NBP",
+        "entry_session": 5991,
+        "scheduled_exit_session": 6000,
+        "entry_price": 174.86,
+        "shares": 4926.8756841803315,
+        "last_known_close": 167.18,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -4.892085096648746
+      },
+      {
+        "position_id": 130,
+        "symbol": "MCB",
+        "entry_session": 5991,
+        "scheduled_exit_session": 6000,
+        "entry_price": 366.7,
+        "shares": 2349.368645038922,
+        "last_known_close": 377.26,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 2.3797382056176657
+      },
+      {
+        "position_id": 131,
+        "symbol": "FFL",
+        "entry_session": 5992,
+        "scheduled_exit_session": 6001,
+        "entry_price": 15.03,
+        "shares": 56669.60535356359,
+        "last_known_close": 14.89,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -1.4314703925482282
+      },
+      {
+        "position_id": 132,
+        "symbol": "MEBL",
+        "entry_session": 5992,
+        "scheduled_exit_session": 6001,
+        "entry_price": 457.86,
+        "shares": 1860.2720667104804,
+        "last_known_close": 481.16,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 4.588891800987194
+      },
+      {
+        "position_id": 133,
+        "symbol": "BAHL",
+        "entry_session": 5996,
+        "scheduled_exit_session": 6005,
+        "entry_price": 160.87,
+        "shares": 5442.792934319239,
+        "last_known_close": 163.99,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 1.4394542176913054
+      },
+      {
+        "position_id": 134,
+        "symbol": "PTC",
+        "entry_session": 5997,
+        "scheduled_exit_session": 6006,
+        "entry_price": 47.36,
+        "shares": 18052.311364477824,
+        "last_known_close": 47.06,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": -1.133445945945943
+      },
+      {
+        "position_id": 135,
+        "symbol": "FABL",
+        "entry_session": 5997,
+        "scheduled_exit_session": 6006,
+        "entry_price": 80.68,
+        "shares": 10596.894722628529,
+        "last_known_close": 81.71,
+        "stale_days": 0,
+        "is_delayed_exit": false,
+        "unrealized_return_pct": 0.7766484878532269
+      }
+    ],
+    "filtered": []
+  }
+}

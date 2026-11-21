@@ -1,0 +1,149 @@
+{
+  "experiments": {
+    "technical": {
+      "selected": "catboost_trial_29",
+      "family": "catboost",
+      "accuracy": 0.36817222002787636,
+      "balanced_accuracy": 0.3734979501514779,
+      "macro_f1": 0.35739151874343894,
+      "log_loss": 1.0961044396142245,
+      "parameters": {
+        "kind": "catboost",
+        "depth": 5,
+        "learning_rate": 0.02,
+        "iterations": 160,
+        "l2_leaf_reg": 3.0,
+        "subsample": 0.85,
+        "weighted": true,
+        "name": "catboost_trial_29"
+      }
+    },
+    "fundamental": {
+      "selected": "catboost_trial_29",
+      "family": "catboost",
+      "accuracy": 0.379070742101462,
+      "balanced_accuracy": 0.3754126289436163,
+      "macro_f1": 0.3593474151718757,
+      "log_loss": 1.0959918480874296,
+      "parameters": {
+        "kind": "catboost",
+        "depth": 3,
+        "learning_rate": 0.02,
+        "iterations": 240,
+        "l2_leaf_reg": 30.0,
+        "subsample": 0.75,
+        "weighted": true,
+        "name": "catboost_trial_29"
+      }
+    },
+    "combined": {
+      "selected": "catboost_trial_27",
+      "family": "catboost",
+      "accuracy": 0.40539937454572583,
+      "balanced_accuracy": 0.39048112229862914,
+      "macro_f1": 0.3817348126771028,
+      "log_loss": 1.0849555780945224,
+      "parameters": {
+        "kind": "catboost",
+        "depth": 5,
+        "learning_rate": 0.04,
+        "iterations": 240,
+        "l2_leaf_reg": 3.0,
+        "subsample": 0.85,
+        "weighted": true,
+        "name": "catboost_trial_27"
+      }
+    }
+  },
+  "ensembling": {
+    "strongest_individual_model": {
+      "name": "catboost_trial_27",
+      "accuracy": 0.40539937454572583,
+      "macro_f1": 0.3817348126771028,
+      "log_loss": 1.0849555780945224
+    },
+    "probability_blend": {
+      "accuracy": 0.3801849698177992,
+      "balanced_accuracy": 0.37826632774569235,
+      "macro_f1": 0.36920070969664526,
+      "log_loss": 1.084029341428803,
+      "delta_macro_f1_vs_individual": -0.01253410298045754
+    },
+    "stacking_meta_model": {
+      "accuracy": 0.47316830038212326,
+      "balanced_accuracy": 0.3357708696490078,
+      "macro_f1": 0.22248417275336085,
+      "log_loss": 1.0770534998990322,
+      "delta_macro_f1_vs_individual": -0.15925063992374194
+    },
+    "conclusion": "Ensembling compared directly against the standalone combined model; does not automatically assume superior performance."
+  },
+  "selective_predictions": [
+    {
+      "threshold_tau": 0.35,
+      "signals_count": 11541,
+      "coverage_pct": 63.914271473666716,
+      "selective_accuracy": 41.20093579412529,
+      "fold_range_ci": "[0.0%, 48.2%]",
+      "selective_macro_f1": 0.38406076439051495
+    },
+    {
+      "threshold_tau": 0.4,
+      "signals_count": 4717,
+      "coverage_pct": 26.122833250263056,
+      "selective_accuracy": 45.113419546321815,
+      "fold_range_ci": "[34.0%, 57.7%]",
+      "selective_macro_f1": 0.40032519629792285
+    },
+    {
+      "threshold_tau": 0.45,
+      "signals_count": 1482,
+      "coverage_pct": 8.207343412526997,
+      "selective_accuracy": 51.21457489878543,
+      "fold_range_ci": "[36.5%, 68.1%]",
+      "selective_macro_f1": 0.386281793443505
+    },
+    {
+      "threshold_tau": 0.5,
+      "signals_count": 526,
+      "coverage_pct": 2.9129977294124165,
+      "selective_accuracy": 48.09885931558935,
+      "fold_range_ci": "[40.1%, 65.1%]",
+      "selective_macro_f1": 0.35077861735298566
+    },
+    {
+      "threshold_tau": 0.55,
+      "signals_count": 195,
+      "coverage_pct": 1.079913606911447,
+      "selective_accuracy": 45.12820512820513,
+      "fold_range_ci": "[44.6%, 55.6%]",
+      "selective_macro_f1": 0.3416555968073391
+    },
+    {
+      "threshold_tau": 0.6,
+      "signals_count": 48,
+      "coverage_pct": 0.2658248878551255,
+      "selective_accuracy": 62.5,
+      "fold_range_ci": "[62.5%, 62.5%]",
+      "selective_macro_f1": 0.4119318181818182
+    }
+  ],
+  "backtest": {
+    "rule": "Every 20 sessions pick top 5 bullish stocks (p_bullish >= 0.40). Entry at t+1 close, exit at t+21 close.",
+    "friction_bps": 40,
+    "holding_periods": 23,
+    "cagr_pct": 53.73783737370121,
+    "max_drawdown_pct": -3.603141721193119,
+    "annualized_volatility_pct": 20.523893453137056,
+    "sharpe_ratio": 1.8874507150484243,
+    "mean_turnover_pct": 45.43478260869565
+  },
+  "fresh_test_verified": false,
+  "limitations": [
+    "Optuna package was not locally installed; bounded reproducible pseudo-random sampler used with fixed seed 42.",
+    "Fresh held-out outcomes (> Oct 2026) lack resolved 20-session labels; fresh test left unverified.",
+    "Historical accounting vintages unavailable in database snapshot; statutory 120-day publication assumed for pre-2015 statements.",
+    "Corporate action effective dates unverified; jump quarantine and payout window isolation remain provisional.",
+    "Delisted companies missing from roster introduces survivorship bias."
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "direction_bearish": {
+    "eps_pkr": 0.13283386826515198,
+    "ocf_to_net_income_ratio": 0.06330177187919617,
+    "roe_pct": 0.03009827248752117,
+    "pb_ratio": 0.028784174472093582,
+    "net_margin_pct": 0.027787374332547188,
+    "pe_ratio": 0.02609502524137497,
+    "fcf_margin_pct": 0.023367319256067276,
+    "bank_net_interest_over_assets_pct": 0.022720083594322205,
+    "debt_to_equity": 0.021910380572080612,
+    "revenue_growth_yoy_pct": 0.020290667191147804,
+    "roa_pct": 0.013968362472951412,
+    "net_income_growth_yoy_pct": 0.0010258167749270797
+  },
+  "direction_sideways": {
+    "roe_pct": 0.09475559741258621,
+    "debt_to_equity": 0.05330168083310127,
+    "bank_net_interest_over_assets_pct": 0.052717503160238266,
+    "eps_pkr": 0.042677439749240875,
+    "roa_pct": 0.037141621112823486,
+    "pe_ratio": 0.035167865455150604,
+    "pb_ratio": 0.02543327584862709,
+    "fcf_margin_pct": 0.0167755838483572,
+    "net_margin_pct": 0.015601885505020618,
+    "net_income_growth_yoy_pct": 0.015586519613862038,
+    "revenue_growth_yoy_pct": 0.01457242202013731,
+    "ocf_to_net_income_ratio": 0.003938112407922745
+  },
+  "direction_bullish": {
+    "ocf_to_net_income_ratio": 0.05819506570696831,
+    "pb_ratio": 0.0362616591155529,
+    "pe_ratio": 0.036242708563804626,
+    "revenue_growth_yoy_pct": 0.032804787158966064,
+    "roe_pct": 0.030660824850201607,
+    "debt_to_equity": 0.029086759313941002,
+    "fcf_margin_pct": 0.01155080646276474,
+    "eps_pkr": 0.011442814022302628,
+    "roa_pct": 0.008182930760085583,
+    "net_margin_pct": 0.006821665912866592,
+    "net_income_growth_yoy_pct": 0.003075832035392523,
+    "bank_net_interest_over_assets_pct": 0.0003839510609395802
+  },
+  "expected_return": {
+    "ocf_to_net_income_ratio": 0.6266955733299255,
+    "debt_to_equity": 0.6199550628662109,
+    "pb_ratio": 0.5306181311607361,
+    "pe_ratio": 0.49511128664016724,
+    "net_income_growth_yoy_pct": 0.47005242109298706,
+    "roa_pct": 0.45628830790519714,
+    "revenue_growth_yoy_pct": 0.44205933809280396,
+    "eps_pkr": 0.22793954610824585,
+    "roe_pct": 0.22489100694656372,
+    "fcf_margin_pct": 0.14260703325271606,
+    "net_margin_pct": 0.10295682400465012,
+    "bank_net_interest_over_assets_pct": 0.015337037853896618
+  }
+}

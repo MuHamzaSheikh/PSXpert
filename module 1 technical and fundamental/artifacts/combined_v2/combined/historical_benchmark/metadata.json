@@ -1,0 +1,9 @@
+{
+  "note": "Inspected historical benchmark; not fresh holdout",
+  "train_rows": 23001,
+  "calibration_rows": 3888,
+  "train_last_target": 5791,
+  "calibration_last_target": 5901,
+  "evaluation_first_session": 5907,
+  "selected": "xgb_d3_n240_extra1_weighted1:raw"
+}

@@ -1,0 +1,29 @@
+{
+  "inconsistent_candles_all_source": 17493,
+  "suspect_records": 18181,
+  "price_sources": {
+    "SARMAAYA_API": 475244,
+    "IMMAD_BABER_PSX_DATA": 35939
+  },
+  "pypsx": {
+    "sdk_installed": false,
+    "credentials_configured": false,
+    "policy": "Raw OHLCV overlap and gap audit only. Database supplies prediction and training prices.",
+    "comparisons": {}
+  },
+  "action_columns": [
+    "id",
+    "symbol",
+    "announcement_date",
+    "fiscal_year",
+    "payout_type",
+    "dividend_per_share",
+    "payout_percentage",
+    "face_value",
+    "source_id",
+    "created_at"
+  ],
+  "effective_dates_verified": false,
+  "action_policy": "No verified ex-date/factor evidence. No numerical price adjustments. Quarantine >=35% discontinuity labels; announcement +/-5-day exclusions retained from v1, explicitly provisional.",
+  "filing_limitation": "Accounting values are current database snapshots; original revision vintages unavailable. Public availability gated by unambiguous PSX annual transmission; not fully vintage verified."
+}

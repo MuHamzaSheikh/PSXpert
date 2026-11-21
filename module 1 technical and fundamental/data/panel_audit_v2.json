@@ -1,0 +1,30 @@
+{
+  "status": "SUCCESS",
+  "panel_path": "C:\\Users\\HP\\psxpert\\module 1 technical and fundamental\\data\\decision_panel_v2.csv",
+  "prices_path": "C:\\Users\\HP\\psxpert\\module 1 technical and fundamental\\data\\raw_unadjusted_prices.csv",
+  "benchmark_path": "C:\\Users\\HP\\psxpert\\module 1 technical and fundamental\\data\\audited_benchmark.csv",
+  "panel_rows": 98391,
+  "panel_symbols": 100,
+  "panel_sessions": [
+    5107,
+    6126
+  ],
+  "fundamental_eligible_rows": 35653,
+  "technical_eligible_rows": 98367,
+  "price_rows": 102000,
+  "price_valid_pct": 0.9258725490196078,
+  "quarantine_audit": {
+    "payout_announcement_bars_quarantined": 3870,
+    "price_jump_bars_quarantined": 165,
+    "invalid_or_missing_price_bars": 3609
+  },
+  "price_validity_clarification": [
+    "PRICES ARE RAW UNADJUSTED: PSX historical prices do not include certified share adjustment factors.",
+    "PROVISIONAL QUARANTINE ONLY: Setting price_valid=False on announcement windows (+/-5 sessions) and jump breaks (>=35%) is a heuristic safeguard, not certified corporate action adjustment.",
+    "LABEL UNCERTAINTY: Unannounced corporate actions or payout yields below 35% outside announcement windows remain in raw prices as residual return noise."
+  ],
+  "input_universe_clarification": [
+    "NO FUTURE LABEL FILTERING: Rows were NOT filtered by future_direction.notna(). Eligibility was determined strictly by data available at session t close.",
+    "RECOVERED OBSERVATIONS: Observations previously dropped due to future 20-session label gaps are now fully preserved at prediction time."
+  ]
+}

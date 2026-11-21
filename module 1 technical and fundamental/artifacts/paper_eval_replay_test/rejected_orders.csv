@@ -1,0 +1,2 @@
+timestamp,session,policy,symbol,order_id,reason
+2026-11-18T17:54:29.242304+00:00,5911,Policy_A,PSX,30,INSUFFICIENT_CASH

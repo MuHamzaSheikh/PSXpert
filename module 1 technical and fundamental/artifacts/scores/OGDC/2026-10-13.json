@@ -1,0 +1,11 @@
+{
+  "ticker": "OGDC",
+  "prediction_timestamp": "2026-10-13T23:59:59+05:00",
+  "close": 298.96,
+  "origin": "SARMAAYA_API",
+  "scores": {
+    "technical_score": -39.4,
+    "fundamental_score": 87.1
+  },
+  "notes": []
+}

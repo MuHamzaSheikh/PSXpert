@@ -1,0 +1,125 @@
+{
+  "fold_1": {
+    "total_test_rows": 5986,
+    "decision_counts": {
+      "NOT_SHORTLISTED": 4751,
+      "WAIT": 1235
+    },
+    "groups": {
+      "entry_candidate": {
+        "count": 0
+      },
+      "naive_fundamental_shortlist": {
+        "count": 1235,
+        "mean_net_return_10session_pct": 1.7180941644453338,
+        "median_net_return_10session_pct": 0.48327849444633797,
+        "win_rate_pct": 54.77031802120141,
+        "large_gain_rate_pct": 38.42756183745583,
+        "std_net_return_pct": 7.850369719593892
+      },
+      "wait_shortlisted": {
+        "count": 1235,
+        "mean_net_return_10session_pct": 1.7180941644453338,
+        "median_net_return_10session_pct": 0.48327849444633797,
+        "win_rate_pct": 54.77031802120141,
+        "large_gain_rate_pct": 38.42756183745583,
+        "std_net_return_pct": 7.850369719593892
+      },
+      "not_shortlisted": {
+        "count": 4751,
+        "mean_net_return_10session_pct": 2.718518870958697,
+        "median_net_return_10session_pct": 0.6674571324334249,
+        "win_rate_pct": 54.266813671444325,
+        "large_gain_rate_pct": 42.4696802646086,
+        "std_net_return_pct": 9.794483199052156
+      }
+    },
+    "hypothesis_test": null
+  },
+  "fold_2": {
+    "total_test_rows": 6180,
+    "decision_counts": {
+      "NOT_SHORTLISTED": 4911,
+      "WAIT": 1229,
+      "ENTRY_CANDIDATE": 40
+    },
+    "groups": {
+      "entry_candidate": {
+        "count": 40,
+        "mean_net_return_10session_pct": 3.3992222328064856,
+        "median_net_return_10session_pct": -0.020245090073367056,
+        "win_rate_pct": 50.0,
+        "large_gain_rate_pct": 40.0,
+        "std_net_return_pct": 9.254763567290395
+      },
+      "naive_fundamental_shortlist": {
+        "count": 1269,
+        "mean_net_return_10session_pct": 4.11197147932618,
+        "median_net_return_10session_pct": 2.1832689646984487,
+        "win_rate_pct": 63.47305389221557,
+        "large_gain_rate_pct": 50.898203592814376,
+        "std_net_return_pct": 8.436146037619176
+      },
+      "wait_shortlisted": {
+        "count": 1229,
+        "mean_net_return_10session_pct": 4.141607622632613,
+        "median_net_return_10session_pct": 2.2636292768832726,
+        "win_rate_pct": 64.03326403326403,
+        "large_gain_rate_pct": 51.35135135135135,
+        "std_net_return_pct": 8.40433636672043
+      },
+      "not_shortlisted": {
+        "count": 4911,
+        "mean_net_return_10session_pct": 1.5850056938145258,
+        "median_net_return_10session_pct": 0.6863035858721949,
+        "win_rate_pct": 55.32970928858426,
+        "large_gain_rate_pct": 40.43961238477901,
+        "std_net_return_pct": 7.1842875892284175
+      }
+    },
+    "hypothesis_test": {
+      "comparison": "ENTRY_CANDIDATE vs NAIVE_FUNDAMENTAL_SHORTLIST",
+      "delta_mean_net_return_pct": -0.7127492465196945,
+      "t_statistic": -0.47919852363397764,
+      "p_value": 0.6343052317258002,
+      "significant_at_5pct": false
+    }
+  },
+  "fold_3": {
+    "total_test_rows": 5095,
+    "decision_counts": {
+      "NOT_SHORTLISTED": 4000,
+      "WAIT": 1095
+    },
+    "groups": {
+      "entry_candidate": {
+        "count": 0
+      },
+      "naive_fundamental_shortlist": {
+        "count": 1095,
+        "mean_net_return_10session_pct": 0.04078703877032843,
+        "median_net_return_10session_pct": -0.3485213131927951,
+        "win_rate_pct": 47.43742550655543,
+        "large_gain_rate_pct": 31.942789034564957,
+        "std_net_return_pct": 6.47867875831925
+      },
+      "wait_shortlisted": {
+        "count": 1095,
+        "mean_net_return_10session_pct": 0.04078703877032843,
+        "median_net_return_10session_pct": -0.3485213131927951,
+        "win_rate_pct": 47.43742550655543,
+        "large_gain_rate_pct": 31.942789034564957,
+        "std_net_return_pct": 6.47867875831925
+      },
+      "not_shortlisted": {
+        "count": 4000,
+        "mean_net_return_10session_pct": 1.0923227225947907,
+        "median_net_return_10session_pct": -0.21153846153846256,
+        "win_rate_pct": 47.87991333952337,
+        "large_gain_rate_pct": 34.35468895078923,
+        "std_net_return_pct": 9.321671413940074
+      }
+    },
+    "hypothesis_test": null
+  }
+}

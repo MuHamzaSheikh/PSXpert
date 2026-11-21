@@ -1,0 +1,145 @@
+{
+  "last_processed_session": 5925,
+  "cash": {
+    "Policy_A": 14448.84874329553,
+    "Policy_B": 10000000.0
+  },
+  "next_order_id": 52,
+  "next_position_id": 31,
+  "positions": {
+    "Policy_A": [
+      {
+        "position_id": 21,
+        "policy": "Policy_A",
+        "symbol": "MARI",
+        "entry_session": 5921,
+        "scheduled_exit_session": 5930,
+        "entry_price": 707.38,
+        "shares": 1427.4695962850656,
+        "cost_basis": 1012287.85162768,
+        "last_known_close": 703.23,
+        "stale_days": 0,
+        "is_delayed": false
+      },
+      {
+        "position_id": 22,
+        "policy": "Policy_A",
+        "symbol": "HCAR",
+        "entry_session": 5921,
+        "scheduled_exit_session": 5930,
+        "entry_price": 281.02,
+        "shares": 3593.2084656612687,
+        "cost_basis": 1012287.85162768,
+        "last_known_close": 280.44,
+        "stale_days": 0,
+        "is_delayed": false
+      },
+      {
+        "position_id": 23,
+        "policy": "Policy_A",
+        "symbol": "ILP",
+        "entry_session": 5921,
+        "scheduled_exit_session": 5930,
+        "entry_price": 78.09,
+        "shares": 12930.765053401583,
+        "cost_basis": 1012287.85162768,
+        "last_known_close": 76.63,
+        "stale_days": 0,
+        "is_delayed": false
+      },
+      {
+        "position_id": 24,
+        "policy": "Policy_A",
+        "symbol": "ATRL",
+        "entry_session": 5921,
+        "scheduled_exit_session": 5930,
+        "entry_price": 660.17,
+        "shares": 1529.5506354728777,
+        "cost_basis": 1012287.85162768,
+        "last_known_close": 652.15,
+        "stale_days": 0,
+        "is_delayed": false
+      },
+      {
+        "position_id": 25,
+        "policy": "Policy_A",
+        "symbol": "DGKC",
+        "entry_session": 5921,
+        "scheduled_exit_session": 5930,
+        "entry_price": 242.04,
+        "shares": 4171.8866427868525,
+        "cost_basis": 1012287.85162768,
+        "last_known_close": 245.21,
+        "stale_days": 0,
+        "is_delayed": false
+      },
+      {
+        "position_id": 26,
+        "policy": "Policy_A",
+        "symbol": "MUREB",
+        "entry_session": 5921,
+        "scheduled_exit_session": 5930,
+        "entry_price": 1058.7,
+        "shares": 953.7767479173795,
+        "cost_basis": 1012287.85162768,
+        "last_known_close": 1048.65,
+        "stale_days": 0,
+        "is_delayed": false
+      },
+      {
+        "position_id": 27,
+        "policy": "Policy_A",
+        "symbol": "LCI",
+        "entry_session": 5921,
+        "scheduled_exit_session": 5930,
+        "entry_price": 293.33,
+        "shares": 3442.4144922787636,
+        "cost_basis": 1012287.85162768,
+        "last_known_close": 289.73,
+        "stale_days": 0,
+        "is_delayed": false
+      },
+      {
+        "position_id": 28,
+        "policy": "Policy_A",
+        "symbol": "ISL",
+        "entry_session": 5921,
+        "scheduled_exit_session": 5930,
+        "entry_price": 111.65,
+        "shares": 9044.007550560946,
+        "cost_basis": 1012287.85162768,
+        "last_known_close": 107.39,
+        "stale_days": 0,
+        "is_delayed": false
+      },
+      {
+        "position_id": 29,
+        "policy": "Policy_A",
+        "symbol": "MEBL",
+        "entry_session": 5921,
+        "scheduled_exit_session": 5930,
+        "entry_price": 431.8,
+        "shares": 2310.637152705267,
+        "cost_basis": 1000227.4553444795,
+        "last_known_close": 434.63,
+        "stale_days": 0,
+        "is_delayed": false
+      },
+      {
+        "position_id": 30,
+        "policy": "Policy_A",
+        "symbol": "PSX",
+        "entry_session": 5922,
+        "scheduled_exit_session": 5931,
+        "entry_price": 45.49,
+        "shares": 22148.01901341385,
+        "cost_basis": 1010032.1683824966,
+        "last_known_close": 45.01,
+        "stale_days": 0,
+        "is_delayed": false
+      }
+    ],
+    "Policy_B": []
+  },
+  "updated_at": "2026-11-18T17:55:07.031028+00:00"
+}

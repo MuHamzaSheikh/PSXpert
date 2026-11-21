@@ -1,0 +1,76 @@
+{
+  "version": "combined_v2",
+  "feature_version": 2,
+  "experiment": "fundamental",
+  "selected": "xgb_d3_n240_extra1_weighted1:raw",
+  "configuration": {
+    "name": "xgb_d3_n240_extra1_weighted1",
+    "kind": "xgb",
+    "extra": true,
+    "weighted": true,
+    "parameters": {
+      "n_estimators": 240,
+      "max_depth": 3,
+      "learning_rate": 0.03,
+      "subsample": 0.85,
+      "colsample_bytree": 0.85,
+      "tree_method": "hist",
+      "n_jobs": 2,
+      "reg_lambda": 10,
+      "min_child_weight": 20
+    }
+  },
+  "features": [
+    "eps_pkr",
+    "roe_pct",
+    "roa_pct",
+    "pe_ratio",
+    "pb_ratio",
+    "debt_to_equity",
+    "revenue_growth_yoy_pct",
+    "net_income_growth_yoy_pct",
+    "net_margin_pct",
+    "fcf_margin_pct",
+    "ocf_to_net_income_ratio",
+    "bank_net_interest_over_assets_pct",
+    "filing_age_days"
+  ],
+  "classes": [
+    "BEARISH",
+    "SIDEWAYS",
+    "BULLISH"
+  ],
+  "calibration": "raw",
+  "train": {
+    "rows": 22001,
+    "tickers": 54,
+    "first_signal": "2022-08-30T23:59:59+05:00",
+    "last_signal": "2025-04-09T23:59:59+05:00",
+    "last_label": "2025-05-09T23:59:59+05:00",
+    "classes": {
+      "BULLISH": 9826,
+      "BEARISH": 6425,
+      "SIDEWAYS": 5750
+    }
+  },
+  "calibration_window": {
+    "rows": 4866,
+    "tickers": 50,
+    "first_signal": "2025-05-19T23:59:59+05:00",
+    "last_signal": "2025-10-17T23:59:59+05:00",
+    "last_label": "2025-11-14T23:59:59+05:00",
+    "classes": {
+      "BULLISH": 2661,
+      "SIDEWAYS": 1240,
+      "BEARISH": 965
+    }
+  },
+  "horizon": 20,
+  "thresholds": [
+    -3,
+    3
+  ],
+  "seed": 42,
+  "embargo": 5,
+  "inference": "m1.v2.load_pair; research artifacts, not v1 API schema"
+}

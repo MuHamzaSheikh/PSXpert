@@ -1,0 +1,12 @@
+{
+  "command": "python -m m1.v2 --as-of 2026-11-16T14:00:00+05:00",
+  "tests": "python -m pytest -q",
+  "python": "3.13.7",
+  "numpy": "2.2.6",
+  "pandas": "2.3.2",
+  "sklearn": "1.7.2",
+  "scipy": "1.16.3",
+  "xgboost": "3.4.1",
+  "seed": 42,
+  "code_sha256": "1c07b78d7823c6d53f0cd0a4246854705c5f489dab64c8f1583c68e4159b61fa"
+}

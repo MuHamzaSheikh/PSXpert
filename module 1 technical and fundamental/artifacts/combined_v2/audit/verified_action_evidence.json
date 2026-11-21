@@ -1,0 +1,19 @@
+[
+  {
+    "symbol": "BML",
+    "effective_trading_date": "2026-02-02",
+    "source": "https://dps.psx.com.pk/download/attachment/268834-1.pdf",
+    "finding": "PSX N-77 dated 2026-01-19 confirms revised price and shares from 2026-02-02 following 2026-01-31 book closure.",
+    "decision": "Existing >=35% crossing quarantine retained; jump is action-related. No numerical adjustment factor inferred."
+  },
+  {
+    "symbol": "MARI",
+    "record_date": "2024-09-18",
+    "book_closure_start": "2024-09-19",
+    "credit_date": "2024-09-27",
+    "source": "https://dps.psx.com.pk/download/document/236240.pdf",
+    "credit_source": "https://dps.psx.com.pk/download/document/237827.pdf",
+    "finding": "800% bonus entitlement and book closure verified; credit date differs from announcement and ex-trading date.",
+    "decision": "No exact ex-trading date independently confirmed from these documents. Retain quarantine; do not shift on credit date."
+  }
+]

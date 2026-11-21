@@ -1,0 +1,87 @@
+{
+  "run_timestamp": "2026-11-18T17:43:57.875720+00:00",
+  "input_hashes": {
+    "decision_panel_v2_csv": "d9120f2b4903c9a176dd7a9f49e6df5a7ed5b8f37f301dcc60a6aa608b308765",
+    "raw_unadjusted_prices_csv": "ebb855d75150a18aab6c9060c3dd8d5fb753d91f80ab2d391134081cca510650",
+    "audited_benchmark_csv": "0b83109f84a2c4ce2667adb953462c665e640d886b399337d313844b952f32a2"
+  },
+  "code_hashes": {
+    "portfolio_simulation_py": "ba42992ef1602c23efb7d7595640bd4fe3cdce51e11063f90c6c6bffaa847ba2",
+    "portfolio_engine_py": "427d47c93314e42ce84dc780ef1ddf3cac0cfced7e75d852eabca979cd1e6de0",
+    "decision_pipeline_py": "20f4191457f876e7904b3f51333845721f0a0a550012926e8cb4f6e28db7eed5",
+    "controlled_evaluation_v4_py": "af5552f233a13b3f3a2474b42d423ea76355c7ce41702e528f36676714b15b7a"
+  },
+  "config_hash": "9019105fadd31f626ef9ea46ec965dc0fa3236486fdd7a08ba3ab2ca635fe831",
+  "config": {
+    "fundamental_horizon": 126,
+    "technical_horizon": 10,
+    "cost_pct": 0.5,
+    "entry_margin_pct": 2.0,
+    "top_fraction": 0.2,
+    "entry_threshold_target_labeling": 0.55,
+    "actual_decision_signal_threshold": 0.5,
+    "seed": 42
+  },
+  "prediction_snapshots": {
+    "original_reconstructed": {
+      "path": "artifacts\\selection_timing_v4\\predictions_original_reconstructed.csv.gz",
+      "sha256": "9abf20d916bad6047f482e8221d29d3e54f2114a8c4f4b7d8543f9d2ca49286c",
+      "rows_count": 39882,
+      "status": "RECONSTRUCTED_HISTORICAL_PREDICTION",
+      "is_original_saved_model_output": false,
+      "reconstructed": true,
+      "provenance_note": "Deterministically reconstructed from raw data and pipeline code with identical historical seeds. Original v2 run saved only summary JSONs, not row-level tables."
+    },
+    "revised": {
+      "path": "artifacts\\selection_timing_v4\\predictions_revised.csv.gz",
+      "sha256": "d22da9aadf069f9bcb20501fb445712a49c563148139a52fd3d5e6ddac2871cc",
+      "rows_count": 39882,
+      "status": "REVISED_MODEL_PREDICTION",
+      "is_original_saved_model_output": false,
+      "reconstructed": false,
+      "provenance_note": "Generated from inner-validation winner models in selection_timing_v3."
+    }
+  },
+  "audit_report": {
+    "fold_1": {
+      "total_test_rows": 12910,
+      "status": "PASS",
+      "fundamental_max_abs_diff": 0.0,
+      "shortlist_mismatches": 0,
+      "technical_max_abs_diff": 0.0,
+      "signal_mismatches": 0,
+      "original_active_signals_count": 7751,
+      "revised_active_signals_count": 7751,
+      "discrepancy_diagnosis": "Predictions 100.0% mathematically identical"
+    },
+    "fold_2": {
+      "total_test_rows": 12978,
+      "status": "FAIL",
+      "fundamental_max_abs_diff": 0.0,
+      "shortlist_mismatches": 0,
+      "technical_max_abs_diff": 0.17286419868469238,
+      "signal_mismatches": 108,
+      "original_active_signals_count": 0,
+      "revised_active_signals_count": 108,
+      "discrepancy_diagnosis": "Hyperparameter mismatch between outer test evaluation: v2 used trial 0 (lr=0.01), v3 used inner-winner (value_composite, xgboost_inner_winner)"
+    },
+    "fold_3": {
+      "total_test_rows": 13994,
+      "status": "FAIL",
+      "fundamental_max_abs_diff": 0.4168327748775482,
+      "shortlist_mismatches": 1210,
+      "technical_max_abs_diff": 0.1783827245235443,
+      "signal_mismatches": 300,
+      "original_active_signals_count": 0,
+      "revised_active_signals_count": 300,
+      "discrepancy_diagnosis": "Hyperparameter mismatch between outer test evaluation: v2 used trial 0 (lr=0.01), v3 used inner-winner (xgbranker_inner_winner, xgboost_inner_winner)"
+    }
+  },
+  "liquidity_configuration": {
+    "setting_used": "unconstrained_benchmark",
+    "max_volume_participation_pct": null,
+    "enforce_volume_positive": true,
+    "disabled_mode_behavior": "Orders sized by cash allocation. Execution requires contemporaneous day s volume > 0. If volume is missing or 0, order/exit is rejected.",
+    "enabled_mode_behavior": "Opening orders additionally capped by V_{s-1} * (pct/100) * P_open. If lagged volume is missing or non-positive, spend is capped at 0.0 (rejected)."
+  }
+}

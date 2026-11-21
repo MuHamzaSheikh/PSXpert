@@ -1,0 +1,243 @@
+{
+  "by_period": {
+    "Fold_0": {
+      "rows": 6183,
+      "accuracy": 0.46886624615882255,
+      "balanced_accuracy": 0.4125236149923592,
+      "macro_f1": 0.4097894892616198,
+      "per_class_recall": {
+        "BEARISH": 0.38504542278127185,
+        "SIDEWAYS": 0.23251295336787564,
+        "BULLISH": 0.6200124688279302
+      },
+      "per_class_precision": {
+        "BEARISH": 0.32354668232530825,
+        "SIDEWAYS": 0.37010309278350517,
+        "BULLISH": 0.5666666666666667
+      },
+      "confusion_matrix": [
+        [
+          551,
+          202,
+          678
+        ],
+        [
+          342,
+          359,
+          843
+        ],
+        [
+          810,
+          409,
+          1989
+        ]
+      ],
+      "log_loss": 1.0522010708934686,
+      "class_order": [
+        "BEARISH",
+        "SIDEWAYS",
+        "BULLISH"
+      ],
+      "predicted_class_frequencies": {
+        "BEARISH": 0.2754326378780527,
+        "SIDEWAYS": 0.15688177260229663,
+        "BULLISH": 0.5676855895196506
+      }
+    },
+    "Fold_1": {
+      "rows": 6359,
+      "accuracy": 0.3453373171882371,
+      "balanced_accuracy": 0.35722496389557484,
+      "macro_f1": 0.33932420645369893,
+      "per_class_recall": {
+        "BEARISH": 0.365034965034965,
+        "SIDEWAYS": 0.39580838323353296,
+        "BULLISH": 0.31083154341822644
+      },
+      "per_class_precision": {
+        "BEARISH": 0.23397579560735096,
+        "SIDEWAYS": 0.3063021316033364,
+        "BULLISH": 0.5142131979695431
+      },
+      "confusion_matrix": [
+        [
+          522,
+          467,
+          441
+        ],
+        [
+          493,
+          661,
+          516
+        ],
+        [
+          1216,
+          1030,
+          1013
+        ]
+      ],
+      "log_loss": 1.105990335565093,
+      "class_order": [
+        "BEARISH",
+        "SIDEWAYS",
+        "BULLISH"
+      ],
+      "predicted_class_frequencies": {
+        "BEARISH": 0.35084132725271266,
+        "SIDEWAYS": 0.33936153483252085,
+        "BULLISH": 0.3097971379147665
+      }
+    },
+    "Fold_2": {
+      "rows": 5515,
+      "accuracy": 0.4019945602901179,
+      "balanced_accuracy": 0.4016947880079535,
+      "macro_f1": 0.3960907423159897,
+      "per_class_recall": {
+        "BEARISH": 0.27028479312197745,
+        "SIDEWAYS": 0.4544311753614079,
+        "BULLISH": 0.48036839554047506
+      },
+      "per_class_precision": {
+        "BEARISH": 0.3600572655690766,
+        "SIDEWAYS": 0.327445652173913,
+        "BULLISH": 0.518848167539267
+      },
+      "confusion_matrix": [
+        [
+          503,
+          862,
+          496
+        ],
+        [
+          445,
+          723,
+          423
+        ],
+        [
+          449,
+          623,
+          991
+        ]
+      ],
+      "log_loss": 1.0966753278250057,
+      "class_order": [
+        "BEARISH",
+        "SIDEWAYS",
+        "BULLISH"
+      ],
+      "predicted_class_frequencies": {
+        "BEARISH": 0.25330915684496824,
+        "SIDEWAYS": 0.400362647325476,
+        "BULLISH": 0.34632819582955576
+      }
+    }
+  },
+  "by_sector": {
+    "AUTOMOBILE ASSEMBLER": {
+      "rows": 1804,
+      "accuracy": 0.40465631929046564,
+      "macro_f1": 0.39395043383597966
+    },
+    "AUTOMOBILE PARTS & ACCESSORIES": {
+      "rows": 298,
+      "accuracy": 0.412751677852349,
+      "macro_f1": 0.402075840027641
+    },
+    "CEMENT": {
+      "rows": 894,
+      "accuracy": 0.43288590604026844,
+      "macro_f1": 0.3917429547891466
+    },
+    "CHEMICAL": {
+      "rows": 427,
+      "accuracy": 0.2857142857142857,
+      "macro_f1": 0.24646063812730476
+    },
+    "COMMERCIAL BANKS": {
+      "rows": 4428,
+      "accuracy": 0.3748870822041554,
+      "macro_f1": 0.3505607473507077
+    },
+    "ENGINEERING": {
+      "rows": 298,
+      "accuracy": 0.3959731543624161,
+      "macro_f1": 0.3080136608610608
+    },
+    "FERTILIZER": {
+      "rows": 1079,
+      "accuracy": 0.3336422613531047,
+      "macro_f1": 0.32251795407688727
+    },
+    "FOOD & PERSONAL CARE PRODUCTS": {
+      "rows": 1410,
+      "accuracy": 0.5156028368794326,
+      "macro_f1": 0.49028622669121774
+    },
+    "GLASS & CERAMICS": {
+      "rows": 298,
+      "accuracy": 0.43288590604026844,
+      "macro_f1": 0.4109570258941513
+    },
+    "INV. BANKS / INV. COS. / SECURITIES COS.": {
+      "rows": 300,
+      "accuracy": 0.38666666666666666,
+      "macro_f1": 0.2694507225532498
+    },
+    "LEATHER & TANNERIES": {
+      "rows": 434,
+      "accuracy": 0.576036866359447,
+      "macro_f1": 0.4601338486977659
+    },
+    "OIL & GAS EXPLORATION COMPANIES": {
+      "rows": 617,
+      "accuracy": 0.4959481361426256,
+      "macro_f1": 0.4791657160161212
+    },
+    "OIL & GAS MARKETING COMPANIES": {
+      "rows": 596,
+      "accuracy": 0.4966442953020134,
+      "macro_f1": 0.488004789802682
+    },
+    "PAPER, BOARD & PACKAGING": {
+      "rows": 280,
+      "accuracy": 0.21785714285714286,
+      "macro_f1": 0.18082066053854082
+    },
+    "PHARMACEUTICALS": {
+      "rows": 1191,
+      "accuracy": 0.327455919395466,
+      "macro_f1": 0.30878744344423986
+    },
+    "POWER GENERATION & DISTRIBUTION": {
+      "rows": 858,
+      "accuracy": 0.37995337995337997,
+      "macro_f1": 0.35057031172330017
+    },
+    "REFINERY": {
+      "rows": 267,
+      "accuracy": 0.5468164794007491,
+      "macro_f1": 0.5105339105339105
+    },
+    "SUGAR & ALLIED INDUSTRIES": {
+      "rows": 253,
+      "accuracy": 0.35177865612648224,
+      "macro_f1": 0.21456033082918136
+    },
+    "TECHNOLOGY & COMMUNICATION": {
+      "rows": 866,
+      "accuracy": 0.45727482678983833,
+      "macro_f1": 0.37902671369096047
+    },
+    "TEXTILE COMPOSITE": {
+      "rows": 768,
+      "accuracy": 0.39453125,
+      "macro_f1": 0.34574730835110773
+    },
+    "TRANSPORT": {
+      "rows": 298,
+      "accuracy": 0.40604026845637586,
+      "macro_f1": 0.3543646473098348
+    }
+  }
+}

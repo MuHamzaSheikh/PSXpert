@@ -1,0 +1,23 @@
+{
+  "strongest_individual_model": {
+    "name": "catboost_trial_27",
+    "accuracy": 0.40539937454572583,
+    "macro_f1": 0.3817348126771028,
+    "log_loss": 1.0849555780945224
+  },
+  "probability_blend": {
+    "accuracy": 0.3801849698177992,
+    "balanced_accuracy": 0.37826632774569235,
+    "macro_f1": 0.36920070969664526,
+    "log_loss": 1.084029341428803,
+    "delta_macro_f1_vs_individual": -0.01253410298045754
+  },
+  "stacking_meta_model": {
+    "accuracy": 0.47316830038212326,
+    "balanced_accuracy": 0.3357708696490078,
+    "macro_f1": 0.22248417275336085,
+    "log_loss": 1.0770534998990322,
+    "delta_macro_f1_vs_individual": -0.15925063992374194
+  },
+  "conclusion": "Ensembling compared directly against the standalone combined model; does not automatically assume superior performance."
+}

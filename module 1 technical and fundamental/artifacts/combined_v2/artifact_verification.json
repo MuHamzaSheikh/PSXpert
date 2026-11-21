@@ -1,0 +1,23 @@
+{
+  "experiments": {
+    "technical": {
+      "saved_classifier_matches_terminal_predictions": true,
+      "regressor_finite": true,
+      "historical_refit_reproduces_report": true,
+      "rows": 5515
+    },
+    "fundamental": {
+      "saved_classifier_matches_terminal_predictions": true,
+      "regressor_finite": true,
+      "historical_refit_reproduces_report": true,
+      "rows": 5515
+    },
+    "combined": {
+      "saved_classifier_matches_terminal_predictions": true,
+      "regressor_finite": true,
+      "historical_refit_reproduces_report": true,
+      "rows": 5515
+    }
+  },
+  "protected_files_unchanged": 541
+}

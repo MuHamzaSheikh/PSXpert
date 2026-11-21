@@ -1,0 +1,10 @@
+{
+  "rule": "Every 20 sessions pick top 5 bullish stocks (p_bullish >= 0.40). Entry at t+1 close, exit at t+21 close.",
+  "friction_bps": 40,
+  "holding_periods": 23,
+  "cagr_pct": 53.73783737370121,
+  "max_drawdown_pct": -3.603141721193119,
+  "annualized_volatility_pct": 20.523893453137056,
+  "sharpe_ratio": 1.8874507150484243,
+  "mean_turnover_pct": 45.43478260869565
+}

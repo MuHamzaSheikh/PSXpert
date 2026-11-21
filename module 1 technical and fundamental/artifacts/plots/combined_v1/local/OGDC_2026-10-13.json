@@ -1,0 +1,733 @@
+{
+  "ticker": "OGDC",
+  "prediction_horizon_trading_days": 20,
+  "prediction_timestamp": "2026-10-13T23:59:59+05:00",
+  "requested_as_of_timestamp": "2026-11-16T14:00:00+05:00",
+  "model_training_cutoff": "2025-11-14T23:59:59+05:00",
+  "predicted_direction": "BULLISH",
+  "direction_probabilities": {
+    "BEARISH": 0.19094270244261036,
+    "SIDEWAYS": 0.29844984085400733,
+    "BULLISH": 0.5106074567033824
+  },
+  "expected_return_pct": 2.3877687454223633,
+  "technical_score": -39.4,
+  "fundamental_score": 87.1,
+  "model_version": "combined_v1",
+  "probabilities_calibrated": true,
+  "price_basis": "unadjusted close; price return excluding dividends",
+  "feature_freshness": {
+    "price_date": "2026-10-13",
+    "price_age_calendar_days": 34,
+    "price_source": "database",
+    "price_origin": "SARMAAYA_API",
+    "period_end_date": "2026-06-30",
+    "publication_date": "2026-09-25",
+    "publication_timestamp": null,
+    "available_from_timestamp": "2026-09-26T00:00:00+05:00",
+    "fundamental_source": "company_financials: IMMAD_BABER_PSX_DATA",
+    "filing_source": "corporate_announcements: PSX_DPS annual report transmission",
+    "missing_features": [
+      "atr_pct",
+      "intraday_range_pct",
+      "revenue_growth_yoy_pct",
+      "net_income_growth_yoy_pct",
+      "bank_net_interest_over_assets_pct"
+    ]
+  },
+  "feature_explanations": {
+    "direction_output_scale": "uncalibrated logit",
+    "return_output_scale": "percentage points",
+    "direction_by_class": {
+      "BEARISH": {
+        "base_value": -0.1305600255727768,
+        "output": -0.7344159483909607,
+        "group_totals": {
+          "technical": -0.28586989627729054,
+          "fundamental": -0.3179860064992681
+        },
+        "features": [
+          {
+            "feature": "eps_pkr",
+            "group": "fundamental",
+            "contribution": -0.19780930876731873
+          },
+          {
+            "feature": "volatility_20_pct",
+            "group": "technical",
+            "contribution": -0.11013521254062653
+          },
+          {
+            "feature": "rsi_14",
+            "group": "technical",
+            "contribution": -0.10296197235584259
+          },
+          {
+            "feature": "debt_to_equity",
+            "group": "fundamental",
+            "contribution": -0.10160095244646072
+          },
+          {
+            "feature": "macd_signal_pct",
+            "group": "technical",
+            "contribution": -0.08651110529899597
+          },
+          {
+            "feature": "close_vs_sma_50_pct",
+            "group": "technical",
+            "contribution": -0.03810875117778778
+          },
+          {
+            "feature": "atr_pct",
+            "group": "technical",
+            "contribution": 0.03134315088391304
+          },
+          {
+            "feature": "ocf_to_net_income_ratio",
+            "group": "fundamental",
+            "contribution": 0.02595619112253189
+          },
+          {
+            "feature": "net_margin_pct",
+            "group": "fundamental",
+            "contribution": -0.0243070051074028
+          },
+          {
+            "feature": "pb_ratio",
+            "group": "fundamental",
+            "contribution": -0.021313512697815895
+          },
+          {
+            "feature": "pe_ratio",
+            "group": "fundamental",
+            "contribution": -0.017723768949508667
+          },
+          {
+            "feature": "close_vs_ema_50_pct",
+            "group": "technical",
+            "contribution": -0.011134215630590916
+          },
+          {
+            "feature": "bb_bandwidth",
+            "group": "technical",
+            "contribution": 0.010840440168976784
+          },
+          {
+            "feature": "obv_change_20_scaled",
+            "group": "technical",
+            "contribution": 0.009664776735007763
+          },
+          {
+            "feature": "fcf_margin_pct",
+            "group": "fundamental",
+            "contribution": 0.009408882819116116
+          },
+          {
+            "feature": "macd_hist_pct",
+            "group": "technical",
+            "contribution": 0.0069532920606434345
+          },
+          {
+            "feature": "revenue_growth_yoy_pct",
+            "group": "fundamental",
+            "contribution": 0.003913738299161196
+          },
+          {
+            "feature": "roa_pct",
+            "group": "fundamental",
+            "contribution": 0.002768502105027437
+          },
+          {
+            "feature": "bb_lower_pct",
+            "group": "technical",
+            "contribution": 0.0019645760767161846
+          },
+          {
+            "feature": "bb_percent_b",
+            "group": "technical",
+            "contribution": 0.0019100718200206757
+          },
+          {
+            "feature": "roe_pct",
+            "group": "fundamental",
+            "contribution": 0.0013907419051975012
+          },
+          {
+            "feature": "net_income_growth_yoy_pct",
+            "group": "fundamental",
+            "contribution": 0.0010663828579708934
+          },
+          {
+            "feature": "close_vs_ema_20_pct",
+            "group": "technical",
+            "contribution": 0.0008753830334171653
+          },
+          {
+            "feature": "intraday_range_pct",
+            "group": "technical",
+            "contribution": 0.0007466456154361367
+          },
+          {
+            "feature": "momentum_20_pct",
+            "group": "technical",
+            "contribution": -0.0006126880762167275
+          },
+          {
+            "feature": "momentum_5_pct",
+            "group": "technical",
+            "contribution": -0.0004517441557254642
+          },
+          {
+            "feature": "macd_pct",
+            "group": "technical",
+            "contribution": -0.0004441823111847043
+          },
+          {
+            "feature": "bb_upper_pct",
+            "group": "technical",
+            "contribution": 0.00029978982638567686
+          },
+          {
+            "feature": "bank_net_interest_over_assets_pct",
+            "group": "fundamental",
+            "contribution": 0.0002641023602336645
+          },
+          {
+            "feature": "volume_vs_20",
+            "group": "technical",
+            "contribution": -6.476699491031468e-05
+          },
+          {
+            "feature": "close_vs_sma_20_pct",
+            "group": "technical",
+            "contribution": -3.527294029481709e-05
+          },
+          {
+            "feature": "close_change_pct",
+            "group": "technical",
+            "contribution": -8.11101563158445e-06
+          }
+        ]
+      },
+      "SIDEWAYS": {
+        "base_value": -0.21790720522403717,
+        "output": -0.2513720691204071,
+        "group_totals": {
+          "technical": 0.10263409436083748,
+          "fundamental": -0.13609894554247148
+        },
+        "features": [
+          {
+            "feature": "debt_to_equity",
+            "group": "fundamental",
+            "contribution": -0.10556208342313766
+          },
+          {
+            "feature": "close_vs_ema_50_pct",
+            "group": "technical",
+            "contribution": 0.07263927161693573
+          },
+          {
+            "feature": "macd_hist_pct",
+            "group": "technical",
+            "contribution": 0.04858257621526718
+          },
+          {
+            "feature": "rsi_14",
+            "group": "technical",
+            "contribution": -0.044049426913261414
+          },
+          {
+            "feature": "roe_pct",
+            "group": "fundamental",
+            "contribution": -0.043269332498311996
+          },
+          {
+            "feature": "volatility_20_pct",
+            "group": "technical",
+            "contribution": 0.03027106262743473
+          },
+          {
+            "feature": "roa_pct",
+            "group": "fundamental",
+            "contribution": 0.021704575046896935
+          },
+          {
+            "feature": "macd_signal_pct",
+            "group": "technical",
+            "contribution": -0.01977543532848358
+          },
+          {
+            "feature": "bb_bandwidth",
+            "group": "technical",
+            "contribution": -0.018712013959884644
+          },
+          {
+            "feature": "eps_pkr",
+            "group": "fundamental",
+            "contribution": 0.018457047641277313
+          },
+          {
+            "feature": "volume_vs_20",
+            "group": "technical",
+            "contribution": -0.016754508018493652
+          },
+          {
+            "feature": "atr_pct",
+            "group": "technical",
+            "contribution": -0.016083428636193275
+          },
+          {
+            "feature": "bb_lower_pct",
+            "group": "technical",
+            "contribution": 0.014659550040960312
+          },
+          {
+            "feature": "macd_pct",
+            "group": "technical",
+            "contribution": 0.01252253632992506
+          },
+          {
+            "feature": "close_vs_sma_20_pct",
+            "group": "technical",
+            "contribution": 0.011259823106229305
+          },
+          {
+            "feature": "momentum_20_pct",
+            "group": "technical",
+            "contribution": 0.01056037936359644
+          },
+          {
+            "feature": "momentum_5_pct",
+            "group": "technical",
+            "contribution": 0.008468584157526493
+          },
+          {
+            "feature": "pe_ratio",
+            "group": "fundamental",
+            "contribution": -0.008290211670100689
+          },
+          {
+            "feature": "bank_net_interest_over_assets_pct",
+            "group": "fundamental",
+            "contribution": -0.007814583368599415
+          },
+          {
+            "feature": "fcf_margin_pct",
+            "group": "fundamental",
+            "contribution": -0.006868853699415922
+          },
+          {
+            "feature": "close_vs_sma_50_pct",
+            "group": "technical",
+            "contribution": 0.006153089459985495
+          },
+          {
+            "feature": "close_vs_ema_20_pct",
+            "group": "technical",
+            "contribution": 0.005604458972811699
+          },
+          {
+            "feature": "revenue_growth_yoy_pct",
+            "group": "fundamental",
+            "contribution": -0.004347395151853561
+          },
+          {
+            "feature": "obv_change_20_scaled",
+            "group": "technical",
+            "contribution": -0.00392093975096941
+          },
+          {
+            "feature": "net_margin_pct",
+            "group": "fundamental",
+            "contribution": 0.0026582861319184303
+          },
+          {
+            "feature": "pb_ratio",
+            "group": "fundamental",
+            "contribution": -0.0023943583946675062
+          },
+          {
+            "feature": "bb_upper_pct",
+            "group": "technical",
+            "contribution": 0.0011783696245402098
+          },
+          {
+            "feature": "bb_percent_b",
+            "group": "technical",
+            "contribution": 0.0004192788328509778
+          },
+          {
+            "feature": "intraday_range_pct",
+            "group": "technical",
+            "contribution": -0.0004188291495665908
+          },
+          {
+            "feature": "net_income_growth_yoy_pct",
+            "group": "fundamental",
+            "contribution": -0.00032614413066767156
+          },
+          {
+            "feature": "ocf_to_net_income_ratio",
+            "group": "fundamental",
+            "contribution": -4.589202580973506e-05
+          },
+          {
+            "feature": "close_change_pct",
+            "group": "technical",
+            "contribution": 2.9695769626414403e-05
+          }
+        ]
+      },
+      "BULLISH": {
+        "base_value": 0.347496896982193,
+        "output": 0.5242919921875,
+        "group_totals": {
+          "technical": 0.1345530280384537,
+          "fundamental": 0.04224206192884594
+        },
+        "features": [
+          {
+            "feature": "rsi_14",
+            "group": "technical",
+            "contribution": 0.15902535617351532
+          },
+          {
+            "feature": "debt_to_equity",
+            "group": "fundamental",
+            "contribution": 0.05516493320465088
+          },
+          {
+            "feature": "macd_hist_pct",
+            "group": "technical",
+            "contribution": -0.04220247268676758
+          },
+          {
+            "feature": "ocf_to_net_income_ratio",
+            "group": "fundamental",
+            "contribution": -0.0362943671643734
+          },
+          {
+            "feature": "macd_signal_pct",
+            "group": "technical",
+            "contribution": 0.021962376311421394
+          },
+          {
+            "feature": "net_margin_pct",
+            "group": "fundamental",
+            "contribution": 0.019074631854891777
+          },
+          {
+            "feature": "atr_pct",
+            "group": "technical",
+            "contribution": -0.016626115888357162
+          },
+          {
+            "feature": "volatility_20_pct",
+            "group": "technical",
+            "contribution": 0.015895292162895203
+          },
+          {
+            "feature": "momentum_20_pct",
+            "group": "technical",
+            "contribution": -0.015626823529601097
+          },
+          {
+            "feature": "eps_pkr",
+            "group": "fundamental",
+            "contribution": 0.015413794666528702
+          },
+          {
+            "feature": "fcf_margin_pct",
+            "group": "fundamental",
+            "contribution": 0.0148802874609828
+          },
+          {
+            "feature": "roa_pct",
+            "group": "fundamental",
+            "contribution": -0.01109285932034254
+          },
+          {
+            "feature": "revenue_growth_yoy_pct",
+            "group": "fundamental",
+            "contribution": -0.009844266809523106
+          },
+          {
+            "feature": "volume_vs_20",
+            "group": "technical",
+            "contribution": 0.009735067375004292
+          },
+          {
+            "feature": "pe_ratio",
+            "group": "fundamental",
+            "contribution": -0.00956549309194088
+          },
+          {
+            "feature": "close_vs_sma_50_pct",
+            "group": "technical",
+            "contribution": 0.007370746694505215
+          },
+          {
+            "feature": "roe_pct",
+            "group": "fundamental",
+            "contribution": 0.006685320753604174
+          },
+          {
+            "feature": "pb_ratio",
+            "group": "fundamental",
+            "contribution": -0.0055651296861469746
+          },
+          {
+            "feature": "close_vs_ema_50_pct",
+            "group": "technical",
+            "contribution": 0.005096760578453541
+          },
+          {
+            "feature": "bb_percent_b",
+            "group": "technical",
+            "contribution": -0.005058834794908762
+          },
+          {
+            "feature": "bank_net_interest_over_assets_pct",
+            "group": "fundamental",
+            "contribution": 0.004585706628859043
+          },
+          {
+            "feature": "bb_upper_pct",
+            "group": "technical",
+            "contribution": -0.002480884548276663
+          },
+          {
+            "feature": "macd_pct",
+            "group": "technical",
+            "contribution": 0.002363381441682577
+          },
+          {
+            "feature": "bb_bandwidth",
+            "group": "technical",
+            "contribution": -0.0019040970364585519
+          },
+          {
+            "feature": "close_vs_ema_20_pct",
+            "group": "technical",
+            "contribution": -0.0013174975756555796
+          },
+          {
+            "feature": "obv_change_20_scaled",
+            "group": "technical",
+            "contribution": -0.0012465573381632566
+          },
+          {
+            "feature": "net_income_growth_yoy_pct",
+            "group": "fundamental",
+            "contribution": -0.0012004965683445334
+          },
+          {
+            "feature": "momentum_5_pct",
+            "group": "technical",
+            "contribution": -0.0010217322269454598
+          },
+          {
+            "feature": "bb_lower_pct",
+            "group": "technical",
+            "contribution": 0.0005120458081364632
+          },
+          {
+            "feature": "intraday_range_pct",
+            "group": "technical",
+            "contribution": 8.685166540089995e-05
+          },
+          {
+            "feature": "close_change_pct",
+            "group": "technical",
+            "contribution": -1.2641675311897416e-05
+          },
+          {
+            "feature": "close_vs_sma_20_pct",
+            "group": "technical",
+            "contribution": 2.8071278848074144e-06
+          }
+        ]
+      }
+    },
+    "expected_return": {
+      "base_value": 4.179664611816406,
+      "output": 2.3877696990966797,
+      "group_totals": {
+        "technical": -0.3271173720713705,
+        "fundamental": -1.4647774058394134
+      },
+      "features": [
+        {
+          "feature": "ocf_to_net_income_ratio",
+          "group": "fundamental",
+          "contribution": -0.904661238193512
+        },
+        {
+          "feature": "roa_pct",
+          "group": "fundamental",
+          "contribution": -0.6123336553573608
+        },
+        {
+          "feature": "atr_pct",
+          "group": "technical",
+          "contribution": -0.27509352564811707
+        },
+        {
+          "feature": "revenue_growth_yoy_pct",
+          "group": "fundamental",
+          "contribution": -0.23964445292949677
+        },
+        {
+          "feature": "net_margin_pct",
+          "group": "fundamental",
+          "contribution": 0.22951409220695496
+        },
+        {
+          "feature": "macd_hist_pct",
+          "group": "technical",
+          "contribution": -0.2284947782754898
+        },
+        {
+          "feature": "pe_ratio",
+          "group": "fundamental",
+          "contribution": 0.19940337538719177
+        },
+        {
+          "feature": "volatility_20_pct",
+          "group": "technical",
+          "contribution": 0.1666785627603531
+        },
+        {
+          "feature": "bb_percent_b",
+          "group": "technical",
+          "contribution": -0.16568951308727264
+        },
+        {
+          "feature": "rsi_14",
+          "group": "technical",
+          "contribution": 0.15126417577266693
+        },
+        {
+          "feature": "debt_to_equity",
+          "group": "fundamental",
+          "contribution": -0.13220493495464325
+        },
+        {
+          "feature": "pb_ratio",
+          "group": "fundamental",
+          "contribution": -0.12919588387012482
+        },
+        {
+          "feature": "momentum_20_pct",
+          "group": "technical",
+          "contribution": -0.12677280604839325
+        },
+        {
+          "feature": "volume_vs_20",
+          "group": "technical",
+          "contribution": 0.11878688633441925
+        },
+        {
+          "feature": "fcf_margin_pct",
+          "group": "fundamental",
+          "contribution": 0.11158357560634613
+        },
+        {
+          "feature": "eps_pkr",
+          "group": "fundamental",
+          "contribution": 0.09627736359834671
+        },
+        {
+          "feature": "close_vs_sma_50_pct",
+          "group": "technical",
+          "contribution": 0.08141077309846878
+        },
+        {
+          "feature": "net_income_growth_yoy_pct",
+          "group": "fundamental",
+          "contribution": -0.0700400173664093
+        },
+        {
+          "feature": "macd_signal_pct",
+          "group": "technical",
+          "contribution": 0.0687878355383873
+        },
+        {
+          "feature": "obv_change_20_scaled",
+          "group": "technical",
+          "contribution": -0.06691905856132507
+        },
+        {
+          "feature": "close_vs_sma_20_pct",
+          "group": "technical",
+          "contribution": -0.055824022740125656
+        },
+        {
+          "feature": "close_vs_ema_50_pct",
+          "group": "technical",
+          "contribution": 0.040137674659490585
+        },
+        {
+          "feature": "bb_lower_pct",
+          "group": "technical",
+          "contribution": -0.035688355565071106
+        },
+        {
+          "feature": "macd_pct",
+          "group": "technical",
+          "contribution": 0.024221505969762802
+        },
+        {
+          "feature": "bank_net_interest_over_assets_pct",
+          "group": "fundamental",
+          "contribution": -0.016994919627904892
+        },
+        {
+          "feature": "bb_upper_pct",
+          "group": "technical",
+          "contribution": -0.010692669078707695
+        },
+        {
+          "feature": "intraday_range_pct",
+          "group": "technical",
+          "contribution": -0.007633518427610397
+        },
+        {
+          "feature": "bb_bandwidth",
+          "group": "technical",
+          "contribution": -0.004266726318746805
+        },
+        {
+          "feature": "roe_pct",
+          "group": "fundamental",
+          "contribution": 0.0035192896611988544
+        },
+        {
+          "feature": "close_vs_ema_20_pct",
+          "group": "technical",
+          "contribution": -0.0025237242225557566
+        },
+        {
+          "feature": "momentum_5_pct",
+          "group": "technical",
+          "contribution": 0.0011939117684960365
+        },
+        {
+          "feature": "close_change_pct",
+          "group": "technical",
+          "contribution": 0.0
+        }
+      ]
+    }
+  },
+  "pypsx_crosscheck": null,
+  "data_limitations": [
+    "Prices are unadjusted. Unverified splits or price errors can affect returns.",
+    "End-of-day signals use the latest completed database price date.",
+    "Date-only annual reports are eligible from the next Pakistan calendar day.",
+    "Statement snapshots do not provide a complete restatement or revision history.",
+    "The last completed ticker close is more than five calendar days old."
+  ],
+  "disclaimer": "Decision-support forecast; not guaranteed financial advice."
+}

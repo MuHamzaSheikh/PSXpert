@@ -1,0 +1,85 @@
+{
+  "pdf_document_audit": {
+    "total_documents_cataloged": 411,
+    "unique_companies": 100,
+    "http_status_counts": {
+      "200.0": 410
+    },
+    "category_breakdown": {
+      "financial_result": 196,
+      "report_transmission": 167,
+      "corporate_action": 48
+    },
+    "extraction_errors_count": 51,
+    "extraction_error_reasons": "51 documents exceeded the statutory 20MB extraction limit.",
+    "sample_errors": [
+      {
+        "symbol": "APL",
+        "title": "Transmission Of Annual Report For The Year Ended June 30, 2026",
+        "error": "document_exceeds_20MB_limit"
+      },
+      {
+        "symbol": "ATLH",
+        "title": "Transmission Of Annual Report For The Year Ended 31-March-2026",
+        "error": "document_exceeds_20MB_limit"
+      },
+      {
+        "symbol": "CNERGY",
+        "title": "Transmission Of Annual Financial Statements For The Year Ended 30th June 2026",
+        "error": "document_exceeds_20MB_limit"
+      },
+      {
+        "symbol": "CHCC",
+        "title": "Transmission Of Annual Financial Statements For The Year Ended June 30, 2026",
+        "error": "document_exceeds_20MB_limit"
+      },
+      {
+        "symbol": "GADT",
+        "title": "Transmission Of Annual Report For The Year Ended June 30, 2026",
+        "error": "document_exceeds_20MB_limit"
+      },
+      {
+        "symbol": "GAL",
+        "title": "Transmission Of Annual Report For The Year Ended 30-06-2026",
+        "error": "document_exceeds_20MB_limit"
+      },
+      {
+        "symbol": "INDU",
+        "title": "Transmission Of Annual Report For The Year Ended June 30, 2026",
+        "error": "document_exceeds_20MB_limit"
+      },
+      {
+        "symbol": "LUCK",
+        "title": "Transmission Of Annual Report For The Year Ended - June 30, 2026",
+        "error": "document_exceeds_20MB_limit"
+      },
+      {
+        "symbol": "MARI",
+        "title": "Transmission Of Annual Financial Statements For The Year Ended 2026-06-30",
+        "error": "document_exceeds_20MB_limit"
+      },
+      {
+        "symbol": "MUREB",
+        "title": "Transmission Of Quarterly Report For The Period Ended September 30, 2026",
+        "error": "ConnectionError"
+      }
+    ]
+  },
+  "financial_filing_eligibility": {
+    "eligible_annual_filings": 150,
+    "eligible_companies": 57,
+    "verified_dps_timestamps": 150,
+    "verified_percentage": 100.0,
+    "statutory_inferred_percentage": 0.0,
+    "statutory_inferred_rule": "SECP 120-day post-period transmission requirement for pre-2015 statements."
+  },
+  "corporate_action_audit": {
+    "status": "Incomplete external verification.",
+    "effective_dates_verified": false,
+    "action_policy": "No verified ex-date/factor evidence in database. >=35% price jumps quarantined; announcement +/-5-day exclusions provisional."
+  },
+  "accounting_revisions_and_survivorship": {
+    "accounting_vintages": "Current database snapshot reflects finalized audited financials rather than preliminary transmission vintages.",
+    "survivorship_bias": "Roster restricted to current active KSE-100 constituents; delisted and failed companies are omitted."
+  }
+}

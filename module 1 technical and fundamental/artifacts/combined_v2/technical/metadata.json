@@ -1,0 +1,86 @@
+{
+  "version": "combined_v2",
+  "feature_version": 2,
+  "experiment": "technical",
+  "selected": "xgb_d2_n160_extra1_weighted1:raw",
+  "configuration": {
+    "name": "xgb_d2_n160_extra1_weighted1",
+    "kind": "xgb",
+    "extra": true,
+    "weighted": true,
+    "parameters": {
+      "n_estimators": 160,
+      "max_depth": 2,
+      "learning_rate": 0.03,
+      "subsample": 0.85,
+      "colsample_bytree": 0.85,
+      "tree_method": "hist",
+      "n_jobs": 2,
+      "reg_lambda": 10,
+      "min_child_weight": 20
+    }
+  },
+  "features": [
+    "rsi_14",
+    "macd_pct",
+    "macd_signal_pct",
+    "macd_hist_pct",
+    "close_vs_sma_20_pct",
+    "close_vs_sma_50_pct",
+    "close_vs_ema_20_pct",
+    "close_vs_ema_50_pct",
+    "bb_upper_pct",
+    "bb_lower_pct",
+    "bb_bandwidth",
+    "bb_percent_b",
+    "atr_pct",
+    "obv_change_20_scaled",
+    "momentum_5_pct",
+    "momentum_20_pct",
+    "volatility_20_pct",
+    "volume_vs_20",
+    "intraday_range_pct",
+    "close_change_pct",
+    "relative_return_5",
+    "relative_return_20",
+    "relative_volume_prior20"
+  ],
+  "classes": [
+    "BEARISH",
+    "SIDEWAYS",
+    "BULLISH"
+  ],
+  "calibration": "raw",
+  "train": {
+    "rows": 22001,
+    "tickers": 54,
+    "first_signal": "2022-08-30T23:59:59+05:00",
+    "last_signal": "2025-04-09T23:59:59+05:00",
+    "last_label": "2025-05-09T23:59:59+05:00",
+    "classes": {
+      "BULLISH": 9826,
+      "BEARISH": 6425,
+      "SIDEWAYS": 5750
+    }
+  },
+  "calibration_window": {
+    "rows": 4866,
+    "tickers": 50,
+    "first_signal": "2025-05-19T23:59:59+05:00",
+    "last_signal": "2025-10-17T23:59:59+05:00",
+    "last_label": "2025-11-14T23:59:59+05:00",
+    "classes": {
+      "BULLISH": 2661,
+      "SIDEWAYS": 1240,
+      "BEARISH": 965
+    }
+  },
+  "horizon": 20,
+  "thresholds": [
+    -3,
+    3
+  ],
+  "seed": 42,
+  "embargo": 5,
+  "inference": "m1.v2.load_pair; research artifacts, not v1 API schema"
+}
