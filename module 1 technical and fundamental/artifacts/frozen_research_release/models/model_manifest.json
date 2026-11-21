@@ -1,0 +1,19 @@
+{
+  "fold_1": {
+    "fundamental": "cross_sectional_momentum_20_pct (heuristic formula)",
+    "technical": "sma_breakout_sigmoid (heuristic formula)"
+  },
+  "fold_2": {
+    "fundamental": "simple_value_composite (inv_pe + inv_pb)",
+    "technical": "fold_2_technical_xgboost.joblib",
+    "technical_sha256": "d1c5ffa486aa4bb57711ea7c273da5b6d83d93680e1b5beb13b6b33cb5fa8c1c"
+  },
+  "fold_3": {
+    "fundamental": "fold_3_fundamental_xgbranker.joblib",
+    "fundamental_sha256": "8fc64894d76c51bb6189bd177afa1ebe9db6f12d34dfe6f48d3d6a335d0c74da",
+    "technical": "fold_3_technical_xgboost.joblib",
+    "technical_sha256": "fc79407abe13d7cea15a03648eca49f77de705a40915d195fec38ef52dc7c0fb",
+    "technical_baseline_lr": "fold_3_technical_logistic_regression.joblib",
+    "technical_baseline_lr_sha256": "b065c3a64a3286b923f0e28306114c92dea356a229305c2036354c830d389724"
+  }
+}

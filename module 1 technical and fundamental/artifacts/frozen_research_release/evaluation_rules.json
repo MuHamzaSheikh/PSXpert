@@ -1,0 +1,40 @@
+{
+  "predeclared_horizons": {
+    "technical_horizon_sessions": 10,
+    "fundamental_horizon_sessions": 126
+  },
+  "review_schedule": {
+    "technical_review_cadence": "Quarterly (every ~63 sessions)",
+    "fundamental_review_cadence": "Annual (every 252 sessions)",
+    "minimum_technical_observations_for_evaluation": 60,
+    "minimum_fundamental_observations_for_evaluation": 252,
+    "small_sample_warning_threshold": 30
+  },
+  "evaluation_metrics": {
+    "technical_timing_primary": "Paired daily return difference with Newey-West HAC standard errors (lag 10), two-tailed p < 0.05",
+    "technical_timing_secondary": [
+      "PR-AUC vs base rate",
+      "Brier Score",
+      "Trade Win Rate",
+      "Sharpe Ratio",
+      "Max Drawdown"
+    ],
+    "fundamental_selection_primary": "NDCG@20% and top-quintile 126-session forward excess return over KSE-100",
+    "fundamental_selection_secondary": [
+      "Spearman Rank Correlation",
+      "Top vs Bottom Spread"
+    ]
+  },
+  "risk_limits": {
+    "max_drawdown_limit_pct": 25.0,
+    "action_on_breach": "Halt new entries for formal audit and model review.",
+    "max_single_position_pct": 10.0,
+    "leverage_limit": 1.0
+  },
+  "prohibited_practices": [
+    "Never claim predictive success from small samples (N < 60).",
+    "Never assert arbitrary fixed accuracy targets (e.g. 80-90%) on noisy financial asset returns.",
+    "Never overwrite historical predictions upon receipt of financial statement restatements.",
+    "Never evaluate trade outcomes before the exact target horizon has matured."
+  ]
+}

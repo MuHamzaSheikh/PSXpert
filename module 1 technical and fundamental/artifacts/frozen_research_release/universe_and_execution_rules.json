@@ -1,0 +1,35 @@
+{
+  "universe_definition": "Liquid PSX equities with active OHLCV quotes and quarterly published fundamentals.",
+  "eligibility_gate": "Point-in-time publication date verified (published_date <= decision_session).",
+  "heuristic_quarantine": "Provisional exclusion bounds (+/- 5 sessions around announcement and jumps >= 35%).",
+  "portfolio_allocation": {
+    "initial_capital_pkr": 10000000.0,
+    "max_positions": 10,
+    "max_position_weight": 0.1,
+    "cash_constraint": "Morning buys bounded strictly by prior session close cash (C_{s-1}). Zero leverage.",
+    "candidate_ordering": "Fundamental score descending. Alphabetical sorting strictly prohibited."
+  },
+  "execution_timing": {
+    "signal_generation": "Session t close (using data up to t close).",
+    "order_entry": "Session t+1 open (executable open price > 0, volume > 0).",
+    "holding_period_sessions": 10,
+    "order_exit": "Session t+10 close (executable close price > 0, volume > 0).",
+    "delayed_exit_policy": "Hold position if quote missing or halted at close until executable quote appears; never liquidate at entry price.",
+    "round_trip_friction_pct": 0.5,
+    "buy_fee_pct": 0.25,
+    "sell_fee_pct": 0.25
+  },
+  "liquidity_rules": {
+    "mode": "unconstrained_benchmark",
+    "max_volume_participation_pct": null,
+    "enforce_volume_positive": true,
+    "missing_volume_policy": {
+      "disabled_mode": "Contemporaneous volume Vs <= 0 rejects fill.",
+      "enabled_mode": "Lagged volume V_{s-1} <= 0 caps spend at 0.0 (rejects order)."
+    }
+  },
+  "decision_thresholds": {
+    "technical_gate_threshold": 0.5,
+    "fundamental_shortlist_top_fraction": 0.2
+  }
+}

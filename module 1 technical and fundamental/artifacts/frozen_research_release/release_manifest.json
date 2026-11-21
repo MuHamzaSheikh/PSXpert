@@ -1,0 +1,20 @@
+{
+  "release_version": "v1.0.0-frozen",
+  "release_timestamp": "2026-11-18T17:46:14.467961+00:00",
+  "input_data_hashes": {
+    "decision_panel_v2.csv": "d9120f2b4903c9a176dd7a9f49e6df5a7ed5b8f37f301dcc60a6aa608b308765",
+    "raw_unadjusted_prices.csv": "ebb855d75150a18aab6c9060c3dd8d5fb753d91f80ab2d391134081cca510650",
+    "audited_benchmark.csv": "0b83109f84a2c4ce2667adb953462c665e640d886b399337d313844b952f32a2"
+  },
+  "release_files": {
+    "environment_and_dependencies.json": "05d22f863510f107870f101b4b49c0ee5f7d5a3a75e88f3a35ad34659dccec5b",
+    "evaluation_rules.json": "6ac3c643a12c862bb01affa0be56f5323dd1d1d4d8c0b2ca4d225c597fb571bd",
+    "feature_schema.json": "04dd33f816f08901f65556103e002a7c64b9a425767f475ac717711f8260bbc1",
+    "universe_and_execution_rules.json": "b432d7778c6ee5d2a93fba0fb2e92cd24af1c4fc7ac6d04217f5c1d1f224f211",
+    "models/fold_2_technical_xgboost.joblib": "d1c5ffa486aa4bb57711ea7c273da5b6d83d93680e1b5beb13b6b33cb5fa8c1c",
+    "models/fold_3_fundamental_xgbranker.joblib": "8fc64894d76c51bb6189bd177afa1ebe9db6f12d34dfe6f48d3d6a335d0c74da",
+    "models/fold_3_technical_logistic_regression.joblib": "b065c3a64a3286b923f0e28306114c92dea356a229305c2036354c830d389724",
+    "models/fold_3_technical_xgboost.joblib": "fc79407abe13d7cea15a03648eca49f77de705a40915d195fec38ef52dc7c0fb",
+    "models/model_manifest.json": "2d0d9afcc139bc0614f53dfed720b6ce22d2399b271ea34c71978fc283ce2dd1"
+  }
+}

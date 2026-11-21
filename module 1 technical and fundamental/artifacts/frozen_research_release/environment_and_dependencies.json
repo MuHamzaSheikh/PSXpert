@@ -1,0 +1,12 @@
+{
+  "python_version": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "win32",
+  "packages": {
+    "xgboost": "3.4.1",
+    "scikit-learn": "1.7.2",
+    "pandas": "2.3.2",
+    "numpy": "2.2.6",
+    "joblib": "1.5.2"
+  },
+  "freeze_timestamp": "2026-11-18T17:46:14.467961+00:00"
+}

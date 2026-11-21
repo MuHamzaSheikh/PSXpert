@@ -1,0 +1,56 @@
+{
+  "fundamental_features": [
+    "eps_pkr",
+    "roe_pct",
+    "roa_pct",
+    "pe_ratio",
+    "pb_ratio",
+    "debt_to_equity",
+    "revenue_growth_yoy_pct",
+    "net_income_growth_yoy_pct",
+    "net_margin_pct",
+    "fcf_margin_pct",
+    "ocf_to_net_income_ratio",
+    "bank_net_interest_over_assets_pct"
+  ],
+  "technical_features": [
+    "rsi_14",
+    "macd_pct",
+    "macd_signal_pct",
+    "macd_hist_pct",
+    "close_vs_sma_20_pct",
+    "close_vs_sma_50_pct",
+    "close_vs_ema_20_pct",
+    "close_vs_ema_50_pct",
+    "bb_upper_pct",
+    "bb_lower_pct",
+    "bb_bandwidth",
+    "bb_percent_b",
+    "atr_pct",
+    "obv_change_20_scaled",
+    "momentum_5_pct",
+    "momentum_20_pct",
+    "volatility_20_pct",
+    "volume_vs_20",
+    "intraday_range_pct",
+    "close_change_pct"
+  ],
+  "imputation": {
+    "fundamental": "median with indicator or rank percentile",
+    "technical": "median with StandardScaler for linear baselines; native missing handling for XGBoost"
+  },
+  "target_definitions": {
+    "fundamental": {
+      "horizon_sessions": 126,
+      "type": "ranking_excess_return",
+      "benchmark": "audited_benchmark.csv (KSE-100)",
+      "description": "Forward 126-session cumulative stock return minus benchmark return."
+    },
+    "technical": {
+      "horizon_sessions": 10,
+      "type": "binary_hurdle",
+      "hurdle_pct": 2.0,
+      "description": "Binary flag indicating forward 10-session stock return > benchmark return + 2.0% hurdle."
+    }
+  }
+}
