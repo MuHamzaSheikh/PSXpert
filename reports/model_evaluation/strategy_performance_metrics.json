@@ -1,0 +1,83 @@
+{
+  "evaluation_timestamp": "2026-11-23T20:10:58.168005",
+  "out_of_sample_period": {
+    "start_date": "2024-07-09",
+    "end_date": "2026-09-08",
+    "rebalance_sessions_count": 30,
+    "rebalance_frequency": "Every 21 Trading Sessions (~Monthly)",
+    "transaction_cost_bps": 50.0,
+    "max_stock_weight_cap": 0.1,
+    "execution_price": "Next-Session Open (O[t+1])"
+  },
+  "benchmark_kse100": {
+    "cumulative_return_pct": 183.72,
+    "annualized_cagr_pct": 51.76
+  },
+  "strategy_comparison": {
+    "Simple Value Composite": {
+      "financial_performance": {
+        "cumulative_portfolio_return_pct": 200.03,
+        "cumulative_benchmark_return_pct": 183.72,
+        "excess_alpha_return_pct": 16.31,
+        "annualized_cagr_pct": 55.19,
+        "benchmark_cagr_pct": 51.76,
+        "annualized_volatility_pct": 73.77,
+        "sharpe_ratio": 0.54,
+        "max_drawdown_pct": -20.52,
+        "avg_monthly_turnover_pct": 10.17,
+        "rebalance_periods_count": 30
+      },
+      "ranking_quality": {
+        "mean_spearman_rank_ic": 0.0568,
+        "mean_ndcg_at_5": 0.5055,
+        "mean_ndcg_at_10": 0.5048,
+        "valid_ranking_dates_count": 22
+      }
+    },
+    "Cross-Sectional Momentum": {
+      "financial_performance": {
+        "cumulative_portfolio_return_pct": 121.25,
+        "cumulative_benchmark_return_pct": 183.72,
+        "excess_alpha_return_pct": -62.47,
+        "annualized_cagr_pct": 37.39,
+        "benchmark_cagr_pct": 51.76,
+        "annualized_volatility_pct": 51.59,
+        "sharpe_ratio": 0.43,
+        "max_drawdown_pct": -28.03,
+        "avg_monthly_turnover_pct": 24.26,
+        "rebalance_periods_count": 30
+      },
+      "ranking_quality": {
+        "mean_spearman_rank_ic": -0.0379,
+        "mean_ndcg_at_5": 0.3795,
+        "mean_ndcg_at_10": 0.4239,
+        "valid_ranking_dates_count": 22
+      }
+    },
+    "Existing XGBRanker": {
+      "financial_performance": {
+        "cumulative_portfolio_return_pct": 383.86,
+        "cumulative_benchmark_return_pct": 183.72,
+        "excess_alpha_return_pct": 200.14,
+        "annualized_cagr_pct": 87.88,
+        "benchmark_cagr_pct": 51.76,
+        "annualized_volatility_pct": 60.37,
+        "sharpe_ratio": 1.21,
+        "max_drawdown_pct": -13.59,
+        "avg_monthly_turnover_pct": 22.42,
+        "rebalance_periods_count": 30
+      },
+      "ranking_quality": {
+        "mean_spearman_rank_ic": 0.0723,
+        "mean_ndcg_at_5": 0.4599,
+        "mean_ndcg_at_10": 0.4822,
+        "valid_ranking_dates_count": 22
+      }
+    }
+  },
+  "eligible_universe_coverage": {
+    "mean_eligible_stocks_per_rebalance": 92.4,
+    "mean_stocks_with_fundamentals": 91.8,
+    "mean_fundamental_coverage_pct": 99.4
+  }
+}
