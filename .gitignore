@@ -21,6 +21,21 @@ catboost_info/
 data/predictive/*.parquet
 data/predictive/daily_targets_kse100_sample.csv
 reports/ml/*.parquet
+reports/model_evaluation/*.parquet
 
 # Legacy v1 local model cache (superseded by artifacts/)
 models/
+
+# Scraped raw dumps and archives
+data/collected/
+module 1 technical and fundamental/data/
+module 1 technical and fundamental/.qa/
+module 1 technical and fundamental/catboost_info/
+module 1 technical and fundamental/artifacts/.matplotlib/
+psx all data.zip
+psx all data/
+archive/
+
+# Large candidate evaluation ledgers
+reports/model_evaluation/monthly_candidates_ledger.csv
+
