@@ -1,0 +1,43 @@
+symbol,company_name,sector,is_bank,reason
+AHCL,Arif Habib Corporation Limited,FERTILIZER,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+AICL,Adamjee Insurance Company Limited,INSURANCE,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+BNWM,Bannu Woollen Mills Limited,WOOLLEN,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+CPHL,Citi Pharma Ltd.,PHARMACEUTICALS,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+DCR,Dolmen City REIT,REAL ESTATE INVESTMENT TRUST,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+DGKC,D.G. Khan Cement Company Limited,CEMENT,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+ENGROH,Engro Holdings Limited,INV. BANKS / INV. COS. / SECURITIES COS.,True,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+FFL,Fauji Foods Limited,FOOD & PERSONAL CARE PRODUCTS,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+FHAM,First Habib Modaraba,MODARABAS,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+GAL,Ghandhara Automobiles Limited,AUTOMOBILE ASSEMBLER,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+GHGL,Ghani Glass Limited,GLASS & CERAMICS,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+GHNI,Ghandhara Industries Limited,AUTOMOBILE ASSEMBLER,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+HGFA,HBL Growth Fund,CLOSE - END MUTUAL FUND,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+HINOON,Highnoon Laboratories Limited,PHARMACEUTICALS,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+HUBC,The Hub Power Company Limited,POWER GENERATION & DISTRIBUTION,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+IBFL,Ibrahim Fibres Limited,SYNTHETIC & RAYON,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+ILP,Interloop Limited,TEXTILE COMPOSITE,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+ISL,International Steels Limited,ENGINEERING,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+JDWS,JDW Sugar Mills Limited,SUGAR & ALLIED INDUSTRIES,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+JVDC,Javedan Corporation Limited,PROPERTY,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+KEL,K-Electric Limited,POWER GENERATION & DISTRIBUTION,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+LOTCHEM,Lotte Chemical Pakistan Limited,CHEMICAL,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+MARI,Mari Energies Limited,OIL & GAS EXPLORATION COMPANIES,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+MUREB,Murree Brewery Company Limited,FOOD & PERSONAL CARE PRODUCTS,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+NCPL,Nishat Chunian Power Limited,POWER GENERATION & DISTRIBUTION,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+NPL,Nishat Power Limited,POWER GENERATION & DISTRIBUTION,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+PAKT,Pakistan Tobacco Company Limited,TOBACCO,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+PGLC,Pak-Gulf Leasing Company Limited,LEASING COMPANIES,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+PKGS,Packages Limited,"PAPER, BOARD & PACKAGING",False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+PSEL,Pakistan Services Limited,MISCELLANEOUS,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+PSX,Pakistan Stock Exchange Limited,INV. BANKS / INV. COS. / SECURITIES COS.,True,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+PTC,Pakistan Telecommunication Company Ltd,TECHNOLOGY & COMMUNICATION,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+SEARL,The Searle Company Limited,PHARMACEUTICALS,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+SHFA,Shifa International Hospitals Limited,MISCELLANEOUS,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+SRVI,Service Industries Limited,LEATHER & TANNERIES,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+SSOM,S.S.Oil Mills Limited,VANASPATI & ALLIED INDUSTRIES,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+TGL,Tariq Glass Industries Limited,GLASS & CERAMICS,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+THALL,Thal Limited,AUTOMOBILE PARTS & ACCESSORIES,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+THCCL,Thatta Cement Company Limited,CEMENT,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+TPLRF1,TPL REIT Fund I,REAL ESTATE INVESTMENT TRUST,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+UPFL,Unilever Pakistan Foods Limited,FOOD & PERSONAL CARE PRODUCTS,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
+YOUW,Yousaf Weaving Mills Limited,TEXTILE WEAVING,False,No match found in SBP Archive or Bank publications; relies on PSX announcements and relational filings only
