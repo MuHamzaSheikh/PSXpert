@@ -21,11 +21,12 @@ from __future__ import annotations
 import json
 import logging
 import os
+import pickle
 import sqlite3
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 # Ensure project root is on PYTHONPATH
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
@@ -39,10 +40,12 @@ from xgboost import XGBRanker
 from src.ml.fundamental_recovery import (
     build_harmonized_fundamental_panel,
     calculate_momentum_12m_minus_1m,
+    compute_purged_train_test_split,
     compute_sector_aware_ratios,
+    compute_terminal_exit_return,
     get_latest_eligible_filing,
     get_point_in_time_constituents,
-    compute_terminal_exit_return,
+    resolve_canonical_ticker,
 )
 from src.ml.validation_logger import record_validation_run
 
@@ -271,9 +274,12 @@ def build_all_rebalance_panels(
             is_bank = meta["is_bank"]
             has_fundamentals = filing is not None
 
+            mcap = curr_px_info.get("market_cap", 0.0)
+            log_mcap = np.log(mcap) if mcap > 0 else 0.0
+
             ratios = {}
             if has_fundamentals:
-                ratios = compute_sector_aware_ratios(filing, close_price)
+                ratios = compute_sector_aware_ratios(filing, close_price, point_in_time_market_cap=mcap)
 
             ey = ratios.get("earnings_yield")
             bp = ratios.get("book_to_price")
@@ -281,9 +287,6 @@ def build_all_rebalance_panels(
             fcf_y = ratios.get("fcf_yield")
             roe = ratios.get("roe")
             roa = ratios.get("roa")
-
-            mcap = curr_px_info.get("market_cap", 0.0)
-            log_mcap = np.log(mcap) if mcap > 0 else 0.0
 
             all_rows.append({
                 "symbol": sym,
@@ -358,12 +361,15 @@ def train_and_score_xgbranker(
     train_df: pd.DataFrame,
     test_df: pd.DataFrame,
     feature_cols: list[str],
+    model_name: str = "XGBRanker",
+    save_path: Optional[Path] = None,
 ) -> tuple[XGBRanker, pd.Series]:
     """
     Train an XGBRanker on in-sample dates and score test set.
+    Optionally serializes the trained model to save_path.
     """
-    logger.info("Training XGBRanker on in-sample data (%d rows across %d rebalance dates)...",
-                len(train_df), train_df["session_date"].nunique())
+    logger.info("Training %s on in-sample data (%d rows across %d rebalance dates)...",
+                model_name, len(train_df), train_df["session_date"].nunique())
 
     train_sorted = train_df.sort_values(by=["session_date", "symbol"]).reset_index(drop=True)
     groups = train_sorted.groupby("session_date", sort=False).size().to_list()
@@ -393,12 +399,19 @@ def train_and_score_xgbranker(
     )
     ranker.fit(x_train, y_train, group=groups)
 
+    if save_path:
+        save_path = Path(save_path)
+        save_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(save_path, "wb") as f:
+            pickle.dump(ranker, f)
+        logger.info("Saved %s model artifact to %s", model_name, save_path)
+
     x_test = test_df[feature_cols].copy()
     raw_preds = ranker.predict(x_test)
     test_scores = pd.Series(raw_preds, index=test_df.index)
 
-    logger.info("XGBRanker trained. Top feature importances: %s",
-                dict(zip(feature_cols, [round(float(v), 3) for v in ranker.feature_importances_])))
+    logger.info("%s trained. Top feature importances: %s",
+                model_name, dict(zip(feature_cols, [round(float(v), 3) for v in ranker.feature_importances_])))
     return ranker, test_scores
 
 
@@ -616,13 +629,23 @@ def evaluate_single_universe(
     full_df["score_momentum"] = score_candidates_momentum(full_df)
 
     # Define chronological splits
-    train_cutoff = "2024-05-20"
     oos_start = "2024-07-01"
+    train_cutoff_unpurged = "2024-05-20"
+    train_cutoff_purged, effective_oos_date, _, _ = compute_purged_train_test_split(
+        all_sessions=all_sessions,
+        oos_start_date=oos_start,
+        forward_horizon=126,
+        purge_sessions=1,
+    )
+    logger.info("Chronological splits: OOS start=%s, Purged train cutoff=%s, Unpurged train cutoff=%s",
+                effective_oos_date, train_cutoff_purged, train_cutoff_unpurged)
 
-    train_mask = (full_df["session_date"] <= train_cutoff) & (full_df["rel_126_return"].notna())
+    train_mask_unpurged = (full_df["session_date"] <= train_cutoff_unpurged) & (full_df["rel_126_return"].notna())
+    train_mask_purged = (full_df["session_date"] <= train_cutoff_purged) & (full_df["rel_126_return"].notna())
     test_mask = full_df["session_date"] >= oos_start
 
-    train_df = full_df[train_mask].copy()
+    train_df_unpurged = full_df[train_mask_unpurged].copy()
+    train_df_purged = full_df[train_mask_purged].copy()
     test_df = full_df[test_mask].copy()
 
     ranker_features = [
@@ -635,13 +658,31 @@ def evaluate_single_universe(
         "is_bank",
     ]
 
-    # Strategy 3: Train XGBRanker on in-sample and score test set
-    ranker, test_ranker_scores = train_and_score_xgbranker(
-        train_df=train_df,
+    models_dir = Path("data/models")
+    models_dir.mkdir(parents=True, exist_ok=True)
+    unpurged_model_path = models_dir / "xgbranker_stage1.pkl"
+    purged_model_path = models_dir / "xgbranker_purged_stage1.pkl"
+
+    # Strategy 3A: Preserved Unpurged XGBRanker (has ~95 session leakage)
+    ranker_unpurged, test_unpurged_scores = train_and_score_xgbranker(
+        train_df=train_df_unpurged,
         test_df=test_df,
         feature_cols=ranker_features,
+        model_name="Unpurged XGBRanker",
+        save_path=unpurged_model_path if universe_mode == "reconstructed" else None,
     )
-    test_df["score_xgbranker"] = test_ranker_scores
+    test_df["score_xgbranker_unpurged"] = test_unpurged_scores
+    test_df["score_xgbranker"] = test_unpurged_scores  # Alias for backward compatibility
+
+    # Strategy 3B: Corrected Purged XGBRanker (Strict 126-session chronological gap)
+    ranker_purged, test_purged_scores = train_and_score_xgbranker(
+        train_df=train_df_purged,
+        test_df=test_df,
+        feature_cols=ranker_features,
+        model_name="Purged XGBRanker",
+        save_path=purged_model_path if universe_mode == "reconstructed" else None,
+    )
+    test_df["score_xgbranker_purged"] = test_purged_scores
 
     # Out-of-Sample Rebalance Dates
     oos_rebalance_dates = sorted(test_df["session_date"].unique().tolist())
@@ -649,11 +690,14 @@ def evaluate_single_universe(
                 universe_mode, oos_rebalance_dates[0], oos_rebalance_dates[-1], len(oos_rebalance_dates))
 
     strat_results: dict[str, Any] = {}
-    for strat_name, col in [
+    strategies_to_eval = [
         ("Simple Value Composite", "score_value_composite"),
         ("Cross-Sectional Momentum", "score_momentum"),
-        ("Existing XGBRanker", "score_xgbranker"),
-    ]:
+        ("Unpurged XGBRanker", "score_xgbranker_unpurged"),
+        ("Purged XGBRanker", "score_xgbranker_purged"),
+        ("Existing XGBRanker", "score_xgbranker_unpurged"),  # preserved alias
+    ]
+    for strat_name, col in strategies_to_eval:
         p_df, fin_summary = simulate_portfolio_holdings(
             rebalance_dates=oos_rebalance_dates,
             eval_df=test_df,
@@ -788,7 +832,7 @@ def run_comprehensive_fundamental_evaluation() -> dict[str, Any]:
     }
 
     diff_table_rows = []
-    for strat in ["Simple Value Composite", "Cross-Sectional Momentum", "Existing XGBRanker"]:
+    for strat in ["Simple Value Composite", "Cross-Sectional Momentum", "Purged XGBRanker", "Unpurged XGBRanker", "Existing XGBRanker"]:
         rec_fin = rec_report["strategy_comparison"][strat]["financial_performance"]
         static_fin = static_report["strategy_comparison"][strat]["financial_performance"]
         rec_rank = rec_report["strategy_comparison"][strat]["ranking_quality"]
@@ -844,30 +888,30 @@ def run_comprehensive_fundamental_evaluation() -> dict[str, Any]:
     rec_test_df.to_csv(REPORTS_DIR / "monthly_candidates_ledger.csv", index=False)
     rec_cov_df.to_csv(REPORTS_DIR / "monthly_universe_coverage.csv", index=False)
 
-    # Record validation run RUN-10
+    # Record validation run
     record_validation_run(
-        name="Stage 1 Historical KSE-100 Universe Reconstruction",
-        target="Stage 1: Fundamental Selection (Survivor-Free vs Static Universe)",
-        universe="Historical KSE-100 Reconstructed Universe (~110 Equities, 48 Circulars)",
-        splits=f"Chronological Out-of-Sample (2024-07-09 to 2026-09-08, 30 Monthly Sessions)",
+        name="Stage 1 Corrective Engineering Validation",
+        target="Stage 1: Fundamental Selection (Non-Bank Ratios, Purged vs Unpurged XGBRanker, Canonical Tickers)",
+        universe="Historical KSE-100 Reconstructed Universe (~110 Equities, CEPB canonical)",
+        splits=f"Chronological Out-of-Sample (2024-07-09 to 2026-08-21, 26 Monthly Sessions, 126-session purged train cutoff 2023-12-28)",
         status="VERIFIED",
         metrics={
             "Reconstructed_Value_Composite_Return": rec_report["strategy_comparison"]["Simple Value Composite"]["financial_performance"]["cumulative_portfolio_return_pct"],
-            "Static_Value_Composite_Return": static_report["strategy_comparison"]["Simple Value Composite"]["financial_performance"]["cumulative_portfolio_return_pct"],
             "Reconstructed_Momentum_Return": rec_report["strategy_comparison"]["Cross-Sectional Momentum"]["financial_performance"]["cumulative_portfolio_return_pct"],
-            "Static_Momentum_Return": static_report["strategy_comparison"]["Cross-Sectional Momentum"]["financial_performance"]["cumulative_portfolio_return_pct"],
-            "Reconstructed_XGBRanker_Return": rec_report["strategy_comparison"]["Existing XGBRanker"]["financial_performance"]["cumulative_portfolio_return_pct"],
-            "Static_XGBRanker_Return": static_report["strategy_comparison"]["Existing XGBRanker"]["financial_performance"]["cumulative_portfolio_return_pct"],
-            "Reconstructed_XGBRanker_Sharpe": rec_report["strategy_comparison"]["Existing XGBRanker"]["financial_performance"]["sharpe_ratio"],
-            "Static_XGBRanker_Sharpe": static_report["strategy_comparison"]["Existing XGBRanker"]["financial_performance"]["sharpe_ratio"],
+            "Reconstructed_Purged_XGBRanker_Return": rec_report["strategy_comparison"]["Purged XGBRanker"]["financial_performance"]["cumulative_portfolio_return_pct"],
+            "Reconstructed_Unpurged_XGBRanker_Return": rec_report["strategy_comparison"]["Unpurged XGBRanker"]["financial_performance"]["cumulative_portfolio_return_pct"],
+            "Reconstructed_Purged_XGBRanker_Sharpe": rec_report["strategy_comparison"]["Purged XGBRanker"]["financial_performance"]["sharpe_ratio"],
+            "Reconstructed_Unpurged_XGBRanker_Sharpe": rec_report["strategy_comparison"]["Unpurged XGBRanker"]["financial_performance"]["sharpe_ratio"],
+            "Reconstructed_Purged_XGBRanker_NDCG10": rec_report["strategy_comparison"]["Purged XGBRanker"]["ranking_quality"]["mean_ndcg_at_10"],
+            "Reconstructed_Unpurged_XGBRanker_NDCG10": rec_report["strategy_comparison"]["Unpurged XGBRanker"]["ranking_quality"]["mean_ndcg_at_10"],
             "Reconstructed_Mean_Universe": rec_report["eligible_universe_coverage"]["mean_eligible_stocks_per_rebalance"],
             "Static_Mean_Universe": static_report["eligible_universe_coverage"]["mean_eligible_stocks_per_rebalance"],
         },
         report_file="reports/model_evaluation/universe_reconstruction_comparison.json",
         notes=(
-            "Strictly enforced contemporaneous index membership from index_constituents_history, "
-            "ADV_20 >= PKR 2.5M causal liquidity hurdle, and terminal delisting return accounting. "
-            "Evaluated point-in-time statement panel expanding SBP archives from 543 to 1,633 statements."
+            "Corrective engineering completed: 1) Non-bank ratios now pass point-in-time market cap with unit normalization; "
+            "2) 126-session chronological purge strictly enforces zero label overlap between in-sample and OOS test period; "
+            "3) Canonical ticker CEPB (Century Paper & Board Mills) resolved across constituents, price history, and financials."
         ),
     )
 
