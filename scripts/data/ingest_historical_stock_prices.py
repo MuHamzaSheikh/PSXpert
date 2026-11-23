@@ -32,7 +32,7 @@ DB_PATH = DATA_DIR / "psxpert.db"
 HISTORICAL_SYMBOLS = [
     "UNITY", "PKGP", "AVN", "EFUG", "EPCL", "MUGHAL", "NPL", "AGL",
     "HUMNL", "PABC", "RMPL", "HASCOL", "ASL", "ANL", "GATM", "ARPL",
-    "SHJS", "NCL", "CPBM", "SPWL", "LPL", "CSAP", "BIPL", "KOSM",
+    "SHJS", "NCL", "CEPB", "SPWL", "LPL", "CSAP", "BIPL", "KOSM",
     "NRL", "HSM", "POML", "FCEPL", "SHEL"
 ]
 

@@ -523,13 +523,13 @@ def build_constituents_history() -> pd.DataFrame:
         "source_reference": "PSX Circular PSX/N-263 March 17, 2023", "is_verified": True,
         "verification_notes": "Excluded April 2023"
     })
-    # 31. CPBM: active up to 2024-09-30
+    # 31. CEPB (Century Paper & Board Mills, source circular cited CPBM): active up to 2024-09-30
     membership_intervals.append({
-        "index_symbol": "KSE100", "symbol": "CPBM", "company_name": "Century Paper & Board Mills Limited", "sector": "PAPER & BOARD",
+        "index_symbol": "KSE100", "symbol": "CEPB", "company_name": "Century Paper & Board Mills Limited", "sector": "PAPER, BOARD & PACKAGING",
         "effective_start_date": "2015-01-01", "effective_end_date": "2024-09-30",
         "inclusion_reason": "MARKET_CAP_RULE", "exclusion_reason": "MARKET_CAP_DEFICIT",
         "source_reference": "PSX Notice KSE-100 Recomposition September 2024", "is_verified": True,
-        "verification_notes": "Excluded October 2024"
+        "verification_notes": "Canonical ticker CEPB (source notice cited acronym CPBM). Excluded October 2024"
     })
     # 32. SPWL: active up to 2024-09-30
     membership_intervals.append({
