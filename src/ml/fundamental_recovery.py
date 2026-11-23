@@ -106,6 +106,15 @@ def build_harmonized_fundamental_panel() -> pd.DataFrame:
     3. State Bank Banking Sector Publications (2021-2025)
     Preserves actual period_end_date and tags verified vs estimated publication dates.
     """
+    # 0. Check if pre-compiled expanded harmonized panel exists
+    expanded_csv = DATA_DIR / "harmonized_historical_fundamentals.csv"
+    if expanded_csv.exists():
+        df_exp = pd.read_csv(expanded_csv)
+        if "pub_date_dt" not in df_exp.columns:
+            df_exp["pub_date_dt"] = pd.to_datetime(df_exp["publication_date"])
+        logger.info("Loaded expanded harmonized panel: %d statements across %d tickers.", len(df_exp), df_exp["symbol"].nunique())
+        return df_exp
+
     verified_announcements = load_verified_announcement_dates()
 
     # Load canonical companies metadata
@@ -242,31 +251,31 @@ def compute_sector_aware_ratios(
     else:
         market_cap = None
 
-    def safe_div(num: Any, den: Any) -> Optional[float]:
+    def safe_div(num: Any, den: Any) -> float:
         if num is None or den is None:
-            return None
+            return np.nan
         try:
             n, d = float(num), float(den)
             if not np.isfinite(n) or not np.isfinite(d) or abs(d) < 1e-7:
-                return None
-            return n / d
+                return np.nan
+            return float(n / d)
         except (ValueError, TypeError, ZeroDivisionError):
-            return None
+            return np.nan
 
     ratios: dict[str, Any] = {
         "is_bank": is_bank,
         "market_price": market_price,
-        "earnings_yield": None,
-        "book_to_price": None,
-        "price_to_book": None,
-        "roe": None,
-        "roa": None,
-        "fcf_yield": None,
-        "operating_margin": None,
-        "debt_to_equity": None,
-        "interest_coverage": None,
-        "net_interest_margin": None,
-        "cost_to_income": None,
+        "earnings_yield": np.nan,
+        "book_to_price": np.nan,
+        "price_to_book": np.nan,
+        "roe": np.nan,
+        "roa": np.nan,
+        "fcf_yield": np.nan,
+        "operating_margin": np.nan,
+        "debt_to_equity": np.nan,
+        "interest_coverage": np.nan,
+        "net_interest_margin": np.nan,
+        "cost_to_income": np.nan,
     }
 
     # General ratios (applicable across all corporate types)
@@ -362,3 +371,95 @@ def get_latest_eligible_filing(
 
     # Return the latest published statement
     return eligible.iloc[-1]
+
+
+def get_point_in_time_constituents(
+    as_of_session_date: str | date,
+    conn: Optional[sqlite3.Connection] = None,
+) -> list[str]:
+    """
+    Retrieve eligible KSE-100 constituents active on `as_of_session_date`.
+    Enforces point-in-time index membership:
+    effective_start_date <= date <= effective_end_date.
+    """
+    session_str = str(as_of_session_date).split(" ")[0].strip()
+    should_close = False
+    if conn is None:
+        conn = sqlite3.connect(DB_PATH)
+        should_close = True
+
+    cur = conn.cursor()
+    # Check if index_constituents_history exists
+    has_table = cur.execute(
+        "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='index_constituents_history'"
+    ).fetchone()[0]
+
+    if has_table:
+        query = """
+            SELECT DISTINCT symbol
+            FROM index_constituents_history
+            WHERE index_symbol = 'KSE100'
+              AND effective_start_date <= ?
+              AND effective_end_date >= ?
+            ORDER BY symbol ASC
+        """
+        rows = cur.execute(query, (session_str, session_str)).fetchall()
+        syms = [r[0] for r in rows]
+    else:
+        # Fallback to current companies
+        rows = cur.execute("SELECT symbol FROM companies WHERE is_kse100 = 1 ORDER BY symbol ASC").fetchall()
+        syms = [r[0] for r in rows]
+
+    if should_close:
+        conn.close()
+
+    return syms
+
+
+def compute_terminal_exit_return(
+    symbol: str,
+    event_date: str | date,
+    prior_price: float,
+    conn: Optional[sqlite3.Connection] = None,
+) -> tuple[float, str]:
+    """
+    Computes terminal exit return for a company experiencing delisting, suspension,
+    buyback, or default.
+    Returns: (exit_return, recovery_type)
+    """
+    if prior_price <= 0 or not np.isfinite(prior_price):
+        return -1.0, "ESTIMATED_ZERO_RECOVERY"
+
+    session_str = str(event_date).split(" ")[0].strip()
+    should_close = False
+    if conn is None:
+        conn = sqlite3.connect(DB_PATH)
+        should_close = True
+
+    cur = conn.cursor()
+    has_table = cur.execute(
+        "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='company_lifecycle_events'"
+    ).fetchone()[0]
+
+    if has_table:
+        row = cur.execute("""
+            SELECT recovery_value_pkr, recovery_type, event_type
+            FROM company_lifecycle_events
+            WHERE symbol = ? AND event_date <= ?
+            ORDER BY event_date DESC LIMIT 1
+        """, (symbol.upper().strip(), session_str)).fetchone()
+
+        if row and row[0] is not None:
+            recovery_val = float(row[0])
+            recovery_type = str(row[1])
+            exit_ret = float((recovery_val - prior_price) / prior_price)
+            if should_close:
+                conn.close()
+            return exit_ret, recovery_type
+
+    if should_close:
+        conn.close()
+
+    # Conservative default for unverified or unrecorded delistings: -100% loss
+    return -1.0, "ESTIMATED_ZERO_RECOVERY"
+

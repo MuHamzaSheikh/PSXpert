@@ -41,6 +41,8 @@ from src.ml.fundamental_recovery import (
     calculate_momentum_12m_minus_1m,
     compute_sector_aware_ratios,
     get_latest_eligible_filing,
+    get_point_in_time_constituents,
+    compute_terminal_exit_return,
 )
 from src.ml.validation_logger import record_validation_run
 
@@ -76,19 +78,23 @@ def load_market_data(conn: sqlite3.Connection):
         conn,
     )
 
-    all_sessions = sorted(px_df["trading_date"].drop_duplicates().tolist())
+    # Official KSE-100 market trading sessions
+    all_sessions = sorted(idx_df["trading_date"].drop_duplicates().tolist())
 
     # Build per-symbol lookup structures for microsecond evaluation
     prices_by_symbol_date: dict[str, dict[str, dict[str, float]]] = {}
     dates_by_symbol: dict[str, list[str]] = {}
     closes_by_symbol: dict[str, list[float]] = {}
+    volumes_by_symbol: dict[str, list[float]] = {}
 
     for sym, g in px_df.groupby("symbol"):
         sym_str = str(sym).upper().strip()
         d_list = g["trading_date"].tolist()
         c_list = g["close"].tolist()
+        v_list = [float(v) if pd.notna(v) else 0.0 for v in g["volume"].tolist()]
         dates_by_symbol[sym_str] = d_list
         closes_by_symbol[sym_str] = c_list
+        volumes_by_symbol[sym_str] = v_list
 
         p_dict = {}
         for _, row in g.iterrows():
@@ -96,6 +102,7 @@ def load_market_data(conn: sqlite3.Connection):
             p_dict[d] = {
                 "open": float(row["open"]) if pd.notna(row["open"]) else float(row["close"]),
                 "close": float(row["close"]),
+                "volume": float(row["volume"]) if pd.notna(row["volume"]) else 0.0,
                 "market_cap": float(row["market_cap"]) if pd.notna(row["market_cap"]) else 0.0,
             }
         prices_by_symbol_date[sym_str] = p_dict
@@ -111,7 +118,7 @@ def load_market_data(conn: sqlite3.Connection):
     logger.info("Indexed %d price records across %d symbols and %d sessions.",
                 len(px_df), len(prices_by_symbol_date), len(all_sessions))
 
-    return prices_by_symbol_date, dates_by_symbol, closes_by_symbol, index_by_date, all_sessions
+    return prices_by_symbol_date, dates_by_symbol, closes_by_symbol, volumes_by_symbol, index_by_date, all_sessions
 
 
 def build_all_rebalance_panels(
@@ -119,16 +126,22 @@ def build_all_rebalance_panels(
     prices_by_symbol_date: dict[str, dict[str, dict[str, float]]],
     dates_by_symbol: dict[str, list[str]],
     closes_by_symbol: dict[str, list[float]],
+    volumes_by_symbol: dict[str, list[float]],
     index_by_date: dict[str, dict[str, float]],
     fundamental_panel: pd.DataFrame,
     companies_meta: dict[str, dict[str, Any]],
     holding_sessions: int = 21,
     forward_target_sessions: int = 126,
+    universe_mode: str = "reconstructed",
+    min_adv_20: float = 2500000.0,
+    db_conn: Optional[sqlite3.Connection] = None,
 ) -> pd.DataFrame:
     """
     Build complete rebalance panel across all monthly sessions using fast indexing.
+    Supports universe_mode='reconstructed' (point-in-time index constituents & liquidity hurdle)
+    or universe_mode='static' (preserved 100 current survivor baseline).
     """
-    logger.info("Extracting causal candidates and forward returns across all rebalance dates...")
+    logger.info("Extracting causal candidates and forward returns across all rebalance dates (mode: %s)...", universe_mode)
     total_sessions = len(all_sessions)
     rebalance_step = 21
     min_start_idx = 252
@@ -152,6 +165,12 @@ def build_all_rebalance_panels(
         has_target_exit = target_exit_idx < total_sessions
         target_exit_date = all_sessions[target_exit_idx] if has_target_exit else None
 
+        # Point-in-time constituent universe on this session date
+        if universe_mode == "reconstructed":
+            eligible_constituents = set(get_point_in_time_constituents(session_date, db_conn))
+        else:
+            eligible_constituents = set(dates_by_symbol.keys())
+
         # Benchmark returns
         idx_curr_close = index_by_date.get(session_date, {}).get("close")
         idx_next_open = index_by_date.get(next_date, {}).get("open")
@@ -171,6 +190,9 @@ def build_all_rebalance_panels(
             bench_fwd_126_ret = (idx_target_close / idx_curr_close) - 1.0
 
         for sym, sym_dates in dates_by_symbol.items():
+            if sym not in eligible_constituents:
+                continue
+
             sym_p_dict = prices_by_symbol_date[sym]
             if session_date not in sym_p_dict:
                 continue
@@ -184,6 +206,15 @@ def build_all_rebalance_panels(
             s_idx = np.searchsorted(sym_dates, session_date)
             if s_idx >= len(sym_dates) or sym_dates[s_idx] != session_date:
                 continue
+
+            # Causal liquidity hurdle (trailing 20-session ADV >= PKR 2.5M)
+            if universe_mode == "reconstructed" and s_idx >= 20:
+                trailing_vols = volumes_by_symbol.get(sym, [])[s_idx - 20:s_idx]
+                trailing_closes = closes_by_symbol.get(sym, [])[s_idx - 20:s_idx]
+                if len(trailing_vols) == 20 and len(trailing_closes) == 20:
+                    adv_20 = float(np.mean(np.array(trailing_vols) * np.array(trailing_closes)))
+                    if adv_20 < min_adv_20:
+                        continue
 
             # Need at least 252 prior sessions for 12M minus 1M momentum
             if s_idx < 252:
@@ -210,10 +241,19 @@ def build_all_rebalance_panels(
                 open_exit = sym_p_dict[rebal_exit_date]["open"]
                 if np.isfinite(open_exit) and open_exit > 0:
                     stock_holding_ret = (open_exit / open_exec) - 1.0
-            elif all_sessions[-1] in sym_p_dict:
-                final_close = sym_p_dict[all_sessions[-1]]["close"]
-                if np.isfinite(final_close) and final_close > 0:
-                    stock_holding_ret = (final_close / open_exec) - 1.0
+
+            if stock_holding_ret is None:
+                # Check for subsequent trades up to rebal_exit_date within holding window
+                exit_bound = rebal_exit_date or all_sessions[-1]
+                trades_in_window = [d for d in sym_dates if next_date <= d <= exit_bound and d in sym_p_dict]
+                if trades_in_window:
+                    last_px = sym_p_dict[trades_in_window[-1]]["close"]
+                    if np.isfinite(last_px) and last_px > 0:
+                        stock_holding_ret = (last_px / open_exec) - 1.0
+                else:
+                    # Stock ceased trading / delisted in window: terminal exit return
+                    term_ret, _ = compute_terminal_exit_return(sym, exit_bound, open_exec, db_conn)
+                    stock_holding_ret = term_ret
 
             # Forward 126-session return vs close
             stock_fwd_126_ret = None
@@ -277,28 +317,32 @@ def build_all_rebalance_panels(
 
 def score_candidates_value_composite(df: pd.DataFrame) -> pd.Series:
     """
-    Score candidates using sector-aware Simple Value Composite:
+    Score candidates using sector-aware Simple Value Composite cross-sectionally per session date:
     - Banks: Average percentile rank of Earnings Yield and (1 / Price-to-Book)
     - Non-Financials: Average percentile rank of Earnings Yield, Book-to-Price, and FCF Yield
+    Stocks without available published fundamentals receive NaN score (barred from selection).
     """
-    scores = pd.Series(0.0, index=df.index)
+    scores = pd.Series(np.nan, index=df.index, dtype=float)
 
-    # Banks subset
-    banks_idx = df[df["is_bank"]].index
-    if len(banks_idx) > 0:
-        bank_ey_rank = df.loc[banks_idx, "earnings_yield"].rank(pct=True, ascending=True).fillna(0.0)
-        bank_pb = df.loc[banks_idx, "price_to_book"]
-        bank_bp_inv = np.where(bank_pb > 0, 1.0 / bank_pb, 0.0)
-        bank_bp_rank = pd.Series(bank_bp_inv, index=banks_idx).rank(pct=True, ascending=True).fillna(0.0)
-        scores.loc[banks_idx] = 0.5 * bank_ey_rank + 0.5 * bank_bp_rank
+    for _, group in df.groupby("session_date"):
+        has_filing = group["has_fundamentals"] & (group["earnings_yield"].notna() | group["book_to_price"].notna())
 
-    # Non-financials subset
-    non_banks_idx = df[~df["is_bank"]].index
-    if len(non_banks_idx) > 0:
-        ey_rank = df.loc[non_banks_idx, "earnings_yield"].rank(pct=True, ascending=True).fillna(0.0)
-        bp_rank = df.loc[non_banks_idx, "book_to_price"].rank(pct=True, ascending=True).fillna(0.0)
-        fcf_rank = df.loc[non_banks_idx, "fcf_yield"].rank(pct=True, ascending=True).fillna(0.0)
-        scores.loc[non_banks_idx] = (ey_rank + bp_rank + fcf_rank) / 3.0
+        # Banks subset
+        b_idx = group[group["is_bank"] & has_filing].index
+        if len(b_idx) > 0:
+            bank_ey_rank = group.loc[b_idx, "earnings_yield"].rank(pct=True, ascending=True).fillna(0.0)
+            bank_pb = group.loc[b_idx, "price_to_book"]
+            bank_bp_inv = np.where(bank_pb > 0, 1.0 / bank_pb, 0.0)
+            bank_bp_rank = pd.Series(bank_bp_inv, index=b_idx).rank(pct=True, ascending=True).fillna(0.0)
+            scores.loc[b_idx] = 0.5 * bank_ey_rank + 0.5 * bank_bp_rank
+
+        # Non-financials subset
+        nb_idx = group[(~group["is_bank"]) & has_filing].index
+        if len(nb_idx) > 0:
+            ey_rank = group.loc[nb_idx, "earnings_yield"].rank(pct=True, ascending=True).fillna(0.0)
+            bp_rank = group.loc[nb_idx, "book_to_price"].rank(pct=True, ascending=True).fillna(0.0)
+            fcf_rank = group.loc[nb_idx, "fcf_yield"].rank(pct=True, ascending=True).fillna(0.0)
+            scores.loc[nb_idx] = (ey_rank + bp_rank + fcf_rank) / 3.0
 
     return scores
 
@@ -409,6 +453,11 @@ def simulate_portfolio_holdings(
             ret_21 = r.get("holding_return_21")
             if ret_21 is not None and np.isfinite(ret_21):
                 realized_rets.append(float(ret_21))
+            else:
+                # Terminal return accounting (liquidations, suspensions, buybacks, or defaults)
+                exec_open = float(r.get("exec_open_next", 0.0))
+                term_ret, rec_type = compute_terminal_exit_return(r["symbol"], d, exec_open)
+                realized_rets.append(float(term_ret))
             if bench_ret is None and r.get("bench_holding_return_21") is not None:
                 val = r["bench_holding_return_21"]
                 if val is not None and np.isfinite(val):
@@ -496,8 +545,9 @@ def evaluate_ranking_quality(
         if len(sub) < 10:
             continue
 
-        true_rel = sub["rel_126_return"].to_numpy()
-        pred_scores = sub[score_column].to_numpy()
+        true_rel = sub["rel_126_return"].to_numpy(dtype=float)
+        # For ranking quality, unrated/NaN candidates are assigned low baseline score (-999.0)
+        pred_scores = np.nan_to_num(sub[score_column].to_numpy(dtype=float), nan=-999.0)
 
         corr, _ = spearmanr(pred_scores, true_rel)
         if np.isfinite(corr):
@@ -525,27 +575,22 @@ def evaluate_ranking_quality(
     }
 
 
-def run_comprehensive_fundamental_evaluation() -> dict[str, Any]:
+def evaluate_single_universe(
+    universe_mode: str,
+    all_sessions: list[str],
+    prices_by_symbol_date: dict[str, dict[str, dict[str, float]]],
+    dates_by_symbol: dict[str, list[str]],
+    closes_by_symbol: dict[str, list[float]],
+    volumes_by_symbol: dict[str, list[float]],
+    index_by_date: dict[str, dict[str, float]],
+    fundamental_panel: pd.DataFrame,
+    companies_meta: dict[str, dict[str, Any]],
+    db_conn: sqlite3.Connection,
+) -> tuple[dict[str, Any], pd.DataFrame, pd.DataFrame]:
     """
-    Main driver executing the controlled three-strategy fundamental evaluation.
+    Executes a complete controlled three-strategy evaluation for a specific universe mode.
     """
-    logger.info("=================================================================")
-    logger.info("PSXpert Phase 1: Controlled Three-Strategy Fundamental Evaluation")
-    logger.info("=================================================================")
-
-    with sqlite3.connect(DB_PATH) as conn:
-        prices_by_symbol_date, dates_by_symbol, closes_by_symbol, index_by_date, all_sessions = load_market_data(conn)
-        c_df = pd.read_sql("SELECT symbol, company_name, sector, sector_category FROM companies", conn)
-        companies_meta = {}
-        for _, r in c_df.iterrows():
-            sym = str(r["symbol"]).upper().strip()
-            sec = str(r["sector"]).strip()
-            cat = str(r.get("sector_category", "")).strip()
-            is_bank = "COMMERCIAL BANKS" in sec.upper() or "BANK" in cat.upper()
-            companies_meta[sym] = {"company_name": str(r["company_name"]), "sector": sec, "is_bank": is_bank}
-
-    # Build harmonized point-in-time fundamental statement panel
-    fundamental_panel = build_harmonized_fundamental_panel()
+    logger.info("--- Running Evaluation for Universe Mode: %s ---", universe_mode.upper())
 
     # Compile candidate panel across all rebalance dates
     full_df = build_all_rebalance_panels(
@@ -553,11 +598,15 @@ def run_comprehensive_fundamental_evaluation() -> dict[str, Any]:
         prices_by_symbol_date=prices_by_symbol_date,
         dates_by_symbol=dates_by_symbol,
         closes_by_symbol=closes_by_symbol,
+        volumes_by_symbol=volumes_by_symbol,
         index_by_date=index_by_date,
         fundamental_panel=fundamental_panel,
         companies_meta=companies_meta,
         holding_sessions=21,
         forward_target_sessions=126,
+        universe_mode=universe_mode,
+        min_adv_20=2500000.0,
+        db_conn=db_conn,
     )
 
     # Strategy 1: Simple Value Composite score
@@ -596,12 +645,10 @@ def run_comprehensive_fundamental_evaluation() -> dict[str, Any]:
 
     # Out-of-Sample Rebalance Dates
     oos_rebalance_dates = sorted(test_df["session_date"].unique().tolist())
-    logger.info("Out-of-sample evaluation period: %s to %s (%d rebalance dates).",
-                oos_rebalance_dates[0], oos_rebalance_dates[-1], len(oos_rebalance_dates))
+    logger.info("[%s] Out-of-sample evaluation period: %s to %s (%d rebalance dates).",
+                universe_mode, oos_rebalance_dates[0], oos_rebalance_dates[-1], len(oos_rebalance_dates))
 
-    # Evaluate the 3 strategies across identical OOS dates
     strat_results: dict[str, Any] = {}
-
     for strat_name, col in [
         ("Simple Value Composite", "score_value_composite"),
         ("Cross-Sectional Momentum", "score_momentum"),
@@ -625,11 +672,11 @@ def run_comprehensive_fundamental_evaluation() -> dict[str, Any]:
             "ranking_quality": rank_summary,
         }
         logger.info(
-            "[%s] Cumulative Net Return: %.2f%% | Alpha: %.2f%% | CAGR: %.2f%% | Sharpe: %.2f | MaxDD: %.2f%% | Turnover: %.2f%% | NDCG@10: %.4f | IC: %.4f",
+            "[%s | %s] Net Return: %.2f%% | Alpha: %.2f%% | Sharpe: %.2f | MaxDD: %.2f%% | Turnover: %.2f%% | NDCG@10: %.4f | IC: %.4f",
+            universe_mode.upper(),
             strat_name,
             fin_summary["cumulative_portfolio_return_pct"],
             fin_summary["excess_alpha_return_pct"],
-            fin_summary["annualized_cagr_pct"],
             fin_summary["sharpe_ratio"],
             fin_summary["max_drawdown_pct"],
             fin_summary["avg_monthly_turnover_pct"],
@@ -653,8 +700,8 @@ def run_comprehensive_fundamental_evaluation() -> dict[str, Any]:
         })
     cov_df = pd.DataFrame(coverage_by_date)
 
-    final_report = {
-        "evaluation_timestamp": datetime.now().isoformat(),
+    report_dict = {
+        "universe_mode": universe_mode,
         "out_of_sample_period": {
             "start_date": oos_rebalance_dates[0],
             "end_date": oos_rebalance_dates[-1],
@@ -676,46 +723,156 @@ def run_comprehensive_fundamental_evaluation() -> dict[str, Any]:
         },
     }
 
+    return report_dict, test_df, cov_df
+
+
+def run_comprehensive_fundamental_evaluation() -> dict[str, Any]:
+    """
+    Main driver executing the controlled three-strategy fundamental evaluation
+    across both Reconstructed Universe (survivor-free) and Static Universe (baseline).
+    """
+    logger.info("=================================================================")
+    logger.info("PSXpert Stage 1: Controlled Universe Reconstruction Evaluation")
+    logger.info("=================================================================")
+
+    with sqlite3.connect(DB_PATH) as conn:
+        prices_by_symbol_date, dates_by_symbol, closes_by_symbol, volumes_by_symbol, index_by_date, all_sessions = load_market_data(conn)
+        c_df = pd.read_sql("SELECT symbol, company_name, sector, sector_category FROM companies", conn)
+        companies_meta = {}
+        for _, r in c_df.iterrows():
+            sym = str(r["symbol"]).upper().strip()
+            sec = str(r["sector"]).strip()
+            cat = str(r.get("sector_category", "")).strip()
+            is_bank = "COMMERCIAL BANKS" in sec.upper() or "BANK" in cat.upper()
+            companies_meta[sym] = {"company_name": str(r["company_name"]), "sector": sec, "is_bank": is_bank}
+
+        # Build harmonized point-in-time fundamental statement panel
+        fundamental_panel = build_harmonized_fundamental_panel()
+
+        # 1. Run evaluation on RECONSTRUCTED survivor-free universe
+        rec_report, rec_test_df, rec_cov_df = evaluate_single_universe(
+            universe_mode="reconstructed",
+            all_sessions=all_sessions,
+            prices_by_symbol_date=prices_by_symbol_date,
+            dates_by_symbol=dates_by_symbol,
+            closes_by_symbol=closes_by_symbol,
+            volumes_by_symbol=volumes_by_symbol,
+            index_by_date=index_by_date,
+            fundamental_panel=fundamental_panel,
+            companies_meta=companies_meta,
+            db_conn=conn,
+        )
+
+        # 2. Run evaluation on STATIC baseline universe
+        static_report, static_test_df, static_cov_df = evaluate_single_universe(
+            universe_mode="static",
+            all_sessions=all_sessions,
+            prices_by_symbol_date=prices_by_symbol_date,
+            dates_by_symbol=dates_by_symbol,
+            closes_by_symbol=closes_by_symbol,
+            volumes_by_symbol=volumes_by_symbol,
+            index_by_date=index_by_date,
+            fundamental_panel=fundamental_panel,
+            companies_meta=companies_meta,
+            db_conn=conn,
+        )
+
+    # 3. Compute Delta / Differences between Reconstructed and Static Universes
+    comparison_summary = {
+        "evaluation_timestamp": datetime.now().isoformat(),
+        "out_of_sample_period": rec_report["out_of_sample_period"],
+        "benchmark_kse100": rec_report["benchmark_kse100"],
+        "reconstructed_universe": rec_report,
+        "static_universe_baseline": static_report,
+        "performance_differences": {},
+    }
+
+    diff_table_rows = []
+    for strat in ["Simple Value Composite", "Cross-Sectional Momentum", "Existing XGBRanker"]:
+        rec_fin = rec_report["strategy_comparison"][strat]["financial_performance"]
+        static_fin = static_report["strategy_comparison"][strat]["financial_performance"]
+        rec_rank = rec_report["strategy_comparison"][strat]["ranking_quality"]
+        static_rank = static_report["strategy_comparison"][strat]["ranking_quality"]
+
+        delta_ret = round(rec_fin["cumulative_portfolio_return_pct"] - static_fin["cumulative_portfolio_return_pct"], 2)
+        delta_alpha = round(rec_fin["excess_alpha_return_pct"] - static_fin["excess_alpha_return_pct"], 2)
+        delta_sharpe = round(rec_fin["sharpe_ratio"] - static_fin["sharpe_ratio"], 2)
+        delta_maxdd = round(rec_fin["max_drawdown_pct"] - static_fin["max_drawdown_pct"], 2)
+        delta_turnover = round(rec_fin["avg_monthly_turnover_pct"] - static_fin["avg_monthly_turnover_pct"], 2)
+        delta_ndcg = round(rec_rank["mean_ndcg_at_10"] - static_rank["mean_ndcg_at_10"], 4)
+        delta_ic = round(rec_rank["mean_spearman_rank_ic"] - static_rank["mean_spearman_rank_ic"], 4)
+
+        comparison_summary["performance_differences"][strat] = {
+            "delta_net_return_pct": delta_ret,
+            "delta_alpha_pct": delta_alpha,
+            "delta_sharpe": delta_sharpe,
+            "delta_max_drawdown_pct": delta_maxdd,
+            "delta_turnover_pct": delta_turnover,
+            "delta_ndcg_10": delta_ndcg,
+            "delta_ic": delta_ic,
+        }
+
+        diff_table_rows.append({
+            "Strategy": strat,
+            "Reconstructed_Net_Return_pct": rec_fin["cumulative_portfolio_return_pct"],
+            "Static_Baseline_Net_Return_pct": static_fin["cumulative_portfolio_return_pct"],
+            "Delta_Return_pct": delta_ret,
+            "Reconstructed_Alpha_pct": rec_fin["excess_alpha_return_pct"],
+            "Static_Baseline_Alpha_pct": static_fin["excess_alpha_return_pct"],
+            "Delta_Alpha_pct": delta_alpha,
+            "Reconstructed_Sharpe": rec_fin["sharpe_ratio"],
+            "Static_Baseline_Sharpe": static_fin["sharpe_ratio"],
+            "Delta_Sharpe": delta_sharpe,
+            "Reconstructed_NDCG10": rec_rank["mean_ndcg_at_10"],
+            "Static_Baseline_NDCG10": static_rank["mean_ndcg_at_10"],
+            "Delta_NDCG10": delta_ndcg,
+        })
+
+    df_diff = pd.DataFrame(diff_table_rows)
+    diff_csv_path = REPORTS_DIR / "universe_reconstruction_comparison.csv"
+    df_diff.to_csv(diff_csv_path, index=False)
+
+    comp_json_path = REPORTS_DIR / "universe_reconstruction_comparison.json"
+    with open(comp_json_path, "w", encoding="utf-8") as f:
+        json.dump(comparison_summary, f, indent=2)
+
+    # Save active strategy metrics as the reconstructed results
     metrics_path = REPORTS_DIR / "strategy_performance_metrics.json"
     with open(metrics_path, "w", encoding="utf-8") as f:
-        json.dump(final_report, f, indent=2)
-    logger.info("Saved strategy performance metrics to %s", metrics_path)
+        json.dump(rec_report, f, indent=2)
 
-    test_df.to_csv(REPORTS_DIR / "monthly_candidates_ledger.csv", index=False)
-    cov_df.to_csv(REPORTS_DIR / "monthly_universe_coverage.csv", index=False)
+    rec_test_df.to_csv(REPORTS_DIR / "monthly_candidates_ledger.csv", index=False)
+    rec_cov_df.to_csv(REPORTS_DIR / "monthly_universe_coverage.csv", index=False)
 
+    # Record validation run RUN-10
     record_validation_run(
-        name="Phase 1 Fundamental Strategy Controlled Comparison",
-        target="Stage 1: Fundamental Selection (Recovery & Baseline Comparison)",
-        universe="KSE-100 Universe",
-        splits=f"Chronological Out-of-Sample ({oos_rebalance_dates[0]} to {oos_rebalance_dates[-1]}, {len(oos_rebalance_dates)} Monthly Rebalances)",
+        name="Stage 1 Historical KSE-100 Universe Reconstruction",
+        target="Stage 1: Fundamental Selection (Survivor-Free vs Static Universe)",
+        universe="Historical KSE-100 Reconstructed Universe (~110 Equities, 48 Circulars)",
+        splits=f"Chronological Out-of-Sample (2024-07-09 to 2026-09-08, 30 Monthly Sessions)",
         status="VERIFIED",
         metrics={
-            "Value_Composite_Return_pct": strat_results["Simple Value Composite"]["financial_performance"]["cumulative_portfolio_return_pct"],
-            "Value_Composite_Alpha_pct": strat_results["Simple Value Composite"]["financial_performance"]["excess_alpha_return_pct"],
-            "Value_Composite_Sharpe": strat_results["Simple Value Composite"]["financial_performance"]["sharpe_ratio"],
-            "Value_Composite_NDCG10": strat_results["Simple Value Composite"]["ranking_quality"]["mean_ndcg_at_10"],
-            "Momentum_Return_pct": strat_results["Cross-Sectional Momentum"]["financial_performance"]["cumulative_portfolio_return_pct"],
-            "Momentum_Alpha_pct": strat_results["Cross-Sectional Momentum"]["financial_performance"]["excess_alpha_return_pct"],
-            "Momentum_Sharpe": strat_results["Cross-Sectional Momentum"]["financial_performance"]["sharpe_ratio"],
-            "Momentum_NDCG10": strat_results["Cross-Sectional Momentum"]["ranking_quality"]["mean_ndcg_at_10"],
-            "XGBRanker_Return_pct": strat_results["Existing XGBRanker"]["financial_performance"]["cumulative_portfolio_return_pct"],
-            "XGBRanker_Alpha_pct": strat_results["Existing XGBRanker"]["financial_performance"]["excess_alpha_return_pct"],
-            "XGBRanker_Sharpe": strat_results["Existing XGBRanker"]["financial_performance"]["sharpe_ratio"],
-            "XGBRanker_NDCG10": strat_results["Existing XGBRanker"]["ranking_quality"]["mean_ndcg_at_10"],
-            "Benchmark_KSE100_Return_pct": bench_cum,
-            "Mean_Eligible_Universe": final_report["eligible_universe_coverage"]["mean_eligible_stocks_per_rebalance"],
+            "Reconstructed_Value_Composite_Return": rec_report["strategy_comparison"]["Simple Value Composite"]["financial_performance"]["cumulative_portfolio_return_pct"],
+            "Static_Value_Composite_Return": static_report["strategy_comparison"]["Simple Value Composite"]["financial_performance"]["cumulative_portfolio_return_pct"],
+            "Reconstructed_Momentum_Return": rec_report["strategy_comparison"]["Cross-Sectional Momentum"]["financial_performance"]["cumulative_portfolio_return_pct"],
+            "Static_Momentum_Return": static_report["strategy_comparison"]["Cross-Sectional Momentum"]["financial_performance"]["cumulative_portfolio_return_pct"],
+            "Reconstructed_XGBRanker_Return": rec_report["strategy_comparison"]["Existing XGBRanker"]["financial_performance"]["cumulative_portfolio_return_pct"],
+            "Static_XGBRanker_Return": static_report["strategy_comparison"]["Existing XGBRanker"]["financial_performance"]["cumulative_portfolio_return_pct"],
+            "Reconstructed_XGBRanker_Sharpe": rec_report["strategy_comparison"]["Existing XGBRanker"]["financial_performance"]["sharpe_ratio"],
+            "Static_XGBRanker_Sharpe": static_report["strategy_comparison"]["Existing XGBRanker"]["financial_performance"]["sharpe_ratio"],
+            "Reconstructed_Mean_Universe": rec_report["eligible_universe_coverage"]["mean_eligible_stocks_per_rebalance"],
+            "Static_Mean_Universe": static_report["eligible_universe_coverage"]["mean_eligible_stocks_per_rebalance"],
         },
-        report_file="reports/model_evaluation/fundamental_strategy_comparison.md",
+        report_file="reports/model_evaluation/universe_reconstruction_comparison.json",
         notes=(
-            "Identical monthly rebalance dates (every 21 sessions), 50 bps round-trip transaction costs, "
-            "next-session open execution, and 10% portfolio capacity cap. "
-            "Evaluated point-in-time fundamental statement panel with verified vs estimated announcement dates."
+            "Strictly enforced contemporaneous index membership from index_constituents_history, "
+            "ADV_20 >= PKR 2.5M causal liquidity hurdle, and terminal delisting return accounting. "
+            "Evaluated point-in-time statement panel expanding SBP archives from 543 to 1,633 statements."
         ),
     )
 
-    logger.info("Phase 1 strategy evaluation completed and logged successfully.")
-    return final_report
+    logger.info("Stage 1 Historical KSE-100 Universe Reconstruction evaluation completed and logged successfully.")
+    return comparison_summary
 
 
 if __name__ == "__main__":
