@@ -1,0 +1,182 @@
+{
+  "version": "1.0.0",
+  "project": "PSXpert",
+  "log_directory": "logs/validation/",
+  "total_runs_recorded": 9,
+  "runs": [
+    {
+      "run_id": "RUN-01",
+      "name": "Quantitative Walk-Forward ML Evaluation",
+      "timestamp_utc": "2026-11-17T19:57:19Z",
+      "target": "20d forward return (next-day execution)",
+      "universe": "KSE-100",
+      "splits": "3 expanding folds (2005-2024) + test fold (2024-2026)",
+      "status": "VERIFIED",
+      "metrics": {
+        "out_of_sample_test_accuracy": 0.4021,
+        "out_of_sample_macro_f1": 0.2739,
+        "mean_rank_ic": -0.0025,
+        "backtest_cagr_pct": 21.09,
+        "sharpe_ratio": 0.23,
+        "max_drawdown_pct": -22.16
+      },
+      "report_file": "reports/model_evaluation/QUANTITATIVE_RESEARCH_REPORT.md"
+    },
+    {
+      "run_id": "RUN-02",
+      "name": "Selection & Timing Architecture v2",
+      "timestamp_utc": "2026-11-18T10:45:00Z",
+      "target": "Stage 1: 126d relative return ranking; Stage 2: 10d net return > 2%",
+      "universe": "KSE-100",
+      "splits": "3 temporal folds (sessions 5380-6000)",
+      "status": "DIAGNOSED",
+      "metrics": {
+        "fold1_xgbranker_ndcg": 0.533,
+        "fold1_value_composite_ndcg": 0.6415,
+        "fold1_value_excess_return_pct": 13.84,
+        "fold1_xgbranker_excess_return_pct": -1.87,
+        "technical_threshold_signals": 0,
+        "technical_coverage_at_tau_0_60": 0.0
+      },
+      "report_file": "module 1 technical and fundamental/artifacts/selection_timing_v2/evaluation.json"
+    },
+    {
+      "run_id": "RUN-03",
+      "name": "Institutional Execution & Accounting Audit v3",
+      "timestamp_utc": "2026-11-18T15:30:00Z",
+      "target": "Exact cash accounting, lagged volume sizing, candidate slot sorting",
+      "universe": "KSE-100",
+      "splits": "3 temporal folds",
+      "status": "PASS",
+      "metrics": {
+        "accounting_discrepancy_pkr": 0.0,
+        "newey_west_hac_p_values": [
+          0.3248,
+          0.1599,
+          0.4199
+        ],
+        "test_suite_passed_count": 65,
+        "test_suite_total_count": 65
+      },
+      "report_file": "module 1 technical and fundamental/artifacts/selection_timing_v3/REPORT.md"
+    },
+    {
+      "run_id": "RUN-04",
+      "name": "Three-Way Controlled Verification v4",
+      "timestamp_utc": "2026-11-18T17:20:49Z",
+      "target": "Controlled three-way isolation (Run A vs Run B vs Run C)",
+      "universe": "KSE-100",
+      "splits": "3 temporal folds",
+      "status": "PASS",
+      "metrics": {
+        "prediction_equivalence_fold1": "PASS",
+        "simulator_cash_discrepancy_pkr": 0.0,
+        "model_driven_trades_verified": true
+      },
+      "report_file": "module 1 technical and fundamental/artifacts/selection_timing_v4/REPORT.md"
+    },
+    {
+      "run_id": "RUN-05",
+      "name": "Technical ML Preprocessor & Regression Suite",
+      "timestamp_utc": "2026-11-23T13:58:00Z",
+      "target": "Causal labeling, SHA-256 artifact checksums, SQLite PIT fallback",
+      "universe": "PSX Equities (726 symbols)",
+      "splits": "Train / Val / Test (2002-2026)",
+      "status": "PASS",
+      "metrics": {
+        "tests_passed": 6,
+        "tests_total": 6,
+        "execution_time_seconds": 67.73
+      },
+      "report_file": "tests/test_ml_models.py"
+    },
+    {
+      "run_id": "RUN-06",
+      "name": "Selective Conviction Gating & Dynamic ATR Barriers",
+      "timestamp_utc": "2026-11-23T14:05:05Z",
+      "target": "Multi-tier conviction gating, 1.5x ATR TP / 1.0x ATR SL barriers",
+      "universe": "KSE-100",
+      "splits": "Out-of-sample test verification",
+      "status": "PASS",
+      "metrics": {
+        "tests_passed": 6,
+        "tests_total": 6,
+        "execution_time_seconds": 33.46,
+        "ultra_high_conviction_expected_win_rate_pct": 82.1,
+        "high_conviction_expected_win_rate_pct": 62.9
+      },
+      "report_file": "tests/model/test_conviction_gating.py"
+    },
+    {
+      "run_id": "RUN-07",
+      "name": "Comprehensive Diagnostic Performance Audit",
+      "timestamp_utc": "2026-11-23T14:19:00Z",
+      "target": "Root-cause performance audit: datasets, targets, leakage, features, baselines",
+      "universe": "KSE-100 (100 constituents)",
+      "splits": "Full historical span 2002-2026",
+      "status": "AUDIT_COMPLETED",
+      "metrics": {
+        "pre_2022_fundamental_missingness_pct": 100.0,
+        "unfiled_tickers_count": 43,
+        "news_articles_in_db": 249,
+        "news_sentiment_integration_pct": 0.0,
+        "ranked_root_causes_identified": 7
+      },
+      "report_file": "reports/model_evaluation/model_performance_diagnostic.md"
+    },
+    {
+      "run_id": "RUN-08",
+      "name": "Phase 1 Fundamental Strategy Controlled Comparison",
+      "timestamp_utc": "2026-11-23T15:04:18.495793+00:00",
+      "target": "Stage 1: Fundamental Selection (Recovery & Baseline Comparison)",
+      "universe": "KSE-100 Universe",
+      "splits": "Chronological Out-of-Sample (2024-07-09 to 2026-09-08, 30 Monthly Rebalances)",
+      "status": "VERIFIED",
+      "metrics": {
+        "Value_Composite_Return_pct": 40.24,
+        "Value_Composite_Alpha_pct": NaN,
+        "Value_Composite_Sharpe": -0.02,
+        "Value_Composite_NDCG10": 0.5048,
+        "Momentum_Return_pct": 26.81,
+        "Momentum_Alpha_pct": NaN,
+        "Momentum_Sharpe": -0.21,
+        "Momentum_NDCG10": 0.4239,
+        "XGBRanker_Return_pct": 164.11,
+        "XGBRanker_Alpha_pct": NaN,
+        "XGBRanker_Sharpe": 0.93,
+        "XGBRanker_NDCG10": 0.4822,
+        "Benchmark_KSE100_Return_pct": NaN,
+        "Mean_Eligible_Universe": 92.4
+      },
+      "report_file": "reports/model_evaluation/fundamental_strategy_comparison.md",
+      "notes": "Identical monthly rebalance dates (every 21 sessions), 50 bps round-trip transaction costs, next-session open execution, and 10% portfolio capacity cap. Evaluated point-in-time fundamental statement panel with verified vs estimated announcement dates."
+    },
+    {
+      "run_id": "RUN-09",
+      "name": "Phase 1 Fundamental Strategy Controlled Comparison",
+      "timestamp_utc": "2026-11-23T15:10:58.398656+00:00",
+      "target": "Stage 1: Fundamental Selection (Recovery & Baseline Comparison)",
+      "universe": "KSE-100 Universe",
+      "splits": "Chronological Out-of-Sample (2024-07-09 to 2026-09-08, 30 Monthly Rebalances)",
+      "status": "VERIFIED",
+      "metrics": {
+        "Value_Composite_Return_pct": 200.03,
+        "Value_Composite_Alpha_pct": 16.31,
+        "Value_Composite_Sharpe": 0.54,
+        "Value_Composite_NDCG10": 0.5048,
+        "Momentum_Return_pct": 121.25,
+        "Momentum_Alpha_pct": -62.47,
+        "Momentum_Sharpe": 0.43,
+        "Momentum_NDCG10": 0.4239,
+        "XGBRanker_Return_pct": 383.86,
+        "XGBRanker_Alpha_pct": 200.14,
+        "XGBRanker_Sharpe": 1.21,
+        "XGBRanker_NDCG10": 0.4822,
+        "Benchmark_KSE100_Return_pct": 183.72,
+        "Mean_Eligible_Universe": 92.4
+      },
+      "report_file": "reports/model_evaluation/fundamental_strategy_comparison.md",
+      "notes": "Identical monthly rebalance dates (every 21 sessions), 50 bps round-trip transaction costs, next-session open execution, and 10% portfolio capacity cap. Evaluated point-in-time fundamental statement panel with verified vs estimated announcement dates."
+    }
+  ]
+}
