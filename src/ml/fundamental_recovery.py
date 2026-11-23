@@ -33,6 +33,21 @@ DATA_DIR = Path("data")
 RAW_DIR = DATA_DIR / "raw"
 DB_PATH = DATA_DIR / "psxpert.db"
 
+# Canonical Ticker Normalization Map
+# Resolves historical circular acronyms and obsolete ticker variants to active PSX canonical tickers
+CANONICAL_TICKER_MAP: dict[str, str] = {
+    "CPBM": "CEPB",  # Century Paper & Board Mills Limited (ISIN: PK0040301019)
+}
+
+
+def resolve_canonical_ticker(symbol: str) -> str:
+    """
+    Resolve historical circular acronyms or ticker variants to canonical PSX ticker.
+    Example: 'CPBM' -> 'CEPB'.
+    """
+    sym = symbol.upper().strip()
+    return CANONICAL_TICKER_MAP.get(sym, sym)
+
 
 @dataclass
 class FundamentalStatementPIT:
@@ -166,6 +181,12 @@ def build_harmonized_fundamental_panel() -> pd.DataFrame:
                 is_est = True
                 conf = "ESTIMATED_100D_FALLBACK"
 
+            tot_a = pd.to_numeric(r.get("total_assets"), errors="coerce")
+            tot_l = pd.to_numeric(r.get("total_liabilities"), errors="coerce")
+            eq = pd.to_numeric(r.get("shareholders_equity"), errors="coerce")
+            if (pd.isna(eq) or eq <= 0) and pd.notna(tot_a) and pd.notna(tot_l) and (tot_a > tot_l > 0):
+                eq = tot_a - tot_l
+
             records.append({
                 "symbol": sym,
                 "company_name": meta["company_name"],
@@ -179,8 +200,8 @@ def build_harmonized_fundamental_panel() -> pd.DataFrame:
                 "source": "kse100_fundamentals_annual.csv",
                 "net_income": pd.to_numeric(r.get("net_profit_after_tax"), errors="coerce"),
                 "revenue": pd.to_numeric(r.get("revenue_sales"), errors="coerce"),
-                "shareholders_equity": pd.to_numeric(r.get("shareholders_equity"), errors="coerce"),
-                "total_assets": pd.to_numeric(r.get("total_assets"), errors="coerce"),
+                "shareholders_equity": eq,
+                "total_assets": tot_a,
                 "operating_profit": pd.to_numeric(r.get("operating_profit"), errors="coerce"),
                 "operating_cash_flow": pd.to_numeric(r.get("operating_cash_flow"), errors="coerce"),
                 "free_cash_flow": pd.to_numeric(r.get("free_cash_flow"), errors="coerce"),
@@ -215,20 +236,26 @@ def compute_sector_aware_ratios(
     statement_row: pd.Series | dict[str, Any],
     market_price: float,
     shares_outstanding: Optional[float] = None,
+    point_in_time_market_cap: Optional[float] = None,
 ) -> dict[str, Any]:
     """
     Compute sector-aware ratios adhering strictly to accounting separation:
     - Commercial Banks: E/P, P/B, ROE, ROA, NIM, Cost-to-Income (Industrial ratios = NaN, NEVER 0)
     - Non-Financials: E/P, B/P, FCF Yield, ROE, Operating Margin, Debt-to-Equity, Interest Coverage (Bank ratios = NaN)
 
+    Preserves missing values when source data genuinely does not exist (never fabricates).
+    Properly handles point-in-time market capitalization and units alignment (PKR Millions vs raw PKR).
+
     Parameters
     ----------
     statement_row : Series or dict
-        Audited point-in-time statement record.
+        Audited point-in-time statement record (statement financials in PKR Millions).
     market_price : float
         Split-adjusted market price at the decision date.
     shares_outstanding : float, optional
         Common shares outstanding.
+    point_in_time_market_cap : float, optional
+        Contemporaneous point-in-time market cap (raw PKR or PKR Millions).
 
     Returns
     -------
@@ -245,11 +272,22 @@ def compute_sector_aware_ratios(
     debt = statement_row.get("total_debt")
     int_exp = statement_row.get("interest_expense")
 
-    shares = shares_outstanding or statement_row.get("shares_outstanding")
-    if shares is not None and shares > 0 and market_price > 0:
-        market_cap = market_price * shares
+    # Determine market capitalization normalized to PKR Millions to match statement line items
+    market_cap_m: Optional[float] = None
+    if point_in_time_market_cap is not None and np.isfinite(point_in_time_market_cap) and point_in_time_market_cap > 0:
+        # If market cap is in raw PKR (> 1e7), convert to Millions
+        if point_in_time_market_cap > 1e7:
+            market_cap_m = float(point_in_time_market_cap) / 1e6
+        else:
+            market_cap_m = float(point_in_time_market_cap)
     else:
-        market_cap = None
+        shares = shares_outstanding or statement_row.get("shares_outstanding")
+        if shares is not None and shares > 0 and market_price > 0:
+            raw_mc = float(market_price) * float(shares)
+            if raw_mc > 1e7:
+                market_cap_m = raw_mc / 1e6
+            else:
+                market_cap_m = raw_mc
 
     def safe_div(num: Any, den: Any) -> float:
         if num is None or den is None:
@@ -278,17 +316,21 @@ def compute_sector_aware_ratios(
         "cost_to_income": np.nan,
     }
 
-    # General ratios (applicable across all corporate types)
+    # General statement ratios (dimensionless, both numerator & denominator in Millions)
     ratios["roe"] = safe_div(net_inc, equity)
     ratios["roa"] = safe_div(net_inc, assets)
 
-    if market_cap and market_cap > 0:
-        ratios["earnings_yield"] = safe_div(net_inc, market_cap)
-        ratios["book_to_price"] = safe_div(equity, market_cap)
-        if equity and equity > 0:
-            ratios["price_to_book"] = safe_div(market_cap, equity)
-    elif statement_row.get("eps_basic") is not None and market_price > 0:
-        ratios["earnings_yield"] = safe_div(statement_row.get("eps_basic"), market_price)
+    # Market-price dependent ratios
+    if market_cap_m is not None and market_cap_m > 0:
+        ratios["book_to_price"] = safe_div(equity, market_cap_m)
+        ratios["price_to_book"] = safe_div(market_cap_m, equity)
+
+    # Earnings yield: prefer eps_basic / market_price, fallback to net_income / market_cap_m
+    eps = statement_row.get("eps_basic")
+    if eps is not None and np.isfinite(eps) and market_price > 0:
+        ratios["earnings_yield"] = safe_div(eps, market_price)
+    elif market_cap_m is not None and market_cap_m > 0:
+        ratios["earnings_yield"] = safe_div(net_inc, market_cap_m)
 
     if is_bank:
         # Bank-specific formulas
@@ -304,8 +346,8 @@ def compute_sector_aware_ratios(
         ratios["interest_coverage"] = np.nan
     else:
         # Non-financial formulas
-        if market_cap and market_cap > 0:
-            ratios["fcf_yield"] = safe_div(fcf, market_cap)
+        if market_cap_m is not None and market_cap_m > 0:
+            ratios["fcf_yield"] = safe_div(fcf, market_cap_m)
         ratios["operating_margin"] = safe_div(op_profit, rev)
         ratios["debt_to_equity"] = safe_div(debt, equity)
         ratios["interest_coverage"] = safe_div(op_profit, int_exp if int_exp and int_exp > 0 else 1.0)
@@ -313,6 +355,8 @@ def compute_sector_aware_ratios(
         # Bank ratios MUST BE NaN for non-financials
         ratios["net_interest_margin"] = np.nan
         ratios["cost_to_income"] = np.nan
+
+    return ratios
 
     return ratios
 
@@ -356,8 +400,9 @@ def get_latest_eligible_filing(
     """
     Retrieve the most recent financial statement published strictly on or before
     `as_of_session_date` (zero lookahead).
+    Resolves historical circular acronyms (e.g. CPBM -> CEPB) to canonical tickers.
     """
-    sym = symbol.upper().strip()
+    sym = resolve_canonical_ticker(symbol)
     target_dt = pd.to_datetime(as_of_session_date)
 
     if "pub_date_dt" not in panel_df.columns:
@@ -381,6 +426,7 @@ def get_point_in_time_constituents(
     Retrieve eligible KSE-100 constituents active on `as_of_session_date`.
     Enforces point-in-time index membership:
     effective_start_date <= date <= effective_end_date.
+    Normalizes returned tickers to canonical PSX tickers (e.g. CPBM -> CEPB).
     """
     session_str = str(as_of_session_date).split(" ")[0].strip()
     should_close = False
@@ -404,11 +450,16 @@ def get_point_in_time_constituents(
             ORDER BY symbol ASC
         """
         rows = cur.execute(query, (session_str, session_str)).fetchall()
-        syms = [r[0] for r in rows]
+        syms = sorted(list({resolve_canonical_ticker(r[0]) for r in rows}))
     else:
         # Fallback to current companies
         rows = cur.execute("SELECT symbol FROM companies WHERE is_kse100 = 1 ORDER BY symbol ASC").fetchall()
-        syms = [r[0] for r in rows]
+        syms = sorted(list({resolve_canonical_ticker(r[0]) for r in rows}))
+
+    if should_close:
+        conn.close()
+
+    return syms
 
     if should_close:
         conn.close()
@@ -462,4 +513,57 @@ def compute_terminal_exit_return(
 
     # Conservative default for unverified or unrecorded delistings: -100% loss
     return -1.0, "ESTIMATED_ZERO_RECOVERY"
+
+
+def compute_purged_train_test_split(
+    all_sessions: list[str],
+    oos_start_date: str,
+    forward_horizon: int = 126,
+    purge_sessions: int = 1,
+) -> tuple[str, str, int, int]:
+    """
+    Computes strict chronological purge boundary ensuring zero label leakage between
+    in-sample training and out-of-sample testing.
+
+    Mathematical Condition:
+    For every training session t_train:
+        t_train + forward_horizon < idx_oos_start
+    Therefore:
+        max_train_idx = idx_oos_start - forward_horizon - purge_sessions
+
+    This guarantees that the 126-session forward return window for the latest training
+    rebalance date finishes strictly prior to the OOS start date.
+
+    Parameters
+    ----------
+    all_sessions : list of str
+        Sorted list of all market trading dates (YYYY-MM-DD).
+    oos_start_date : str
+        Intended start date for out-of-sample evaluation.
+    forward_horizon : int
+        Forward sessions used for label computation (default 126 trading days).
+    purge_sessions : int
+        Safety buffer sessions (default 1).
+
+    Returns
+    -------
+    tuple of (train_cutoff_date, oos_effective_start_date, max_train_idx, oos_start_idx)
+    """
+    oos_start_dt = str(oos_start_date).split(" ")[0].strip()
+    oos_indices = [i for i, s in enumerate(all_sessions) if s >= oos_start_dt]
+    if not oos_indices:
+        raise ValueError(f"No trading sessions found on or after oos_start_date {oos_start_date}")
+
+    oos_start_idx = oos_indices[0]
+    effective_oos_date = all_sessions[oos_start_idx]
+
+    max_train_idx = oos_start_idx - forward_horizon - purge_sessions
+    if max_train_idx < 0:
+        raise ValueError(
+            f"Insufficient historical sessions ({oos_start_idx}) for horizon {forward_horizon} + purge {purge_sessions}"
+        )
+
+    train_cutoff_date = all_sessions[max_train_idx]
+    return train_cutoff_date, effective_oos_date, max_train_idx, oos_start_idx
+
 

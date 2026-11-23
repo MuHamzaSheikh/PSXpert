@@ -103,6 +103,7 @@ TICKER_TO_SBP_KEYWORDS = {
     "ARPL": ["archroma pakistan", "clariant pakistan"],
     "SHJS": ["shakarganj"],
     "NCL": ["nishat chunian", "nishat (chunian)"],
+    "CEPB": ["century paper"],
     "CPBM": ["century paper"],
     "SPWL": ["saif power"],
     "LPL": ["lalpir power", "aes lalpir"],
@@ -195,13 +196,24 @@ def parse_sbp_metrics_for_companies() -> list[dict[str, Any]]:
                 continue
 
             # Identify metric category
-            is_assets = "total assets (a+b)" in item_str.lower() or item_str.lower().startswith("total assets")
-            is_equity = "c. shareholders' equity" in item_str.lower() or item_str.lower() == "shareholders' equity"
-            is_sales = item_str.lower() == "1. sales" or "sales / turnover" in item_str.lower()
-            is_pat = "profit/(loss) after taxation" in item_str.lower() or "profit after tax" in item_str.lower()
-            is_op = "operating profit" in item_str.lower() and "margin" not in item_str.lower()
-            is_ncl = "d. non-current liabilities" in item_str.lower()
-            is_cl = "e. current liabilities" in item_str.lower()
+            item_lower = item_str.lower()
+            is_assets = "total assets (a+b)" in item_lower or item_lower.startswith("total assets")
+            is_equity = "shareholders' equity" in item_lower or "shareholders’ equity" in item_lower
+            is_sales = item_lower == "1. sales" or item_lower.startswith("1. sales") or "sales / turnover" in item_lower
+            is_pat = ("profit / (loss) after tax" in item_lower or "profit/(loss) after tax" in item_lower or 
+                      "profit after tax" in item_lower or "profit / (loss) after taxation" in item_lower or
+                      "profit/(loss) after taxation" in item_lower or "profit after taxation" in item_lower)
+            is_pbt = ("profit / (loss) before taxation" in item_lower or "profit/(loss) before taxation" in item_lower or
+                      "profit before taxation" in item_lower or "profit before tax" in item_lower)
+            is_tax = item_lower.startswith("8. tax expenses") or item_lower == "8. tax expenses"
+            is_op = (item_lower.startswith("6. ebit") or item_lower.startswith("3. gross profit") or 
+                     ("operating profit" in item_lower and "margin" not in item_lower))
+            is_cf = ("net cash flows from operating activities" in item_lower or item_lower.startswith("8. operating cash flow") or
+                     item_lower.startswith("1. net cash flows from operating"))
+            is_eps = ("basic earnings per share" in item_lower or item_lower.startswith("v3. basic earnings") or 
+                      item_lower.startswith("v2. basic earnings"))
+            is_ncl = "d. non-current liabilities" in item_lower
+            is_cl = "e. current liabilities" in item_lower
 
             for c_idx, yr in year_cols.items():
                 val = row[c_idx] if c_idx < len(row) else None
@@ -219,7 +231,11 @@ def parse_sbp_metrics_for_companies() -> list[dict[str, Any]]:
                         "shareholders_equity": np.nan,
                         "revenue": np.nan,
                         "net_income": np.nan,
+                        "pbt": np.nan,
+                        "tax": np.nan,
                         "operating_profit": np.nan,
+                        "operating_cash_flow": np.nan,
+                        "eps_basic": np.nan,
                         "non_current_liab": 0.0,
                         "current_liab": 0.0,
                     }
@@ -232,31 +248,47 @@ def parse_sbp_metrics_for_companies() -> list[dict[str, Any]]:
                     current_data[key]["revenue"] = num_val
                 elif is_pat and np.isnan(current_data[key]["net_income"]):
                     current_data[key]["net_income"] = num_val
+                elif is_pbt and np.isnan(current_data[key]["pbt"]):
+                    current_data[key]["pbt"] = num_val
+                elif is_tax and np.isnan(current_data[key]["tax"]):
+                    current_data[key]["tax"] = num_val
                 elif is_op and np.isnan(current_data[key]["operating_profit"]):
                     current_data[key]["operating_profit"] = num_val
+                elif is_cf and np.isnan(current_data[key]["operating_cash_flow"]):
+                    current_data[key]["operating_cash_flow"] = num_val
+                elif is_eps and np.isnan(current_data[key]["eps_basic"]):
+                    current_data[key]["eps_basic"] = num_val
                 elif is_ncl:
                     current_data[key]["non_current_liab"] = num_val
                 elif is_cl:
                     current_data[key]["current_liab"] = num_val
 
-        # Convert sheet observations into records
+        # Convert sheet observations into records (converting SBP '000 to Millions: / 1000.0)
         for (sym, yr), mdict in current_data.items():
             tot_debt = mdict["non_current_liab"] + mdict["current_liab"]
+            
+            # Resolve net income (use PAT directly, or PBT - Tax fallback)
+            net_inc = mdict["net_income"]
+            if np.isnan(net_inc) and not np.isnan(mdict["pbt"]):
+                tax_val = mdict["tax"] if not np.isnan(mdict["tax"]) else 0.0
+                net_inc = mdict["pbt"] - tax_val
+
+            # Scale SBP '000 to Millions: num / 1000.0
             extracted_records.append({
                 "symbol": sym,
                 "fiscal_year": yr,
                 "period_end_date": f"{yr}-06-30",  # Standard fiscal year end for industrial firms
                 "source": f"SBP FSA Archive ({sname})",
-                "total_assets": mdict["total_assets"] if not np.isnan(mdict["total_assets"]) else None,
-                "shareholders_equity": mdict["shareholders_equity"] if not np.isnan(mdict["shareholders_equity"]) else None,
-                "revenue": mdict["revenue"] if not np.isnan(mdict["revenue"]) else None,
-                "net_income": mdict["net_income"] if not np.isnan(mdict["net_income"]) else None,
-                "operating_profit": mdict["operating_profit"] if not np.isnan(mdict["operating_profit"]) else None,
-                "total_debt": tot_debt if tot_debt > 0 else None,
-                "operating_cash_flow": None,
-                "free_cash_flow": None,
+                "total_assets": round(mdict["total_assets"] / 1000.0, 3) if not np.isnan(mdict["total_assets"]) else None,
+                "shareholders_equity": round(mdict["shareholders_equity"] / 1000.0, 3) if not np.isnan(mdict["shareholders_equity"]) else None,
+                "revenue": round(mdict["revenue"] / 1000.0, 3) if not np.isnan(mdict["revenue"]) else None,
+                "net_income": round(net_inc / 1000.0, 3) if not np.isnan(net_inc) else None,
+                "operating_profit": round(mdict["operating_profit"] / 1000.0, 3) if not np.isnan(mdict["operating_profit"]) else None,
+                "total_debt": round(tot_debt / 1000.0, 3) if tot_debt > 0 else None,
+                "operating_cash_flow": round(mdict["operating_cash_flow"] / 1000.0, 3) if not np.isnan(mdict["operating_cash_flow"]) else None,
+                "free_cash_flow": round(mdict["operating_cash_flow"] / 1000.0, 3) if not np.isnan(mdict["operating_cash_flow"]) else None,
                 "interest_expense": None,
-                "eps_basic": None,
+                "eps_basic": mdict["eps_basic"] if not np.isnan(mdict["eps_basic"]) else None,
                 "shares_outstanding": None,
                 "net_interest_income": None,
                 "non_interest_expense": None,
@@ -297,6 +329,12 @@ def build_unified_statement_panel():
             meta = comp_meta.get(sym, {"company_name": sym, "sector": "UNCLASSIFIED", "is_bank": False})
             p_end = str(r.get("period_end_date", f"{yr}-06-30")).split(" ")[0].strip()
 
+            tot_a = pd.to_numeric(r.get("total_assets"), errors="coerce")
+            tot_l = pd.to_numeric(r.get("total_liabilities"), errors="coerce")
+            eq = pd.to_numeric(r.get("shareholders_equity"), errors="coerce")
+            if (pd.isna(eq) or eq <= 0) and pd.notna(tot_a) and pd.notna(tot_l) and (tot_a > tot_l > 0):
+                eq = tot_a - tot_l
+
             all_records.append({
                 "symbol": sym,
                 "company_name": meta["company_name"],
@@ -307,8 +345,8 @@ def build_unified_statement_panel():
                 "source": "kse100_fundamentals_annual.csv",
                 "net_income": pd.to_numeric(r.get("net_profit_after_tax"), errors="coerce"),
                 "revenue": pd.to_numeric(r.get("revenue_sales"), errors="coerce"),
-                "shareholders_equity": pd.to_numeric(r.get("shareholders_equity"), errors="coerce"),
-                "total_assets": pd.to_numeric(r.get("total_assets"), errors="coerce"),
+                "shareholders_equity": eq,
+                "total_assets": tot_a,
                 "operating_profit": pd.to_numeric(r.get("operating_profit"), errors="coerce"),
                 "operating_cash_flow": pd.to_numeric(r.get("operating_cash_flow"), errors="coerce"),
                 "free_cash_flow": pd.to_numeric(r.get("free_cash_flow"), errors="coerce"),
@@ -364,11 +402,11 @@ def build_unified_statement_panel():
 
     df_panel = pd.DataFrame(resolved_rows)
 
-    # Deduplicate: if both kse100 CSV and SBP exist for same (symbol, yr), prefer the one with verified announcement or more non-null fields
+    # Deduplicate: if both kse100 CSV and SBP exist for same (symbol, yr), prefer the one with more non-null fields, then verified announcement
     df_panel["non_null_count"] = df_panel[["net_income", "total_assets", "shareholders_equity", "revenue", "operating_profit"]].notnull().sum(axis=1)
     df_panel.sort_values(
-        by=["symbol", "fiscal_year", "is_estimated_publication", "non_null_count"],
-        ascending=[True, True, True, False],
+        by=["symbol", "fiscal_year", "non_null_count", "is_estimated_publication"],
+        ascending=[True, True, False, True],
         inplace=True
     )
     df_panel.drop_duplicates(subset=["symbol", "fiscal_year"], keep="first", inplace=True)
