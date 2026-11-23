@@ -32,6 +32,12 @@ from src.analysis.common import (
     safe_float,
     sanitize_for_json,
 )
+from src.ml.conviction_filter import (
+    ConvictionTier,
+    SelectiveAction,
+    classify_conviction,
+    compute_dynamic_barriers,
+)
 from src.ml.metrics import evaluate_by_regime, evaluate_multiclass_predictions
 from src.predictive_data.daily_builder import (
     _compute_causal_wilder_rsi,
@@ -887,7 +893,11 @@ class TechnicalMLPredictor:
             }
         )
 
-    def predict_from_features(self, features: dict[str, Any] | pd.DataFrame) -> dict[str, Any]:
+    def predict_from_features(
+        self,
+        features: dict[str, Any] | pd.DataFrame,
+        close_price: Optional[float] = None,
+    ) -> dict[str, Any]:
         """Run inference directly from a raw feature dictionary or single-row DataFrame using the loaded `.pkl` pipeline."""
         bundle = self._ensure_loaded()
         fcols: list[str] = bundle["feature_cols"]
@@ -921,6 +931,7 @@ class TechnicalMLPredictor:
 
         pred_idx = int(np.argmax(probs))
         pred_label = bundle["label_names"][pred_idx]
+        confidence_val = safe_float(float(probs[pred_idx]), 4)
         top_contributors = self._explain_prediction(bundle, x_mat, pred_idx, row_df)
 
         adx_val = safe_float(row_df["adx_14"].iloc[0] if "adx_14" in row_df else None, 2)
@@ -935,6 +946,24 @@ class TechnicalMLPredictor:
         else:
             trend_strength = "WEAK_OR_RANGEBOUND"
 
+        atr_val = safe_float(row_df["atr_pct"].iloc[0] if "atr_pct" in row_df else None, 4)
+        prob_dist = {
+            "Bearish": safe_float(float(probs[0]), 4),
+            "Neutral": safe_float(float(probs[1]), 4),
+            "Bullish": safe_float(float(probs[2]), 4),
+        }
+
+        # Conviction gating & dynamic ATR barriers
+        conviction_info = classify_conviction(pred_label, confidence_val, prob_dist)
+        barriers_info = compute_dynamic_barriers(
+            close_price=close_price,
+            atr_pct=atr_val,
+            direction=pred_label,
+            multiplier_tp=1.5,
+            multiplier_sl=1.0,
+            horizon_sessions=5,
+        )
+
         non_null = int(np.isfinite(x_mat[0]).sum())
         return sanitize_for_json(
             {
@@ -947,12 +976,17 @@ class TechnicalMLPredictor:
                 "finite_input_features": non_null,
                 "calibration_applied": calibrator is not None,
                 "predicted_condition": pred_label,
-                "confidence": safe_float(float(probs[pred_idx]), 4),
-                "probabilities": {
-                    "Bearish": safe_float(float(probs[0]), 4),
-                    "Neutral": safe_float(float(probs[1]), 4),
-                    "Bullish": safe_float(float(probs[2]), 4),
-                },
+                "confidence": confidence_val,
+                "probabilities": prob_dist,
+                "conviction_tier": conviction_info["tier"],
+                "is_actionable": conviction_info["is_actionable"],
+                "selective_action": conviction_info["selective_action"],
+                "historical_expected_win_rate_pct": conviction_info["historical_expected_win_rate_pct"],
+                "alpha_expectation_pct": conviction_info["alpha_expectation_pct"],
+                "take_profit_target_pct": barriers_info["take_profit_target_pct"],
+                "stop_loss_limit_pct": barriers_info["stop_loss_limit_pct"],
+                "conviction_gating": conviction_info,
+                "dynamic_volatility_barriers": barriers_info,
                 "trend_strength": trend_strength,
                 "adx_14": adx_val,
                 "top_contributing_features": top_contributors,
@@ -993,7 +1027,8 @@ class TechnicalMLPredictor:
             )
 
         feat_row = self._build_live_feature_row(conn, sym, meta, adj_df, cal_df, mkt_cutoff)
-        pred_out = self.predict_from_features(feat_row)
+        latest_close = safe_float(adj_df["adj_close"].iloc[-1], 2)
+        pred_out = self.predict_from_features(feat_row, close_price=latest_close)
         latest_trade_date = pd.to_datetime(adj_df["trading_date"].iloc[-1]).date()
 
         pred_out.update(

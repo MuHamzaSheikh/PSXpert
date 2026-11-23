@@ -154,9 +154,8 @@ export const MarketAnalysisPage: React.FC = () => {
               PKR {price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
             <div
-              className={`inline-flex items-center gap-1 font-mono text-xs font-bold px-2 py-0.5 rounded ${
-                isUp ? 'bg-bull-bg text-bull' : 'bg-bear-bg text-bear'
-              }`}
+              className={`inline-flex items-center gap-1 font-mono text-xs font-bold px-2 py-0.5 rounded ${isUp ? 'bg-bull-bg text-bull' : 'bg-bear-bg text-bear'
+                }`}
             >
               {isUp ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
               <span>{isUp ? '+' : ''}{change.toFixed(2)} ({isUp ? '+' : ''}{pctChange.toFixed(2)}%)</span>
@@ -165,11 +164,10 @@ export const MarketAnalysisPage: React.FC = () => {
 
           <button
             onClick={toggleWatchlist}
-            className={`p-2.5 rounded-xl border transition-all ${
-              isWatchlisted
-                ? 'bg-amber-500/10 border-amber-500 text-amber-500 shadow-sm'
-                : 'border-border bg-bg-card text-fg-muted hover:text-amber-500 hover:border-amber-500/50'
-            }`}
+            className={`p-2.5 rounded-xl border transition-all ${isWatchlisted
+              ? 'bg-amber-500/10 border-amber-500 text-amber-500 shadow-sm'
+              : 'border-border bg-bg-card text-fg-muted hover:text-amber-500 hover:border-amber-500/50'
+              }`}
             title={isWatchlisted ? 'Remove from Watchlist' : 'Add to Watchlist'}
           >
             <Star className={`w-5 h-5 ${isWatchlisted ? 'fill-amber-400' : ''}`} />
@@ -193,12 +191,10 @@ export const MarketAnalysisPage: React.FC = () => {
           {ohlcv ? (
             <TradingViewChart
               candles={ohlcv.candles}
-              patterns={ohlcv.patterns || []}
               symbol={symbol}
               height={400}
               showVolume
               showEMAs
-              showPatterns
             />
           ) : (
             <div className="h-[400px] flex items-center justify-center text-fg-subtle">
@@ -212,11 +208,10 @@ export const MarketAnalysisPage: React.FC = () => {
       <div className="flex items-center gap-2 overflow-x-auto border-b border-border pb-px text-xs font-semibold">
         <button
           onClick={() => setActiveTab('technicals')}
-          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${
-            activeTab === 'technicals'
-              ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-              : 'border-transparent text-fg-muted hover:text-fg'
-          }`}
+          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${activeTab === 'technicals'
+            ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
+            : 'border-transparent text-fg-muted hover:text-fg'
+            }`}
         >
           <Layers className="w-4 h-4" />
           <span>8 Technical Indicators</span>
@@ -224,11 +219,10 @@ export const MarketAnalysisPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('agents')}
-          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${
-            activeTab === 'agents'
-              ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-              : 'border-transparent text-fg-muted hover:text-fg'
-          }`}
+          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${activeTab === 'agents'
+            ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
+            : 'border-transparent text-fg-muted hover:text-fg'
+            }`}
         >
           <Users className="w-4 h-4" />
           <span>Multi-Agent Committee</span>
@@ -237,11 +231,10 @@ export const MarketAnalysisPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('regimes')}
-          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${
-            activeTab === 'regimes'
-              ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-              : 'border-transparent text-fg-muted hover:text-fg'
-          }`}
+          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${activeTab === 'regimes'
+            ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
+            : 'border-transparent text-fg-muted hover:text-fg'
+            }`}
         >
           <Activity className="w-4 h-4" />
           <span>HMM Regimes & GA</span>
@@ -249,11 +242,10 @@ export const MarketAnalysisPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('fundamentals')}
-          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${
-            activeTab === 'fundamentals'
-              ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-              : 'border-transparent text-fg-muted hover:text-fg'
-          }`}
+          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${activeTab === 'fundamentals'
+            ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
+            : 'border-transparent text-fg-muted hover:text-fg'
+            }`}
         >
           <PieChart className="w-4 h-4" />
           <span>Fundamentals & Ratios</span>
@@ -261,11 +253,10 @@ export const MarketAnalysisPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('filings')}
-          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${
-            activeTab === 'filings'
-              ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-              : 'border-transparent text-fg-muted hover:text-fg'
-          }`}
+          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${activeTab === 'filings'
+            ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
+            : 'border-transparent text-fg-muted hover:text-fg'
+            }`}
         >
           <FileSpreadsheet className="w-4 h-4" />
           <span>PSX Filings & Payouts</span>

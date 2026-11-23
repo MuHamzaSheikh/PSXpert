@@ -418,6 +418,8 @@ class FundamentalAnalysisEngine:
             ann_d = r["announcement_date"]
             if isinstance(ann_d, datetime):
                 ann_d = ann_d.date()
+            elif isinstance(ann_d, str):
+                ann_d = date.fromisoformat(ann_d[:10])
 
             raw_dps = safe_float(r["dividend_per_share"])
             pct = safe_float(r["payout_percentage"])
@@ -482,38 +484,83 @@ class FundamentalAnalysisEngine:
             return {}
         upper_syms = [s.strip().upper() for s in symbols]
 
-        fin_rows = pd.read_sql(
-            text(
-                """
-                SELECT UPPER(symbol) AS symbol, period_end_date, metric_name, metric_value
-                FROM company_financials
-                WHERE UPPER(symbol) = ANY(:syms)
-                  AND statement_type IN ('INCOME_STATEMENT', 'BALANCE_SHEET', 'CASH_FLOW')
-                  AND metric_name = ANY(:metrics)
-                  AND period_end_date <= :cutoff
-                ORDER BY symbol, period_end_date ASC
-                """
-            ),
-            conn,
-            params={"syms": upper_syms, "metrics": list(_CORE_IFRS_METRICS), "cutoff": cutoff},
-        )
+        is_pg = getattr(conn, "dialect", None) is not None and conn.dialect.name == "postgresql"
+        if is_pg:
+            fin_rows = pd.read_sql(
+                text(
+                    """
+                    SELECT UPPER(symbol) AS symbol, period_end_date, metric_name, metric_value
+                    FROM company_financials
+                    WHERE UPPER(symbol) = ANY(:syms)
+                      AND statement_type IN ('INCOME_STATEMENT', 'BALANCE_SHEET', 'CASH_FLOW')
+                      AND metric_name = ANY(:metrics)
+                      AND period_end_date <= :cutoff
+                    ORDER BY symbol, period_end_date ASC
+                    """
+                ),
+                conn,
+                params={"syms": upper_syms, "metrics": list(_CORE_IFRS_METRICS), "cutoff": cutoff},
+            )
+        else:
+            s_ph = ",".join(f":s_{i}" for i in range(len(upper_syms)))
+            m_ph = ",".join(f":m_{i}" for i in range(len(_CORE_IFRS_METRICS)))
+            p = {"cutoff": cutoff}
+            for i, s in enumerate(upper_syms):
+                p[f"s_{i}"] = s
+            for i, m in enumerate(_CORE_IFRS_METRICS):
+                p[f"m_{i}"] = m
+            fin_rows = pd.read_sql(
+                text(
+                    f"""
+                    SELECT UPPER(symbol) AS symbol, period_end_date, metric_name, metric_value
+                    FROM company_financials
+                    WHERE UPPER(symbol) IN ({s_ph})
+                      AND statement_type IN ('INCOME_STATEMENT', 'BALANCE_SHEET', 'CASH_FLOW')
+                      AND metric_name IN ({m_ph})
+                      AND period_end_date <= :cutoff
+                    ORDER BY symbol, period_end_date ASC
+                    """
+                ),
+                conn,
+                params=p,
+            )
         if fin_rows.empty:
             return {}
 
-        ann_rows = pd.read_sql(
-            text(
-                """
-                SELECT UPPER(symbol) AS symbol, posting_date, title
-                FROM corporate_announcements
-                WHERE UPPER(symbol) = ANY(:syms)
-                  AND category = 'Earnings Announcements'
-                  AND posting_date <= :cutoff
-                ORDER BY symbol, posting_date ASC
-                """
-            ),
-            conn,
-            params={"syms": upper_syms, "cutoff": cutoff},
-        )
+        if is_pg:
+            ann_rows = pd.read_sql(
+                text(
+                    """
+                    SELECT UPPER(symbol) AS symbol, posting_date, title
+                    FROM corporate_announcements
+                    WHERE UPPER(symbol) = ANY(:syms)
+                      AND category = 'Earnings Announcements'
+                      AND posting_date <= :cutoff
+                    ORDER BY symbol, posting_date ASC
+                    """
+                ),
+                conn,
+                params={"syms": upper_syms, "cutoff": cutoff},
+            )
+        else:
+            s_ph = ",".join(f":s_{i}" for i in range(len(upper_syms)))
+            p_ann = {"cutoff": cutoff}
+            for i, s in enumerate(upper_syms):
+                p_ann[f"s_{i}"] = s
+            ann_rows = pd.read_sql(
+                text(
+                    f"""
+                    SELECT UPPER(symbol) AS symbol, posting_date, title
+                    FROM corporate_announcements
+                    WHERE UPPER(symbol) IN ({s_ph})
+                      AND category = 'Earnings Announcements'
+                      AND posting_date <= :cutoff
+                    ORDER BY symbol, posting_date ASC
+                    """
+                ),
+                conn,
+                params=p_ann,
+            )
 
         # Map (symbol, ended_period_date) -> earliest earnings announcement posting_date
         ann_lookup: dict[tuple[str, date], date] = {}

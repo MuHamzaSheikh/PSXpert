@@ -268,6 +268,10 @@ class MLAnalysisService:
             "rule_score": rule_tech.get("technical_score"),
             "ml_direction": m_cls,
             "ml_confidence": ml_tech.get("confidence"),
+            "ml_conviction_tier": ml_tech.get("conviction_tier"),
+            "ml_is_actionable": ml_tech.get("is_actionable"),
+            "ml_selective_action": ml_tech.get("selective_action"),
+            "ml_expected_win_rate_pct": ml_tech.get("historical_expected_win_rate_pct"),
             "agree": agree,
             "note": note,
         }

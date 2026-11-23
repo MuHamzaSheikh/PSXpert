@@ -181,18 +181,17 @@ def resolve_effective_as_of_date(
 ) -> Tuple[date, date]:
     """Resolve requested cutoff date and the latest KSE-100 market trading date <= cutoff."""
     parsed = parse_as_of_date(as_of_date)
-    latest_mkt = conn.execute(
+    raw_latest_mkt = conn.execute(
         text("SELECT MAX(trading_date) FROM market_indices WHERE index_symbol = 'KSE100'")
     ).scalar()
-    if latest_mkt is None:
+    if raw_latest_mkt is None:
         raise RuntimeError("market_indices contains no KSE100 calendar rows.")
 
-    if isinstance(latest_mkt, datetime):
-        latest_mkt = latest_mkt.date()
+    latest_mkt = parse_as_of_date(raw_latest_mkt)
 
     requested = min(parsed, latest_mkt) if parsed is not None else latest_mkt
 
-    resolved_mkt = conn.execute(
+    raw_resolved_mkt = conn.execute(
         text(
             """
             SELECT MAX(trading_date)
@@ -202,10 +201,10 @@ def resolve_effective_as_of_date(
         ),
         {"req_d": requested},
     ).scalar()
-    if resolved_mkt is None:
+    if raw_resolved_mkt is None:
         raise ValueError(f"Requested as_of_date {requested} precedes earliest KSE100 date.")
-    if isinstance(resolved_mkt, datetime):
-        resolved_mkt = resolved_mkt.date()
+
+    resolved_mkt = parse_as_of_date(raw_resolved_mkt)
 
     return requested, resolved_mkt
 
@@ -228,19 +227,35 @@ def load_clean_symbol_prices(
         cal_df = cal_df[pd.to_datetime(cal_df["trading_date"]).dt.date <= max_date].copy()
         cal_df["cal_idx"] = np.arange(len(cal_df), dtype=int)
 
-    raw_counts = conn.execute(
-        text(
-            """
-            SELECT
-                COUNT(*) AS total_raw_rows,
-                COUNT(*) FILTER (WHERE EXTRACT(DOW FROM trading_date) IN (0, 6)) AS weekend_rows,
-                COUNT(*) FILTER (WHERE close <= 0 OR close IS NULL) AS nonpositive_close_rows
-            FROM stock_prices
-            WHERE UPPER(symbol) = :sym AND trading_date <= :max_d
-            """
-        ),
-        {"sym": sym, "max_d": max_date},
-    ).mappings().first()
+    is_pg = getattr(conn, "dialect", None) is not None and conn.dialect.name == "postgresql"
+    if is_pg:
+        raw_counts = conn.execute(
+            text(
+                """
+                SELECT
+                    COUNT(*) AS total_raw_rows,
+                    COUNT(*) FILTER (WHERE EXTRACT(DOW FROM trading_date) IN (0, 6)) AS weekend_rows,
+                    COUNT(*) FILTER (WHERE close <= 0 OR close IS NULL) AS nonpositive_close_rows
+                FROM stock_prices
+                WHERE UPPER(symbol) = :sym AND trading_date <= :max_d
+                """
+            ),
+            {"sym": sym, "max_d": max_date},
+        ).mappings().first()
+    else:
+        raw_counts = conn.execute(
+            text(
+                """
+                SELECT
+                    COUNT(*) AS total_raw_rows,
+                    COUNT(CASE WHEN CAST(strftime('%w', trading_date) AS INTEGER) IN (0, 6) THEN 1 END) AS weekend_rows,
+                    COUNT(CASE WHEN close <= 0 OR close IS NULL THEN 1 END) AS nonpositive_close_rows
+                FROM stock_prices
+                WHERE UPPER(symbol) = :sym AND trading_date <= :max_d
+                """
+            ),
+            {"sym": sym, "max_d": max_date},
+        ).mappings().first()
 
     q_px = text(
         """

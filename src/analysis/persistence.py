@@ -40,8 +40,35 @@ _DDL_STATEMENTS = [
 
 def ensure_analysis_results_table(conn: Connection) -> None:
     """Create analysis_results table and index idempotently."""
-    for ddl in _DDL_STATEMENTS:
-        conn.execute(text(ddl))
+    is_pg = getattr(conn, "dialect", None) is not None and conn.dialect.name == "postgresql"
+    if is_pg:
+        for ddl in _DDL_STATEMENTS:
+            conn.execute(text(ddl))
+    else:
+        sqlite_ddl = [
+            """
+            CREATE TABLE IF NOT EXISTS analysis_results (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                symbol VARCHAR(32) NOT NULL,
+                analysis_type VARCHAR(24) NOT NULL,
+                as_of_date DATE NOT NULL,
+                analysis_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                data_cutoff_timestamp VARCHAR(64) NOT NULL,
+                source_fingerprint VARCHAR(128) NOT NULL,
+                overall_assessment VARCHAR(64),
+                score REAL,
+                metrics_and_findings TEXT NOT NULL,
+                data_source_references TEXT NOT NULL,
+                CONSTRAINT uq_analysis_cache UNIQUE (symbol, analysis_type, as_of_date, source_fingerprint)
+            )
+            """,
+            """
+            CREATE INDEX IF NOT EXISTS idx_analysis_results_lookup
+            ON analysis_results (symbol, analysis_type, as_of_date, analysis_timestamp DESC)
+            """,
+        ]
+        for ddl in sqlite_ddl:
+            conn.execute(text(ddl))
 
 
 def compute_source_fingerprint(
@@ -68,7 +95,7 @@ def compute_source_fingerprint(
     px_row = conn.execute(
         text(
             """
-            SELECT COUNT(*) AS cnt, MAX(trading_date)::text AS max_d
+            SELECT COUNT(*) AS cnt, CAST(MAX(trading_date) AS TEXT) AS max_d
             FROM stock_prices
             WHERE UPPER(symbol) = :sym AND trading_date <= :cutoff AND close > 0
             """
@@ -79,7 +106,7 @@ def compute_source_fingerprint(
     latest_px = conn.execute(
         text(
             """
-            SELECT sp.trading_date::text AS d, sp.close, sp.volume, sp.market_cap
+            SELECT CAST(sp.trading_date AS TEXT) AS d, sp.close, sp.volume, sp.market_cap
             FROM stock_prices sp
             JOIN market_indices mi ON mi.trading_date = sp.trading_date AND mi.index_symbol = 'KSE100'
             WHERE UPPER(sp.symbol) = :sym AND sp.trading_date <= :cutoff AND sp.close > 0
@@ -93,7 +120,7 @@ def compute_source_fingerprint(
     idx_row = conn.execute(
         text(
             """
-            SELECT COUNT(*) AS cnt, MAX(trading_date)::text AS max_d
+            SELECT COUNT(*) AS cnt, CAST(MAX(trading_date) AS TEXT) AS max_d
             FROM market_indices
             WHERE index_symbol = 'KSE100' AND trading_date <= :cutoff
             """
@@ -104,7 +131,7 @@ def compute_source_fingerprint(
     pay_row = conn.execute(
         text(
             """
-            SELECT COUNT(*) AS cnt, MAX(announcement_date)::text AS max_d
+            SELECT COUNT(*) AS cnt, CAST(MAX(announcement_date) AS TEXT) AS max_d
             FROM corporate_payouts
             WHERE UPPER(symbol) = :sym AND announcement_date <= :cutoff AND payout_type != 'type'
             """
@@ -115,7 +142,7 @@ def compute_source_fingerprint(
     ann_row = conn.execute(
         text(
             """
-            SELECT COUNT(*) AS cnt, MAX(posting_date)::text AS max_d
+            SELECT COUNT(*) AS cnt, CAST(MAX(posting_date) AS TEXT) AS max_d
             FROM corporate_announcements
             WHERE UPPER(symbol) = :sym AND posting_date <= :cutoff
             """
@@ -146,7 +173,7 @@ def compute_source_fingerprint(
         fin_sym_row = conn.execute(
             text(
                 """
-                SELECT COUNT(*) AS cnt, MAX(period_end_date)::text AS max_pe
+                SELECT COUNT(*) AS cnt, CAST(MAX(period_end_date) AS TEXT) AS max_pe
                 FROM company_financials
                 WHERE UPPER(symbol) = :sym
                   AND statement_type IN ('INCOME_STATEMENT', 'BALANCE_SHEET', 'CASH_FLOW')
@@ -158,7 +185,7 @@ def compute_source_fingerprint(
         sector_peer_row = conn.execute(
             text(
                 """
-                SELECT COUNT(*) AS cnt, COUNT(DISTINCT cf.symbol) AS syms, MAX(cf.period_end_date)::text AS max_pe
+                SELECT COUNT(*) AS cnt, COUNT(DISTINCT cf.symbol) AS syms, CAST(MAX(cf.period_end_date) AS TEXT) AS max_pe
                 FROM company_financials cf
                 JOIN companies c ON c.symbol = cf.symbol
                 WHERE c.sector = :sector
@@ -172,7 +199,7 @@ def compute_source_fingerprint(
         sector_px_row = conn.execute(
             text(
                 """
-                SELECT COUNT(*) AS cnt, MAX(sp.trading_date)::text AS max_d
+                SELECT COUNT(*) AS cnt, CAST(MAX(sp.trading_date) AS TEXT) AS max_d
                 FROM stock_prices sp
                 JOIN companies c ON c.symbol = sp.symbol
                 WHERE c.sector = :sector AND sp.trading_date <= :cutoff
@@ -261,42 +288,72 @@ def save_analysis_result(
     clean_sources = sanitize_for_json(data_source_references)
     now_utc = datetime.now(timezone.utc)
 
-    row = conn.execute(
-        text(
-            """
-            INSERT INTO analysis_results (
-                symbol, analysis_type, as_of_date, analysis_timestamp,
-                data_cutoff_timestamp, source_fingerprint, overall_assessment,
-                score, metrics_and_findings, data_source_references
-            )
-            VALUES (
-                :sym, :atype, :as_of, :ats,
-                :cutoff, :fp, :assess,
-                :score, CAST(:payload AS jsonb), CAST(:sources AS jsonb)
-            )
-            ON CONFLICT ON CONSTRAINT uq_analysis_cache DO UPDATE SET
-                analysis_timestamp = EXCLUDED.analysis_timestamp,
-                data_cutoff_timestamp = EXCLUDED.data_cutoff_timestamp,
-                overall_assessment = EXCLUDED.overall_assessment,
-                score = EXCLUDED.score,
-                metrics_and_findings = EXCLUDED.metrics_and_findings,
-                data_source_references = EXCLUDED.data_source_references
-            RETURNING id, analysis_timestamp
-            """
-        ),
-        {
-            "sym": symbol.strip().upper(),
-            "atype": analysis_type.strip().upper(),
-            "as_of": as_of_date,
-            "ats": now_utc,
-            "cutoff": data_cutoff_timestamp,
-            "fp": source_fingerprint,
-            "assess": overall_assessment,
-            "score": score,
-            "payload": json.dumps(clean_payload, allow_nan=False),
-            "sources": json.dumps(clean_sources, allow_nan=False),
-        },
-    ).mappings().first()
+    is_pg = getattr(conn, "dialect", None) is not None and conn.dialect.name == "postgresql"
+    params = {
+        "sym": symbol.strip().upper(),
+        "atype": analysis_type.strip().upper(),
+        "as_of": as_of_date,
+        "ats": now_utc,
+        "cutoff": data_cutoff_timestamp,
+        "fp": source_fingerprint,
+        "assess": overall_assessment,
+        "score": score,
+        "payload": json.dumps(clean_payload, allow_nan=False),
+        "sources": json.dumps(clean_sources, allow_nan=False),
+    }
+
+    if is_pg:
+        row = conn.execute(
+            text(
+                """
+                INSERT INTO analysis_results (
+                    symbol, analysis_type, as_of_date, analysis_timestamp,
+                    data_cutoff_timestamp, source_fingerprint, overall_assessment,
+                    score, metrics_and_findings, data_source_references
+                )
+                VALUES (
+                    :sym, :atype, :as_of, :ats,
+                    :cutoff, :fp, :assess,
+                    :score, CAST(:payload AS jsonb), CAST(:sources AS jsonb)
+                )
+                ON CONFLICT ON CONSTRAINT uq_analysis_cache DO UPDATE SET
+                    analysis_timestamp = EXCLUDED.analysis_timestamp,
+                    data_cutoff_timestamp = EXCLUDED.data_cutoff_timestamp,
+                    overall_assessment = EXCLUDED.overall_assessment,
+                    score = EXCLUDED.score,
+                    metrics_and_findings = EXCLUDED.metrics_and_findings,
+                    data_source_references = EXCLUDED.data_source_references
+                RETURNING id, analysis_timestamp
+                """
+            ),
+            params,
+        ).mappings().first()
+    else:
+        row = conn.execute(
+            text(
+                """
+                INSERT INTO analysis_results (
+                    symbol, analysis_type, as_of_date, analysis_timestamp,
+                    data_cutoff_timestamp, source_fingerprint, overall_assessment,
+                    score, metrics_and_findings, data_source_references
+                )
+                VALUES (
+                    :sym, :atype, :as_of, :ats,
+                    :cutoff, :fp, :assess,
+                    :score, :payload, :sources
+                )
+                ON CONFLICT (symbol, analysis_type, as_of_date, source_fingerprint) DO UPDATE SET
+                    analysis_timestamp = EXCLUDED.analysis_timestamp,
+                    data_cutoff_timestamp = EXCLUDED.data_cutoff_timestamp,
+                    overall_assessment = EXCLUDED.overall_assessment,
+                    score = EXCLUDED.score,
+                    metrics_and_findings = EXCLUDED.metrics_and_findings,
+                    data_source_references = EXCLUDED.data_source_references
+                RETURNING id, analysis_timestamp
+                """
+            ),
+            params,
+        ).mappings().first()
 
     saved_ts = row["analysis_timestamp"]
     out = dict(clean_payload)

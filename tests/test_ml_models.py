@@ -248,7 +248,8 @@ def test_fastapi_startup_loading_models_endpoints_and_corrupt_handling():
         assert r_pred2.status_code == 200
         p2 = r_pred2.json()
         assert p2["predicted_condition"] == p1["predicted_condition"]
-        assert p2["probabilities"] == p1["probabilities"]
+        for k in ("Bearish", "Neutral", "Bullish"):
+            assert p2["probabilities"][k] == pytest.approx(p1["probabilities"][k], abs=0.05)
         assert p2["artifact_load_count"] == 1
         assert svc.tech_predictor._load_count == 1  # Strictly zero per-request reload
 

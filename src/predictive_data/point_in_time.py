@@ -7,7 +7,7 @@ into historical daily observations.
 """
 
 import re
-from datetime import timedelta
+from datetime import date, datetime, timedelta
 from typing import Dict, List, Tuple, Any
 import numpy as np
 import pandas as pd
@@ -59,11 +59,11 @@ def load_clean_corporate_actions(conn) -> Tuple[pd.DataFrame, pd.DataFrame]:
             FROM corporate_announcements
             WHERE category = 'Dividends & Bonus Shares'
               AND (
-                  title ILIKE '%split%'
-                  OR title ILIKE '%sub-division%'
-                  OR title ILIKE '%bonus%'
-                  OR title ILIKE '%consolidat%'
-                  OR title ILIKE '%reduction of capital%'
+                  LOWER(title) LIKE '%split%'
+                  OR LOWER(title) LIKE '%sub-division%'
+                  OR LOWER(title) LIKE '%bonus%'
+                  OR LOWER(title) LIKE '%consolidat%'
+                  OR LOWER(title) LIKE '%reduction of capital%'
               )
             ORDER BY symbol, posting_date
         """),
@@ -176,7 +176,19 @@ def adjust_splits_and_flag_glitches(
 
             # Check proximity to known split/bonus/capital reduction filing
             ex_d = d_slice[pos]
-            near_filing = any(abs((ex_d - ad).days) <= 25 for ad in sym_actions)
+            if isinstance(ex_d, str):
+                ex_d = date.fromisoformat(ex_d[:10])
+            elif isinstance(ex_d, datetime):
+                ex_d = ex_d.date()
+
+            def _to_date(v):
+                if isinstance(v, datetime):
+                    return v.date()
+                if isinstance(v, str):
+                    return date.fromisoformat(v[:10])
+                return v
+
+            near_filing = any(abs((ex_d - _to_date(ad)).days) <= 25 for ad in sym_actions)
 
             if is_persistent_shift and (near_filing or step_ratio <= 0.55 or step_ratio >= 1.85):
                 # Backward adjust all prior bars [0 : pos] within this symbol slice
