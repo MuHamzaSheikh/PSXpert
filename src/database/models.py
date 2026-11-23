@@ -215,3 +215,59 @@ class CorporatePayout(Base):
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
 
     company = relationship("Company", back_populates="payouts")
+
+
+class IndexConstituentHistory(Base):
+    """
+    Historical index constituent tracking table.
+    Enables point-in-time universe reconstruction with exact entry/exit dates
+    and audit provenance (PSX notices, SBP matches, verified vs unverified).
+    """
+    __tablename__ = "index_constituents_history"
+
+    id = Column(BigInteger().with_variant(Integer, "sqlite"), primary_key=True, autoincrement=True)
+    index_symbol = Column(String(20), nullable=False, default="KSE100", index=True)
+    symbol = Column(String(20), nullable=False, index=True)
+    company_name = Column(String(255), nullable=True)
+    sector = Column(String(150), nullable=True)
+    effective_start_date = Column(Date, nullable=False, index=True)
+    effective_end_date = Column(Date, nullable=False, index=True)
+    inclusion_reason = Column(String(100), nullable=True)  # 'SECTOR_RULE', 'MARKET_CAP_RULE', 'FOUNDING_CONSTITUENT'
+    exclusion_reason = Column(String(100), nullable=True)  # 'MARKET_CAP_DEFICIT', 'SECTOR_SUBSTITUTION', 'DEFAULTER_SEGMENT', 'DELISTING', 'ACTIVE'
+    source_reference = Column(String(255), nullable=True)
+    is_verified = Column(Boolean, default=False, nullable=False)
+    verification_notes = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
+
+    __table_args__ = (
+        UniqueConstraint("index_symbol", "symbol", "effective_start_date", name="uq_index_constituents_history"),
+        Index("idx_idx_const_lookup", "index_symbol", "symbol", "effective_start_date"),
+        Index("idx_idx_const_date_range", "index_symbol", "effective_start_date", "effective_end_date"),
+    )
+
+
+class CompanyLifecycleEvent(Base):
+    """
+    Tracks company corporate events: listing, suspension, defaulters' segment,
+    merger/acquisition, buyback, and delisting with documented recovery values.
+    """
+    __tablename__ = "company_lifecycle_events"
+
+    id = Column(BigInteger().with_variant(Integer, "sqlite"), primary_key=True, autoincrement=True)
+    symbol = Column(String(20), nullable=False, index=True)
+    company_name = Column(String(255), nullable=True)
+    event_type = Column(String(50), nullable=False, index=True)  # 'LISTING', 'DEFAULTER_SEGMENT', 'SUSPENSION', 'MERGER', 'DELISTING', 'BUYBACK'
+    event_date = Column(Date, nullable=False, index=True)
+    regulatory_reason = Column(Text, nullable=True)
+    recovery_value_pkr = Column(Numeric(12, 4), nullable=True)  # Documented recovery or buyback price
+    recovery_type = Column(String(50), nullable=True)  # 'DOCUMENTED_BUYBACK', 'DOCUMENTED_SETTLEMENT', 'ESTIMATED_ZERO_RECOVERY', 'MERGER_SHARE_SWAP'
+    source_reference = Column(String(255), nullable=True)
+    is_verified = Column(Boolean, default=False, nullable=False)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
+
+    __table_args__ = (
+        Index("idx_lifecycle_sym_date", "symbol", "event_date"),
+        Index("idx_lifecycle_type_date", "event_type", "event_date"),
+    )
+

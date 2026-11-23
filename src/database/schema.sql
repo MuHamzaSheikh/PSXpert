@@ -177,3 +177,44 @@ CREATE TABLE IF NOT EXISTS corporate_payouts (
 );
 
 CREATE INDEX IF NOT EXISTS idx_corp_payouts_sym_date ON corporate_payouts(symbol, announcement_date DESC);
+
+-- 11. INDEX CONSTITUENTS HISTORY (Point-in-Time Recomposition & Survivorship Remediation)
+CREATE TABLE IF NOT EXISTS index_constituents_history (
+    id BIGSERIAL PRIMARY KEY,
+    index_symbol VARCHAR(20) NOT NULL DEFAULT 'KSE100',
+    symbol VARCHAR(20) NOT NULL,
+    company_name VARCHAR(255),
+    sector VARCHAR(150),
+    effective_start_date DATE NOT NULL,
+    effective_end_date DATE NOT NULL,
+    inclusion_reason VARCHAR(100),
+    exclusion_reason VARCHAR(100),
+    source_reference VARCHAR(255),
+    is_verified BOOLEAN NOT NULL DEFAULT FALSE,
+    verification_notes TEXT,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_index_constituents_history UNIQUE (index_symbol, symbol, effective_start_date)
+);
+
+CREATE INDEX IF NOT EXISTS idx_idx_const_lookup ON index_constituents_history(index_symbol, symbol, effective_start_date);
+CREATE INDEX IF NOT EXISTS idx_idx_const_date_range ON index_constituents_history(index_symbol, effective_start_date, effective_end_date);
+
+-- 12. COMPANY LIFECYCLE EVENTS (Listing, Delisting, Defaulter Segment & Terminal Recoveries)
+CREATE TABLE IF NOT EXISTS company_lifecycle_events (
+    id BIGSERIAL PRIMARY KEY,
+    symbol VARCHAR(20) NOT NULL,
+    company_name VARCHAR(255),
+    event_type VARCHAR(50) NOT NULL,
+    event_date DATE NOT NULL,
+    regulatory_reason TEXT,
+    recovery_value_pkr NUMERIC(12, 4),
+    recovery_type VARCHAR(50),
+    source_reference VARCHAR(255),
+    is_verified BOOLEAN NOT NULL DEFAULT FALSE,
+    notes TEXT,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_lifecycle_sym_date ON company_lifecycle_events(symbol, event_date);
+CREATE INDEX IF NOT EXISTS idx_lifecycle_type_date ON company_lifecycle_events(event_type, event_date);
+
