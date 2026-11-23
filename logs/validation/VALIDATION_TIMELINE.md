@@ -173,3 +173,25 @@ timeline
 - **Key Metrics**: `{"Reconstructed_Value_Composite_Return": 123.38, "Static_Value_Composite_Return": 112.41, "Reconstructed_Momentum_Return": 37.04, "Static_Momentum_Return": 120.29, "Reconstructed_XGBRanker_Return": 89.58, "Static_XGBRanker_Return": 207.68, "Reconstructed_XGBRanker_Sharpe": 0.66, "Static_XGBRanker_Sharpe": 1.54, "Reconstructed_Mean_Universe": 78.2, "Static_Mean_Universe": 124.4}`
 - **Associated Artifact / Report**: `reports/model_evaluation/universe_reconstruction_comparison.json`
 - **Notes**: Strictly enforced contemporaneous index membership from index_constituents_history, ADV_20 >= PKR 2.5M causal liquidity hurdle, and terminal delisting return accounting. Evaluated point-in-time statement panel expanding SBP archives from 543 to 1,633 statements.
+
+---
+
+### RUN-12: Stage 1 Corrective Engineering Validation
+- **Timestamp (UTC)**: `2026-11-23T18:37:46.211618+00:00`
+- **Target / Scope**: Stage 1: Fundamental Selection (Non-Bank Ratios, Purged vs Unpurged XGBRanker, Canonical Tickers)
+- **Universe**: Historical KSE-100 Reconstructed Universe (~110 Equities, CEPB canonical) | **Splits**: Chronological Out-of-Sample (2024-07-09 to 2026-08-21, 26 Monthly Sessions, 126-session purged train cutoff 2023-12-28)
+- **Status**: **`VERIFIED`**
+- **Key Metrics**: `{"Reconstructed_Value_Composite_Return": 131.11, "Reconstructed_Momentum_Return": 37.04, "Reconstructed_Purged_XGBRanker_Return": 50.04, "Reconstructed_Unpurged_XGBRanker_Return": 61.96, "Reconstructed_Purged_XGBRanker_Sharpe": 0.19, "Reconstructed_Unpurged_XGBRanker_Sharpe": 0.31, "Reconstructed_Purged_XGBRanker_NDCG10": 0.5073, "Reconstructed_Unpurged_XGBRanker_NDCG10": 0.4921, "Reconstructed_Mean_Universe": 78.3, "Static_Mean_Universe": 125.4}`
+- **Associated Artifact / Report**: `reports/model_evaluation/universe_reconstruction_comparison.json`
+- **Notes**: Corrective engineering completed: 1) Non-bank ratios now pass point-in-time market cap with unit normalization; 2) 126-session chronological purge strictly enforces zero label overlap between in-sample and OOS test period; 3) Canonical ticker CEPB (Century Paper & Board Mills) resolved across constituents, price history, and financials.
+
+---
+
+### RUN-13: Stage 1 Corrective Engineering Validation
+- **Timestamp (UTC)**: `2026-11-23T18:53:23.357022+00:00`
+- **Target / Scope**: Stage 1: Fundamental Selection (Non-Bank Ratios, Purged vs Unpurged XGBRanker, Canonical Tickers)
+- **Universe**: Historical KSE-100 Reconstructed Universe (~110 Equities, CEPB canonical) | **Splits**: Chronological Out-of-Sample (2024-07-09 to 2026-08-21, 26 Monthly Sessions, 126-session purged train cutoff 2023-12-28)
+- **Status**: **`VERIFIED`**
+- **Key Metrics**: `{"Reconstructed_Value_Composite_Return": 116.04, "Reconstructed_Momentum_Return": 37.04, "Reconstructed_Purged_XGBRanker_Return": 53.69, "Reconstructed_Unpurged_XGBRanker_Return": 69.19, "Reconstructed_Purged_XGBRanker_Sharpe": 0.24, "Reconstructed_Unpurged_XGBRanker_Sharpe": 0.43, "Reconstructed_Purged_XGBRanker_NDCG10": 0.5157, "Reconstructed_Unpurged_XGBRanker_NDCG10": 0.5272, "Reconstructed_Mean_Universe": 78.3, "Static_Mean_Universe": 125.4}`
+- **Associated Artifact / Report**: `reports/model_evaluation/universe_reconstruction_comparison.json`
+- **Notes**: Corrective engineering completed: 1) Non-bank ratios now pass point-in-time market cap with unit normalization; 2) 126-session chronological purge strictly enforces zero label overlap between in-sample and OOS test period; 3) Canonical ticker CEPB (Century Paper & Board Mills) resolved across constituents, price history, and financials.

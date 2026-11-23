@@ -28,10 +28,12 @@ import pytest
 from src.ml.fundamental_recovery import (
     build_harmonized_fundamental_panel,
     calculate_momentum_12m_minus_1m,
+    compute_purged_train_test_split,
     compute_sector_aware_ratios,
     compute_terminal_exit_return,
     get_latest_eligible_filing,
     get_point_in_time_constituents,
+    resolve_canonical_ticker,
 )
 
 DATA_DIR = Path("data")
@@ -230,3 +232,95 @@ def test_causal_momentum_12m_minus_1m():
 
     # Insufficient length returns None
     assert calculate_momentum_12m_minus_1m(prices[:200]) is None
+
+
+def test_canonical_ticker_resolution_cpbm_to_cepb(db_conn):
+    """Test canonical resolution of CPBM to CEPB and database presence."""
+    assert resolve_canonical_ticker("CPBM") == "CEPB"
+    assert resolve_canonical_ticker("cpbm") == "CEPB"
+    assert resolve_canonical_ticker("OGDC") == "OGDC"
+
+    cur = db_conn.cursor()
+    cepb_prices = cur.execute("SELECT COUNT(*) FROM stock_prices WHERE symbol = 'CEPB'").fetchone()[0]
+    assert cepb_prices >= 5000, f"Expected >= 5000 price records for canonical CEPB, found {cepb_prices}"
+
+    # Verify fundamentals panel has CEPB
+    panel = build_harmonized_fundamental_panel()
+    cepb_filings = panel[panel["symbol"] == "CEPB"]
+    assert len(cepb_filings) >= 15, f"Expected >= 15 audited statements for CEPB, found {len(cepb_filings)}"
+
+
+def test_point_in_time_market_cap_ratio_calculation():
+    """Test compute_sector_aware_ratios with point_in_time_market_cap and known inputs."""
+    # Non-bank scenario: equity 20,000M, net_income 2,500M, fcf 1,500M, market_cap raw PKR 50,000,000,000 (50,000M)
+    non_bank_stmt = {
+        "is_bank": False,
+        "net_income": 2500.0,
+        "shareholders_equity": 20000.0,
+        "total_assets": 40000.0,
+        "revenue": 30000.0,
+        "operating_profit": 4000.0,
+        "free_cash_flow": 1500.0,
+        "total_debt": 5000.0,
+        "interest_expense": 500.0,
+    }
+    ratios = compute_sector_aware_ratios(
+        statement_row=non_bank_stmt,
+        market_price=50.0,
+        point_in_time_market_cap=50_000_000_000.0,  # 50,000 Million PKR
+    )
+    # B/P = 20,000 / 50,000 = 0.40
+    assert abs(ratios["book_to_price"] - 0.40) < 1e-4
+    # P/B = 50,000 / 20,000 = 2.50
+    assert abs(ratios["price_to_book"] - 2.50) < 1e-4
+    # ROE = 2,500 / 20,000 = 0.125
+    assert abs(ratios["roe"] - 0.125) < 1e-4
+    # FCF Yield = 1,500 / 50,000 = 0.03
+    assert abs(ratios["fcf_yield"] - 0.03) < 1e-4
+    # Earnings Yield = 2,500 / 50,000 = 0.05
+    assert abs(ratios["earnings_yield"] - 0.05) < 1e-4
+    # Bank ratios MUST be NaN
+    assert np.isnan(ratios["net_interest_margin"])
+    assert np.isnan(ratios["cost_to_income"])
+
+
+def test_purged_train_test_split_zero_sample_overlap(db_conn):
+    """
+    Test that compute_purged_train_test_split strictly guarantees zero label leakage:
+    For every training date t <= train_cutoff_date, its forward 126-session label
+    outcome date MUST be strictly prior to oos_start_date.
+    """
+    cur = db_conn.cursor()
+    all_sessions = sorted([
+        r[0] for r in cur.execute(
+            "SELECT DISTINCT trading_date FROM market_indices WHERE index_symbol='KSE100' ORDER BY trading_date ASC"
+        ).fetchall()
+    ])
+    oos_start = "2024-07-09"
+    forward_horizon = 126
+    purge_sessions = 1
+
+    train_cutoff, eff_oos, train_idx, oos_idx = compute_purged_train_test_split(
+        all_sessions=all_sessions,
+        oos_start_date=oos_start,
+        forward_horizon=forward_horizon,
+        purge_sessions=purge_sessions,
+    )
+
+    assert train_cutoff < oos_start, f"train_cutoff {train_cutoff} not before oos_start {oos_start}"
+    assert eff_oos == oos_start, f"eff_oos {eff_oos} does not match {oos_start}"
+    assert oos_idx - train_idx >= forward_horizon + purge_sessions, "Purge gap insufficient"
+
+    # Forward 126-session outcome session for the maximum training session
+    max_train_label_end_idx = train_idx + forward_horizon
+    max_train_label_end_date = all_sessions[max_train_label_end_idx]
+
+    # Must be strictly less than oos_idx
+    assert max_train_label_end_idx < oos_idx, (
+        f"Label outcome session index {max_train_label_end_idx} ({max_train_label_end_date}) "
+        f"reaches into or beyond OOS start index {oos_idx} ({eff_oos})!"
+    )
+    assert max_train_label_end_date < eff_oos, (
+        f"Label outcome date {max_train_label_end_date} reaches into OOS period ({eff_oos})!"
+    )
+
