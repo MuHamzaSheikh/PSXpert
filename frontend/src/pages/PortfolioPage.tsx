@@ -178,64 +178,64 @@ export const PortfolioPage: React.FC = () => {
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
       {/* 1. Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 pb-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-fg">
-              Portfolio & Risk Manager
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#252A2B] dark:text-[#F4EFE6]">
+              Portfolio &amp; Risk Manager
             </h1>
             <DemoBadge label="Client LocalStore" />
           </div>
-          <p className="text-xs sm:text-sm text-fg-muted mt-1">
-            Track your PSX equity holdings, asset allocation, P&L performance, and daily Value at Risk (VaR).
+          <p className="text-xs sm:text-sm text-[#77736C] dark:text-[#9E988E] mt-1">
+            Track your PSX equity holdings, asset allocation, P&amp;L performance, and daily Value at Risk (VaR).
           </p>
         </div>
 
         <button
           onClick={() => setIsTradeModalOpen(true)}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-brand-500 hover:bg-brand-600 shadow-sm transition-all self-start sm:self-auto"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-[#2F7D68] to-[#236353] hover:from-[#236353] hover:to-[#1a4d40] shadow-md shadow-[#2F7D68]/20 transition-all self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Log New Trade</span>
         </button>
       </div>
 
-      {/* 2. Portfolio Stats Cards Row */}
+      {/* 2. Portfolio Stats Cards Row in Frosted Glass */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="p-4 space-y-1">
-          <div className="text-[11px] font-semibold text-fg-subtle uppercase">Total Portfolio Value</div>
-          <div className="text-xl sm:text-2xl font-black font-mono text-fg">
+          <div className="text-[11px] font-semibold text-[#77736C] dark:text-[#9E988E] uppercase tracking-wider">Total Portfolio Value</div>
+          <div className="text-xl sm:text-2xl font-black font-mono text-[#252A2B] dark:text-[#F4EFE6]">
             PKR {(totalValue + cashBalance).toLocaleString()}
           </div>
-          <div className="text-[11px] text-fg-subtle">
+          <div className="text-[11px] text-[#77736C] dark:text-[#9E988E]">
             Equities: PKR {totalValue.toLocaleString()}
           </div>
         </Card>
 
         <Card className="p-4 space-y-1">
-          <div className="text-[11px] font-semibold text-fg-subtle uppercase">Unrealized Gain / Loss</div>
-          <div className={`text-xl sm:text-2xl font-black font-mono ${totalUnrealizedPnl >= 0 ? 'text-bull' : 'text-bear'}`}>
+          <div className="text-[11px] font-semibold text-[#77736C] dark:text-[#9E988E] uppercase tracking-wider">Unrealized Gain / Loss</div>
+          <div className={`text-xl sm:text-2xl font-black font-mono ${totalUnrealizedPnl >= 0 ? 'text-[#287A50] dark:text-[#34A86E]' : 'text-[#C64C4C] dark:text-[#E05C5C]'}`}>
             {totalUnrealizedPnl >= 0 ? '+' : ''}PKR {totalUnrealizedPnl.toLocaleString()}
           </div>
-          <div className={`text-xs font-mono font-bold ${totalUnrealizedPnl >= 0 ? 'text-bull' : 'text-bear'}`}>
+          <div className={`text-xs font-mono font-bold ${totalUnrealizedPnl >= 0 ? 'text-[#287A50] dark:text-[#34A86E]' : 'text-[#C64C4C] dark:text-[#E05C5C]'}`}>
             {totalUnrealizedPnl >= 0 ? '+' : ''}{totalUnrealizedPnlPct.toFixed(2)}% Return
           </div>
         </Card>
 
         <Card className="p-4 space-y-1">
-          <div className="text-[11px] font-semibold text-fg-subtle uppercase">Cash Available</div>
-          <div className="text-xl sm:text-2xl font-black font-mono text-fg">
+          <div className="text-[11px] font-semibold text-[#77736C] dark:text-[#9E988E] uppercase tracking-wider">Cash Available</div>
+          <div className="text-xl sm:text-2xl font-black font-mono text-[#252A2B] dark:text-[#F4EFE6]">
             PKR {cashBalance.toLocaleString()}
           </div>
-          <div className="text-[11px] text-fg-subtle">Ready for deployment</div>
+          <div className="text-[11px] text-[#77736C] dark:text-[#9E988E]">Ready for deployment</div>
         </Card>
 
         <Card className="p-4 space-y-1">
-          <div className="text-[11px] font-semibold text-fg-subtle uppercase">Portfolio Beta & VaR</div>
-          <div className="text-xl sm:text-2xl font-black font-mono text-brand-600 dark:text-brand-400">
-            0.88 β <span className="text-xs font-sans text-fg-subtle font-normal">(Defensive)</span>
+          <div className="text-[11px] font-semibold text-[#77736C] dark:text-[#9E988E] uppercase tracking-wider">Portfolio Beta &amp; VaR</div>
+          <div className="text-xl sm:text-2xl font-black font-mono text-[#694E7A] dark:text-[#A888BF]">
+            0.88 β <span className="text-xs font-sans text-[#77736C] dark:text-[#9E988E] font-normal">(Defensive)</span>
           </div>
-          <div className="text-[11px] font-mono text-fg-muted">
+          <div className="text-[11px] font-mono text-[#77736C] dark:text-[#9E988E]">
             1-Day 95% VaR: <strong>PKR 34,200 (2.1%)</strong>
           </div>
         </Card>
@@ -243,17 +243,17 @@ export const PortfolioPage: React.FC = () => {
 
       {/* 3. Holdings Table */}
       <Card className="p-0 overflow-hidden shadow-card">
-        <div className="p-4 border-b border-border flex items-center justify-between">
+        <div className="p-4 border-b border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Briefcase className="w-4 h-4 text-brand-600 dark:text-brand-400" />
-            <span className="font-bold text-sm text-fg">Equity Holdings ({holdings.length})</span>
+            <Briefcase className="w-4 h-4 text-[#2F7D68]" />
+            <span className="font-bold text-sm text-[#252A2B] dark:text-[#F4EFE6]">Equity Holdings ({holdings.length})</span>
           </div>
-          <span className="text-xs font-mono text-fg-subtle">Real-Time PSX Valuation</span>
+          <span className="text-xs font-mono text-[#77736C] dark:text-[#9E988E]">Real-Time PSX Valuation</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-bg-elevated/70 border-b border-border text-[11px] font-semibold text-fg-subtle uppercase tracking-wider">
+            <thead className="bg-[#E7E0D5]/50 dark:bg-[#1C2022]/70 border-b border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 text-[11px] font-semibold text-[#77736C] dark:text-[#9E988E] uppercase tracking-wider">
               <tr>
                 <th className="py-3 px-4">Symbol</th>
                 <th className="py-3 px-3 text-right">Shares</th>
@@ -265,59 +265,59 @@ export const PortfolioPage: React.FC = () => {
                 <th className="py-3 px-4 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/40">
+            <tbody className="divide-y divide-[#DDD5C9]/40 dark:divide-[#DDD5C9]/10">
               {holdings.map(h => {
                 const isGain = h.unrealized_pnl >= 0;
                 const weight = totalValue > 0 ? ((h.current_value / totalValue) * 100).toFixed(1) : '0';
 
                 return (
-                  <tr key={h.id} className="hover:bg-bg-elevated/70 transition-colors">
+                  <tr key={h.id} className="hover:bg-[#FFFCF6]/80 dark:hover:bg-[#1C2022]/80 transition-colors">
                     {/* Symbol */}
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center font-mono font-bold text-xs text-brand-600 dark:text-brand-400">
+                        <div className="w-8 h-8 rounded-xl bg-[#2F7D68]/15 border border-[#2F7D68]/30 flex items-center justify-center font-mono font-bold text-xs text-[#2F7D68] dark:text-[#3DA88D]">
                           {h.symbol.slice(0, 3)}
                         </div>
                         <div>
-                          <span className="font-mono font-bold text-sm text-fg">{h.symbol}</span>
-                          <div className="text-[11px] text-fg-subtle line-clamp-1">{h.company_name}</div>
+                          <span className="font-mono font-bold text-sm text-[#252A2B] dark:text-[#F4EFE6]">{h.symbol}</span>
+                          <div className="text-[11px] text-[#77736C] dark:text-[#9E988E] line-clamp-1">{h.company_name}</div>
                         </div>
                       </div>
                     </td>
 
                     {/* Shares */}
-                    <td className="py-3 px-3 text-right font-mono font-bold text-fg">
+                    <td className="py-3 px-3 text-right font-mono font-bold text-[#252A2B] dark:text-[#F4EFE6]">
                       {h.shares.toLocaleString()}
                     </td>
 
                     {/* Avg Cost */}
-                    <td className="py-3 px-3 text-right font-mono text-fg-muted">
+                    <td className="py-3 px-3 text-right font-mono text-[#77736C] dark:text-[#9E988E]">
                       PKR {h.avg_buy_price.toFixed(2)}
                     </td>
 
                     {/* Current Price */}
-                    <td className="py-3 px-3 text-right font-mono font-bold text-fg">
+                    <td className="py-3 px-3 text-right font-mono font-bold text-[#252A2B] dark:text-[#F4EFE6]">
                       PKR {h.current_price.toFixed(2)}
                     </td>
 
                     {/* Market Value */}
-                    <td className="py-3 px-3 text-right font-mono font-bold text-fg">
+                    <td className="py-3 px-3 text-right font-mono font-bold text-[#252A2B] dark:text-[#F4EFE6]">
                       PKR {h.current_value.toLocaleString()}
                     </td>
 
                     {/* P&L */}
                     <td className="py-3 px-3 text-right font-mono">
-                      <div className={`font-bold ${isGain ? 'text-bull' : 'text-bear'}`}>
+                      <div className={`font-bold ${isGain ? 'text-[#287A50] dark:text-[#34A86E]' : 'text-[#C64C4C] dark:text-[#E05C5C]'}`}>
                         {isGain ? '+' : ''}PKR {h.unrealized_pnl.toLocaleString()}
                       </div>
-                      <div className={`text-[10px] ${isGain ? 'text-bull' : 'text-bear'}`}>
+                      <div className={`text-[10px] ${isGain ? 'text-[#287A50] dark:text-[#34A86E]' : 'text-[#C64C4C] dark:text-[#E05C5C]'}`}>
                         {isGain ? '+' : ''}{h.unrealized_pnl_pct.toFixed(2)}%
                       </div>
                     </td>
 
                     {/* Weight */}
                     <td className="py-3 px-3 text-center">
-                      <span className="font-mono text-xs text-fg-subtle px-2 py-0.5 rounded bg-bg-elevated border border-border">
+                      <span className="font-mono text-xs text-[#77736C] dark:text-[#9E988E] px-2 py-0.5 rounded-full bg-[#E7E0D5]/60 dark:bg-[#1C2022]/80 border border-[#DDD5C9]/60 dark:border-[#DDD5C9]/20">
                         {weight}%
                       </span>
                     </td>
@@ -326,7 +326,7 @@ export const PortfolioPage: React.FC = () => {
                     <td className="py-3 px-4 text-right">
                       <button
                         onClick={() => removeHolding(h.id)}
-                        className="p-1.5 rounded-lg border border-border bg-bg text-fg-subtle hover:text-bear hover:border-bear/40 transition-colors"
+                        className="p-1.5 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 text-[#77736C] hover:text-[#C64C4C] hover:border-[#C64C4C]/40 transition-colors"
                         title="Remove holding"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -342,13 +342,13 @@ export const PortfolioPage: React.FC = () => {
 
       {/* 4. Log Trade Modal */}
       {isTradeModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="w-full max-w-md bg-bg-card border border-border rounded-2xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-border pb-3">
-              <span className="font-bold text-base text-fg">Log New PSX Trade</span>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-150">
+          <div className="w-full max-w-md bg-[#FFFCF6]/95 dark:bg-[#1C2022]/95 border border-[#DDD5C9] dark:border-[#DDD5C9]/20 rounded-3xl p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 pb-3">
+              <span className="font-bold text-base text-[#252A2B] dark:text-[#F4EFE6]">Log New PSX Trade</span>
               <button
                 onClick={() => setIsTradeModalOpen(false)}
-                className="p-1 text-fg-subtle hover:text-fg"
+                className="p-1 rounded-full text-[#77736C] hover:text-[#252A2B] dark:hover:text-[#F4EFE6]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -360,10 +360,10 @@ export const PortfolioPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setTradeType('BUY')}
-                  className={`flex-1 py-2 rounded-xl font-bold border transition-colors ${
+                  className={`flex-1 py-2 rounded-full font-bold border transition-colors ${
                     tradeType === 'BUY'
-                      ? 'bg-bull text-white border-bull'
-                      : 'bg-bg-elevated border-border text-fg-muted'
+                      ? 'bg-gradient-to-r from-[#287A50] to-[#1F5C4C] text-white border-[#287A50]'
+                      : 'bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 border-[#DDD5C9] text-[#77736C]'
                   }`}
                 >
                   BUY
@@ -371,10 +371,10 @@ export const PortfolioPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setTradeType('SELL')}
-                  className={`flex-1 py-2 rounded-xl font-bold border transition-colors ${
+                  className={`flex-1 py-2 rounded-full font-bold border transition-colors ${
                     tradeType === 'SELL'
-                      ? 'bg-bear text-white border-bear'
-                      : 'bg-bg-elevated border-border text-fg-muted'
+                      ? 'bg-gradient-to-r from-[#C64C4C] to-[#A03838] text-white border-[#C64C4C]'
+                      : 'bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 border-[#DDD5C9] text-[#77736C]'
                   }`}
                 >
                   SELL
@@ -383,47 +383,47 @@ export const PortfolioPage: React.FC = () => {
 
               {/* Symbol */}
               <div className="space-y-1">
-                <label className="font-semibold text-fg">Symbol Ticker</label>
+                <label className="font-semibold text-[#252A2B] dark:text-[#F4EFE6]">Symbol Ticker</label>
                 <input
                   type="text"
                   required
                   value={tradeSymbol}
                   onChange={e => setTradeSymbol(e.target.value.toUpperCase())}
-                  className="w-full px-3 py-2 rounded-xl border border-border bg-bg text-fg font-mono uppercase font-bold outline-none focus:border-brand-500"
+                  className="w-full px-3.5 py-2 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-[#252A2B] dark:text-[#F4EFE6] font-mono uppercase font-bold outline-none focus:border-[#2F7D68]"
                   placeholder="e.g. MEBL, OGDC, SYS"
                 />
               </div>
 
               {/* Shares */}
               <div className="space-y-1">
-                <label className="font-semibold text-fg">Number of Shares</label>
+                <label className="font-semibold text-[#252A2B] dark:text-[#F4EFE6]">Number of Shares</label>
                 <input
                   type="number"
                   required
                   min={1}
                   value={tradeShares}
                   onChange={e => setTradeShares(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-xl border border-border bg-bg text-fg font-mono font-bold outline-none focus:border-brand-500"
+                  className="w-full px-3.5 py-2 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-[#252A2B] dark:text-[#F4EFE6] font-mono font-bold outline-none focus:border-[#2F7D68]"
                 />
               </div>
 
               {/* Execution Price */}
               <div className="space-y-1">
-                <label className="font-semibold text-fg">Execution Price (PKR)</label>
+                <label className="font-semibold text-[#252A2B] dark:text-[#F4EFE6]">Execution Price (PKR)</label>
                 <input
                   type="number"
                   step="0.05"
                   required
                   value={tradePrice}
                   onChange={e => setTradePrice(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-xl border border-border bg-bg text-fg font-mono font-bold outline-none focus:border-brand-500"
+                  className="w-full px-3.5 py-2 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-[#252A2B] dark:text-[#F4EFE6] font-mono font-bold outline-none focus:border-[#2F7D68]"
                 />
               </div>
 
               {/* Total Calculation */}
-              <div className="p-3 rounded-xl bg-bg-elevated border border-border flex items-center justify-between text-xs">
-                <span className="text-fg-muted">Total Trade Value:</span>
-                <span className="font-mono font-bold text-fg">
+              <div className="p-3 rounded-2xl bg-[#E7E0D5]/40 dark:bg-[#1C2022]/60 border border-[#DDD5C9]/60 dark:border-[#DDD5C9]/20 flex items-center justify-between text-xs">
+                <span className="text-[#77736C] dark:text-[#9E988E]">Total Trade Value:</span>
+                <span className="font-mono font-bold text-[#252A2B] dark:text-[#F4EFE6]">
                   PKR {(tradeShares * tradePrice).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                 </span>
               </div>
@@ -432,13 +432,13 @@ export const PortfolioPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsTradeModalOpen(false)}
-                  className="flex-1 py-2 rounded-xl border border-border text-fg-muted hover:bg-bg-elevated font-semibold"
+                  className="flex-1 py-2 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 text-[#77736C] hover:bg-[#E7E0D5]/50 font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold transition-colors"
+                  className="flex-1 py-2 rounded-full bg-gradient-to-r from-[#2F7D68] to-[#236353] hover:from-[#236353] hover:to-[#1a4d40] text-white font-bold transition-all shadow-md shadow-[#2F7D68]/20"
                 >
                   Confirm Trade
                 </button>

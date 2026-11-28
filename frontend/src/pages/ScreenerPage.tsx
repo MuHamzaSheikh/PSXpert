@@ -16,10 +16,12 @@ import {
   HelpCircle,
   Star,
   ChevronRight,
+  ChevronLeft,
   Filter,
   RefreshCw,
   BarChart3,
   TrendingUp,
+  Layers,
 } from 'lucide-react';
 
 interface ScreenerStock extends Company {
@@ -54,6 +56,10 @@ export const ScreenerPage: React.FC = () => {
   const [sortField, setSortField] = useState<keyof ScreenerStock>('aiScore');
   const [sortAsc, setSortAsc] = useState(false);
 
+  // Pagination States
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState<number | 'ALL'>(50);
+
   // Watchlist local state
   const [watchlist, setWatchlist] = useState<string[]>(() => {
     try {
@@ -77,7 +83,7 @@ export const ScreenerPage: React.FC = () => {
       setLoading(true);
       try {
         const [stocksRes, sectorsRes] = await Promise.all([
-          api.getStocks(undefined, undefined, 200),
+          api.getStocks(undefined, undefined, 600), // Fetch all 506 PSX equities
           api.getSectors(),
         ]);
         setStocks(stocksRes.data);
@@ -96,6 +102,20 @@ export const ScreenerPage: React.FC = () => {
     const sec = searchParams.get('sector');
     if (sec) setSelectedSector(sec);
   }, [searchParams]);
+
+  // Reset page to 1 whenever filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedSector, shariahOnly, kse100Only, rsiFilter, trendFilter, aiVerdictFilter]);
+
+  // Sector company counts
+  const sectorCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    stocks.forEach(s => {
+      if (s.sector) counts[s.sector] = (counts[s.sector] || 0) + 1;
+    });
+    return counts;
+  }, [stocks]);
 
   // Enrich stocks with technical & AI multi-factor screener signals
   const enrichedStocks: ScreenerStock[] = useMemo(() => {
@@ -189,6 +209,14 @@ export const ScreenerPage: React.FC = () => {
     });
   }, [filteredStocks, sortField, sortAsc]);
 
+  // Pagination calculation
+  const totalPages = pageSize === 'ALL' ? 1 : Math.max(1, Math.ceil(sortedStocks.length / pageSize));
+  const paginatedStocks = useMemo(() => {
+    if (pageSize === 'ALL') return sortedStocks;
+    const start = (currentPage - 1) * pageSize;
+    return sortedStocks.slice(start, start + pageSize);
+  }, [sortedStocks, currentPage, pageSize]);
+
   const handleSort = (field: keyof ScreenerStock) => {
     if (sortField === field) {
       setSortAsc(!sortAsc);
@@ -205,23 +233,22 @@ export const ScreenerPage: React.FC = () => {
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
       {/* 1. Header & AI Summary Banner */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-border pb-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 pb-4">
         <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-fg">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#252A2B] dark:text-[#F4EFE6]">
               AI Multi-Factor Stock Screener
             </h1>
-            <DemoBadge label="Multi-Factor AI Ranking" />
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#2F7D68]/15 text-[#2F7D68] dark:text-[#3DA88D] border border-[#2F7D68]/25 shadow-sm">
+              {stocks.length > 0 ? `${stocks.length} PSX Listed Companies` : '506 PSX Listed Companies'}
+            </span>
           </div>
-          <p className="text-xs sm:text-sm text-fg-muted mt-1">
-            Filter 100+ PSX equities across technical indicators, valuation multiples, and multi-agent model consensus scores.
+          <p className="text-xs sm:text-sm text-[#77736C] dark:text-[#9E988E] mt-1">
+            Explore and filter all 506 listed Pakistan Stock Exchange equities across technical indicators, valuation multiples, and multi-factor models.
           </p>
         </div>
 
-        <div className="flex items-center gap-3 text-xs">
-          <span className="text-fg-subtle">
-            Screening <strong>{sortedStocks.length}</strong> of <strong>{stocks.length}</strong> equities
-          </span>
+        <div className="flex items-center gap-2">
           <button
             onClick={() => {
               setSearchQuery('');
@@ -231,77 +258,77 @@ export const ScreenerPage: React.FC = () => {
               setRsiFilter('ALL');
               setTrendFilter('ALL');
               setAiVerdictFilter('ALL');
+              setSearchParams({});
             }}
-            className="flex items-center gap-1 text-brand-600 dark:text-brand-400 font-semibold hover:underline"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 hover:bg-[#FFFCF6] text-xs font-semibold text-[#77736C] hover:text-[#252A2B] transition-all shadow-sm"
           >
-            <RefreshCw className="w-3 h-3" />
+            <RefreshCw className="w-3.5 h-3.5" />
             <span>Reset Filters</span>
           </button>
         </div>
       </div>
 
-      {/* 2. Top AI-Ranked Picks Spotlight Cards */}
+      {/* 2. Top AI Consensus Picks Showcase */}
       <div>
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2 text-xs font-semibold text-fg uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
-            <span>Today&apos;s High-Conviction AI Screener Picks</span>
-          </div>
-          <span className="text-[11px] text-fg-subtle">Algorithmic Ensemble Ranking</span>
+        <div className="flex items-center gap-2 mb-3 text-xs font-bold text-[#252A2B] dark:text-[#F4EFE6] uppercase tracking-wider">
+          <Sparkles className="w-4 h-4 text-[#2F7D68]" />
+          <span>Top AI Multi-Agent Consensus Picks Today</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {topAIPicks.map((pick, i) => (
+          {topAIPicks.map(pick => (
             <Card
               key={pick.symbol}
               onClick={() => navigate(`/analysis/${pick.symbol}`)}
-              className="p-4 cursor-pointer hover:border-brand-500 hover:shadow-card transition-all relative overflow-hidden flex flex-col justify-between space-y-3"
+              className="p-4 hover:border-[#694E7A]/40 dark:hover:border-[#694E7A]/40 hover:shadow-lg cursor-pointer transition-all space-y-3 relative overflow-hidden group"
             >
+              <div className="absolute top-0 right-0 w-28 h-28 bg-[#694E7A]/5 rounded-full blur-2xl pointer-events-none" />
+
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-sm">
+                  <div className="w-10 h-10 rounded-xl bg-[#2F7D68]/15 border border-[#2F7D68]/25 flex items-center justify-center font-mono font-bold text-sm text-[#2F7D68] dark:text-[#3DA88D]">
                     {pick.symbol.slice(0, 3)}
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <span className="font-mono font-bold text-sm text-fg">{pick.symbol}</span>
-                      <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-bull-bg text-bull border border-bull/20">
-                        Rank #{i + 1}
+                      <span className="font-mono font-extrabold text-sm text-[#252A2B] dark:text-[#F4EFE6]">{pick.symbol}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#E7E0D5]/50 dark:bg-[#252A2C] text-[#77736C] dark:text-[#9E988E] font-medium border border-[#DDD5C9]/60">
+                        {pick.is_kse100 ? 'KSE-100' : 'Regular'}
                       </span>
                     </div>
-                    <div className="text-xs text-fg-subtle line-clamp-1">{pick.company_name}</div>
+                    <div className="text-xs text-[#77736C] dark:text-[#9E988E] line-clamp-1">{pick.company_name}</div>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <div className="text-xs font-mono font-bold text-fg">PKR {pick.close?.toFixed(2)}</div>
-                  <div className="text-[11px] font-mono text-bull font-bold">+{(pick.pct_change || 1.4).toFixed(2)}%</div>
+                  <div className="text-xs font-mono font-bold text-[#252A2B] dark:text-[#F4EFE6]">PKR {pick.close?.toFixed(2)}</div>
+                  <div className="text-[11px] font-mono text-[#287A50] dark:text-[#34A86E] font-bold">+{(pick.pct_change || 1.4).toFixed(2)}%</div>
                 </div>
               </div>
 
-              {/* Multi-Factor Radar Snapshot */}
-              <div className="grid grid-cols-3 gap-2 py-2 border-y border-border/50 text-[11px]">
+              {/* Multi-Factor Snapshot */}
+              <div className="grid grid-cols-3 gap-2 py-2 border-y border-[#DDD5C9]/50 dark:border-[#DDD5C9]/15 text-[11px]">
                 <div>
-                  <div className="text-fg-subtle text-[10px]">RSI-14</div>
-                  <div className="font-mono font-bold text-brand-600 dark:text-brand-400">{pick.rsi}</div>
+                  <div className="text-[#77736C] dark:text-[#9E988E] text-[10px]">RSI-14</div>
+                  <div className="font-mono font-bold text-[#2F7D68] dark:text-[#3DA88D]">{pick.rsi}</div>
                 </div>
                 <div>
-                  <div className="text-fg-subtle text-[10px]">P/E Multiple</div>
-                  <div className="font-mono font-bold text-fg">{pick.pe}x</div>
+                  <div className="text-[#77736C] dark:text-[#9E988E] text-[10px]">P/E Multiple</div>
+                  <div className="font-mono font-bold text-[#252A2B] dark:text-[#F4EFE6]">{pick.pe}x</div>
                 </div>
                 <div>
-                  <div className="text-fg-subtle text-[10px]">Div Yield</div>
-                  <div className="font-mono font-bold text-fg">{pick.divYield}%</div>
+                  <div className="text-[#77736C] dark:text-[#9E988E] text-[10px]">Div Yield</div>
+                  <div className="font-mono font-bold text-[#252A2B] dark:text-[#F4EFE6]">{pick.divYield}%</div>
                 </div>
               </div>
 
               <div className="flex items-center justify-between text-xs pt-1">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-bull animate-pulse" />
-                  <span className="font-bold text-bull">{pick.aiVerdict}</span>
-                  <span className="text-[10px] font-mono text-fg-subtle">({pick.aiScore}% Score)</span>
+                  <span className="w-2 h-2 rounded-full bg-[#287A50] animate-pulse" />
+                  <span className="font-bold text-[#287A50] dark:text-[#34A86E]">{pick.aiVerdict}</span>
+                  <span className="text-[10px] font-mono text-[#77736C] dark:text-[#9E988E]">({pick.aiScore}% Score)</span>
                 </div>
-                <span className="text-brand-600 dark:text-brand-400 font-semibold flex items-center gap-0.5 text-xs">
+                <span className="text-[#2F7D68] dark:text-[#3DA88D] font-semibold flex items-center gap-0.5 text-xs group-hover:translate-x-0.5 transition-transform">
                   <span>Analyze</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </span>
@@ -316,17 +343,17 @@ export const ScreenerPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Search Input */}
           <div className="relative">
-            <Search className="w-4 h-4 text-fg-subtle absolute left-3 top-3 pointer-events-none" />
+            <Search className="w-4 h-4 text-[#77736C] absolute left-3.5 top-3 pointer-events-none" />
             <input
               type="text"
-              placeholder="Search ticker or company name..."
+              placeholder="Search symbol or name (e.g. OGDC, Meezan)..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 h-10 rounded-xl border border-border bg-bg text-xs text-fg placeholder:text-fg-subtle outline-none focus:border-brand-500 truncate whitespace-nowrap"
+              className="w-full pl-9 pr-3 h-10 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-xs text-[#252A2B] dark:text-[#F4EFE6] placeholder:text-[#77736C] outline-none focus:border-[#2F7D68] shadow-sm truncate"
             />
           </div>
 
-          {/* Sector Dropdown */}
+          {/* Sector Dropdown with Counts */}
           <div>
             <select
               value={selectedSector}
@@ -334,11 +361,13 @@ export const ScreenerPage: React.FC = () => {
                 setSelectedSector(e.target.value);
                 setSearchParams(e.target.value === 'ALL' ? {} : { sector: e.target.value });
               }}
-              className="w-full px-3 h-10 rounded-xl border border-border bg-bg text-xs text-fg outline-none focus:border-brand-500 truncate"
+              className="w-full px-3.5 h-10 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-xs text-[#252A2B] dark:text-[#F4EFE6] outline-none focus:border-[#2F7D68] shadow-sm truncate"
             >
-              <option value="ALL">All Industry Sectors</option>
+              <option value="ALL">All Industry Sectors ({stocks.length})</option>
               {sectors.map(sec => (
-                <option key={sec} value={sec}>{sec}</option>
+                <option key={sec} value={sec}>
+                  {sec} ({sectorCounts[sec] || 0})
+                </option>
               ))}
             </select>
           </div>
@@ -348,7 +377,7 @@ export const ScreenerPage: React.FC = () => {
             <select
               value={rsiFilter}
               onChange={e => setRsiFilter(e.target.value as any)}
-              className="w-full px-3 h-10 rounded-xl border border-border bg-bg text-xs text-fg outline-none focus:border-brand-500 truncate"
+              className="w-full px-3.5 h-10 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-xs text-[#252A2B] dark:text-[#F4EFE6] outline-none focus:border-[#2F7D68] shadow-sm truncate"
             >
               <option value="ALL">RSI: Any Condition</option>
               <option value="OVERSOLD">RSI &lt; 35 (Oversold Dip)</option>
@@ -362,54 +391,55 @@ export const ScreenerPage: React.FC = () => {
             <select
               value={trendFilter}
               onChange={e => setTrendFilter(e.target.value as any)}
-              className="w-full px-3 h-10 rounded-xl border border-border bg-bg text-xs text-fg outline-none focus:border-brand-500 truncate"
+              className="w-full px-3.5 h-10 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-xs text-[#252A2B] dark:text-[#F4EFE6] outline-none focus:border-[#2F7D68] shadow-sm truncate"
             >
-              <option value="ALL">Trend: All Trends</option>
-              <option value="UPTREND">Price &gt; SMA 50 &gt; 200 (Uptrend)</option>
-              <option value="DOWNTREND">Price &lt; SMA 50 (Downtrend)</option>
+              <option value="ALL">Price Trend: Any</option>
+              <option value="UPTREND">Strong Uptrend</option>
+              <option value="DOWNTREND">Downtrend</option>
             </select>
           </div>
         </div>
 
-        {/* Quick Filter Toggle Badges */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-border text-xs">
+        {/* Quick Tag Filter Pills */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15">
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setShariahOnly(!shariahOnly)}
-              className={`px-3 py-1.5 rounded-full border text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full border text-xs font-semibold transition-all ${
                 shariahOnly
-                  ? 'bg-emerald-500/15 border-emerald-500 text-emerald-600 dark:text-emerald-400 font-bold'
-                  : 'border-border text-fg-muted hover:border-fg-subtle'
+                  ? 'bg-gradient-to-r from-[#287A50] to-[#1F5C4C] text-white border-[#287A50] shadow-sm'
+                  : 'bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 border-[#DDD5C9] dark:border-[#DDD5C9]/20 text-[#77736C] hover:text-[#252A2B]'
               }`}
             >
-              Islamic / Shariah Compliant Only
+              ☪ Shariah Compliant Only
             </button>
 
             <button
               onClick={() => setKse100Only(!kse100Only)}
-              className={`px-3 py-1.5 rounded-full border text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full border text-xs font-semibold transition-all ${
                 kse100Only
-                  ? 'bg-brand-500/15 border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-                  : 'border-border text-fg-muted hover:border-fg-subtle'
+                  ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white border-[#694E7A] shadow-sm'
+                  : 'bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 border-[#DDD5C9] dark:border-[#DDD5C9]/20 text-[#77736C] hover:text-[#252A2B]'
               }`}
             >
-              KSE-100 Constituents Only
+              📊 KSE-100 Constituents Only
             </button>
 
             <button
               onClick={() => setAiVerdictFilter(aiVerdictFilter === 'BUY_ONLY' ? 'ALL' : 'BUY_ONLY')}
-              className={`px-3 py-1.5 rounded-full border text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full border text-xs font-semibold transition-all ${
                 aiVerdictFilter === 'BUY_ONLY'
-                  ? 'bg-brand-500 text-white border-brand-500 shadow-sm'
-                  : 'border-border text-fg-muted hover:border-fg-subtle'
+                  ? 'bg-gradient-to-r from-[#2F7D68] to-[#236353] text-white border-[#2F7D68] shadow-sm'
+                  : 'bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 border-[#DDD5C9] dark:border-[#DDD5C9]/20 text-[#77736C] hover:text-[#252A2B]'
               }`}
             >
               ✨ AI Buy Recommendations Only
             </button>
           </div>
 
-          <div className="text-[11px] text-fg-subtle">
-            Showing <strong className="text-fg">{sortedStocks.length}</strong> matching securities
+          <div className="text-[11px] text-[#77736C] dark:text-[#9E988E]">
+            Showing <strong className="text-[#252A2B] dark:text-[#F4EFE6]">{sortedStocks.length}</strong> of{' '}
+            <strong className="text-[#252A2B] dark:text-[#F4EFE6]">{stocks.length}</strong> companies
           </div>
         </div>
       </Card>
@@ -498,147 +528,238 @@ export const ScreenerPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-border/40">
-              {sortedStocks.map(stock => {
-                const isBull = (stock.pct_change || 0) >= 0;
-                const isWatch = watchlist.includes(stock.symbol);
+              {loading ? (
+                <tr>
+                  <td colSpan={11} className="py-16 text-center text-fg-subtle">
+                    <div className="flex flex-col items-center gap-2">
+                      <RefreshCw className="w-6 h-6 animate-spin text-brand-500" />
+                      <span>Loading all PSX equities & quantitative analytics...</span>
+                    </div>
+                  </td>
+                </tr>
+              ) : paginatedStocks.length === 0 ? (
+                <tr>
+                  <td colSpan={11} className="py-16 text-center text-fg-subtle">
+                    <div className="space-y-1">
+                      <div className="text-base font-semibold text-fg-muted">No stocks match your filters</div>
+                      <p>Try clearing your search query or loosening criteria.</p>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                paginatedStocks.map(stock => {
+                  const isBull = (stock.pct_change || 0) >= 0;
+                  const isWatch = watchlist.includes(stock.symbol);
 
-                let rsiColor = 'text-fg font-mono';
-                if (stock.rsi >= 70) rsiColor = 'text-rose-500 font-bold font-mono';
-                else if (stock.rsi <= 35) rsiColor = 'text-emerald-500 font-bold font-mono';
+                  let rsiColor = 'text-fg font-mono';
+                  if (stock.rsi >= 70) rsiColor = 'text-rose-500 font-bold font-mono';
+                  else if (stock.rsi <= 35) rsiColor = 'text-emerald-500 font-bold font-mono';
 
-                return (
-                  <tr
-                    key={stock.symbol}
-                    onClick={() => navigate(`/analysis/${stock.symbol}`)}
-                    className="hover:bg-bg-elevated/70 cursor-pointer transition-colors"
-                  >
-                    {/* Watchlist Star */}
-                    <td className="py-3 px-4" onClick={e => toggleWatchlist(stock.symbol, e)}>
-                      <Star
-                        className={`w-4 h-4 transition-colors ${
-                          isWatch ? 'fill-amber-400 text-amber-400' : 'text-fg-subtle hover:text-amber-400'
-                        }`}
-                      />
-                    </td>
+                  return (
+                    <tr
+                      key={stock.symbol}
+                      onClick={() => navigate(`/analysis/${stock.symbol}`)}
+                      className="hover:bg-bg-elevated/70 cursor-pointer transition-colors"
+                    >
+                      {/* Watchlist Star */}
+                      <td className="py-3 px-4" onClick={e => toggleWatchlist(stock.symbol, e)}>
+                        <Star
+                          className={`w-4 h-4 transition-colors ${
+                            isWatch ? 'fill-amber-400 text-amber-400' : 'text-fg-subtle hover:text-amber-400'
+                          }`}
+                        />
+                      </td>
 
-                    {/* Symbol & Company Name */}
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center font-mono font-bold text-xs text-brand-600 dark:text-brand-400">
-                          {stock.symbol.slice(0, 3)}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-1.5">
-                            <span className="font-mono font-bold text-sm text-fg">{stock.symbol}</span>
-                            {stock.is_shariah && (
-                              <span className="text-[9px] px-1 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 font-medium">
-                                Shariah
-                              </span>
-                            )}
+                      {/* Symbol & Company Name */}
+                      <td className="py-3 px-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center font-mono font-bold text-xs text-brand-600 dark:text-brand-400">
+                            {stock.symbol.slice(0, 3)}
                           </div>
-                          <div className="text-[11px] text-fg-subtle line-clamp-1 max-w-[140px] sm:max-w-[220px]">
-                            {stock.company_name} • {stock.sector}
+                          <div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-mono font-bold text-sm text-fg">{stock.symbol}</span>
+                              {stock.is_shariah && (
+                                <span className="text-[9px] px-1 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 font-medium">
+                                  Shariah
+                                </span>
+                              )}
+                              {stock.is_kse100 && (
+                                <span className="text-[9px] px-1 rounded bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20 font-medium">
+                                  KSE-100
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-[11px] text-fg-subtle line-clamp-1 max-w-[140px] sm:max-w-[220px]">
+                              {stock.company_name} • {stock.sector}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
+                      </td>
 
-                    {/* Price */}
-                    <td className="py-3 px-3 text-right font-mono font-bold text-sm text-fg">
-                      {stock.close?.toFixed(2) || '--'}
-                    </td>
+                      {/* Price */}
+                      <td className="py-3 px-3 text-right font-mono font-bold text-sm text-fg">
+                        {stock.close?.toFixed(2) || '--'}
+                      </td>
 
-                    {/* Change % */}
-                    <td className="py-3 px-3 text-right">
-                      <span
-                        className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded font-mono text-xs font-bold ${
-                          isBull ? 'bg-bull-bg text-bull' : 'bg-bear-bg text-bear'
-                        }`}
-                      >
-                        {isBull ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-                        <span>{isBull ? '+' : ''}{(stock.pct_change || 0).toFixed(2)}%</span>
-                      </span>
-                    </td>
-
-                    {/* RSI */}
-                    <td className="py-3 px-3 text-center">
-                      <div className={rsiColor}>{stock.rsi}</div>
-                      <div className="text-[9px] text-fg-subtle">
-                        {stock.rsi > 70 ? 'Overbought' : stock.rsi < 35 ? 'Oversold' : 'Neutral'}
-                      </div>
-                    </td>
-
-                    {/* Trend */}
-                    <td className="py-3 px-3 text-center">
-                      <span
-                        className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
-                          stock.trend === 'Strong Uptrend'
-                            ? 'bg-bull-bg text-bull border-bull/20'
-                            : stock.trend === 'Downtrend'
-                            ? 'bg-bear-bg text-bear border-bear/20'
-                            : 'bg-bg-elevated text-fg-muted border-border'
-                        }`}
-                      >
-                        {stock.trend}
-                      </span>
-                    </td>
-
-                    {/* Volume */}
-                    <td className="py-3 px-3 text-right font-mono text-fg-muted">
-                      {stock.volume ? `${(stock.volume / 1000000).toFixed(2)}M` : '--'}
-                    </td>
-
-                    {/* P/E */}
-                    <td className="py-3 px-3 text-right font-mono text-fg hidden lg:table-cell">
-                      {stock.pe}x
-                    </td>
-
-                    {/* Dividend Yield */}
-                    <td className="py-3 px-3 text-right font-mono text-fg hidden lg:table-cell">
-                      {stock.divYield}%
-                    </td>
-
-                    {/* AI Consensus Score & Badge */}
-                    <td className="py-3 px-4 text-center">
-                      <div className="flex flex-col items-center gap-0.5">
+                      {/* Change % */}
+                      <td className="py-3 px-3 text-right">
                         <span
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold border ${
-                            stock.aiVerdict === 'Strong Buy'
-                              ? 'bg-brand-500 text-white border-brand-500 shadow-sm'
-                              : stock.aiVerdict === 'Buy'
-                              ? 'bg-bull-bg text-bull border-bull/30'
+                          className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded font-mono text-xs font-bold ${
+                            isBull ? 'bg-bull-bg text-bull' : 'bg-bear-bg text-bear'
+                          }`}
+                        >
+                          {isBull ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+                          <span>{isBull ? '+' : ''}{(stock.pct_change || 0).toFixed(2)}%</span>
+                        </span>
+                      </td>
+
+                      {/* RSI */}
+                      <td className="py-3 px-3 text-center">
+                        <div className={rsiColor}>{stock.rsi}</div>
+                        <div className="text-[9px] text-fg-subtle">
+                          {stock.rsi > 70 ? 'Overbought' : stock.rsi < 35 ? 'Oversold' : 'Neutral'}
+                        </div>
+                      </td>
+
+                      {/* Trend */}
+                      <td className="py-3 px-3 text-center">
+                        <span
+                          className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+                            stock.trend === 'Strong Uptrend'
+                              ? 'bg-bull-bg text-bull border-bull/20'
+                              : stock.trend === 'Downtrend'
+                              ? 'bg-bear-bg text-bear border-bear/20'
                               : 'bg-bg-elevated text-fg-muted border-border'
                           }`}
                         >
-                          {stock.aiVerdict}
+                          {stock.trend}
                         </span>
-                        <div className="w-16 h-1 rounded-full bg-bg-elevated overflow-hidden border border-border mt-0.5">
-                          <div
-                            style={{ width: `${stock.aiScore}%` }}
-                            className="h-full bg-brand-500"
-                          />
-                        </div>
-                      </div>
-                    </td>
+                      </td>
 
-                    {/* Action */}
-                    <td className="py-3 px-4 text-right">
-                      <button
-                        onClick={e => {
-                          e.stopPropagation();
-                          navigate(`/analysis/${stock.symbol}`);
-                        }}
-                        className="p-1.5 rounded-lg border border-border bg-bg hover:bg-brand-500 hover:text-white hover:border-brand-500 text-fg-muted transition-colors"
-                        title="Open in-depth technical & agent analysis"
-                      >
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
+                      {/* Volume */}
+                      <td className="py-3 px-3 text-right font-mono text-fg-muted">
+                        {stock.volume ? `${(stock.volume / 1000000).toFixed(2)}M` : '--'}
+                      </td>
+
+                      {/* P/E */}
+                      <td className="py-3 px-3 text-right font-mono text-fg hidden lg:table-cell">
+                        {stock.pe}x
+                      </td>
+
+                      {/* Dividend Yield */}
+                      <td className="py-3 px-3 text-right font-mono text-fg hidden lg:table-cell">
+                        {stock.divYield}%
+                      </td>
+
+                      {/* AI Consensus Score & Badge */}
+                      <td className="py-3 px-4 text-center">
+                        <div className="flex flex-col items-center gap-0.5">
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold border ${
+                              stock.aiVerdict === 'Strong Buy'
+                                ? 'bg-brand-500 text-white border-brand-500 shadow-sm'
+                                : stock.aiVerdict === 'Buy'
+                                ? 'bg-bull-bg text-bull border-bull/30'
+                                : 'bg-bg-elevated text-fg-muted border-border'
+                            }`}
+                          >
+                            {stock.aiVerdict}
+                          </span>
+                          <div className="w-16 h-1 rounded-full bg-bg-elevated overflow-hidden border border-border mt-0.5">
+                            <div
+                              style={{ width: `${stock.aiScore}%` }}
+                              className="h-full bg-brand-500"
+                            />
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Action */}
+                      <td className="py-3 px-4 text-right">
+                        <button
+                          onClick={e => {
+                            e.stopPropagation();
+                            navigate(`/analysis/${stock.symbol}`);
+                          }}
+                          className="p-1.5 rounded-lg border border-border bg-bg hover:bg-brand-500 hover:text-white hover:border-brand-500 text-fg-muted transition-colors"
+                          title="Open in-depth technical & agent analysis"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
+        </div>
+
+        {/* 5. Pagination Bar & Page Size Selector */}
+        <div className="flex flex-wrap items-center justify-between gap-4 p-4 border-t border-border bg-bg-elevated/40 text-xs">
+          <div className="flex items-center gap-3">
+            <span className="text-fg-subtle">
+              Showing{' '}
+              <strong className="text-fg">
+                {sortedStocks.length === 0 ? 0 : pageSize === 'ALL' ? 1 : (currentPage - 1) * pageSize + 1}
+              </strong>{' '}
+              to{' '}
+              <strong className="text-fg">
+                {pageSize === 'ALL' ? sortedStocks.length : Math.min(currentPage * pageSize, sortedStocks.length)}
+              </strong>{' '}
+              of <strong className="text-fg">{sortedStocks.length}</strong> securities
+            </span>
+
+            {/* Page Size Selector */}
+            <div className="flex items-center gap-1 border-l border-border pl-3">
+              <span className="text-fg-subtle mr-1">Per page:</span>
+              {[25, 50, 100, 'ALL'].map(sz => (
+                <button
+                  key={sz}
+                  onClick={() => {
+                    setPageSize(sz as any);
+                    setCurrentPage(1);
+                  }}
+                  className={`px-2 py-0.5 rounded text-[11px] font-semibold border transition-all ${
+                    pageSize === sz
+                      ? 'bg-brand-500 text-white border-brand-500 shadow-sm'
+                      : 'border-border text-fg-muted hover:text-fg bg-bg-card'
+                  }`}
+                >
+                  {sz}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Page Navigation Buttons */}
+          {pageSize !== 'ALL' && totalPages > 1 && (
+            <div className="flex items-center gap-2">
+              <button
+                disabled={currentPage <= 1}
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                className="flex items-center gap-1 px-3 py-1 rounded-lg border border-border bg-bg-card text-fg-muted hover:text-fg disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+                <span>Prev</span>
+              </button>
+
+              <span className="text-fg-muted font-mono font-medium">
+                Page <strong className="text-fg">{currentPage}</strong> of{' '}
+                <strong className="text-fg">{totalPages}</strong>
+              </span>
+
+              <button
+                disabled={currentPage >= totalPages}
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                className="flex items-center gap-1 px-3 py-1 rounded-lg border border-border bg-bg-card text-fg-muted hover:text-fg disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              >
+                <span>Next</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
         </div>
       </Card>
     </div>

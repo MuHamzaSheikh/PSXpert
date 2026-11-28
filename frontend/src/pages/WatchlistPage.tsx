@@ -90,15 +90,15 @@ export const WatchlistPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto animate-in fade-in duration-300">
       {/* 1. Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 pb-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-fg">
-              Custom Watchlist & Alerts
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#252A2B] dark:text-[#F4EFE6]">
+              Custom Watchlist &amp; Alerts
             </h1>
             <DemoBadge label="LocalStorage Synced" />
           </div>
-          <p className="text-xs sm:text-sm text-fg-muted mt-1">
+          <p className="text-xs sm:text-sm text-[#77736C] dark:text-[#9E988E] mt-1">
             Monitor real-time prices, diagnostic technical states, and custom price alert triggers.
           </p>
         </div>
@@ -116,11 +116,11 @@ export const WatchlistPage: React.FC = () => {
             placeholder="Add PSX symbol (e.g. HUBC)..."
             value={newSymbolInput}
             onChange={e => setNewSymbolInput(e.target.value.toUpperCase())}
-            className="px-3 py-2 rounded-xl border border-border bg-bg text-xs font-mono font-bold uppercase placeholder:text-fg-subtle outline-none focus:border-brand-500 w-44"
+            className="px-4 py-2 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-xs font-mono font-bold uppercase placeholder:text-[#77736C] outline-none focus:border-[#2F7D68] w-48 shadow-sm"
           />
           <button
             type="submit"
-            className="flex items-center gap-1 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-brand-500 hover:bg-brand-600 transition-colors"
+            className="flex items-center gap-1 px-4 py-2 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-[#2F7D68] to-[#236353] hover:from-[#236353] hover:to-[#1a4d40] shadow-md shadow-[#2F7D68]/20 transition-all"
           >
             <Plus className="w-4 h-4" />
             <span>Add</span>
@@ -128,25 +128,25 @@ export const WatchlistPage: React.FC = () => {
         </form>
       </div>
 
-      {/* 2. Master Watchlist Table */}
+      {/* 2. Master Watchlist Table in Frosted Glass */}
       <Card className="p-0 overflow-hidden shadow-card">
-        <div className="p-4 border-b border-border flex items-center justify-between">
+        <div className="p-4 border-b border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-            <span className="font-bold text-sm text-fg">Tracked Equities ({watchlistRows.length})</span>
+            <span className="font-bold text-sm text-[#252A2B] dark:text-[#F4EFE6]">Tracked Equities ({watchlistRows.length})</span>
           </div>
-          <span className="text-xs font-mono text-fg-subtle">Saved to Local Browser Storage</span>
+          <span className="text-xs font-mono text-[#77736C] dark:text-[#9E988E]">Saved to Local Browser Storage</span>
         </div>
 
         {watchlistRows.length === 0 ? (
-          <div className="py-16 text-center space-y-2 text-xs text-fg-subtle">
+          <div className="py-16 text-center space-y-2 text-xs text-[#77736C]">
             <p>Your watchlist is currently empty.</p>
             <p>Search for any stock or click the star icon in the Market Screener to track symbols.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-bg-elevated/70 border-b border-border text-[11px] font-semibold text-fg-subtle uppercase tracking-wider">
+              <thead className="bg-[#E7E0D5]/50 dark:bg-[#252A2C]/60 border-b border-[#DDD5C9]/80 text-[11px] font-semibold text-[#77736C] dark:text-[#9E988E] uppercase tracking-wider">
                 <tr>
                   <th className="py-3 px-4">Symbol</th>
                   <th className="py-3 px-3 text-right">Price</th>
@@ -157,7 +157,7 @@ export const WatchlistPage: React.FC = () => {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border/40">
+              <tbody className="divide-y divide-[#DDD5C9]/40 dark:divide-[#DDD5C9]/10">
                 {watchlistRows.map(row => {
                   const isUp = (row.pct_change || 0) >= 0;
                   return (

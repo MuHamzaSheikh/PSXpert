@@ -20,7 +20,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 50);
-      api.getStocks(undefined, undefined, 200).then(res => setStocks(res.data));
+      api.getStocks(undefined, undefined, 600).then(res => setStocks(res.data));
       api.getSectors().then(res => setSectors(res.data));
     } else {
       setQuery('');
@@ -51,7 +51,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
     : stocks.filter(s =>
         s.symbol.toUpperCase().includes(query.toUpperCase()) ||
         s.company_name.toUpperCase().includes(query.toUpperCase())
-      ).slice(0, 10);
+      ).slice(0, 16);
 
   const filteredSectors = query.trim() === ''
     ? []
@@ -82,18 +82,18 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/45 backdrop-blur-md animate-in fade-in duration-150">
       <div
-        className="relative w-full max-w-2xl bg-bg-card border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
+        className="relative w-full max-w-2xl bg-[#FFFCF6]/95 dark:bg-[#1C2022]/95 border border-[#DDD5C9] dark:border-[#DDD5C9]/25 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh] backdrop-blur-2xl"
         onClick={e => e.stopPropagation()}
       >
         {/* Search Input Bar */}
-        <div className="flex items-center px-4 py-3.5 border-b border-border bg-bg-elevated/40">
-          <Search className="w-5 h-5 text-brand-600 dark:text-brand-400 mr-3 flex-shrink-0" />
+        <div className="flex items-center px-4 py-3.5 border-b border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 bg-[#E7E0D5]/30 dark:bg-[#252A2C]/40">
+          <Search className="w-5 h-5 text-[#2F7D68] mr-3 flex-shrink-0" />
           <input
             ref={inputRef}
             type="text"
-            className="w-full bg-transparent text-fg placeholder:text-fg-subtle text-base outline-none"
+            className="w-full bg-transparent text-[#252A2B] dark:text-[#F4EFE6] placeholder:text-[#77736C] text-sm sm:text-base outline-none"
             placeholder="Search PSX stocks, sectors, or indices (e.g. OGDC, MEBL, Cement)..."
             value={query}
             onChange={e => {

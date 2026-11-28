@@ -47,6 +47,7 @@ export const MarketAnalysisPage: React.FC = () => {
   const [gaData, setGaData] = useState<GAOptimizationResult | null>(null);
   const [agentCommittee, setAgentCommittee] = useState<MultiAgentCommittee | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedPatternDate, setSelectedPatternDate] = useState<string | null>(null);
 
   // Watchlist state
   const [isWatchlisted, setIsWatchlisted] = useState(false);
@@ -111,38 +112,38 @@ export const MarketAnalysisPage: React.FC = () => {
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
       {/* 1. Stock Header Bar */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 border-b border-border pb-5">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 border-b border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 pb-5">
         <div className="flex items-start gap-3.5">
           {/* Logo badge */}
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center font-mono font-extrabold text-base text-white shadow-md shadow-brand-500/20">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#2F7D68] to-[#1F5C4C] flex items-center justify-center font-mono font-extrabold text-base text-white shadow-md shadow-[#2F7D68]/20">
             {symbol.slice(0, 3)}
           </div>
 
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-2xl sm:text-3xl font-extrabold font-mono text-fg tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold font-mono text-[#252A2B] dark:text-[#F4EFE6] tracking-tight">
                 {symbol.toUpperCase()}
               </h1>
-              <span className="text-xs text-fg-muted font-medium hidden sm:inline">•</span>
-              <span className="text-sm font-semibold text-fg-muted">
+              <span className="text-xs text-[#77736C] dark:text-[#9E988E] font-medium hidden sm:inline">•</span>
+              <span className="text-sm font-semibold text-[#77736C] dark:text-[#9E988E]">
                 {ohlcv?.company?.name || `${symbol} Pakistan`}
               </span>
               {ohlcv?.company?.is_shariah && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                <span className="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-[#287A50]/15 text-[#287A50] dark:text-[#34A86E] border border-[#287A50]/25">
                   Islamic
                 </span>
               )}
               {ohlcv?.company?.is_kse100 && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20">
+                <span className="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-[#694E7A]/15 text-[#694E7A] dark:text-[#A888BF] border border-[#694E7A]/25">
                   KSE-100
                 </span>
               )}
             </div>
 
-            <div className="flex items-center gap-2 text-xs text-fg-subtle">
+            <div className="flex items-center gap-2 text-xs text-[#77736C] dark:text-[#9E988E]">
               <span>{ohlcv?.company?.sector || 'PSX Listed Equities'}</span>
               <span>•</span>
-              <span>DPS Exchange Ticker</span>
+              <span className="text-[#2F7D68] font-semibold">DPS Exchange Ticker</span>
             </div>
           </div>
         </div>
@@ -150,12 +151,14 @@ export const MarketAnalysisPage: React.FC = () => {
         {/* Price & Delta Summary + Watchlist CTA */}
         <div className="flex items-center gap-4 self-start lg:self-auto">
           <div className="text-right">
-            <div className="text-2xl sm:text-3xl font-black font-mono text-fg tracking-tight">
+            <div className="text-2xl sm:text-3xl font-black font-mono text-[#252A2B] dark:text-[#F4EFE6] tracking-tight">
               PKR {price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
             <div
-              className={`inline-flex items-center gap-1 font-mono text-xs font-bold px-2 py-0.5 rounded ${
-                isUp ? 'bg-bull-bg text-bull' : 'bg-bear-bg text-bear'
+              className={`inline-flex items-center gap-1 font-mono text-xs font-bold px-3 py-0.5 rounded-full ${
+                isUp 
+                  ? 'bg-[#287A50]/15 text-[#287A50] border border-[#287A50]/25' 
+                  : 'bg-[#C64C4C]/15 text-[#C64C4C] border border-[#C64C4C]/25'
               }`}
             >
               {isUp ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
@@ -165,14 +168,14 @@ export const MarketAnalysisPage: React.FC = () => {
 
           <button
             onClick={toggleWatchlist}
-            className={`p-2.5 rounded-xl border transition-all ${
+            className={`p-2.5 rounded-full border transition-all ${
               isWatchlisted
-                ? 'bg-amber-500/10 border-amber-500 text-amber-500 shadow-sm'
-                : 'border-border bg-bg-card text-fg-muted hover:text-amber-500 hover:border-amber-500/50'
+                ? 'bg-amber-500/15 border-amber-500 text-amber-500 shadow-sm'
+                : 'border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-[#77736C] hover:text-amber-500 hover:border-amber-500/50'
             }`}
             title={isWatchlisted ? 'Remove from Watchlist' : 'Add to Watchlist'}
           >
-            <Star className={`w-5 h-5 ${isWatchlisted ? 'fill-amber-400' : ''}`} />
+            <Star className={`w-5 h-5 ${isWatchlisted ? 'fill-amber-400 text-amber-400' : ''}`} />
           </button>
         </div>
       </div>
@@ -181,11 +184,11 @@ export const MarketAnalysisPage: React.FC = () => {
       <Card className="p-5 flex flex-col justify-between">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-sm text-fg">{symbol} Daily OHLCV Price Action</span>
-            <span className="text-[10px] font-mono text-fg-subtle">Zero Lookahead Invariant</span>
+            <span className="font-bold text-sm text-[#252A2B] dark:text-[#F4EFE6]">{symbol} Daily OHLCV Price Action</span>
+            <span className="text-[10px] font-mono text-[#77736C] dark:text-[#9E988E]">Zero Lookahead Invariant</span>
           </div>
-          <div className="text-xs text-fg-subtle font-mono">
-            Period High: <strong className="text-bull font-bold">{ohlcv?.stats?.period_high?.toFixed(2)}</strong> | Low: <strong className="text-bear font-bold">{ohlcv?.stats?.period_low?.toFixed(2)}</strong>
+          <div className="text-xs text-[#77736C] dark:text-[#9E988E] font-mono">
+            Period High: <strong className="text-[#287A50] font-bold">{ohlcv?.stats?.period_high?.toFixed(2)}</strong> | Low: <strong className="text-[#C64C4C] font-bold">{ohlcv?.stats?.period_low?.toFixed(2)}</strong>
           </div>
         </div>
 
@@ -193,27 +196,29 @@ export const MarketAnalysisPage: React.FC = () => {
           {ohlcv ? (
             <TradingViewChart
               candles={ohlcv.candles}
+              patterns={ohlcv.patterns}
+              selectedDate={selectedPatternDate}
               symbol={symbol}
               height={400}
               showVolume
               showEMAs
             />
           ) : (
-            <div className="h-[400px] flex items-center justify-center text-fg-subtle">
+            <div className="h-[400px] flex items-center justify-center text-[#77736C]">
               Loading candlestick telemetry...
             </div>
           )}
         </div>
       </Card>
 
-      {/* 3. Navigation Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto border-b border-border pb-px text-xs font-semibold">
+      {/* 3. Navigation Tabs in Glass Pills */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-semibold">
         <button
           onClick={() => setActiveTab('technicals')}
-          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-full transition-all flex-shrink-0 ${
             activeTab === 'technicals'
-              ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-              : 'border-transparent text-fg-muted hover:text-fg'
+              ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white shadow-md shadow-[#694E7A]/25'
+              : 'bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-[#77736C] hover:text-[#252A2B] border border-[#DDD5C9]/80 dark:border-[#DDD5C9]/20'
           }`}
         >
           <Layers className="w-4 h-4" />
@@ -222,51 +227,51 @@ export const MarketAnalysisPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('agents')}
-          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-full transition-all flex-shrink-0 ${
             activeTab === 'agents'
-              ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-              : 'border-transparent text-fg-muted hover:text-fg'
+              ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white shadow-md shadow-[#694E7A]/25'
+              : 'bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-[#77736C] hover:text-[#252A2B] border border-[#DDD5C9]/80 dark:border-[#DDD5C9]/20'
           }`}
         >
           <Users className="w-4 h-4" />
           <span>Multi-Agent Committee</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-brand-500" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#2F7D68]" />
         </button>
 
         <button
           onClick={() => setActiveTab('regimes')}
-          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-full transition-all flex-shrink-0 ${
             activeTab === 'regimes'
-              ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-              : 'border-transparent text-fg-muted hover:text-fg'
+              ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white shadow-md shadow-[#694E7A]/25'
+              : 'bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-[#77736C] hover:text-[#252A2B] border border-[#DDD5C9]/80 dark:border-[#DDD5C9]/20'
           }`}
         >
           <Activity className="w-4 h-4" />
-          <span>HMM Regimes & GA</span>
+          <span>HMM Regimes &amp; GA</span>
         </button>
 
         <button
           onClick={() => setActiveTab('fundamentals')}
-          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-full transition-all flex-shrink-0 ${
             activeTab === 'fundamentals'
-              ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-              : 'border-transparent text-fg-muted hover:text-fg'
+              ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white shadow-md shadow-[#694E7A]/25'
+              : 'bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-[#77736C] hover:text-[#252A2B] border border-[#DDD5C9]/80 dark:border-[#DDD5C9]/20'
           }`}
         >
           <PieChart className="w-4 h-4" />
-          <span>Fundamentals & Ratios</span>
+          <span>Fundamentals &amp; Ratios</span>
         </button>
 
         <button
           onClick={() => setActiveTab('filings')}
-          className={`flex items-center gap-1.5 px-4 py-2.5 border-b-2 transition-all flex-shrink-0 ${
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-full transition-all flex-shrink-0 ${
             activeTab === 'filings'
-              ? 'border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-              : 'border-transparent text-fg-muted hover:text-fg'
+              ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white shadow-md shadow-[#694E7A]/25'
+              : 'bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-[#77736C] hover:text-[#252A2B] border border-[#DDD5C9]/80 dark:border-[#DDD5C9]/20'
           }`}
         >
           <FileSpreadsheet className="w-4 h-4" />
-          <span>PSX Filings & Payouts</span>
+          <span>PSX Filings &amp; Payouts</span>
         </button>
       </div>
 
@@ -289,7 +294,11 @@ export const MarketAnalysisPage: React.FC = () => {
 
           {/* Candlestick Pattern Detections */}
           <div>
-            <CandlestickPatternsList patterns={ohlcv?.patterns || []} />
+            <CandlestickPatternsList
+              patterns={ohlcv?.patterns || []}
+              selectedDate={selectedPatternDate}
+              onSelectPattern={date => setSelectedPatternDate(date)}
+            />
           </div>
         </div>
       )}

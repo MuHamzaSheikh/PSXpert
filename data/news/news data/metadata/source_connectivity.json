@@ -1,0 +1,143 @@
+{
+  "Business Recorder": {
+    "home": {
+      "error": "HTTPSConnectionPool(host='www.brecorder.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='www.brecorder.com', port=443): Failed to resolve 'www.brecorder.com' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    "markets": {
+      "error": "HTTPSConnectionPool(host='www.brecorder.com', port=443): Read timed out. (read timeout=12)"
+    },
+    "archive_probe": {
+      "error": "HTTPSConnectionPool(host='www.brecorder.com', port=443): Read timed out. (read timeout=12)"
+    },
+    "sitemap": {
+      "error": "HTTPSConnectionPool(host='www.brecorder.com', port=443): Max retries exceeded with url: /sitemap.xml (Caused by NewConnectionError(\"HTTPSConnection(host='www.brecorder.com', port=443): Failed to establish a new connection: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions\"))"
+    },
+    "robots": {
+      "status_code": 200,
+      "final_url": "https://www.brecorder.com/robots.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "length": 1152,
+      "snippet": "# No AI training. Search, answer and link-preview bots stay allowed: # Googlebot, Bingbot, Applebot, OAI-SearchBot, ChatGPT-User, Claude-SearchBot, # Claude-User, PerplexityBot, Amzn-SearchBot, facebo"
+    }
+  },
+  "DAWN": {
+    "home": {
+      "status_code": 200,
+      "final_url": "https://www.dawn.com/",
+      "content_type": "text/html; charset=UTF-8",
+      "length": 373025,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>               <!-- adverts:header start -->     <link rel=\"preconnect\" href=\"https://securepubads.g.doubleclick.net\" crossorigin>     <link rel=\"preconnect\" hr"
+    },
+    "business": {
+      "status_code": 200,
+      "final_url": "https://www.dawn.com/business",
+      "content_type": "text/html; charset=UTF-8",
+      "length": 218811,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>               <!-- adverts:header start -->     <link rel=\"preconnect\" href=\"https://securepubads.g.doubleclick.net\" crossorigin>     <link rel=\"preconnect\" hr"
+    },
+    "archive_probe": {
+      "status_code": 200,
+      "final_url": "https://www.dawn.com/latest-news",
+      "content_type": "text/html; charset=UTF-8",
+      "length": 645570,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\">  <head>               <!-- adverts:header start -->     <link rel=\"preconnect\" href=\"https://securepubads.g.doubleclick.net\" crossorigin>     <link rel=\"preconnect\" hr"
+    },
+    "sitemap": {
+      "status_code": 404,
+      "final_url": "https://www.dawn.com/sitemap.xml",
+      "content_type": "text/html; charset=utf-8",
+      "length": 548,
+      "snippet": "<html>\r <head><title>404 Not Found</title></head>\r <body>\r <center><h1>404 Not Found</h1></center>\r <hr><center>nginx</center>\r </body>\r </html>\r <!-- a padding to disable MSIE and Chrome friendly err"
+    },
+    "robots": {
+      "status_code": 200,
+      "final_url": "https://www.dawn.com/robots.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "length": 1295,
+      "snippet": "# No AI training. Search, answer and link-preview bots stay allowed: # Googlebot, Bingbot, Applebot, OAI-SearchBot, ChatGPT-User, Claude-SearchBot, # Claude-User, PerplexityBot, Amzn-SearchBot, facebo"
+    }
+  },
+  "The Express Tribune": {
+    "home": {
+      "status_code": 200,
+      "final_url": "https://tribune.com.pk/",
+      "content_type": "text/html; charset=UTF-8",
+      "length": 425888,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head>      <meta charset=\"UTF-8\">     <meta name=\"viewport\" content=\"width=device-width,minimum-scale=1,initial-scale=1\">     <meta http-equiv=\"X-UA-Compatible\" conte"
+    },
+    "business": {
+      "status_code": 200,
+      "final_url": "https://tribune.com.pk/business",
+      "content_type": "text/html; charset=UTF-8",
+      "length": 95789,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head>      <meta charset=\"UTF-8\">     <meta name=\"viewport\" content=\"width=device-width,minimum-scale=1,initial-scale=1\">     <meta http-equiv=\"X-UA-Compatible\" conte"
+    },
+    "archive_probe": {
+      "status_code": 200,
+      "final_url": "https://tribune.com.pk/archive",
+      "content_type": "text/html; charset=UTF-8",
+      "length": 72692,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head>      <meta charset=\"UTF-8\">     <meta name=\"viewport\" content=\"width=device-width,minimum-scale=1,initial-scale=1\">     <meta http-equiv=\"X-UA-Compatible\" conte"
+    },
+    "sitemap": {
+      "status_code": 200,
+      "final_url": "https://tribune.com.pk/sitemap.xml",
+      "content_type": "application/xml",
+      "length": 5152,
+      "snippet": "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">   <sitemap>     <loc>https://tribune.com.pk/sitemap/sitemap_main.xml</loc>     <lastmod>2026-1"
+    },
+    "robots": {
+      "status_code": 200,
+      "final_url": "https://tribune.com.pk/robots.txt",
+      "content_type": "text/plain",
+      "length": 181,
+      "snippet": "User-agent: *  Disallow:  Sitemap: https://tribune.com.pk/sitemap.xml Sitemap: https://tribune.com.pk/sitemap/latest-1.xml Sitemap: https://tribune.com.pk/sitemap/videos_sitemap.xml"
+    }
+  },
+  "Mettis Global": {
+    "home": {
+      "status_code": 200,
+      "final_url": "https://mettisglobal.news/",
+      "content_type": "text/html; charset=utf-8",
+      "length": 75144,
+      "snippet": "\r <!DOCTYPE html>\r <html lang=\"en\">\r \r \r \r <head>\r         <meta charset=\"utf-8\" />\r         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r         <title>Mettis Global Link"
+    },
+    "sitemap": {
+      "status_code": 200,
+      "final_url": "https://mettisglobal.news/sitemap.xml",
+      "content_type": "text/html; charset=utf-8",
+      "length": 60406,
+      "snippet": "\r <!DOCTYPE html>\r <html lang=\"en\">\r \r \r \r <head>\r         <meta charset=\"utf-8\" />\r         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r         <title>MG Desk</title>\r  "
+    },
+    "robots": {
+      "status_code": 200,
+      "final_url": "https://mettisglobal.news/robots.txt",
+      "content_type": "text/plain",
+      "length": 148,
+      "snippet": "# robots.txt for yourwebsite.com  User-agent: * Disallow: /admin/ Disallow: /private/ Allow: /  Sitemap: https://mettisglobal.news/sitemap_index.xml"
+    }
+  },
+  "Profit by Pakistan Today": {
+    "home": {
+      "status_code": 200,
+      "final_url": "https://profit.pakistantoday.com.pk/",
+      "content_type": "text/html; charset=utf-8",
+      "length": 186587,
+      "snippet": "<!DOCTYPE html><html lang=\"en\" data-site=\"profit\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\"/><link rel=\"preload\" as=\"image\" i"
+    },
+    "sitemap": {
+      "status_code": 200,
+      "final_url": "https://profit.pakistantoday.com.pk/sitemap.xml",
+      "content_type": "application/xml",
+      "length": 1251,
+      "snippet": "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">   <sitemap>     <loc>https://profit.pakistantoday.com.pk/sitemaps/sitemap-misc.xml</loc>     <"
+    },
+    "robots": {
+      "status_code": 200,
+      "final_url": "https://profit.pakistantoday.com.pk/robots.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "length": 132,
+      "snippet": "User-Agent: * Allow: / Disallow: /admin/ Disallow: /api/ Disallow: /login  Sitemap: https://profit.pakistantoday.com.pk/sitemap.xml "
+    }
+  }
+}

@@ -127,15 +127,15 @@ export const AssistantPage: React.FC = () => {
 
       {/* 2. Suggested Prompt Chips */}
       <div className="flex flex-wrap items-center gap-2 text-xs">
-        <span className="text-fg-subtle font-medium flex items-center gap-1">
-          <Sparkles className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
+        <span className="text-[#77736C] dark:text-[#9E988E] font-medium flex items-center gap-1">
+          <Sparkles className="w-3.5 h-3.5 text-[#2F7D68]" />
           <span>Suggested:</span>
         </span>
         {SUGGESTED_PROMPTS.map((prompt, i) => (
           <button
             key={i}
             onClick={() => handleSend(prompt)}
-            className="px-3 py-1.5 rounded-full bg-bg-elevated/70 border border-border text-fg-muted hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors text-left"
+            className="px-3.5 py-1.5 rounded-full bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 border border-[#DDD5C9] text-[#77736C] hover:text-[#252A2B] hover:border-[#2F7D68] transition-colors text-left"
           >
             {prompt}
           </button>
@@ -155,10 +155,10 @@ export const AssistantPage: React.FC = () => {
               >
                 {/* Avatar Badge */}
                 <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 text-white font-bold text-xs ${
+                  className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold text-xs ${
                     isUser
-                      ? 'bg-fg-muted'
-                      : 'bg-gradient-to-br from-brand-500 to-brand-700 shadow-sm shadow-brand-500/20'
+                      ? 'bg-[#77736C]'
+                      : 'bg-gradient-to-br from-[#2F7D68] to-[#1F5C4C] shadow-sm'
                   }`}
                 >
                   {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
@@ -169,8 +169,8 @@ export const AssistantPage: React.FC = () => {
                   <div
                     className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed ${
                       isUser
-                        ? 'bg-brand-500 text-white font-medium rounded-tr-sm shadow-sm'
-                        : 'bg-bg-elevated/70 border border-border text-fg rounded-tl-sm'
+                        ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white font-medium rounded-tr-sm shadow-md shadow-[#694E7A]/20'
+                        : 'bg-[#FFFCF6]/90 dark:bg-[#1C2022]/90 border border-[#DDD5C9] dark:border-[#DDD5C9]/20 text-[#252A2B] dark:text-[#F4EFE6] rounded-tl-sm'
                     }`}
                   >
                     <div className="whitespace-pre-wrap">{msg.text}</div>
@@ -178,35 +178,35 @@ export const AssistantPage: React.FC = () => {
 
                   {/* Evidence & Citations Panel for AI messages */}
                   {!isUser && msg.evidence && msg.evidence.length > 0 && (
-                    <div className="p-3 rounded-xl border border-brand-500/20 bg-brand-500/5 space-y-2 text-xs">
-                      <div className="flex items-center justify-between text-brand-600 dark:text-brand-400 font-bold text-[11px] uppercase tracking-wider">
+                    <div className="p-3 rounded-2xl border border-[#2F7D68]/25 bg-[#2F7D68]/5 space-y-2 text-xs">
+                      <div className="flex items-center justify-between text-[#2F7D68] dark:text-[#3DA88D] font-bold text-[11px] uppercase tracking-wider">
                         <span className="flex items-center gap-1">
                           <FileText className="w-3.5 h-3.5" />
-                          <span>Retrieved Evidence & Sources ({msg.evidence.length})</span>
+                          <span>Retrieved Evidence &amp; Sources ({msg.evidence.length})</span>
                         </span>
                         {msg.confidence_score && (
                           <span className="font-mono">{msg.confidence_score}% Confidence</span>
                         )}
                       </div>
 
-                      <div className="space-y-1.5 divide-y divide-border/30">
+                      <div className="space-y-1.5 divide-y divide-[#DDD5C9]/40">
                         {msg.evidence.map((ev, idx) => (
                           <div key={idx} className="pt-1.5 first:pt-0 space-y-0.5">
-                            <div className="font-semibold text-fg flex items-center justify-between">
+                            <div className="font-semibold text-[#252A2B] dark:text-[#F4EFE6] flex items-center justify-between">
                               <span>{ev.title}</span>
                               {ev.url && (
                                 <a
                                   href={ev.url}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="text-brand-600 dark:text-brand-400 flex items-center gap-0.5 hover:underline text-[10px]"
+                                  className="text-[#2F7D68] dark:text-[#3DA88D] flex items-center gap-0.5 hover:underline text-[10px]"
                                 >
                                   <span>View DPS PDF</span>
                                   <ExternalLink className="w-2.5 h-2.5" />
                                 </a>
                               )}
                             </div>
-                            <p className="text-[11px] text-fg-muted italic leading-snug">
+                            <p className="text-[11px] text-[#77736C] dark:text-[#9E988E] italic leading-snug">
                               &ldquo;{ev.snippet}&rdquo;
                             </p>
                           </div>
@@ -215,7 +215,7 @@ export const AssistantPage: React.FC = () => {
                     </div>
                   )}
 
-                  <div className="flex items-center gap-2 text-[10px] text-fg-subtle px-1">
+                  <div className="flex items-center gap-2 text-[10px] text-[#77736C] px-1">
                     <span>{msg.timestamp}</span>
                     {!isUser && <span>• PSXpert Neural RAG Model</span>}
                   </div>
@@ -226,19 +226,19 @@ export const AssistantPage: React.FC = () => {
 
           {isTyping && (
             <div className="flex gap-3 max-w-xl">
-              <div className="w-8 h-8 rounded-xl bg-brand-500 flex items-center justify-center text-white">
+              <div className="w-8 h-8 rounded-full bg-[#2F7D68] flex items-center justify-center text-white">
                 <Bot className="w-4 h-4 animate-spin" />
               </div>
-              <div className="p-3.5 rounded-2xl bg-bg-elevated border border-border text-xs text-fg-muted flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-brand-500 animate-ping" />
-                <span>Synthesizing filings & technical evidence...</span>
+              <div className="p-3.5 rounded-2xl bg-[#FFFCF6]/80 border border-[#DDD5C9] text-xs text-[#77736C] flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#2F7D68] animate-ping" />
+                <span>Synthesizing filings &amp; technical evidence...</span>
               </div>
             </div>
           )}
         </div>
 
         {/* Input Bar */}
-        <div className="p-3.5 border-t border-border bg-bg-card">
+        <div className="p-3.5 border-t border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80">
           <form
             onSubmit={e => {
               e.preventDefault();
@@ -251,12 +251,12 @@ export const AssistantPage: React.FC = () => {
               placeholder="Ask about a PSX stock, dividend payout, or market regime..."
               value={inputPrompt}
               onChange={e => setInputPrompt(e.target.value)}
-              className="flex-1 px-4 py-2.5 rounded-xl border border-border bg-bg text-xs sm:text-sm text-fg placeholder:text-fg-subtle outline-none focus:border-brand-500"
+              className="flex-1 px-4 py-2.5 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6] dark:bg-[#1C2022] text-xs sm:text-sm text-[#252A2B] dark:text-[#F4EFE6] placeholder:text-[#77736C] outline-none focus:border-[#2F7D68]"
             />
             <button
               type="submit"
               disabled={!inputPrompt.trim() || isTyping}
-              className="p-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 disabled:opacity-40 text-white font-bold transition-colors"
+              className="p-2.5 rounded-full bg-gradient-to-r from-[#2F7D68] to-[#236353] hover:from-[#236353] hover:to-[#1a4d40] disabled:opacity-40 text-white font-bold transition-all shadow-md shadow-[#2F7D68]/20"
               aria-label="Send Message"
             >
               <Send className="w-4 h-4" />

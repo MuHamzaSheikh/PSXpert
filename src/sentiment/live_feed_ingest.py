@@ -9,7 +9,10 @@ import xml.etree.ElementTree as ET
 import urllib.request
 from datetime import datetime
 from typing import Dict, List, Any
-from bs4 import BeautifulSoup
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    BeautifulSoup = None
 import pandas as pd
 from sqlalchemy import text
 

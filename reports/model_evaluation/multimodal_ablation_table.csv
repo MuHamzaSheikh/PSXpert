@@ -1,0 +1,8 @@
+model_id,description,features_count,test_accuracy,macro_f1,macro_precision,macro_recall,ovr_roc_auc,brier_score,log_loss,directional_accuracy,expected_return_mae,expected_return_rmse,high_confidence_acc_p50,high_conf_coverage,normal_vol_accuracy,high_vol_accuracy
+M1_Tech,Technical Analysis Alone,13,0.4356,0.3356,0.3892,0.3687,0.5622,0.6439,1.0662,0.5366,0.0448,0.1324,0.5773,0.109,0.4236,0.4715
+M2_Fund,Fundamental Analysis Alone,7,0.3297,0.2577,0.2413,0.3406,0.5013,0.6741,1.1104,0.498,0.0449,0.1328,0.3297,0.0,0.3358,0.3115
+M3_News,News Sentiment Alone,9,0.4294,0.2232,0.3115,0.3335,0.4983,0.6541,1.0806,0.4984,0.0445,0.1323,0.625,0.0001,0.4138,0.4762
+M4_Tech_Fund,Technical + Fundamental,20,0.3731,0.3088,0.3848,0.3684,0.5591,0.666,1.0976,0.5228,0.0459,0.1333,0.4825,0.104,0.3589,0.4157
+M5_Tech_News,Technical + News Sentiment,22,0.4333,0.3352,0.3837,0.3673,0.5588,0.6453,1.0689,0.5359,0.0449,0.1324,0.5566,0.126,0.4207,0.4709
+M6_Fund_News,Fundamental + News Sentiment,16,0.3228,0.2532,0.3331,0.341,0.5024,0.6765,1.1142,0.5013,0.045,0.1328,0.3228,0.0,0.3334,0.2911
+M7_TriModal,Technical + Fundamental + News (Full),29,0.3764,0.3112,0.3795,0.3662,0.5537,0.6664,1.0986,0.5222,0.0458,0.1332,0.4664,0.1242,0.3628,0.4171

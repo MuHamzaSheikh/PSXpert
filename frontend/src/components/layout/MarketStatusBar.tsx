@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Clock, ShieldAlert } from 'lucide-react';
+import { Clock, ShieldCheck } from 'lucide-react';
 
 interface MarketStatusInfo {
   isOpen: boolean;
@@ -9,12 +9,11 @@ interface MarketStatusInfo {
 }
 
 function calculatePSXStatus(): MarketStatusInfo {
-  // Get current time in Pakistan Standard Time (UTC+5)
   const now = new Date();
   const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
   const pktDate = new Date(utc + (3600000 * 5));
 
-  const day = pktDate.getDay(); // 0 is Sunday, 5 is Friday, 6 is Saturday
+  const day = pktDate.getDay();
   const hours = pktDate.getHours();
   const minutes = pktDate.getMinutes();
   const totalMinutes = hours * 60 + minutes;
@@ -26,7 +25,6 @@ function calculatePSXStatus(): MarketStatusInfo {
     hour12: true,
   }) + ' PKT';
 
-  // Weekend
   if (day === 0 || day === 6) {
     return {
       isOpen: false,
@@ -36,7 +34,6 @@ function calculatePSXStatus(): MarketStatusInfo {
     };
   }
 
-  // Friday Schedule: 09:15-12:00 (Session 1), 14:30-16:30 (Session 2)
   if (day === 5) {
     const s1Start = 9 * 60 + 15;
     const s1End = 12 * 60;
@@ -75,7 +72,6 @@ function calculatePSXStatus(): MarketStatusInfo {
     };
   }
 
-  // Monday to Thursday Schedule: 09:15 to 15:30
   const openTime = 9 * 60 + 15;
   const closeTime = 15 * 60 + 30;
 
@@ -100,43 +96,42 @@ export const MarketStatusBar: React.FC<{ compact?: boolean }> = ({ compact = fal
   const [status, setStatus] = useState<MarketStatusInfo>(calculatePSXStatus);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const timer = setInterval(() => {
       setStatus(calculatePSXStatus());
     }, 1000);
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, []);
 
-  if (compact) {
-    return (
-      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-border bg-bg-card text-xs font-medium">
-        <span className={`w-2 h-2 rounded-full ${status.isOpen ? 'bg-bull animate-pulse' : 'bg-bear'}`} />
-        <span className="font-semibold text-fg">{status.statusText}</span>
-        <span className="text-fg-subtle text-[11px] font-mono hidden sm:inline">({status.pktTimeString})</span>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-1.5 bg-bg-elevated/70 border-b border-border text-[11px] sm:text-xs text-fg-muted overflow-x-clip">
-      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-border bg-bg-card font-medium">
-          <span className={`w-2 h-2 rounded-full ${status.isOpen ? 'bg-bull animate-pulse' : 'bg-bear'}`} />
-          <span className={status.isOpen ? 'text-bull font-semibold' : 'text-fg-muted font-semibold'}>
+    <div className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-2 pb-1.5 flex items-center justify-between text-[11px] sm:text-xs text-[#77736C] dark:text-[#9E988E] font-medium tracking-tight">
+      {/* Left Pill: Live Market Status */}
+      <div className="flex items-center gap-2 sm:gap-3 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#DDD5C9]/70 dark:border-[#DDD5C9]/15 shadow-sm">
+        <div className="flex items-center gap-1.5">
+          <span className={`w-2 h-2 rounded-full ${status.isOpen ? 'bg-[#287A50] animate-pulse' : 'bg-[#C64C4C]'}`} />
+          <span className={`font-semibold ${status.isOpen ? 'text-[#287A50] dark:text-[#34A86E]' : 'text-[#252A2B] dark:text-[#F4EFE6]'}`}>
             {status.statusText}
           </span>
         </div>
-        <span className="text-fg-subtle hidden xs:inline">•</span>
-        <span className="font-mono text-fg">{status.pktTimeString}</span>
-        <span className="text-fg-subtle hidden sm:inline">•</span>
-        <span className="hidden sm:inline line-clamp-1">{status.sessionDetails}</span>
+        <span className="text-[#DDD5C9] dark:text-[#77736C]">|</span>
+        <span className="tabular-nums font-mono text-[#252A2B] dark:text-[#F4EFE6] font-semibold">
+          {status.pktTimeString}
+        </span>
+        <span className="hidden md:inline text-[#DDD5C9] dark:text-[#77736C]">|</span>
+        <span className="hidden md:inline text-[#77736C] dark:text-[#9E988E]">
+          {status.sessionDetails}
+        </span>
       </div>
 
-      <div className="flex items-center gap-3 text-fg-subtle ml-auto">
-        <span className="hidden lg:inline">PSX Continuous &amp; Murabaha Market</span>
-        <span className="flex items-center gap-1 text-[10px] sm:text-[11px] text-brand-600 dark:text-brand-400 font-medium">
-          <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-          <span>DPS Real-time</span>
+      {/* Right Strip: Market Category & DPS Data indicator */}
+      <div className="hidden sm:flex items-center gap-3 bg-[#FFFCF6]/60 dark:bg-[#1C2022]/60 backdrop-blur-md px-3 py-1 rounded-full border border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15">
+        <span className="text-[#252A2B] dark:text-[#F4EFE6] font-medium">
+          PSX Continuuss &amp; Murabaha Market
         </span>
+        <span className="text-[#DDD5C9] dark:text-[#77736C]">|</span>
+        <div className="flex items-center gap-1.5 text-[#287A50] dark:text-[#34A86E] font-semibold">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#287A50]" />
+          <span>DPS Real-time</span>
+        </div>
       </div>
     </div>
   );

@@ -11,7 +11,10 @@ from typing import Dict, Any, Tuple
 import numpy as np
 import pandas as pd
 from scipy.special import logsumexp
-from hmmlearn.hmm import GaussianHMM
+try:
+    from hmmlearn.hmm import GaussianHMM
+except ImportError:
+    GaussianHMM = None
 
 
 class CausalMarketRegimeHMM:

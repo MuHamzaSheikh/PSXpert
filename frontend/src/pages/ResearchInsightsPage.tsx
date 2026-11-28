@@ -125,10 +125,10 @@ export const ResearchInsightsPage: React.FC = () => {
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`px-3 py-1.5 rounded-full font-semibold whitespace-nowrap border transition-colors ${
+                className={`px-3.5 py-1.5 rounded-full font-semibold whitespace-nowrap border transition-all ${
                   activeCategory === cat.id
-                    ? 'bg-brand-500 text-white border-brand-500 shadow-sm'
-                    : 'bg-bg-card border-border text-fg-muted hover:border-fg-subtle'
+                    ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white border-[#694E7A] shadow-sm'
+                    : 'bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 border-[#DDD5C9] text-[#77736C] hover:text-[#252A2B]'
                 }`}
               >
                 {cat.label}
@@ -138,21 +138,21 @@ export const ResearchInsightsPage: React.FC = () => {
 
           {/* Search Bar */}
           <div className="relative max-w-xs w-full flex-shrink-0">
-            <Search className="w-4 h-4 text-fg-subtle absolute left-3 top-3 pointer-events-none" />
+            <Search className="w-4 h-4 text-[#77736C] absolute left-3.5 top-3 pointer-events-none" />
             <input
               type="text"
               placeholder="Search headlines or tickers..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 h-10 rounded-xl border border-border bg-bg text-xs text-fg placeholder:text-fg-subtle outline-none focus:border-brand-500 truncate whitespace-nowrap"
+              className="w-full pl-9 pr-3 h-10 rounded-full border border-[#DDD5C9] dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 text-xs text-[#252A2B] dark:text-[#F4EFE6] placeholder:text-[#77736C] outline-none focus:border-[#2F7D68] shadow-sm truncate whitespace-nowrap"
             />
           </div>
         </div>
 
         {/* Sentiment Filter Strip & Status */}
-        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-border/50 text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 text-xs">
           <div className="flex items-center gap-1.5">
-            <span className="text-fg-subtle text-[11px] font-medium mr-1">Sentiment:</span>
+            <span className="text-[#77736C] dark:text-[#9E988E] text-[11px] font-medium mr-1">Sentiment:</span>
             {[
               { id: 'ALL', label: 'All Moods' },
               { id: 'POSITIVE', label: 'Bullish / Positive' },
@@ -162,10 +162,14 @@ export const ResearchInsightsPage: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => setSentimentFilter(item.id as any)}
-                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-all ${
+                className={`px-3 py-1 rounded-full text-[11px] font-semibold border transition-all ${
                   sentimentFilter === item.id
-                    ? 'bg-brand-500/15 border-brand-500 text-brand-600 dark:text-brand-400 font-bold'
-                    : 'border-border bg-bg-card text-fg-muted hover:border-fg-subtle'
+                    ? item.id === 'POSITIVE'
+                      ? 'bg-[#287A50] text-white border-[#287A50] shadow-sm'
+                      : item.id === 'NEGATIVE'
+                      ? 'bg-[#C64C4C] text-white border-[#C64C4C] shadow-sm'
+                      : 'bg-[#694E7A] text-white border-[#694E7A] shadow-sm'
+                    : 'border-[#DDD5C9] bg-[#FFFCF6]/80 text-[#77736C] hover:text-[#252A2B]'
                 }`}
               >
                 {item.label}
@@ -173,8 +177,8 @@ export const ResearchInsightsPage: React.FC = () => {
             ))}
           </div>
 
-          <div className="flex items-center gap-3 text-[11px] text-fg-subtle">
-            <span>Showing <strong className="text-fg font-mono">{filteredNews.length}</strong> stories</span>
+          <div className="flex items-center gap-3 text-[11px] text-[#77736C] dark:text-[#9E988E]">
+            <span>Showing <strong className="text-[#252A2B] dark:text-[#F4EFE6] font-mono">{filteredNews.length}</strong> stories</span>
             {(activeCategory !== 'ALL' || sentimentFilter !== 'ALL' || searchQuery.trim() !== '') && (
               <button
                 onClick={() => {
@@ -182,7 +186,7 @@ export const ResearchInsightsPage: React.FC = () => {
                   setSentimentFilter('ALL');
                   setSearchQuery('');
                 }}
-                className="text-brand-600 dark:text-brand-400 font-semibold hover:underline"
+                className="text-[#2F7D68] dark:text-[#3DA88D] font-semibold hover:underline"
               >
                 Reset filters
               </button>

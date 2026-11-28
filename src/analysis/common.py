@@ -8,14 +8,27 @@ from decimal import Decimal
 from typing import Any, Optional, Tuple
 
 import numpy as np
-import pandas as pd
-from sqlalchemy import text
-from sqlalchemy.engine import Connection
 
-from src.predictive_data.point_in_time import (
-    adjust_splits_and_flag_glitches,
-    load_clean_corporate_actions,
-)
+try:
+    import pandas as pd
+except ImportError:
+    pd = None
+
+try:
+    from sqlalchemy import text
+    from sqlalchemy.engine import Connection
+except ImportError:
+    text = None
+    Connection = Any
+
+try:
+    from src.predictive_data.point_in_time import (
+        adjust_splits_and_flag_glitches,
+        load_clean_corporate_actions,
+    )
+except ImportError:
+    adjust_splits_and_flag_glitches = None
+    load_clean_corporate_actions = None
 
 EXCLUDED_UNCLASSIFIED_SECTORS = {
     "",
@@ -29,7 +42,7 @@ EXCLUDED_UNCLASSIFIED_SECTORS = {
 
 def safe_float(val: Any, digits: Optional[int] = None) -> Optional[float]:
     """Convert numeric values to finite Python float or None."""
-    if val is None or val is pd.NA:
+    if val is None or (pd is not None and val is pd.NA):
         return None
     try:
         f = float(val)
@@ -62,7 +75,7 @@ def safe_div(
 
 def sanitize_for_json(obj: Any) -> Any:
     """Recursively convert numpy/pandas/date objects to strict JSON-safe Python primitives."""
-    if obj is None or obj is pd.NA:
+    if obj is None or (pd is not None and obj is pd.NA):
         return None
     if isinstance(obj, bool):
         return obj
@@ -73,7 +86,7 @@ def sanitize_for_json(obj: Any) -> Any:
     if isinstance(obj, (float, np.floating, Decimal)):
         f = float(obj)
         return f if math.isfinite(f) else None
-    if isinstance(obj, (pd.Timestamp, datetime)):
+    if (pd is not None and isinstance(obj, pd.Timestamp)) or isinstance(obj, datetime):
         return obj.isoformat()
     if isinstance(obj, date):
         return obj.isoformat()
@@ -81,7 +94,7 @@ def sanitize_for_json(obj: Any) -> Any:
         return {str(k): sanitize_for_json(v) for k, v in obj.items()}
     if isinstance(obj, (list, tuple)):
         return [sanitize_for_json(v) for v in obj]
-    if pd.isna(obj):
+    if pd is not None and pd.isna(obj):
         return None
     return obj
 
@@ -90,19 +103,26 @@ def parse_as_of_date(as_of_date: Optional[date | datetime | str]) -> Optional[da
     """Parse optional evaluation date into a Python date object."""
     if as_of_date is None or as_of_date == "":
         return None
-    if isinstance(as_of_date, pd.Timestamp):
+    if pd is not None and isinstance(as_of_date, pd.Timestamp):
         return as_of_date.date()
     if isinstance(as_of_date, datetime):
         return as_of_date.date()
     if isinstance(as_of_date, date):
         return as_of_date
-    try:
-        return pd.to_datetime(str(as_of_date), format="ISO8601").date()
-    except Exception:
+    if pd is not None:
         try:
-            return pd.to_datetime(str(as_of_date)).date()
-        except Exception as exc:
-            raise ValueError(f"Invalid as_of_date format '{as_of_date}'. Expected YYYY-MM-DD.") from exc
+            return pd.to_datetime(str(as_of_date), format="ISO8601").date()
+        except Exception:
+            try:
+                return pd.to_datetime(str(as_of_date)).date()
+            except Exception as exc:
+                raise ValueError(f"Invalid as_of_date format '{as_of_date}'. Expected YYYY-MM-DD.") from exc
+    # Standard library fallback
+    s = str(as_of_date).strip()[:10]
+    try:
+        return datetime.strptime(s, "%Y-%m-%d").date()
+    except ValueError as exc:
+        raise ValueError(f"Invalid as_of_date format '{as_of_date}'. Expected YYYY-MM-DD.") from exc
 
 
 def get_company_metadata(conn: Connection, symbol: str) -> dict[str, Any]:

@@ -13,6 +13,8 @@ import {
   Menu,
   X,
   ChevronDown,
+  User,
+  Sparkles,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { MarketStatusBar } from './MarketStatusBar';
@@ -33,13 +35,11 @@ export const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Close mobile drawer and more menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setIsMoreMenuOpen(false);
   }, [location.pathname]);
 
-  // Click outside listener for "More" dropdown
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (moreMenuRef.current && !moreMenuRef.current.contains(e.target as Node)) {
@@ -50,7 +50,6 @@ export const Navbar: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Global keydown listener for Ctrl+K
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -73,147 +72,109 @@ export const Navbar: React.FC = () => {
     { name: 'AI Assistant', path: '/assistant', icon: Bot, isNew: true },
     { name: 'Research', path: '/insights', icon: FileText },
     { name: 'Watchlist', path: '/watchlist', icon: Star },
+    { name: 'Settings', path: '/settings', icon: Settings },
   ];
 
   const allNavLinks = [...primaryLinks, ...secondaryLinks];
 
-  // Check if any secondary link is currently active
   const isSecondaryActive = secondaryLinks.some(link => location.pathname.startsWith(link.path));
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-bg-card/95 backdrop-blur-md border-b border-border shadow-subtle overflow-x-clip">
+      <header className="sticky top-0 z-40 w-full bg-[#F4EFE6]/80 dark:bg-[#141718]/80 backdrop-blur-xl border-b border-[#DDD5C9]/70 dark:border-[#DDD5C9]/15 shadow-sm">
         {/* Upper Top Status Strip */}
         <MarketStatusBar />
 
-        {/* Main Nav Header */}
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4 w-full">
-          {/* 1. Left: Brand Logo & Optional Search Bar */}
-          <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
-            <Link to="/" className="flex items-center gap-2 flex-shrink-0 group">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white shadow-sm shadow-brand-500/25 group-hover:scale-105 transition-transform duration-200">
+        {/* Floating Main Glass Navbar */}
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3 w-full">
+          
+          {/* 1. Left: Brand Logo & Interactive Search Bar */}
+          <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+            <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#2F7D68] to-[#1F5C4C] flex items-center justify-center text-white shadow-md shadow-[#2F7D68]/20 group-hover:scale-105 transition-transform duration-200">
                 <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-base sm:text-lg tracking-tight text-fg group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                <span className="font-extrabold text-base sm:text-xl tracking-tight text-[#252A2B] dark:text-[#F4EFE6]">
                   PSXpert
                 </span>
-                <span className="px-1.5 py-0.2 rounded text-[10px] font-bold uppercase tracking-wider bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20">
-                  AI
+                <span className="bg-[#2F7D68]/15 text-[#2F7D68] dark:text-[#3DA88D] text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-[#2F7D68]/25">
+                  +AI
                 </span>
               </div>
             </Link>
 
-            {/* Quick Search Bar next to Logo (visible on xl+; collapses to search icon button on smaller/zoomed screens) */}
-            <div className="hidden xl:block w-40 2xl:w-56 flex-shrink">
-              <button
-                type="button"
-                onClick={() => setIsSearchOpen(true)}
-                className="w-full flex items-center justify-between px-3 py-1.5 rounded-xl border border-border bg-bg-elevated/70 hover:bg-bg-elevated hover:border-brand-500/50 text-xs text-fg-subtle transition-all duration-150 whitespace-nowrap min-w-0"
-              >
-                <div className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
-                  <Search className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400 flex-shrink-0" />
-                  <span className="truncate whitespace-nowrap text-left block text-[11px]">Search PSX...</span>
-                </div>
-                <kbd className="inline-flex items-center px-1.5 py-0.2 rounded bg-bg-card border border-border text-[9px] font-mono text-fg-muted flex-shrink-0 ml-1">
-                  ⌘K
-                </kbd>
-              </button>
-            </div>
+            {/* Quick Search Trigger Pill */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="hidden md:flex items-center gap-2 bg-[#FFFCF6]/85 dark:bg-[#1C2022]/85 hover:bg-[#FFFCF6] text-[#77736C] hover:text-[#252A2B] dark:text-[#9E988E] dark:hover:text-[#F4EFE6] px-3.5 py-1.5 rounded-full border border-[#DDD5C9]/80 dark:border-[#DDD5C9]/20 shadow-sm transition-all duration-150 text-xs w-44 lg:w-56"
+            >
+              <Search className="w-3.5 h-3.5 text-[#77736C]" />
+              <span className="flex-1 text-left font-medium">Search PSX...</span>
+              <kbd className="text-[10px] bg-[#E7E0D5]/60 dark:bg-[#252A2C] px-1.5 py-0.5 rounded font-mono border border-[#DDD5C9]/60">
+                ⌘K
+              </kbd>
+            </button>
           </div>
 
-          {/* 2. Middle: Navigation Links (Desktop Adaptive) */}
-          {/* On 2xl/xl screens: Show all links. On lg screens: Show primary links + "More ▾" dropdown */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 flex-shrink">
-            {primaryLinks.map(link => {
-              const Icon = link.icon;
+          {/* 2. Center: Glass Navigation Pills */}
+          <nav className="hidden lg:flex items-center gap-1.5 bg-[#FFFCF6]/65 dark:bg-[#1C2022]/65 backdrop-blur-md px-2 py-1 rounded-full border border-[#DDD5C9]/70 dark:border-[#DDD5C9]/20 shadow-sm">
+            {primaryLinks.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
               return (
                 <NavLink
-                  key={link.path}
-                  to={link.path}
-                  className={({ isActive }) =>
-                    `px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap transition-all duration-150 ${
-                      isActive
-                        ? 'text-brand-600 dark:text-brand-400 bg-brand-500/10 font-bold'
-                        : 'text-fg-muted hover:text-fg hover:bg-bg-elevated'
-                    }`
-                  }
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white shadow-md shadow-[#694E7A]/25'
+                      : 'text-[#77736C] dark:text-[#9E988E] hover:text-[#252A2B] dark:hover:text-[#F4EFE6] hover:bg-[#E7E0D5]/50 dark:hover:bg-[#252A2C]/60'
+                  }`}
                 >
-                  <Icon className="w-3.5 h-3.5 flex-shrink-0" />
-                  <span>{link.name}</span>
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{item.name}</span>
                 </NavLink>
               );
             })}
 
-            {/* Secondary links: inline on 2xl, or dropdown on lg/xl */}
-            <div className="hidden 2xl:flex items-center gap-1">
-              {secondaryLinks.map(link => {
-                const Icon = link.icon;
-                return (
-                  <NavLink
-                    key={link.path}
-                    to={link.path}
-                    className={({ isActive }) =>
-                      `px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap transition-all duration-150 ${
-                        isActive
-                          ? 'text-brand-600 dark:text-brand-400 bg-brand-500/10 font-bold'
-                          : 'text-fg-muted hover:text-fg hover:bg-bg-elevated'
-                      }`
-                    }
-                  >
-                    <Icon className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span>{link.name}</span>
-                    {link.isNew && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse flex-shrink-0" />
-                    )}
-                  </NavLink>
-                );
-              })}
-            </div>
-
-            {/* "More ▾" dropdown button for lg & xl viewports */}
-            <div ref={moreMenuRef} className="relative 2xl:hidden">
+            {/* "More" Dropdown Menu */}
+            <div className="relative" ref={moreMenuRef}>
               <button
-                type="button"
                 onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
-                className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1 whitespace-nowrap transition-all duration-150 ${
-                  isSecondaryActive || isMoreMenuOpen
-                    ? 'text-brand-600 dark:text-brand-400 bg-brand-500/10 font-bold'
-                    : 'text-fg-muted hover:text-fg hover:bg-bg-elevated'
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+                  isSecondaryActive
+                    ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white shadow-md shadow-[#694E7A]/25'
+                    : 'text-[#77736C] dark:text-[#9E988E] hover:text-[#252A2B] dark:hover:text-[#F4EFE6] hover:bg-[#E7E0D5]/50 dark:hover:bg-[#252A2C]/60'
                 }`}
               >
                 <span>More</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-150 ${isMoreMenuOpen ? 'rotate-180' : ''}`} />
-                {secondaryLinks.some(l => l.isNew) && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse flex-shrink-0 ml-0.5" />
-                )}
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isMoreMenuOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              {/* Floating More Dropdown Menu */}
               {isMoreMenuOpen && (
-                <div className="absolute left-0 mt-2 w-48 rounded-2xl bg-bg-card border border-border shadow-xl p-1.5 z-50 animate-in fade-in zoom-in-95 duration-150 space-y-0.5">
-                  {secondaryLinks.map(link => {
-                    const Icon = link.icon;
+                <div className="absolute top-full right-0 mt-2 w-52 bg-[#FFFCF6]/95 dark:bg-[#1C2022]/95 backdrop-blur-xl rounded-2xl border border-[#DDD5C9] dark:border-[#DDD5C9]/20 shadow-xl p-1.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  {secondaryLinks.map((sub) => {
+                    const SubIcon = sub.icon;
+                    const isSubActive = location.pathname.startsWith(sub.path);
                     return (
                       <NavLink
-                        key={link.path}
-                        to={link.path}
+                        key={sub.path}
+                        to={sub.path}
                         onClick={() => setIsMoreMenuOpen(false)}
-                        className={({ isActive }) =>
-                          `flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
-                            isActive
-                              ? 'text-brand-600 dark:text-brand-400 bg-brand-500/10 font-bold'
-                              : 'text-fg-muted hover:text-fg hover:bg-bg-elevated'
-                          }`
-                        }
+                        className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
+                          isSubActive
+                            ? 'bg-[#694E7A]/15 text-[#694E7A] dark:text-[#A888BF] font-semibold'
+                            : 'text-[#252A2B] dark:text-[#F4EFE6] hover:bg-[#E7E0D5]/60 dark:hover:bg-[#252A2C]'
+                        }`}
                       >
                         <div className="flex items-center gap-2">
-                          <Icon className="w-4 h-4 flex-shrink-0" />
-                          <span>{link.name}</span>
+                          <SubIcon className="w-4 h-4 text-[#77736C]" />
+                          <span>{sub.name}</span>
                         </div>
-                        {link.isNew && (
-                          <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-brand-500/10 text-brand-600">
-                            New
+                        {sub.isNew && (
+                          <span className="bg-[#2F7D68]/15 text-[#2F7D68] text-[9px] font-bold px-1.5 py-0.5 rounded-full">
+                            NEW
                           </span>
                         )}
                       </NavLink>
@@ -224,122 +185,83 @@ export const Navbar: React.FC = () => {
             </div>
           </nav>
 
-          {/* 3. Right: Quick Actions Group (ALWAYS intact, flex-shrink-0, ml-auto) */}
-          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-auto">
-            {/* Search Icon Trigger (always visible below xl, or on mobile) */}
+          {/* 3. Right: Theme Toggle, Settings & User Pill */}
+          <div className="flex items-center gap-2">
+            {/* Search Button for Mobile */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="xl:hidden p-2 rounded-xl border border-border text-fg-muted hover:text-fg bg-bg-card hover:bg-bg-elevated transition-colors flex-shrink-0"
+              className="md:hidden p-2 rounded-full bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 border border-[#DDD5C9]/70 text-[#77736C]"
               aria-label="Search"
-              title="Search PSX (Ctrl+K)"
             >
-              <Search className="w-4 h-4 text-brand-600 dark:text-brand-400" />
+              <Search className="w-4 h-4" />
             </button>
 
-            {/* Theme Toggle */}
-            <div className="flex-shrink-0">
-              <ThemeToggle />
-            </div>
+            {/* Circular Theme Toggle Button */}
+            <ThemeToggle />
 
-            {/* Settings Link */}
-            <Link
-              to="/settings"
-              className="p-2 rounded-xl border border-border text-fg-muted hover:text-fg hover:bg-bg-elevated bg-bg-card transition-colors hidden sm:inline-flex flex-shrink-0"
+            {/* Settings Button */}
+            <button
+              onClick={() => navigate('/settings')}
+              className="p-2 rounded-full bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 hover:bg-[#FFFCF6] border border-[#DDD5C9]/70 dark:border-[#DDD5C9]/20 text-[#77736C] hover:text-[#252A2B] transition-colors shadow-sm"
               title="Settings"
             >
               <Settings className="w-4 h-4" />
-            </Link>
-
-            {/* Sign In / Auth Button (Guaranteed 100% visible at all screen sizes and zooms) */}
-            <button
-              type="button"
-              onClick={() => navigate('/portfolio')}
-              className="inline-flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-white bg-brand-500 hover:bg-brand-600 shadow-sm shadow-brand-500/25 transition-colors whitespace-nowrap flex-shrink-0"
-            >
-              <span>Sign In</span>
             </button>
 
-            {/* Mobile / Tablet Hamburger Toggle */}
+            {/* Deep Jade Sign In Button */}
+            <button
+              onClick={() => {}}
+              className="flex items-center gap-1.5 bg-gradient-to-r from-[#2F7D68] to-[#236353] hover:from-[#236353] hover:to-[#1a4d40] text-white text-xs font-semibold px-3.5 py-1.5 rounded-full shadow-md shadow-[#2F7D68]/20 transition-all cursor-pointer select-none leading-none"
+              title="Sign In to PSXpert"
+            >
+              <User className="w-3.5 h-3.5 flex-shrink-0" />
+              <span className="hidden sm:inline font-semibold tracking-normal antialiased">Sign In</span>
+            </button>
+
+            {/* Mobile Drawer Trigger */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl border border-border text-fg-muted hover:text-fg bg-bg-card hover:bg-bg-elevated transition-colors flex-shrink-0"
+              className="lg:hidden p-2 rounded-xl bg-[#FFFCF6]/80 dark:bg-[#1C2022]/80 border border-[#DDD5C9]/70 text-[#252A2B] dark:text-[#F4EFE6]"
               aria-label="Toggle Navigation Menu"
             >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5 text-fg" />}
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Slide-down Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden border-t border-border bg-bg-card px-4 pt-3 pb-6 space-y-1 shadow-lg animate-in slide-in-from-top-2 duration-150">
-            <div className="mb-3">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  setIsSearchOpen(true);
-                }}
-                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl border border-border bg-bg-elevated text-xs text-fg-subtle whitespace-nowrap min-w-0"
-              >
-                <div className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
-                  <Search className="w-4 h-4 text-brand-600 flex-shrink-0" />
-                  <span className="truncate whitespace-nowrap text-left block">Search PSX stocks, sectors...</span>
-                </div>
-                <kbd className="px-1.5 py-0.5 rounded bg-bg-card border border-border text-[10px] font-mono flex-shrink-0 ml-1">
-                  Ctrl+K
-                </kbd>
-              </button>
-            </div>
-
-            {allNavLinks.map(link => {
-              const Icon = link.icon;
+          <div className="lg:hidden border-t border-[#DDD5C9]/80 dark:border-[#DDD5C9]/20 bg-[#FFFCF6]/95 dark:bg-[#1C2022]/95 backdrop-blur-xl px-4 py-3 space-y-1">
+            {allNavLinks.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
               return (
                 <NavLink
-                  key={link.path}
-                  to={link.path}
-                  className={({ isActive }) =>
-                    `flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-                      isActive
-                        ? 'text-brand-600 dark:text-brand-400 bg-brand-500/10 font-bold'
-                        : 'text-fg-muted hover:text-fg hover:bg-bg-elevated'
-                    }`
-                  }
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white font-semibold shadow-sm'
+                      : 'text-[#252A2B] dark:text-[#F4EFE6] hover:bg-[#E7E0D5]/50'
+                  }`}
                 >
                   <div className="flex items-center gap-2.5">
                     <Icon className="w-4 h-4" />
-                    <span>{link.name}</span>
+                    <span>{item.name}</span>
                   </div>
-                  {link.isNew && (
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-brand-500/10 text-brand-600">
-                      New
+                  {item.isNew && (
+                    <span className="bg-[#2F7D68]/15 text-[#2F7D68] text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                      AI
                     </span>
                   )}
                 </NavLink>
               );
             })}
-
-            <div className="pt-3 border-t border-border flex items-center justify-between">
-              <Link
-                to="/settings"
-                className="flex items-center gap-2 px-3 py-2 text-sm text-fg-muted"
-              >
-                <Settings className="w-4 h-4" />
-                <span>Settings</span>
-              </Link>
-              <button
-                type="button"
-                onClick={() => navigate('/portfolio')}
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-brand-500 hover:bg-brand-600"
-              >
-                Sign In
-              </button>
-            </div>
           </div>
         )}
       </header>
 
-      {/* Global Search Dialog Modal */}
+      {/* Global Search Modal */}
       <GlobalSearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}

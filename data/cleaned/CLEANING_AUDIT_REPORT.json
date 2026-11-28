@@ -1,0 +1,34 @@
+{
+  "timestamp": "2026-11-21T22:48:25.221663",
+  "execution_duration_seconds": 43.451524,
+  "summary": {
+    "official_exchange_sessions": 6127,
+    "companies_count": 100,
+    "stock_prices": {
+      "total_raw_rows": 475244,
+      "valid_cleaned_rows": 461864,
+      "dropped_non_calendar": 13331,
+      "dropped_non_positive_close": 49,
+      "flat_bar_sessions_flagged": 2
+    },
+    "payouts": {
+      "valid_events_kept": 346,
+      "placeholder_rows_dropped": 1990
+    },
+    "fundamentals": {
+      "annual_statements_kept": 535,
+      "annual_sentinels_dropped": 8,
+      "quarterly_statements_kept": 69,
+      "quarterly_sentinels_dropped": 330
+    }
+  },
+  "output_directory": "data\\cleaned",
+  "output_files": [
+    "kse100_calendar_clean.csv",
+    "kse100_companies_clean.csv",
+    "kse100_corporate_payouts_clean.csv",
+    "kse100_fundamentals_annual_clean.csv",
+    "kse100_fundamentals_quarterly_clean.csv",
+    "kse100_stocks_historical_clean.csv"
+  ]
+}

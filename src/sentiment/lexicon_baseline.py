@@ -5,7 +5,13 @@ customized Pakistani local market financial terminology.
 """
 
 from typing import Dict, Any
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+try:
+    from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+    HAVE_VADER = True
+except ImportError:
+    SentimentIntensityAnalyzer = None
+    HAVE_VADER = False
 
 # Domain-specific financial lexicon tuning for Pakistani market (PSX, SBP, IMF, corporate results)
 PAKISTANI_FINANCIAL_LEXICON = {
@@ -100,11 +106,14 @@ class LexiconFinancialAnalyzer:
     """
     Baseline Lexicon model for financial news sentiment.
     Uses VADER engine augmented with Loughran-McDonald & Pakistani market lexicons.
+    Provides graceful fallback when vaderSentiment package is absent.
     """
     def __init__(self):
-        self.vader = SentimentIntensityAnalyzer()
-        # Update VADER lexicon with custom financial weights
-        self.vader.lexicon.update(PAKISTANI_FINANCIAL_LEXICON)
+        if HAVE_VADER:
+            self.vader = SentimentIntensityAnalyzer()
+            self.vader.lexicon.update(PAKISTANI_FINANCIAL_LEXICON)
+        else:
+            self.vader = None
 
     def analyze(self, text: str) -> Dict[str, Any]:
         """
@@ -126,8 +135,31 @@ class LexiconFinancialAnalyzer:
                 "model_name": "lexicon_baseline"
             }
 
-        scores = self.vader.polarity_scores(text)
-        compound = scores["compound"]
+        if self.vader is not None:
+            scores = self.vader.polarity_scores(text)
+            compound = scores["compound"]
+            pos = scores["pos"]
+            neg = scores["neg"]
+            neu = scores["neu"]
+        else:
+            # Standalone lexicon polarity calculation
+            lower = text.lower()
+            pos_matches = 0
+            neg_matches = 0
+            net_val = 0.0
+            for term, weight in PAKISTANI_FINANCIAL_LEXICON.items():
+                if term in lower:
+                    if weight > 0:
+                        pos_matches += 1
+                    else:
+                        neg_matches += 1
+                    net_val += weight
+
+            total = max(1, pos_matches + neg_matches)
+            compound = max(-1.0, min(1.0, net_val / (total * 2.5))) if (pos_matches + neg_matches) > 0 else 0.0
+            pos = round(pos_matches / total, 4) if total > 0 else 0.0
+            neg = round(neg_matches / total, 4) if total > 0 else 0.0
+            neu = round(1.0 - (pos + neg), 4)
 
         # Classification thresholds (standard financial NLP thresholds)
         if compound >= 0.05:
@@ -138,14 +170,14 @@ class LexiconFinancialAnalyzer:
             confidence = min(1.0, abs(compound) + 0.2)
         else:
             label = "NEUTRAL"
-            confidence = scores["neu"]
+            confidence = neu if self.vader is not None else 0.65
 
         return {
             "sentiment_label": label,
             "sentiment_score": round(compound, 4),
             "confidence": round(confidence, 4),
-            "positive_score": round(scores["pos"], 4),
-            "negative_score": round(scores["neg"], 4),
-            "neutral_score": round(scores["neu"], 4),
+            "positive_score": round(pos, 4),
+            "negative_score": round(neg, 4),
+            "neutral_score": round(neu, 4),
             "model_name": "lexicon_baseline"
         }

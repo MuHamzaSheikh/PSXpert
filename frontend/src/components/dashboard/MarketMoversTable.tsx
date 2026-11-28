@@ -44,15 +44,15 @@ export const MarketMoversTable: React.FC<MarketMoversTableProps> = ({ stocks = [
   return (
     <Card className="p-5 flex flex-col justify-between">
       {/* Table Header Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border pb-4 mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#DDD5C9]/60 dark:border-[#DDD5C9]/15 pb-4 mb-4">
         {/* Pill Tabs: Most Active / Gainers / Losers */}
-        <div className="flex items-center gap-1 bg-bg-elevated p-1 rounded-xl border border-border self-start">
+        <div className="flex items-center gap-1 bg-[#E7E0D5]/50 dark:bg-[#252A2C] p-1 rounded-full border border-[#DDD5C9]/60 self-start">
           <button
             onClick={() => setActiveTab('active')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all ${
               activeTab === 'active'
-                ? 'bg-brand-500 text-white shadow-sm'
-                : 'text-fg-muted hover:text-fg hover:bg-bg-card'
+                ? 'bg-gradient-to-r from-[#694E7A] to-[#543B63] text-white shadow-sm'
+                : 'text-[#77736C] hover:text-[#252A2B]'
             }`}
           >
             <Flame className="w-3.5 h-3.5" />
@@ -60,10 +60,10 @@ export const MarketMoversTable: React.FC<MarketMoversTableProps> = ({ stocks = [
           </button>
           <button
             onClick={() => setActiveTab('gainers')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all ${
               activeTab === 'gainers'
-                ? 'bg-bull text-white shadow-sm'
-                : 'text-fg-muted hover:text-fg hover:bg-bg-card'
+                ? 'bg-[#287A50] text-white shadow-sm'
+                : 'text-[#77736C] hover:text-[#252A2B]'
             }`}
           >
             <TrendingUp className="w-3.5 h-3.5" />
@@ -71,10 +71,10 @@ export const MarketMoversTable: React.FC<MarketMoversTableProps> = ({ stocks = [
           </button>
           <button
             onClick={() => setActiveTab('losers')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all ${
               activeTab === 'losers'
-                ? 'bg-bear text-white shadow-sm'
-                : 'text-fg-muted hover:text-fg hover:bg-bg-card'
+                ? 'bg-[#C64C4C] text-white shadow-sm'
+                : 'text-[#77736C] hover:text-[#252A2B]'
             }`}
           >
             <TrendingDown className="w-3.5 h-3.5" />
@@ -88,13 +88,13 @@ export const MarketMoversTable: React.FC<MarketMoversTableProps> = ({ stocks = [
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-2.5 py-1 rounded-full text-xs font-semibold border transition-colors ${
+              className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors ${
                 filter === f
-                  ? 'border-brand-500 bg-brand-500/10 text-brand-600 dark:text-brand-400'
-                  : 'border-border text-fg-subtle hover:text-fg hover:border-fg-subtle/50'
+                  ? 'border-[#2F7D68] bg-[#2F7D68]/15 text-[#2F7D68] dark:text-[#3DA88D]'
+                  : 'border-[#DDD5C9] bg-[#FFFCF6]/80 text-[#77736C] hover:text-[#252A2B]'
               }`}
             >
-              {f === 'kse100' ? 'KSE 100' : f === 'all' ? 'All Stocks' : 'Islamic'}
+              {f === 'kse100' ? 'KSE 100' : f === 'all' ? 'All PSX (506)' : 'Islamic'}
             </button>
           ))}
         </div>

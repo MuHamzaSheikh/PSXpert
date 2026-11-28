@@ -39,8 +39,8 @@ export const api = {
     return safeFetch<MarketSummary>('/api/market-summary', MOCK_MARKET_SUMMARY);
   },
 
-  // 2. Listed Stocks directory with prices & sectors
-  async getStocks(search?: string, sector?: string, limit: number = 100): Promise<{ data: Company[]; isMock: boolean }> {
+  // 2. Listed Stocks directory with prices & sectors (All 506 PSX Listed Equities)
+  async getStocks(search?: string, sector?: string, limit: number = 600): Promise<{ data: Company[]; isMock: boolean }> {
     const params = new URLSearchParams();
     if (search) params.append('search', search);
     if (sector && sector !== 'ALL') params.append('sector', sector);

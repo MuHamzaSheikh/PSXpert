@@ -8,7 +8,10 @@ Strictly separates training from testing to prevent lookahead bias.
 from typing import Dict, List, Optional, Any, Tuple
 import numpy as np
 import pandas as pd
-from hmmlearn.hmm import GaussianHMM
+try:
+    from hmmlearn.hmm import GaussianHMM
+except ImportError:
+    GaussianHMM = None
 
 
 class MarketRegimeHMM:

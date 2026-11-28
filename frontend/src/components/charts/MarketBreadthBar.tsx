@@ -3,9 +3,9 @@ import { Card } from '@/components/common/Card';
 import { BarChart2, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 interface MarketBreadthBarProps {
-  advances: number;
-  declines: number;
-  unchanged: number;
+  advances?: number;
+  declines?: number;
+  unchanged?: number;
   total?: number;
 }
 

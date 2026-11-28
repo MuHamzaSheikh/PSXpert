@@ -1,0 +1,38 @@
+{
+  "total_articles": 25282,
+  "date_range": {
+    "earliest": "2002-01-15",
+    "latest": "2026-11-17",
+    "years_covered": "2002 - 2026"
+  },
+  "sources": {
+    "The Express Tribune": 14951,
+    "Profit by Pakistan Today": 10000,
+    "DAWN": 186,
+    "Business Recorder": 90,
+    "Mettis Global": 55
+  },
+  "sectors": {
+    "General": 20219,
+    "Macroeconomic & Fiscal Policy": 1966,
+    "Gold, Commodities & Foreign Exchange": 891,
+    "Oil & Gas Exploration & Marketing": 748,
+    "Power Generation & Distribution": 396,
+    "Commercial Banks & Finance": 307,
+    "Textile & Apparel": 192,
+    "Cement & Construction": 162,
+    "Technology & Telecommunications": 141,
+    "Automobile & Tyres": 121,
+    "Fertilizer & Agriculture": 81,
+    "Pharmaceuticals": 58
+  },
+  "sentiment": {
+    "Neutral": 23387,
+    "Bullish": 1141,
+    "Bearish": 754
+  },
+  "psx_relevant_count": 1023,
+  "psx_relevant_pct": 4.05,
+  "mean_sentiment": 0.0121,
+  "generated_at": "2026-11-17T22:30:47.650623"
+}

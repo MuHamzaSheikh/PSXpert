@@ -1,69 +1,100 @@
 @import "tailwindcss";
 
 @theme {
+  --color-warm-parchment: #F4EFE6;
+  --color-soft-ivory: #FFFCF6;
+  --color-sandstone: #E7E0D5;
+  --color-charcoal: #252A2B;
+  --color-warm-gray: #77736C;
+  --color-border-warm: #DDD5C9;
+  --color-royal-plum: #694E7A;
+  --color-royal-plum-dark: #543B63;
+  --color-deep-jade: #2F7D68;
+  --color-deep-jade-dark: #236353;
+  --color-burnished-copper: #C47C4F;
+  --color-positive: #287A50;
+  --color-negative: #C64C4C;
+  --color-warning: #B88732;
+  --color-neutral: #77736C;
+
   --color-brand-50: #f0f9f9;
   --color-brand-100: #d7efef;
   --color-brand-200: #b2dfdf;
   --color-brand-300: #7fc5c5;
   --color-brand-400: #4da6a6;
-  --color-brand-500: #238989;
-  --color-brand-600: #1b6e6e;
-  --color-brand-700: #165757;
-  --color-brand-800: #134646;
-  --color-brand-900: #0f2929;
-  --color-brand-950: #071818;
+  --color-brand-500: #2F7D68;
+  --color-brand-600: #236353;
+  --color-brand-700: #1a4d40;
 
---color-bull: #10b981;
---color-bull-bg: rgba(16, 185, 129, 0.12);
---color-bear: #f43f5e;
---color-bear-bg: rgba(244, 63, 94, 0.12);
+  --color-bull: #287A50;
+  --color-bull-bg: rgba(40, 122, 80, 0.12);
+  --color-bear: #C64C4C;
+  --color-bear-bg: rgba(198, 76, 76, 0.12);
 
---color-border: var(--theme-border);
---color-bg: var(--theme-bg);
---color-bg-card: var(--theme-bg-card);
---color-bg-elevated: var(--theme-bg-elevated);
---color-bg-subtle: var(--theme-bg-subtle);
---color-fg: var(--theme-fg);
---color-fg-muted: var(--theme-fg-muted);
---color-fg-subtle: var(--theme-fg-subtle);
+  --color-border: var(--theme-border);
+  --color-bg: var(--theme-bg);
+  --color-bg-card: var(--theme-bg-card);
+  --color-bg-elevated: var(--theme-bg-elevated);
+  --color-bg-subtle: var(--theme-bg-subtle);
+  --color-fg: var(--theme-fg);
+  --color-fg-muted: var(--theme-fg-muted);
+  --color-fg-subtle: var(--theme-fg-subtle);
 
---font-sans: 'Inter',
-system-ui,
--apple-system,
-BlinkMacSystemFont,
-'Segoe UI',
-Roboto,
-sans-serif;
---font-mono: 'Inter',
-system-ui,
--apple-system,
-BlinkMacSystemFont,
-'Segoe UI',
-Roboto,
-sans-serif;
+  --font-sans: 'Inter',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  --font-mono: 'Inter',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
 }
 
 :root {
-  --theme-bg: #F8FBFB;
-  --theme-bg-card: #FFFFFF;
-  --theme-bg-elevated: #F1F6F6;
-  --theme-bg-subtle: #E8F0F0;
-  --theme-border: #E2E8F0;
-  --theme-fg: #0F172A;
-  --theme-fg-muted: #475569;
-  --theme-fg-subtle: #94A3B8;
+  --theme-bg: #F4EFE6;
+  --theme-bg-soft: #FFFCF6;
+  --theme-bg-sandstone: #E7E0D5;
+  --theme-bg-card: rgba(255, 252, 246, 0.72);
+  --theme-bg-elevated: rgba(255, 252, 246, 0.88);
+  --theme-bg-subtle: rgba(231, 224, 213, 0.55);
+  --theme-border: #DDD5C9;
+  --theme-border-glass: rgba(221, 213, 201, 0.8);
+  --theme-fg: #252A2B;
+  --theme-fg-muted: #77736C;
+  --theme-fg-subtle: #969188;
+  --theme-plum: #694E7A;
+  --theme-jade: #2F7D68;
+  --theme-copper: #C47C4F;
+  --theme-positive: #287A50;
+  --theme-negative: #C64C4C;
+  --theme-warning: #B88732;
   color-scheme: light;
 }
 
 .dark {
-  --theme-bg: #0C1416;
-  --theme-bg-card: #131F22;
-  --theme-bg-elevated: #18272B;
-  --theme-bg-subtle: #1F3338;
-  --theme-border: #22363B;
-  --theme-fg: #F1F5F9;
-  --theme-fg-muted: #94A3B8;
-  --theme-fg-subtle: #64748B;
+  --theme-bg: #141718;
+  --theme-bg-soft: #1C2022;
+  --theme-bg-sandstone: #252A2C;
+  --theme-bg-card: rgba(28, 32, 34, 0.75);
+  --theme-bg-elevated: rgba(37, 42, 44, 0.88);
+  --theme-bg-subtle: rgba(28, 32, 34, 0.55);
+  --theme-border: rgba(221, 213, 201, 0.16);
+  --theme-border-glass: rgba(221, 213, 201, 0.18);
+  --theme-fg: #F4EFE6;
+  --theme-fg-muted: #9E988E;
+  --theme-fg-subtle: #736E66;
+  --theme-plum: #8E6DA3;
+  --theme-jade: #3DA88D;
+  --theme-copper: #DB8C5A;
+  --theme-positive: #34A86E;
+  --theme-negative: #E05C5C;
+  --theme-warning: #D9A03B;
   color-scheme: dark;
 }
 
@@ -74,15 +105,72 @@ sans-serif;
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   background-color: var(--theme-bg);
+  background-image: 
+    radial-gradient(1200px 800px at 85% -50px, rgba(255, 252, 246, 0.95), transparent 70%),
+    radial-gradient(1000px 600px at 15% 100px, rgba(231, 224, 213, 0.5), transparent 60%);
   color: var(--theme-fg);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Tabular figures for financial numbers using Inter as the single universal typeface */
+.dark body {
+  background-image: 
+    radial-gradient(1200px 800px at 85% -50px, rgba(37, 42, 44, 0.6), transparent 70%),
+    radial-gradient(1000px 600px at 15% 100px, rgba(20, 23, 24, 0.8), transparent 60%);
+}
+
+/* Glassmorphism Surface Classes */
+.glass-panel {
+  background: var(--theme-bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--theme-border-glass);
+  box-shadow: 0 10px 30px -5px rgba(105, 78, 122, 0.05), 0 4px 12px -2px rgba(37, 42, 43, 0.03), inset 0 1px 1px 0 rgba(255, 255, 255, 0.7);
+  border-radius: 1.25rem;
+}
+
+.dark .glass-panel {
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-panel-elevated {
+  background: var(--theme-bg-elevated);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--theme-border-glass);
+  box-shadow: 0 14px 36px -6px rgba(105, 78, 122, 0.08), 0 6px 16px -3px rgba(37, 42, 43, 0.05), inset 0 1px 1px 0 rgba(255, 255, 255, 0.85);
+  border-radius: 1.5rem;
+}
+
+.glass-pill {
+  background: rgba(255, 252, 246, 0.68);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--theme-border);
+  border-radius: 9999px;
+}
+
+.dark .glass-pill {
+  background: rgba(37, 42, 44, 0.68);
+}
+
+.glass-nav-active {
+  background: linear-gradient(135deg, #694E7A 0%, #543B63 100%);
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(105, 78, 122, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.glass-jade-btn {
+  background: linear-gradient(135deg, #2F7D68 0%, #236353 100%);
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(47, 125, 104, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Tabular figures for financial numbers */
 .tabular-nums,
 .font-mono,
 code,
@@ -99,32 +187,13 @@ pre {
   width: 6px;
   height: 6px;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--theme-border);
+  background: rgba(119, 115, 108, 0.25);
   border-radius: 9999px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-fg-subtle);
-}
-
-/* Shimmer animation for loading states */
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  background: rgba(119, 115, 108, 0.45);
 }

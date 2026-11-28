@@ -8,9 +8,11 @@ env/
 venv/
 *.exe
 *.db
+*.db*
 *.sqlite
+*.sqlite*
 *.db-journal
-data/psxpert.db
+data/psxpert.db*
 data/raw/
 reset_*.ps1
 reset_*.bat

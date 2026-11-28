@@ -1,4 +1,22 @@
 import { MarketSummary, Company, OHLCVResponse, IndicatorsResponse, NewsArticle, HMMRegimeResult, GAOptimizationResult, MultiAgentCommittee } from '@/types';
+import allCompaniesJson from './allCompanies.json';
+
+export const MOCK_STOCKS: Company[] = (allCompaniesJson as any[]).map(c => ({
+  symbol: c.symbol,
+  company_name: c.company_name,
+  sector: c.sector,
+  is_kse100: Boolean(c.is_kse100),
+  is_shariah: Boolean(c.is_shariah),
+  close: c.close ?? 50.0,
+  open: c.open ?? 50.0,
+  high: c.high ?? 51.0,
+  low: c.low ?? 49.0,
+  volume: c.volume ?? 100000,
+  pct_change: c.pct_change ?? 0.0,
+  latest_date: c.snapshot_date || '2026-10-13',
+}));
+
+export const MOCK_SECTORS: string[] = Array.from(new Set(MOCK_STOCKS.map(s => s.sector).filter(Boolean))).sort();
 
 export const MOCK_MARKET_SUMMARY: MarketSummary = {
   index_symbol: "KSE100",
@@ -46,40 +64,6 @@ export const MOCK_INDICES = [
   { symbol: "KMI30", name: "KMI 30 Islamic Index", current: 252609.58, change: -1776.27, pct: -0.70, volume: "94.59M", high: 254717.59, low: 251803.04 },
   { symbol: "KMIALL", name: "KMI All Share Index", current: 68522.72, change: -605.32, pct: -0.88, volume: "301.27M", high: 69057.88, low: 68380.12 },
   { symbol: "PSXDIV20", name: "PSX Dividend 20 Index", current: 31043.67, change: 112.40, pct: 0.36, volume: "14.22M", high: 31150.20, low: 30980.10 },
-];
-
-export const MOCK_SECTORS = [
-  "Commercial Banks",
-  "Oil & Gas Exploration Companies",
-  "Cement",
-  "Fertilizer",
-  "Technology & Communication",
-  "Power Generation & Distribution",
-  "Refinery",
-  "Automobile Assembler",
-  "Pharmaceuticals",
-  "Textile Composite",
-  "Food & Personal Care Products",
-  "Chemicals",
-  "Insurance"
-];
-
-export const MOCK_STOCKS: Company[] = [
-  { symbol: "OGDC", company_name: "Oil & Gas Development Co", sector: "Oil & Gas Exploration Companies", is_kse100: true, is_shariah: true, close: 212.72, open: 214.50, high: 215.80, low: 211.20, volume: 8420000, pct_change: -0.83 },
-  { symbol: "MEBL", company_name: "Meezan Bank Ltd", sector: "Commercial Banks", is_kse100: true, is_shariah: true, close: 248.50, open: 245.00, high: 249.90, low: 244.20, volume: 5120000, pct_change: 1.43 },
-  { symbol: "SYS", company_name: "Systems Ltd", sector: "Technology & Communication", is_kse100: true, is_shariah: true, close: 411.58, open: 405.00, high: 414.00, low: 403.50, volume: 3840000, pct_change: 1.62 },
-  { symbol: "LUCK", company_name: "Lucky Cement Ltd", sector: "Cement", is_kse100: true, is_shariah: true, close: 830.24, open: 848.00, high: 852.00, low: 828.00, volume: 1700000, pct_change: -2.18 },
-  { symbol: "HUBC", company_name: "Hub Power Company Ltd", sector: "Power Generation & Distribution", is_kse100: true, is_shariah: true, close: 206.05, open: 207.80, high: 208.50, low: 205.10, volume: 6810000, pct_change: -0.84 },
-  { symbol: "HBL", company_name: "Habib Bank Ltd", sector: "Commercial Banks", is_kse100: true, is_shariah: false, close: 204.13, open: 202.00, high: 205.50, low: 201.50, volume: 4230000, pct_change: 1.05 },
-  { symbol: "MCB", company_name: "MCB Bank Ltd", sector: "Commercial Banks", is_kse100: true, is_shariah: false, close: 306.31, open: 305.00, high: 308.00, low: 304.50, volume: 2950000, pct_change: 0.43 },
-  { symbol: "ENGROH", company_name: "Engro Holdings Ltd", sector: "Fertilizer", is_kse100: true, is_shariah: true, close: 271.39, open: 276.00, high: 277.50, low: 270.00, volume: 3100000, pct_change: -1.78 },
-  { symbol: "FFC", company_name: "Fauji Fertilizer Co Ltd", sector: "Fertilizer", is_kse100: true, is_shariah: true, close: 368.68, open: 368.00, high: 371.00, low: 366.50, volume: 4610000, pct_change: 0.18 },
-  { symbol: "PPL", company_name: "Pakistan Petroleum Ltd", sector: "Oil & Gas Exploration Companies", is_kse100: true, is_shariah: true, close: 222.87, open: 224.50, high: 226.00, low: 221.80, volume: 7350000, pct_change: -0.58 },
-  { symbol: "UBL", company_name: "United Bank Ltd", sector: "Commercial Banks", is_kse100: true, is_shariah: false, close: 429.37, open: 424.00, high: 432.00, low: 423.50, volume: 3890000, pct_change: 1.25 },
-  { symbol: "BAFL", company_name: "Bank Alfalah Ltd", sector: "Commercial Banks", is_kse100: true, is_shariah: false, close: 59.60, open: 61.00, high: 61.50, low: 59.20, volume: 5430000, pct_change: -2.30 },
-  { symbol: "CNERGY", company_name: "Cnergyico PK Ltd", sector: "Refinery", is_kse100: true, is_shariah: false, close: 11.90, open: 11.45, high: 12.08, low: 11.25, volume: 68510000, pct_change: 3.93 },
-  { symbol: "WTL", company_name: "Worldcall Telecom Ltd", sector: "Technology & Communication", is_kse100: false, is_shariah: false, close: 1.31, open: 1.35, high: 1.38, low: 1.28, volume: 88850000, pct_change: 0.00 },
-  { symbol: "PRL", company_name: "Pakistan Refinery Ltd", sector: "Refinery", is_kse100: true, is_shariah: true, close: 82.38, open: 79.51, high: 83.19, low: 78.77, volume: 28000000, pct_change: 3.58 },
 ];
 
 export const MOCK_NEWS: NewsArticle[] = [

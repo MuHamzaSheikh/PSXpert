@@ -334,6 +334,7 @@ class CandlestickPatternDetector:
                     "low": float(c0["low"]),
                     "close": float(c0["close"]),
                     "volume": int(c0["volume"]),
+                    "name": best_pattern["name"],
                     "pattern": best_pattern["name"],
                     "type": best_pattern["type"],
                     "signal": best_pattern["signal"],

@@ -30,6 +30,15 @@ class FundamentalPredictRequest(BaseModel):
     )
 
 
+class NewsImpactRequest(BaseModel):
+    headline: str = Field(..., description="News headline text")
+    summary: Optional[str] = Field(default="", description="News article body or summary snippet")
+    published_at: Optional[str] = Field(default="", description="Publication timestamp or date")
+    base_sentiment_score: Optional[float] = Field(default=0.0, description="FinBERT or base continuous sentiment in [-1.0, 1.0]")
+    base_sentiment_label: Optional[str] = Field(default="Neutral", description="Sentiment label (Bullish, Bearish, Neutral)")
+    base_confidence: Optional[float] = Field(default=0.5, description="Model confidence score in [0.0, 1.0]")
+
+
 @router.get("/status")
 def get_models_deployment_status():
     """Report artifact existence, startup load state, model types, versions, training dates, and inference readiness."""
@@ -59,4 +68,32 @@ def predict_fundamental_health(payload: FundamentalPredictRequest):
         as_of_date=payload.as_of_date,
         features=payload.features,
     )
+
+
+@router.post("/news/evaluate-impact")
+def evaluate_stock_news_impact(payload: NewsImpactRequest):
+    """
+    Evaluates asymmetric multi-stock transmission of financial & macroeconomic news across PSX equities.
+    Accounts for transmission sensitivities (e.g. oil up -> OGDC positive, PSO negative) and anti-leakage time alignment.
+    """
+    svc = _get_ml_service()
+    return _run_safe(
+        svc.evaluate_news_impact,
+        headline=payload.headline,
+        summary=payload.summary,
+        published_at=payload.published_at,
+        base_sentiment_score=payload.base_sentiment_score,
+        base_sentiment_label=payload.base_sentiment_label,
+        base_confidence=payload.base_confidence,
+    )
+
+
+@router.get("/ablation-matrix")
+def get_multimodal_ablation_matrix():
+    """
+    Returns empirical out-of-sample benchmark comparison across 7 model configurations:
+    Technical, Fundamental, News, and all combinations evaluated on identical test data.
+    """
+    svc = _get_ml_service()
+    return _run_safe(svc.get_ablation_matrix)
 

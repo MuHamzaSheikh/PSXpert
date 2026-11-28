@@ -1,0 +1,101 @@
+symbol,company_name,isin,sector,sector_category,is_shariah,is_kse100
+ABL,Allied Bank Limited,PK0083501012,COMMERCIAL BANKS,Banks,0,1
+ABOT,Abbott Laboratories (Pakistan) Limited,PK0025701019,PHARMACEUTICALS,Corporates,1,1
+AGP,AGP Limited,PK0113801010,PHARMACEUTICALS,Corporates,1,1
+AHCL,Arif Habib Corporation Limited,PK0077701016,FERTILIZER,Corporates,0,1
+AICL,Adamjee Insurance Company Limited,PK0004901010,INSURANCE,Insurance,0,1
+AIRLINK,Air Link Communication Limited,PK0122801019,TECHNOLOGY & COMMUNICATION,Corporates,1,1
+AKBL,Askari Bank Limited,PK0051301015,COMMERCIAL BANKS,Banks,0,1
+APL,Attock Petroleum Limited,PK0082901015,OIL & GAS MARKETING COMPANIES,Corporates,0,1
+ATLH,Atlas Honda Limited,PK0009201010,AUTOMOBILE ASSEMBLER,Corporates,0,1
+ATRL,Attock Refinery Limited,PK0024501014,REFINERY,Corporates,1,1
+BAFL,Bank Alfalah Limited,PK0078701015,COMMERCIAL BANKS,Banks,0,1
+BAHL,Bank AL Habib Limited,PK0051601018,COMMERCIAL BANKS,Banks,0,1
+BML,Bank Makramah Limited,BML-PK,COMMERCIAL BANKS,Banks,0,1
+BNWM,Bannu Woollen Mills Limited,PK0051701016,WOOLLEN,Corporates,1,1
+BOP,The Bank of Punjab,PK0045001010,COMMERCIAL BANKS,Banks,0,1
+BWCL,Bestway Cement Limited,PK0077601018,CEMENT,Corporates,0,1
+CHCC,Cherat Cement Company Limited,PK0029801013,CEMENT,Corporates,1,1
+CNERGY,Cnergyico PK  Limited,CNERGY-PK,REFINERY,Corporates,1,1
+COLG,Colgate-Palmolive (Pakistan) Limited,PK0028001011,FOOD & PERSONAL CARE PRODUCTS,Corporates,1,1
+CPHL,Citi Pharma Ltd.,CPHL-PK,PHARMACEUTICALS,Corporates,1,1
+DCR,Dolmen City REIT,PK0099001023,REAL ESTATE INVESTMENT TRUST,Corporates,1,1
+DGKC,D.G. Khan Cement Company Limited,PK0052401012,CEMENT,Corporates,1,1
+EFERT,Engro Fertilizers Limited,PK0099701010,FERTILIZER,Corporates,1,1
+ENGROH,Engro Holdings Limited,ENGROH-PK,INV. BANKS / INV. COS. / SECURITIES COS.,Corporates,1,1
+FABL,Faysal Bank Limited,PK0070501017,COMMERCIAL BANKS,Banks,1,1
+FATIMA,Fatima Fertilizer Company Limited,PK0091601010,FERTILIZER,Corporates,1,1
+FCCL,Fauji Cement Company Limited,PK0074501013,CEMENT,Corporates,1,1
+FFC,Fauji Fertilizer Company Limited,PK0053401011,FERTILIZER,Corporates,1,1
+FFL,Fauji Foods Limited,PK0015801019,FOOD & PERSONAL CARE PRODUCTS,Corporates,1,1
+FHAM,First Habib Modaraba,PK0029901011,MODARABAS,Corporates,1,1
+GADT,Gadoon Textile Mills Limited,PK0064101014,TEXTILE SPINNING,Corporates,1,1
+GAL,Ghandhara Automobiles Limited,GAL-PK,AUTOMOBILE ASSEMBLER,Corporates,1,1
+GHGL,Ghani Glass Limited,PK0064301010,GLASS & CERAMICS,Corporates,1,1
+GHNI,Ghandhara Industries Limited,PK0007101014,AUTOMOBILE ASSEMBLER,Corporates,1,1
+GLAXO,GlaxoSmithKline Pakistan Limited,PK0001301016,PHARMACEUTICALS,Corporates,1,1
+HALEON,Haleon Pakistan Limited,HALEON-PK,PHARMACEUTICALS,Corporates,1,1
+HBL,Habib Bank Limited,PK0085101019,COMMERCIAL BANKS,Banks,0,1
+HCAR,Honda Atlas Cars (Pakistan) Limited,PK0064901017,AUTOMOBILE ASSEMBLER,Corporates,1,1
+HGFA,HBL Growth Fund,HGFA-PK,CLOSE - END MUTUAL FUND,Corporates,0,1
+HINOON,Highnoon Laboratories Limited,PK0070701013,PHARMACEUTICALS,Corporates,1,1
+HMB,Habib Metropolitan Bank Limited,PK0055401019,COMMERCIAL BANKS,Banks,0,1
+HUBC,The Hub Power Company Limited,PK0065001015,POWER GENERATION & DISTRIBUTION,Corporates,1,1
+IBFL,Ibrahim Fibres Limited,PK0070801011,SYNTHETIC & RAYON,Corporates,1,1
+ILP,Interloop Limited,PK0114501015,TEXTILE COMPOSITE,Corporates,1,1
+IMAGE,Image Pakistan Limited,PK0058201010,APPAREL,Corporates,1,1
+INDU,Indus Motor Company Limited,PK0054501017,AUTOMOBILE ASSEMBLER,Corporates,0,1
+INIL,International Industries Limited,PK0028501010,ENGINEERING,Corporates,1,1
+ISL,International Steels Limited,PK0102001010,ENGINEERING,Corporates,1,1
+JDWS,JDW Sugar Mills Limited,PK0054701013,SUGAR & ALLIED INDUSTRIES,Corporates,1,1
+JVDC,Javedan Corporation Limited,PK0006101015,PROPERTY,Corporates,1,1
+KAPCO,Kot Addu Power Company Limited,PK0083101011,POWER GENERATION & DISTRIBUTION,Corporates,0,1
+KEL,K-Electric Limited,PK0000501012,POWER GENERATION & DISTRIBUTION,Corporates,1,1
+KOHC,Kohat Cement Company Limited,PK0075001013,CEMENT,Corporates,1,1
+KTML,Kohinoor Textile Mills Limited,PK0018101011,TEXTILE COMPOSITE,Corporates,1,1
+LCI,Lucky Core Industries Limited,LCI-PK,CHEMICAL,Corporates,1,1
+LOTCHEM,Lotte Chemical Pakistan Limited,PK0077901012,CHEMICAL,Corporates,1,1
+LUCK,Lucky Cement Limited,PK0071501016,CEMENT,Corporates,1,1
+MARI,Mari Energies Limited,PK0066301018,OIL & GAS EXPLORATION COMPANIES,Corporates,1,1
+MCB,MCB Bank Limited,PK0055601014,COMMERCIAL BANKS,Banks,0,1
+MEBL,Meezan Bank Limited,PK0077401013,COMMERCIAL BANKS,Banks,1,1
+MLCF,Maple Leaf Cement Factory Limited,PK0066201010,CEMENT,Corporates,1,1
+MTL,Millat Tractors Limited,PK0009801017,AUTOMOBILE ASSEMBLER,Corporates,1,1
+MUREB,Murree Brewery Company Limited,PK0000601010,FOOD & PERSONAL CARE PRODUCTS,Corporates,0,1
+NATF,National Foods Limited,NATF-PK,FOOD & PERSONAL CARE PRODUCTS,Corporates,0,1
+NBP,National Bank of Pakistan,NBP-PK,COMMERCIAL BANKS,Banks,0,1
+NCPL,Nishat Chunian Power Limited,PK0098301010,POWER GENERATION & DISTRIBUTION,Corporates,0,1
+NESTLE,Nestle Pakistan Limited,PK0025101012,FOOD & PERSONAL CARE PRODUCTS,Corporates,1,1
+NML,Nishat Mills Limited,PK0005501017,TEXTILE COMPOSITE,Corporates,1,1
+NPL,Nishat Power Limited,PK0094301014,POWER GENERATION & DISTRIBUTION,Corporates,0,1
+OGDC,Oil & Gas Development Company Limited,PK0080201012,OIL & GAS EXPLORATION COMPANIES,Corporates,1,1
+PAEL,Pak Elektron Limited,PK0034601010,CABLE & ELECTRICAL GOODS,Corporates,1,1
+PAKT,Pakistan Tobacco Company Limited,PK0002701016,TOBACCO,Corporates,0,1
+PGLC,Pak-Gulf Leasing Company Limited,PGLC-PK,LEASING COMPANIES,Corporates,0,1
+PIBTL,Pakistan International Bulk Terminal,PK0105101015,TRANSPORT,Corporates,1,1
+PIOC,Pioneer Cement Limited,PK0056201012,CEMENT,Corporates,1,1
+PKGS,Packages Limited,PK0010001011,"PAPER, BOARD & PACKAGING",Corporates,1,1
+POL,Pakistan Oilfields Limited,PK0023901017,OIL & GAS EXPLORATION COMPANIES,Corporates,0,1
+POWER,Power Cement Limited,PK0033901015,CEMENT,Corporates,1,1
+PPL,Pakistan Petroleum Limited,PK0081801018,OIL & GAS EXPLORATION COMPANIES,Corporates,1,1
+PSEL,Pakistan Services Limited,PK0008501014,MISCELLANEOUS,Corporates,1,1
+PSO,Pakistan State Oil Company Limited,PK0022501016,OIL & GAS MARKETING COMPANIES,Corporates,1,1
+PSX,Pakistan Stock Exchange Limited,PK0104801011,INV. BANKS / INV. COS. / SECURITIES COS.,Corporates,0,1
+PTC,Pakistan Telecommunication Company Ltd,PK0067901022,TECHNOLOGY & COMMUNICATION,Corporates,0,1
+SAZEW,Sazgar Engineering Works Limited,PK0075801016,AUTOMOBILE ASSEMBLER,Corporates,1,1
+SCBPL,Standard Chartered Bank (Pak) Ltd,PK0087901010,COMMERCIAL BANKS,Banks,0,1
+SEARL,The Searle Company Limited,PK0061701014,PHARMACEUTICALS,Corporates,1,1
+SHFA,Shifa International Hospitals Limited,PK0072901017,MISCELLANEOUS,Corporates,1,1
+SNGP,Sui Northern Gas Pipelines Limited,PK0008901016,OIL & GAS MARKETING COMPANIES,Corporates,1,1
+SRVI,Service Industries Limited,PK0016401017,LEATHER & TANNERIES,Corporates,1,1
+SSGC,Sui Southern Gas Company Limited,PK0002801014,OIL & GAS MARKETING COMPANIES,Corporates,1,1
+SSOM,S.S.Oil Mills Limited,SSOM-PK,VANASPATI & ALLIED INDUSTRIES,Corporates,1,1
+SYS,Systems Limited,PK0109001013,TECHNOLOGY & COMMUNICATION,Corporates,1,1
+TGL,Tariq Glass Industries Limited,PK0028801014,GLASS & CERAMICS,Corporates,1,1
+THALL,Thal Limited,PK0011301014,AUTOMOBILE PARTS & ACCESSORIES,Corporates,0,1
+THCCL,Thatta Cement Company Limited,PK0080801019,CEMENT,Corporates,1,1
+TPLRF1,TPL REIT Fund I,TPLRF1-PK,REAL ESTATE INVESTMENT TRUST,Corporates,1,1
+TRG,TRG Pakistan Limited,PK0079201015,TECHNOLOGY & COMMUNICATION,Corporates,0,1
+UBL,United Bank Limited,PK0081901016,COMMERCIAL BANKS,Banks,0,1
+UPFL,Unilever Pakistan Foods Limited,PK0076901013,FOOD & PERSONAL CARE PRODUCTS,Corporates,1,1
+YOUW,Yousaf Weaving Mills Limited,YOUW-PK,TEXTILE WEAVING,Corporates,0,1

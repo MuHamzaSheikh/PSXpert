@@ -1,0 +1,84 @@
+{
+  "model_name": "PSXpert Maximized Accuracy Directional Classifier",
+  "algorithm": "HistGradientBoostingClassifier",
+  "version": "psxpert_max_acc_v1.0",
+  "trained_at": "2026-11-21T23:03:02.960737",
+  "feature_names": [
+    "ret_1d",
+    "ret_5d",
+    "ret_10d",
+    "ret_20d",
+    "ret_60d",
+    "sma_10_50_ratio",
+    "sma_50_200_ratio",
+    "rsi_14",
+    "volatility_20d",
+    "vol_ratio_5_20",
+    "volume_surge_20d",
+    "dist_to_high_252d",
+    "kse100_rel_ret_20d"
+  ],
+  "metrics": {
+    "unfiltered_test_accuracy": 43.14,
+    "unfiltered_macro_f1": 0.3455,
+    "unfiltered_roc_auc": 0.5621,
+    "confidence_thresholding": [
+      {
+        "min_confidence": 0.35,
+        "coverage_pct": 96.31,
+        "traded_signals": 53506,
+        "accuracy_pct": 43.44,
+        "precision_bullish": 36.3,
+        "precision_bearish": 33.9
+      },
+      {
+        "min_confidence": 0.4,
+        "coverage_pct": 59.52,
+        "traded_signals": 33064,
+        "accuracy_pct": 46.61,
+        "precision_bullish": 37.5,
+        "precision_bearish": 34.53
+      },
+      {
+        "min_confidence": 0.45,
+        "coverage_pct": 27.92,
+        "traded_signals": 15508,
+        "accuracy_pct": 51.64,
+        "precision_bullish": 39.75,
+        "precision_bearish": 34.84
+      },
+      {
+        "min_confidence": 0.5,
+        "coverage_pct": 11.79,
+        "traded_signals": 6551,
+        "accuracy_pct": 55.46,
+        "precision_bullish": 36.56,
+        "precision_bearish": 30.28
+      },
+      {
+        "min_confidence": 0.55,
+        "coverage_pct": 4.81,
+        "traded_signals": 2672,
+        "accuracy_pct": 62.5,
+        "precision_bullish": 43.88,
+        "precision_bearish": 28.57
+      },
+      {
+        "min_confidence": 0.6,
+        "coverage_pct": 1.79,
+        "traded_signals": 995,
+        "accuracy_pct": 72.56,
+        "precision_bullish": 41.67,
+        "precision_bearish": 0.0
+      },
+      {
+        "min_confidence": 0.65,
+        "coverage_pct": 0.71,
+        "traded_signals": 397,
+        "accuracy_pct": 84.63,
+        "precision_bullish": 11.11,
+        "precision_bearish": 0.0
+      }
+    ]
+  }
+}
